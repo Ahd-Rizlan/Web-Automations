@@ -1,0 +1,8 @@
+{
+  "deletePaymentTemplateResponse": {
+    "responseHeader": {
+      "statusCode": true,
+      "statusDescription": "132156 templates successfuly moved to trash."
+    }
+  }
+}

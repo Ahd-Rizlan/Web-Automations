@@ -1,0 +1,34 @@
+{
+  "responseHeader": {
+    "statusCode": false,
+    "statusDescription": "",
+    "errorCode": "TR_025",
+    "errorDescription": "NO_RECORDS_FOUND"
+  },
+  "transferData": {
+    "tranId": 0,
+    "status": null,
+    "transactionCategory": null,
+    "transactionType": null,
+    "fromAccountNumber": null,
+    "toAccountName": null,
+    "toAccountNumber": null,
+    "transactionAmount": null,
+    "currency": null,
+    "transactionDate": null,
+    "commissionFromAccountNumber": null,
+    "commissionAmount": null,
+    "bankCode": null,
+    "bankName": null,
+    "branchCode": null,
+    "beneficiaryRemark": null,
+    "senderRemarks": null,
+    "cardName": null,
+    "purpose": null,
+    "mobileCashSenderNIC": null,
+    "mobileCashSenderMobile": null,
+    "mobileRecipientMobile": null,
+    "mobileRecipientName": null,
+    "mobileRecipientNIC": null
+  }
+}

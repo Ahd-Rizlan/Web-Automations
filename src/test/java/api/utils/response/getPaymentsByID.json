@@ -1,0 +1,9 @@
+{
+  "paymentDetails": null,
+  "responseHeader": {
+    "statusCode": "false",
+    "statusDescription": null,
+    "errorCode": "E_100",
+    "errorDescription": "FAILED"
+  }
+}

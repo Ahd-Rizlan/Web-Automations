@@ -1,0 +1,59 @@
+{
+  "responseHeader": {
+    "statusCode": true,
+    "statusDescription": "Success",
+    "errorCode": "",
+    "errorDescription": ""
+  },
+  "payload": {
+    "bank_code": "7269",
+    "bank_name": "MCB BANK",
+    "branchList": [
+      {
+        "br_code": "007",
+        "br_name": "BATTICALOA",
+        "br_email_addr": "dummybranch.mgr@int.sampath.lk"
+      },
+      {
+        "br_code": "008",
+        "br_name": "GALLE",
+        "br_email_addr": "dummybranch.mgr@int.sampath.lk"
+      },
+      {
+        "br_code": "001",
+        "br_name": "HEAD OFFICE",
+        "br_email_addr": "dummybranch.mgr@int.sampath.lk"
+      },
+      {
+        "br_code": "004",
+        "br_name": "ISLAMIC BANKING DIVISION",
+        "br_email_addr": "dummybranch.mgr@int.sampath.lk"
+      },
+      {
+        "br_code": "006",
+        "br_name": "KANDY",
+        "br_email_addr": "dummybranch.mgr@int.sampath.lk"
+      },
+      {
+        "br_code": "009",
+        "br_name": "KOLLUPITIYA",
+        "br_email_addr": "dummybranch.mgr@int.sampath.lk"
+      },
+      {
+        "br_code": "003",
+        "br_name": "MARADANA",
+        "br_email_addr": "dummybranch.mgr@int.sampath.lk"
+      },
+      {
+        "br_code": "002",
+        "br_name": "PETTAH",
+        "br_email_addr": "dummybranch.mgr@int.sampath.lk"
+      },
+      {
+        "br_code": "005",
+        "br_name": "WELLAWATTE",
+        "br_email_addr": "dummybranch.mgr@int.sampath.lk"
+      }
+    ]
+  }
+}

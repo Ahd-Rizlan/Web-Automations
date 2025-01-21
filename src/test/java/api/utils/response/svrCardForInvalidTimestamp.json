@@ -1,0 +1,12 @@
+{
+  "InitiatedSerno": 0.0,
+  "InitiatedKey": null,
+  "Code": 88,
+  "SubCode": 5,
+  "Message": "Long Time Span",
+  "MessageCustomer": "Sorry, cannot proceed your request at the moment. Please try again.",
+  "RequestID": "0050569CE44C.20250120104604.4106abe57cf7468eb8bf207777b9ee5a.svr",
+  "ChainSerno": 0.0,
+  "ChainAuth": null,
+  "SingleUseChainDataList": []
+}

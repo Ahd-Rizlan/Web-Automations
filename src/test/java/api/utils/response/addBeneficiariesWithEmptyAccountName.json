@@ -1,0 +1,11 @@
+{
+  "addBeneficiariesResponse": {
+    "responseHeader": {
+      "statusCode": false,
+      "statusDescription": "FAIL",
+      "errorCode": "Bad Request",
+      "errorDescription": "AccountName Cannot be empty or null"
+    },
+    "path": "/sbs/net/addBeneficiaries"
+  }
+}

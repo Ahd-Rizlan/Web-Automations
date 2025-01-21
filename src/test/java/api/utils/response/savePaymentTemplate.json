@@ -1,0 +1,9 @@
+{
+  "savePaymentTemplateResponse": {
+    "responseHeader": {
+      "statusCode": 201,
+      "statusDescription": "Data Saved."
+    },
+    "templateID": 132149
+  }
+}

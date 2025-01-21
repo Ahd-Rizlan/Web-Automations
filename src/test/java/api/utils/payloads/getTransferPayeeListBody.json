@@ -1,0 +1,6 @@
+{
+  "getTransferPayeeList": {
+    "pageLimit": "10",
+    "pageNo": "1"
+  }
+}

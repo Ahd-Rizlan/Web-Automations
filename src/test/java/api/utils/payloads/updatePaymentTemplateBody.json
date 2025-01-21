@@ -1,0 +1,15 @@
+{
+  "updatePaymentTemplate": {
+    "amount": 0,
+    "billerID": "0000000274",
+    "fieldDataList": [
+      {
+        "fieldSequence": 1,
+        "fieldValue": "0763256987",
+        "fieldName": ""
+      }
+    ],
+    "templateID": "4298",
+    "templateName": "nick"
+  }
+}

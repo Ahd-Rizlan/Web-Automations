@@ -1,0 +1,10 @@
+{
+  "withdrawMobileCashResponse": {
+    "responseHeader": {
+      "statusCode": "false",
+      "statusDescription": "FAIL",
+      "errorCode": "TR_016",
+      "errorDescription": "WITHDRAW_MOBILE_CASH_FAILED - Mobile Cash transaction not found"
+    }
+  }
+}

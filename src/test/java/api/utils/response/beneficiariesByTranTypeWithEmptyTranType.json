@@ -1,0 +1,13 @@
+{
+  "beneficiariesByTranTypeResponse": {
+    "responseHeader": {
+      "statusCode": true,
+      "statusDescription": "SUCCESS"
+    },
+    "pageNo": 1,
+    "pageLimit": 2,
+    "recordCount": 0,
+    "returnMessage": "no records available for userName: botuser",
+    "beneficiaryListDetails": []
+  }
+}

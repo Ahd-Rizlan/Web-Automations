@@ -1,0 +1,10 @@
+{
+  "updatePaymentTemplateResponse": {
+    "responseHeader": {
+      "statusCode": "false",
+      "statusDescription": "FAIL",
+      "errorCode": "Not Found",
+      "errorDescription": "Records not available for userName : botuser, templateID : 4298"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "responseHeader": {
+    "statusCode": true,
+    "statusDescription": "Success",
+    "errorCode": "",
+    "errorDescription": ""
+  },
+  "payload": {
+    "accountNumber": "311564000178",
+    "currency": "LKR",
+    "productName": "OMNICHANNEL LAD - FIXED",
+    "loanAmount": "5000",
+    "loanOutstanding": "-5000",
+    "interestRate": "10.24",
+    "loanPeriod": "6",
+    "page": 1,
+    "recordCount": 4
+  }
+}

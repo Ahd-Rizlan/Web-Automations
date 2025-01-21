@@ -1,0 +1,12 @@
+{
+  "validatePaymentResponse": {
+    "responseHeader": {
+      "statusCode": "false",
+      "statusDescription": "FAIL",
+      "errorCode": "TR_DET_S_002",
+      "errorDescription": ""
+    },
+    "customerCommissionAmt": null,
+    "fieldData": []
+  }
+}

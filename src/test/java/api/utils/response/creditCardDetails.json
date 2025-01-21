@@ -1,0 +1,18 @@
+{
+  "CardSerno": 0.0,
+  "AccountSerno": 0.0,
+  "CardNumber": null,
+  "CardType": null,
+  "CAN": null,
+  "AvailableBalance": 0.0,
+  "Status": null,
+  "OrginalStatus": null,
+  "Expiry": null,
+  "Code": 88,
+  "SubCode": 5,
+  "Message": "Long Time Span",
+  "MessageCustomer": "Something went wrong while processing your request. Please try again later.",
+  "ChainSerno": 0.0,
+  "ChainAuth": null,
+  "SingleUseChainDataList": []
+}

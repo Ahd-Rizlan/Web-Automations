@@ -1,0 +1,27 @@
+{
+  "getUnutilizedMobileCashResponse": {
+    "responseHeader": {
+      "statusCode": "true",
+      "statusDescription": "SUCCESS"
+    },
+    "unutilizedMobileCashList": [
+      {
+        "beneId": "200023901916",
+        "beneName": " Vineth",
+        "beneTel": "0767749482",
+        "createdBy": 0,
+        "createdDate": "2024-12-26 11:27:57",
+        "currencyCode": "LKR",
+        "debitAccount": "111552420311",
+        "expiryDate": "2025-01-25",
+        "originalPin": "00369927",
+        "receiveDate": "2024-12-26 11:27:57",
+        "senderId": "897456333",
+        "txnAmount": "1,000.00",
+        "txnCommission": "50.00",
+        "txnStatus": "U",
+        "txnType": "POI"
+      }
+    ]
+  }
+}

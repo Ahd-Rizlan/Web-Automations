@@ -1,0 +1,12 @@
+{
+  "validatePaymentResponse": {
+    "responseHeader": {
+      "statusCode": "false",
+      "statusDescription": "FAIL",
+      "errorCode": "500",
+      "errorDescription": ""
+    },
+    "customerCommissionAmt": null,
+    "fieldData": []
+  }
+}

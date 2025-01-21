@@ -1,0 +1,17 @@
+{
+  "validatePaymentResponse": {
+    "responseHeader": {
+      "statusCode": "false",
+      "statusDescription": "FAIL",
+      "errorCode": "E_104",
+      "errorDescription": ""
+    },
+    "customerCommissionAmt": null,
+    "fieldData": [
+      {
+        "fieldSequence": "-99",
+        "fieldError": "Unauthorized merchant code or Biller id"
+      }
+    ]
+  }
+}

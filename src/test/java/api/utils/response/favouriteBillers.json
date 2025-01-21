@@ -1,0 +1,12 @@
+{
+  "responseHeader": {
+    "statusCode": false,
+    "statusDescription": "Fail",
+    "errorCode": "PP_003",
+    "errorDescription": "No records available for userName: botuser"
+  },
+  "pageNo": 2,
+  "pageLimit": 1,
+  "totalCount": 0,
+  "paymentTemplateResponse": []
+}

@@ -1,0 +1,15 @@
+{
+  "updateBeneficiaries": {
+    "accountType": "OTH",
+    "accountName": "Sam",
+    "accountNickName": "testSan",
+    "creditCardNumber": "",
+    "accountNumber": "3254242452452",
+    "bank": "",
+    "beneficiaryID": 3,
+    "branch": "",
+    "recipientNIC": "",
+    "recipientName": "",
+    "recipientMobile": ""
+  }
+}

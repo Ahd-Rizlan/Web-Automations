@@ -1,0 +1,10 @@
+{
+  "makeBillPaymentResponse": {
+    "responseHeader": {
+      "statusCode": false,
+      "statusDescription": "FAIL",
+      "errorCode": "E_119",
+      "errorDescription": "Get biller details failed"
+    }
+  }
+}

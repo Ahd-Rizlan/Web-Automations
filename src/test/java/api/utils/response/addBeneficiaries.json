@@ -1,0 +1,9 @@
+{
+  "addBeneficiariesResponse": {
+    "responseHeader": {
+      "statusCode": true,
+      "statusDescription": "Data Saved."
+    },
+    "returnCode": "201 CREATED"
+  }
+}
