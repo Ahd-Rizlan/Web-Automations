@@ -1,0 +1,19 @@
+{
+  "CardSerno": 0.0,
+  "AccountSerno": 0.0,
+  "CardNumber": null,
+  "CardType": null,
+  "CAN": null,
+  "AvailableBalance": 0.0,
+  "Status": null,
+  "OrginalStatus": null,
+  "Expiry": null,
+  "Code": 77,
+  "SubCode": 1,
+  "Message": "Initiated Key Authorization Invalid/ Expired",
+  "MessageCustomer": "Something went wrong while processing your request. Please try again later.",
+  "RequestID": "0050569CE44C.20250122091024.9da46179c69343ee8d2b36c120ad03ff.svr",
+  "ChainSerno": 0.0,
+  "ChainAuth": null,
+  "SingleUseChainDataList": []
+}

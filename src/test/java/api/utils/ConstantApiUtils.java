@@ -99,7 +99,7 @@ public class ConstantApiUtils {
     public static final String GET_DELETE_PAYMENT_TEMPLATE_PATH = "/apis/payments/web/deletePaymentTemplate/1.0.0";
     public static final String GET_FD_ACCOUNT_PATH = "/apis/accounts/web/getFDAccounts/1.0.0";
     public static final String CARD_ACCOUNT_PATH = "/apis/card/web/getCardCountSummaryforSVR/1.0.0";
-    public static final String CREDIT_CARD_DETAILS_PATH = "/apis/card/web/dashboardCreditCardDetailsforSVR/1.0.0";
+    public static final String DASHBOARD_CREDIT_CARD_DETAILS_FOR_SVR_PATH = "/apis/card/web/dashboardCreditCardDetailsforSVR/1.0.0";
     public static final String WITHDRAWAL_MOBILE_CASH_RESPONSE = "//src//test//java//api//utils//response//withdrawMobileCash.json";
     public static final String WITHDRAWAL_MOBILE_CASH_BODY =  "//src//test//java//api//utils//payloads//withdrawMobileCashBody.json";
     public static final String REVERSE_MOBILE_CASH_RESPONSE = "//src//test//java//api//utils//response//reverseMobileCash.json";
@@ -109,6 +109,12 @@ public class ConstantApiUtils {
     public static final String CARD_COUNT_SUMMARY_FOR_INCORRECT_CHAINSERNO_RESPONSE = "//src//test//java//api//utils//response//cardCountSummeryForIncorrectChainSerNo.json";
     public static final String CARD_COUNT_SUMMARY_FOR_INCORRECT_CHAINAUTH_RESPONSE = "//src//test//java//api//utils//response//cardCountSummeryForIncorrectChainAuth.json";
     public static final String CARD_COUNT_SUMMARY_FOR_INCORRECT_DEVICEID_RESPONSE = "//src//test//java//api//utils//response//cardCountSummeryForIncorrectDeviceID.json";
+
+    public static final String DASHBOARD_CREDITCARD_DETAILS_FOR_SVR_FOR_INCORRECT_INITIATED_SERNO_RESPONSE = "//src//test//java//api//utils//response//dashboardCreditCardDetailsforSVRForIncorrectInitiatedSerno.json";
+    public static final String DASHBOARD_CREDIT_CARD_DETAILS_FOR_SVR_FOR_INCORRECT_INITIATED_KEY_RESPONSE = "//src//test//java//api//utils//response//dashboardCreditCardDetailsForSVRForIncorrectInitiatedKey.json";
+    public static final String DASHBOARD_CREDITCARD_DETAILS_FOR_SVR_FOR_INCORRECT_CHAINSERNO_RESPONSE = "//src//test//java//api//utils//response//dashboardCreditCardDetailsForSVRForIncorrectChainSerNo.json";
+    public static final String DASHBOARD_CREDITCARD_DETAILS_FOR_SVR_FOR_INCORRECT_CHAINAUTH_RESPONSE = "//src//test//java//api//utils//response//dashboardCreditCardDetailsForSVRForIncorrectChainAuth.json";
+    public static final String DASHBOARD_CREDITCARD_DETAILS_FOR_SVR_FOR_INCORRECT_DEVICEID_RESPONSE = "//src//test//java//api//utils//response//dashboardCreditCardDetailsForSVRForIncorrectDeviceId.json";
     public static final String REVERSE_MOBILE_CASH_BODY =  "//src//test//java//api//utils//payloads//reverseMobileCashBody.json";
     public static final String CASA_ACCOUNT_RESPONSE = "//src//test//java//api//utils//response//casaAccountPayload.json";
     public static final String CASA_GET_PAYMENTS_BY_ID_RESPONSE = "//src//test//java//api//utils//response//getPaymentsByID.json";

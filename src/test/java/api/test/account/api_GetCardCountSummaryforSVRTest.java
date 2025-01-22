@@ -23,7 +23,7 @@ public class api_GetCardCountSummaryforSVRTest extends baseMethod {
 		initiateCardsForSVR = new initiateCardsForSVR();
 	}
 
-	@BeforeMethod // Before every test a correct data setup is prepared
+	@BeforeMethod // Before every test the correct data setup is prepared
 	public void setPayloadWithUpToDateValidData () throws IOException, ParseException {
 
 		// execute pre-request api : initiateCardsforSVR
