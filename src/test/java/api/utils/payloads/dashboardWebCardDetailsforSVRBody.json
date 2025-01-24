@@ -1,9 +1,1 @@
-{
-  "RequestTime": "2023-09-14 15:52:30",
-  "PageNo": "1",
-  "InitiatedSerno": 127335.0,
-  "InitiatedKey": "WnnXXYGYn0",
-  "ChainSerno": 126051.0,
-  "ChainAuth": "E733A89F-AB13-4316-B069-70361BB29230",
-  "DeviceId": "004274"
-}
+{"ChainAuth":"2C6C3A68E6583258E06400144FF8DDBE","InitiatedKey":"lHmRAxcIlX","DeviceId":"FA46572E-16CE-476F-9389-BBF11F9AC1EC","RequestTime":"2025-01-24 10:16:21","PageNo":"1","InitiatedSerno":"143472.0","ChainSerno":"376280.0"}
