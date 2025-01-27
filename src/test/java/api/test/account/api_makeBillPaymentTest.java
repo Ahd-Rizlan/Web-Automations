@@ -2,7 +2,6 @@ package api.test.account;
 
 import api.methods.baseMethod;
 import api.methods.makeBillPayment;
-import api.methods.validatePayment;
 import api.utils.ConstantApiUtils;
 import org.json.simple.parser.ParseException;
 import org.testng.annotations.BeforeClass;
@@ -63,7 +62,7 @@ public class api_makeBillPaymentTest extends baseMethod {
 		makeBillPayment.setPayloadWithValidData();
 		makeBillPayment.invokeMakeBillPaymentApi();
 		makeBillPayment.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
-		makeBillPayment.validatePayload();
+		makeBillPayment.validatePayload(); // 'reference' and '10738' have been excluded in the validation as both values are dynamic
 	}
 
 }

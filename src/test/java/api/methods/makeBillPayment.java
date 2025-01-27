@@ -113,7 +113,7 @@ public class makeBillPayment extends baseMethod {
     }
 
     public void validatePayload() {
-        new PayloadValidator().validateJsonFileWithResponse(JSON_PATH, response);
+        new PayloadValidator().validateJsonFileWithExcludedDataFields(JSON_PATH,response,new String[]{"reference","paymentRefId"});
     }
 
     public void validatePayloadForIncorrectBillerId() {

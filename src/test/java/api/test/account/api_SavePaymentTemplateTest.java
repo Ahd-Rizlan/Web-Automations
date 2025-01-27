@@ -1,7 +1,6 @@
 package api.test.account;
 
 import api.methods.baseMethod;
-import api.methods.makeBillPayment;
 import api.methods.savePaymentTemplate;
 import api.utils.ConstantApiUtils;
 import org.json.simple.parser.ParseException;
@@ -43,7 +42,7 @@ public class api_SavePaymentTemplateTest extends baseMethod {
 		savePaymentTemplate.setPayloadWithValidData();
 		savePaymentTemplate.invokeSavePaymentTemplateApi();
 		savePaymentTemplate.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
-		savePaymentTemplate.validatePayload();
+		savePaymentTemplate.validatePayload(); //'templateID' is excluded in the validation as its value is dynamic
 	}
 
 }

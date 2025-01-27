@@ -1,9 +1,10 @@
 {
-  "validateTransferResponse": {
+  "doTransferResponse": {
     "responseHeader": {
-      "statusCode": "true",
-      "statusDescription": "Validation successful - charge not available"
+      "statusCode": "true"
     },
-    "transferCharge": 0
+    "transferReference": 14762,
+    "returnMessage": "DO_FINACLE_TRANSFER_SUCCESS",
+    "authenticationType": ""
   }
 }
