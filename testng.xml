@@ -1,31 +1,248 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="All Test Suite">
+    <listeners>
+        <listener class-name="utils.CustomReport" />
+        <listener class-name="utils.TestNameListener" />
+    </listeners>
     <test verbose="2" preserve-order="true"
-          name="XML name">
+          name="C:/Users/himani/Documents/svr4-api-automations/src/test/java/api/test">
         <classes>
-            <class name="gui.test.LoginTest">
+            <class name="api.test.api_CategoriesTest">
                 <methods>
-                    <include name="validateLogin"/>
-                    <include name="validateTheTitle"/>
+                    <include name="checkGetMobileCashUnauthorizedAccess"/>
+                    <include name="checkCategoriesWithIncorrectMerchantCode"/>
+                    <include name="checkMobileCashAuthorizedAccess"/>
                 </methods>
             </class>
-            <class name="gui.test.LoginTest">
+            <class name="api.test.api_DeletePaymentTemplateTest">
                 <methods>
-                    <include name="validateLogin"/>
-                    <include name="validateTheTitle"/>
+                    <include name="checkDeletePaymentTemplateApiUnauthorizedAccess"/>
+                    <include name="addPaymentTemplate"/>
                 </methods>
             </class>
-            <class name="gui.test.LoginTest">
+            <class name="api.test.api_FavBeneficiariesTest">
                 <methods>
-                    <include name="validateLogin"/>
-                    <include name="validateTheTitle"/>
+                    <include name="checkCreditCardDetailsApiUnauthorizedAccess"/>
+                    <include name="checkCreditCardDetailsApiAuthorizedAccess"/>
                 </methods>
             </class>
-            <class name="gui.test.LoginTest">
+            <class name="api.test.api_FavouriteBillersTest">
                 <methods>
-                    <include name="validateLogin"/>
-                    <include name="validateTheTitle"/>
+                    <include name="checkFDAccountApiUnauthorizedAccess"/>
+                    <include name="checkFDAccountApiAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_GetBankListTest">
+                <methods>
+                    <include name="checkGetMobileCashUnauthorizedAccess"/>
+                    <include name="checkMobileCashAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_GetBranchListByBankCodeTest">
+                <methods>
+                    <include name="checkGetMobileCashUnauthorizedAccess"/>
+                    <include name="checkMobileCashAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_GetCASAccountsTest">
+                <methods>
+                    <include name="checkCasaAccountApiUnauthorizedAccess"/>
+                    <include name="checkCasaAccountApiAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_GetCardCountSummaryforSVRTest">
+                <methods>
+                    <include name="checkCardCountSummeryApiUnauthorizedAccess"/>
+                    <include name="checkCardCountSummeryApiWithInvalidInitiatedSerno"/>
+                    <include name="checkCardCountSummeryApiWithInvalidInitiatedKey"/>
+                    <include name="checkCardCountSummeryApiWithInvalidChainSerNo"/>
+                    <include name="checkCardCountSummeryApiWithInvalidChainAuth"/>
+                    <include name="checkCardCountSummeryApiWithInvalidDeviceId"/>
+                    <include name="checkCardCountSummeryApiAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_GetFDAccountsTest">
+                <methods>
+                    <include name="checkFDAccountApiUnauthorizedAccess"/>
+                    <include name="checkFDAccountApiAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_GetLoanAccountsTest">
+                <methods>
+                    <include name="checkFDAccountApiUnauthorizedAccess"/>
+                    <include name="checkFDAccountApiAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_GetMobileCashTest">
+                <methods>
+                    <include name="checkGetMobileCashUnauthorizedAccess"/>
+                    <include name="checkMobileCashAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_GetPaymentsTest">
+                <methods>
+                    <include name="checkGetMobileCashUnauthorizedAccess"/>
+                    <include name="checkMobileCashAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_GetTransfersTest">
+                <methods>
+                    <include name="checkGetMobileCashUnauthorizedAccess"/>
+                    <include name="checkMobileCashAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_InitiateCardsForSVRApiTest">
+                <methods>
+                    <include name="checkInitiateCardsForSVRApiUnauthorizedAccess"/>
+                    <include name="checkInitiateCardsForSVRApiWithInvalidDeviceID"/>
+                    <include name="checkInitiateCardsForSVRApiWithInvalidTimeStamp"/>
+                    <include name="checkInitiateCardsForSVRApiAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_SavePaymentTemplateTest">
+                <methods>
+                    <include name="checkBillPaymentsWithUnauthorizedAccess"/>
+                    <include name="checkBillPaymentsWithIncorrectBillerId"/>
+                    <include name="checkValidatePaymentsWithAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_UpdatePaymentTemplateTest">
+                <methods>
+                    <include name="checkCreditCardDetailsApiUnauthorizedAccess"/>
+                    <include name="checkCreditCardDetailsApiAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_addBeneficiariesTest">
+                <methods>
+                    <include name="checkAddBeneficiariesUnauthorizedAccess"/>
+                    <include name="checkAddBeneficiariesWithIncorrectAccountType"/>
+                    <include name="checkAddBeneficiariesWithEmptyAccountName"/>
+                    <include name="checkAddBeneficiariesWithIncorrectAccountNumber"/>
+                    <include name="checkAddBeneficiariesWithEmptyBankCode"/>
+                    <include name="checkAddBeneficiariesWithAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_beneficiariesByTranTypeTest">
+                <methods>
+                    <include name="checkBeneficiariesByTranTypeWithUnauthorizedAccess"/>
+                    <include name="checkBeneficiariesByTranTypeWithEmptyTranType"/>
+                    <include name="checkBeneficiariesByTranTypeWithCorrectTranType"/>
+                </methods>
+            </class>
+            <class name="api.test.api_deleteBeneficiariesTest">
+                <methods>
+                    <include name="checkGetMobileCashUnauthorizedAccess"/>
+                    <include name="checkMobileCashAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_doTransferForVishwaTest">
+                <methods>
+                    <include name="checkDoTransferForVishwaWithUnauthorizedAccess"/>
+                    <include name="checkDoTransferForVishwaWithAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_getAccountsByTrantypeTest">
+                <methods>
+                    <include name="checkFDAccountApiUnauthorizedAccess"/>
+                    <include name="checkFDAccountApiAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_getCustAccountDetailsTest">
+                <methods>
+                    <include name="checkFDAccountApiUnauthorizedAccess"/>
+                    <include name="checkFDAccountApiAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_getPaymentsByIDTest">
+                <methods>
+                    <include name="checkCasaAccountApiUnauthorizedAccess"/>
+                    <include name="checkCasaAccountApiAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_getTransactionDataByReferenceTest">
+                <methods>
+                    <include name="checkFDAccountApiUnauthorizedAccess"/>
+                    <include name="checkFDAccountApiAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_getTransferPayeeListTest">
+                <methods>
+                    <include name="checkGetMobileCashUnauthorizedAccess"/>
+                    <include name="checkMobileCashAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_getUnutilizedMobileCashTest">
+                <methods>
+                    <include name="checkGetMobileCashUnauthorizedAccess"/>
+                    <include name="checkMobileCashAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_makeBillPaymentTest">
+                <methods>
+                    <include name="checkBillPaymentsWithUnauthorizedAccess"/>
+                    <include name="checkBillPaymentsWithIncorrectBillerId"/>
+                    <include name="checkValidatePaymentsWithIncorrectDebitAccount"/>
+                    <include name="checkValidatePaymentsWithIncorrectCurrencyType"/>
+                    <include name="checkValidatePaymentsWithAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_reverseMobileCashTest">
+                <methods>
+                    <include name="checkGetMobileCashUnauthorizedAccess"/>
+                    <include name="checkMobileCashWithInvalidNic"/>
+                    <include name="checkMobileCashWithInvalidPin"/>
+                    <include name="checkMobileCashAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_updateBeneficiariesTest">
+                <methods>
+                    <include name="checkGetMobileCashUnauthorizedAccess"/>
+                    <include name="checkMobileCashAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_updateFavouritePayeeTest">
+                <methods>
+                    <include name="checkGetMobileCashUnauthorizedAccess"/>
+                    <include name="checkMobileCashAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_updatePayeeAsFavouriteTest">
+                <methods>
+                    <include name="checkUpdatePayeeAsFavouriteUnauthorizedAccess"/>
+                    <include name="checkUpdatePayeeAsFavouriteAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_validatePaymentTest">
+                <methods>
+                    <include name="checkValidatePaymentsWithUnauthorizedAccess"/>
+                    <include name="checkValidatePaymentsWithIncorrectBillerId"/>
+                    <include name="checkValidatePaymentsWithIncorrectAccountNumber"/>
+                    <include name="checkValidatePaymentsWithIncorrectCurrencyType"/>
+                    <include name="checkValidatePaymentsWithEmptyBankCode"/>
+                    <include name="checkValidatePaymentsWithAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.dashboardCreditCardDetailsforSVRTest">
+                <methods>
+                    <include name="checkDashboardCreditCardDetailsForSVRApiUnauthorizedAccess"/>
+                    <include name="checkDashboardCreditCardDetailsForSVRWithInvalidInitiatedSerno"/>
+                    <include name="checkDashboardCreditCardDetailsForSVRWithInvalidInitiatedKey"/>
+                    <include name="checkDashboardCreditCardDetailsForSVRWithInvalidChainSerNo"/>
+                    <include name="checkDashboardCreditCardDetailsForSVRWithInvalidChainAuth"/>
+                    <include name="checkDashboardCreditCardDetailsForSVRWithInvalidDeviceId"/>
+                    <include name="checkDashboardCreditCardDetailsForSVRAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.dashboardWebCardDetailsforSVRTest">
+                <methods>
+                    <include name="checkDashboardWebCardDetailsForSVRApiUnauthorizedAccess"/>
+                    <include name="checkDashboardWebCardDetailsForSVRWithInvalidInitiatedSerno"/>
+                    <include name="checkDashboardWebCardDetailsForSVRWithInvalidInitiatedKey"/>
+                    <include name="checkDashboardWebCardDetailsForSVRWithInvalidChainSerNo"/>
+                    <include name="checkDashboardWebCardDetailsForSVRWithInvalidChainAuth"/>
+                    <include name="checkDashboardWebCardDetailsForSVRWithInvalidDeviceId"/>
+                    <include name="checkDashboardWebCardDetailsForSVRAuthorizedAccess"/>
                 </methods>
             </class>
         </classes>

@@ -193,6 +193,7 @@ public class ConstantApiUtils {
     public static final String GET_MAKE_BILL_PAYMENT_WITH_INCORRECT_BILLER_ID_RESPONSE = "//src//test//java//api//utils//response//makeBillPaymentWithIncorrectBillerId.json";
     public static final String GET_MAKE_BILL_PAYMENT_WITH_INCORRECT_DEBIT_ACCOUNT_RESPONSE = "//src//test//java//api//utils//response//makeBillPaymentWithIncorrecDebitAccount.json";
     public static final String GET_MAKE_BILL_PAYMENT_WITH_INCORRECT_CURRENCY_RESPONSE = "//src//test//java//api//utils//response//makeBillPaymentWithIncorrectCurrencyType.json";
+    public static final String GET_CATEGORIES_WITH_INCORRECT_MERCHANT_ID_RESPONSE = "//src//test//java//api//utils//response//categoriesWithIncorrectMerchantId.json";
     //---------Others------------
     public static final String PAGE_NO_ONE = "1";
     public static final String PAGE_NO_TWO = "2";
@@ -281,5 +282,9 @@ public class ConstantApiUtils {
     public static final String CARD_COUNT_SUMMERY_API_WITH_INVALID_INITIATEDKEY = "blQkvxQEtdx";
     public static final String CARD_COUNT_SUMMERY_API_WITH_INVALID_CHAINSERNO = "3724940.0";
     public static final String CARD_COUNT_SUMMERY_API_WITH_INVALID_CHAINAUTH = "2C2ED5F7F59A2DC2E06400144FF8DDBEX";
+
+    //Categories
+    public static final String INVALID_MERCHANT_CODE = "ORCX";
+    public static final String VALID_MERCHANT_CODE = "ORC";
 
 }

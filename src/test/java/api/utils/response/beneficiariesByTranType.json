@@ -6,8 +6,24 @@
     },
     "pageNo": 1,
     "pageLimit": 2,
-    "recordCount": 37,
+    "recordCount": 38,
     "beneficiaryListDetails": [
+      {
+        "beneficiaryID": 570990,
+        "accountNo": "5341780000025500",
+        "accountName": "Vineth",
+        "payeeNickname": "Himan",
+        "bankCode": "7904",
+        "branchCode": "001",
+        "bankName": "HNB FINANCE PLC",
+        "recipientNIC": null,
+        "recipientName": null,
+        "recipientMobile": null,
+        "accountType": "CC",
+        "createdDate": "2025/01/24 12:20:38",
+        "modifiedDate": "N/A",
+        "isFavourite": false
+      },
       {
         "beneficiaryID": 570933,
         "accountNo": "5341780000025500",
@@ -21,22 +37,6 @@
         "recipientMobile": null,
         "accountType": "CC",
         "createdDate": "2024/12/25 12:31:43",
-        "modifiedDate": "N/A",
-        "isFavourite": false
-      },
-      {
-        "beneficiaryID": 570820,
-        "accountNo": "5341780000025500",
-        "accountName": "Vineth",
-        "payeeNickname": "Himan",
-        "bankCode": "7904",
-        "branchCode": "001",
-        "bankName": "HNB FINANCE PLC",
-        "recipientNIC": null,
-        "recipientName": null,
-        "recipientMobile": null,
-        "accountType": "CC",
-        "createdDate": "2024/09/30 17:58:30",
         "modifiedDate": "N/A",
         "isFavourite": false
       }

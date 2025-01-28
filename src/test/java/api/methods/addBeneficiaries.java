@@ -32,6 +32,7 @@ public class addBeneficiaries extends baseMethod {
     private static final String EMPTY_ACCOUNT_NAME = USER_DIR + GET_ADD_BENEFICIARIES_WITH_EMPTY_ACCOUNT_NAME_RESPONSE;
     private static final String INCORRECT_ACCOUNT_NUMBER = USER_DIR + GET_ADD_BENEFICIARIES_WITH_INCORRECT_ACCOUNT_NUMBER_RESPONSE;
     private static final String EMPTY_BANK_CODE = USER_DIR + GET_ADD_BENEFICIARIES_WITH_EMPTY_BANK_CODE_RESPONSE;
+
     public void authorisedWithInvalidToken() {
         headersMap.put(TXT_AUTHORIZATION, TXT_AUTHORIZATION_INVALID_VAL);
     }
@@ -70,12 +71,12 @@ public class addBeneficiaries extends baseMethod {
         writer.close();
     }
 
- public void setPayloadWithEmptyAccountName() throws IOException, ParseException {
+    public void setPayloadWithEmptyAccountName() throws IOException, ParseException {
         jsonBody = new File(ConstantApiUtils.PATH_TO_PAYLOAD_FOLDER.concat("addBeneficiariesBody.json"));
         file = new FileReader(ConstantApiUtils.PATH_TO_PAYLOAD_FOLDER.concat("addBeneficiariesBody.json"));
         jsonObject = (JSONObject) jsonParser.parse(file);
-        JSONObject withdrawMobileCash = (JSONObject) jsonObject.get("addBeneficiaries");
-        withdrawMobileCash.put("accountName", EMPTY_ACCOUNT_NAME_VALUE);
+        JSONObject addBeneficiaries = (JSONObject) jsonObject.get("addBeneficiaries");
+        addBeneficiaries.put("accountName", EMPTY_ACCOUNT_NAME_VALUE);
         FileWriter writer = new FileWriter(jsonBody, false); //overwrites the content of file
         writer.write(jsonObject.toString());
         writer.close();
@@ -85,8 +86,8 @@ public class addBeneficiaries extends baseMethod {
         jsonBody = new File(ConstantApiUtils.PATH_TO_PAYLOAD_FOLDER.concat("addBeneficiariesBody.json"));
         file = new FileReader(ConstantApiUtils.PATH_TO_PAYLOAD_FOLDER.concat("addBeneficiariesBody.json"));
         jsonObject = (JSONObject) jsonParser.parse(file);
-        JSONObject withdrawMobileCash = (JSONObject) jsonObject.get("addBeneficiaries");
-        withdrawMobileCash.put("accountNumber", INCORRECT_ACCOUNT_NUMBER_VALUE);
+        JSONObject addBeneficiaries = (JSONObject) jsonObject.get("addBeneficiaries");
+        addBeneficiaries.put("accountNumber", INCORRECT_ACCOUNT_NUMBER_VALUE);
         FileWriter writer = new FileWriter(jsonBody, false); //overwrites the content of file
         writer.write(jsonObject.toString());
         writer.close();
@@ -96,8 +97,8 @@ public class addBeneficiaries extends baseMethod {
         jsonBody = new File(ConstantApiUtils.PATH_TO_PAYLOAD_FOLDER.concat("addBeneficiariesBody.json"));
         file = new FileReader(ConstantApiUtils.PATH_TO_PAYLOAD_FOLDER.concat("addBeneficiariesBody.json"));
         jsonObject = (JSONObject) jsonParser.parse(file);
-        JSONObject withdrawMobileCash = (JSONObject) jsonObject.get("addBeneficiaries");
-        withdrawMobileCash.put("bank", EMPTY_BANK_CODE_VALUE);
+        JSONObject addBeneficiaries = (JSONObject) jsonObject.get("addBeneficiaries");
+        addBeneficiaries.put("bank", EMPTY_BANK_CODE_VALUE);
         FileWriter writer = new FileWriter(jsonBody, false); //overwrites the content of file
         writer.write(jsonObject.toString());
         writer.close();
@@ -115,7 +116,7 @@ public class addBeneficiaries extends baseMethod {
                 .log()
                 .all()
                 .post();
-        System.out.println("API Response" + response.prettyPrint());
+        System.out.println("API Response (AddBeneficiaries) :" + response.prettyPrint());
 
     }
 
