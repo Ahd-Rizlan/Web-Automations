@@ -96,10 +96,12 @@ public class dashboardWebCardDetailsforSVRTest extends baseMethod {
 		dashboardWebCardDetailsforSVR.validatePayloadForIncorrectDeviceId();
 	}
 	@Test(priority = 3)
-	public void checkDashboardWebCardDetailsForSVRAuthorizedAccess() {
+	public void checkDashboardWebCardDetailsForSVRAuthorizedAccess() { //bug reported [SVR4-510]
 		dashboardWebCardDetailsforSVR.invokeDashboardWebCardDetailsForSVRApi();
 		dashboardWebCardDetailsforSVR.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
 		dashboardWebCardDetailsforSVR.validatePayload();
 	}
+
+
 
 }

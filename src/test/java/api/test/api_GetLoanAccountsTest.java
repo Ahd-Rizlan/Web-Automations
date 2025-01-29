@@ -1,7 +1,6 @@
 package api.test;
 
 import api.methods.baseMethod;
-import api.methods.fdAccountApiMethods;
 import api.methods.getLoanAccounts;
 import api.utils.ConstantApiUtils;
 import org.testng.annotations.BeforeClass;
@@ -24,7 +23,7 @@ public class api_GetLoanAccountsTest extends baseMethod {
 		setTestName(m.getName());
 	}
 	@Test(priority = 1)
-	public void checkFDAccountApiUnauthorizedAccess() {
+	public void checkLoanAccountsApiWithUnauthorizedAccess() {
 		getLoanAccounts.authorisedWithInvalidToken();
 		getLoanAccounts.setPageNo(ConstantApiUtils.PAGE_NO_ONE);
 		getLoanAccounts.invokeGetLoanAccountsApi();
@@ -33,7 +32,7 @@ public class api_GetLoanAccountsTest extends baseMethod {
 	}
 
 	@Test(priority = 2)
-	public void checkFDAccountApiAuthorizedAccess() {
+	public void checkLoanAccountsApiWithAuthorizedAccess() {
 
 		getLoanAccounts.authorisedWithValidToken();
 		getLoanAccounts.setPageNo(ConstantApiUtils.PAGE_NO_ONE);

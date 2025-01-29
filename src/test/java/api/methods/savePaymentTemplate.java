@@ -80,8 +80,8 @@ public class savePaymentTemplate extends baseMethod {
                 .log()
                 .all()
                 .post();
-        System.out.println("API Response SavePaymentTemplateApi yyyyyyyyyyyyyyy : " + response.prettyPrint());
-        saveImportantDataToFile();
+        System.out.println("API Response SavePaymentTemplateApi : " + response.prettyPrint());
+
     }
 
     public void validateResponseCode(int responseCode) {
@@ -96,7 +96,7 @@ public class savePaymentTemplate extends baseMethod {
         new PayloadValidator().validateJsonFileWithResponse(INCORRECT_BILLER_ID, response);
     }
 
-    public void saveImportantDataToFile() {
+    public void saveTemplateIdToFile() {
         storeAPIDetails("templateID", response.path("savePaymentTemplateResponse.templateID").toString());
     }
 

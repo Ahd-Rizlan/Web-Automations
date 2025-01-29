@@ -25,7 +25,7 @@
       "accountType": "SBA",
       "currency": "LKR",
       "schemeCode": "VS500",
-      "availableBalance": 27450.0,
+      "availableBalance": 28550.0,
       "solId": "115",
       "fundsDebitable": true,
       "fundsCreditable": true
@@ -49,7 +49,7 @@
       "accountType": "SBA",
       "currency": "LKR",
       "schemeCode": "SA500",
-      "availableBalance": 1600624.75,
+      "availableBalance": 1591753.75,
       "solId": "115",
       "fundsDebitable": true,
       "fundsCreditable": true

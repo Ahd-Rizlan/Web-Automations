@@ -23,15 +23,14 @@ public class api_getAccountsByTrantypeTest extends baseMethod {
 		setTestName(m.getName());
 	}
 	@Test(priority = 1)
-	public void checkFDAccountApiUnauthorizedAccess() {
+	public void checkGetAccountsByTrantypeWithUnauthorizedAccess() {
 		getAccountsByTrantype.authorisedWithInvalidToken();
 		getAccountsByTrantype.invokeGetAccountsByTrantypeApi();
 		getAccountsByTrantype.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
-
 	}
 
 	@Test(priority = 2)
-	public void checkFDAccountApiAuthorizedAccess() {
+	public void checkGetAccountsByTrantypeWithAuthorizedAccess() { //The order of JSON Response is always changed hence comparison failed
 		getAccountsByTrantype.authorisedWithValidToken();
 		getAccountsByTrantype.invokeGetAccountsByTrantypeApi();
 		getAccountsByTrantype.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);

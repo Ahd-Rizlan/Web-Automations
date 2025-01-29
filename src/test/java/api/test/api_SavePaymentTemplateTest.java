@@ -25,14 +25,13 @@ public class api_SavePaymentTemplateTest extends baseMethod {
 		setTestName(m.getName());
 	}
 	@Test(priority = 1)
-	public void checkBillPaymentsWithUnauthorizedAccess()  {
+	public void checkSavePaymentTemplateWithUnauthorizedAccess()  {
 		savePaymentTemplate.authorisedWithInvalidToken();
 		savePaymentTemplate.invokeSavePaymentTemplateApi();
 		savePaymentTemplate.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
-
 	}
 	@Test(priority = 2)
-	public void checkBillPaymentsWithIncorrectBillerId() throws IOException, ParseException {
+	public void checkSavePaymentTemplateWithIncorrectBillerId() throws IOException, ParseException {
 		savePaymentTemplate.authorisedWithValidToken();
 		savePaymentTemplate.setPayloadWithIncorrectBillerId();
 		savePaymentTemplate.invokeSavePaymentTemplateApi();
@@ -42,10 +41,11 @@ public class api_SavePaymentTemplateTest extends baseMethod {
 	}
 
 	@Test(priority = 3)
-	public void checkValidatePaymentsWithAuthorizedAccess() throws IOException, ParseException {
+	public void checkSavePaymentTemplateWithAuthorizedAccess() throws IOException, ParseException {
 		savePaymentTemplate.authorisedWithValidToken();
 		savePaymentTemplate.setPayloadWithValidData();
 		savePaymentTemplate.invokeSavePaymentTemplateApi();
+		savePaymentTemplate.saveTemplateIdToFile();
 		savePaymentTemplate.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
 		savePaymentTemplate.validatePayload(); //'templateID' is excluded in the validation as its value is dynamic
 	}

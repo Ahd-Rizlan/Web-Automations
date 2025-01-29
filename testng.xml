@@ -29,8 +29,8 @@
             </class>
             <class name="api.test.api_FavouriteBillersTest">
                 <methods>
-                    <include name="checkFDAccountApiUnauthorizedAccess"/>
-                    <include name="checkFDAccountApiAuthorizedAccess"/>
+                    <include name="checkFavouriteBillersApiWithUnauthorizedAccess"/>
+                    <include name="checkFavouriteBillersApiWithAuthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.api_GetBankListTest">
@@ -70,8 +70,8 @@
             </class>
             <class name="api.test.api_GetLoanAccountsTest">
                 <methods>
-                    <include name="checkFDAccountApiUnauthorizedAccess"/>
-                    <include name="checkFDAccountApiAuthorizedAccess"/>
+                    <include name="checkLoanAccountsApiWithUnauthorizedAccess"/>
+                    <include name="checkLoanAccountsApiWithAuthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.api_GetMobileCashTest">
@@ -82,8 +82,8 @@
             </class>
             <class name="api.test.api_GetPaymentsTest">
                 <methods>
-                    <include name="checkGetMobileCashUnauthorizedAccess"/>
-                    <include name="checkMobileCashAuthorizedAccess"/>
+                    <include name="checkPaymentsWithUnauthorizedAccess"/>
+                    <include name="checkPaymentsWithAuthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.api_GetTransfersTest">
@@ -102,9 +102,9 @@
             </class>
             <class name="api.test.api_SavePaymentTemplateTest">
                 <methods>
-                    <include name="checkBillPaymentsWithUnauthorizedAccess"/>
-                    <include name="checkBillPaymentsWithIncorrectBillerId"/>
-                    <include name="checkValidatePaymentsWithAuthorizedAccess"/>
+                    <include name="checkSavePaymentTemplateWithUnauthorizedAccess"/>
+                    <include name="checkSavePaymentTemplateWithIncorrectBillerId"/>
+                    <include name="checkSavePaymentTemplateWithAuthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.api_UpdatePaymentTemplateTest">
@@ -144,8 +144,8 @@
             </class>
             <class name="api.test.api_getAccountsByTrantypeTest">
                 <methods>
-                    <include name="checkFDAccountApiUnauthorizedAccess"/>
-                    <include name="checkFDAccountApiAuthorizedAccess"/>
+                    <include name="checkGetAccountsByTrantypeWithUnauthorizedAccess"/>
+                    <include name="checkGetAccountsByTrantypeWithAuthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.api_getCustAccountDetailsTest">
@@ -156,8 +156,8 @@
             </class>
             <class name="api.test.api_getPaymentsByIDTest">
                 <methods>
-                    <include name="checkCasaAccountApiUnauthorizedAccess"/>
-                    <include name="checkCasaAccountApiAuthorizedAccess"/>
+                    <include name="checkGetPaymentsByIDApiWithUnauthorizedAccess"/>
+                    <include name="checkGetPaymentsByIDApiWithAuthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.api_getTransactionDataByReferenceTest">
@@ -174,8 +174,8 @@
             </class>
             <class name="api.test.api_getUnutilizedMobileCashTest">
                 <methods>
-                    <include name="checkGetMobileCashUnauthorizedAccess"/>
-                    <include name="checkMobileCashAuthorizedAccess"/>
+                    <include name="checkUnutilizedMobileCashWithUnauthorizedAccess"/>
+                    <include name="checkUnutilizedMobileCashWithAuthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.api_makeBillPaymentTest">

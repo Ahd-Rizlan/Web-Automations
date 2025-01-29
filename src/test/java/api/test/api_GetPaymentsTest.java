@@ -23,7 +23,7 @@ public class api_GetPaymentsTest extends baseMethod {
 		setTestName(m.getName());
 	}
 	@Test(priority = 1)
-	public void checkGetMobileCashUnauthorizedAccess()  {
+	public void checkPaymentsWithUnauthorizedAccess()  {
 		getPayments.authorisedWithInvalidToken();
 		getPayments.invokeGetPaymentsApi();
 		getPayments.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
@@ -31,11 +31,11 @@ public class api_GetPaymentsTest extends baseMethod {
 	}
 
 	@Test(priority = 2)
-	public void checkMobileCashAuthorizedAccess()  {
+	public void checkPaymentsWithAuthorizedAccess()  {
 		getPayments.authorisedWithValidToken();
 		getPayments.invokeGetPaymentsApi();
 		getPayments.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
-		getPayments.validatePayload();
+		getPayments.validatePayload();  //The response is changed frequently
 	}
 
 }

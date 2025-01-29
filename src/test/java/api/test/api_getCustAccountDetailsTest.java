@@ -23,7 +23,7 @@ public class api_getCustAccountDetailsTest extends baseMethod {
 		setTestName(m.getName());
 	}
 	@Test(priority = 1)
-	public void checkFDAccountApiUnauthorizedAccess() {
+	public void checkCustAccountDetailsApiUnauthorizedAccess() {
 		getCustAccountDetails.authorisedWithInvalidToken();
 		getCustAccountDetails.invokeGetCustAccountDetailsApi();
 		getCustAccountDetails.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
@@ -31,7 +31,7 @@ public class api_getCustAccountDetailsTest extends baseMethod {
 	}
 
 	@Test(priority = 2)
-	public void checkFDAccountApiAuthorizedAccess() {
+	public void checkCustAccountDetailsApiAuthorizedAccess() {
 
 		getCustAccountDetails.authorisedWithValidToken();
 		getCustAccountDetails.invokeGetCustAccountDetailsApi();

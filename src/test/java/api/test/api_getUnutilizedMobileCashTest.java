@@ -23,7 +23,7 @@ public class api_getUnutilizedMobileCashTest extends baseMethod {
 		setTestName(m.getName());
 	}
 	@Test(priority = 1)
-	public void checkGetMobileCashUnauthorizedAccess()  {
+	public void checkUnutilizedMobileCashWithUnauthorizedAccess()  {
 		getUnutilizedMobileCash.authorisedWithInvalidToken();
 		getUnutilizedMobileCash.invokeGetUnutilizedMobileCashApi();
 		getUnutilizedMobileCash.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
@@ -31,7 +31,7 @@ public class api_getUnutilizedMobileCashTest extends baseMethod {
 	}
 
 	@Test(priority = 2)
-	public void checkMobileCashAuthorizedAccess()  {
+	public void checkUnutilizedMobileCashWithAuthorizedAccess()  {
 		getUnutilizedMobileCash.authorisedWithValidToken();
 		getUnutilizedMobileCash.invokeGetUnutilizedMobileCashApi();
 		getUnutilizedMobileCash.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);

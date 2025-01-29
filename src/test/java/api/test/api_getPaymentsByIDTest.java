@@ -24,7 +24,7 @@ public class api_getPaymentsByIDTest extends baseMethod {
 		setTestName(m.getName());
 	}
 	@Test(priority = 1)
-	public void checkCasaAccountApiUnauthorizedAccess() {
+	public void checkGetPaymentsByIDApiWithUnauthorizedAccess() {
 		getPaymentsByID.authorisedWithInvalidToken();
 		getPaymentsByID.setPaymentId(ConstantApiUtils.PAYMENT_ID);
 		getPaymentsByID.invokeGetPaymentsByIDApi();
@@ -33,7 +33,7 @@ public class api_getPaymentsByIDTest extends baseMethod {
 	}
 
 	@Test(priority = 2)
-	public void checkCasaAccountApiAuthorizedAccess() {
+	public void checkGetPaymentsByIDApiWithAuthorizedAccess() {
 		getPaymentsByID.authorisedWithValidToken();
 		getPaymentsByID.setPaymentId(ConstantApiUtils.PAYMENT_ID);
 		getPaymentsByID.invokeGetPaymentsByIDApi();

@@ -1,7 +1,6 @@
 package api.test;
 
 import api.methods.baseMethod;
-import api.methods.casaAccountApiMethods;
 import api.methods.fdAccountApiMethods;
 import api.utils.ConstantApiUtils;
 import org.testng.annotations.BeforeClass;

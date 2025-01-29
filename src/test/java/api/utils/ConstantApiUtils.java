@@ -124,7 +124,7 @@ public class ConstantApiUtils {
     public static final String DASHBOARD_WEB_CARD_DETAILS_FOR_SVR_FOR_INCORRECT_DEVICEID_RESPONSE = "//src//test//java//api//utils//response//dashboardWebCardDetailsForSVRForIncorrectDeviceId.json";
 
     public static final String REVERSE_MOBILE_CASH_BODY =  "//src//test//java//api//utils//payloads//reverseMobileCashBody.json";
-    public static final String CASA_ACCOUNT_RESPONSE = "//src//test//java//api//utils//response//casaAccountPayload.json";
+    public static final String CASA_ACCOUNT_RESPONSE = "//src//test//java//api//utils//response//casaAccount.json";
     public static final String CASA_GET_PAYMENTS_BY_ID_RESPONSE = "//src//test//java//api//utils//response//getPaymentsByID.json";
     public static final String CREDIT_CARD_DETAILS_RESPONSE = "//src//test//java//api//utils//response//creditCardDetails.json";
     public static final String DASHBOARD_WEB_CARD_DETAILS_RESPONSE = "//src//test//java//api//utils//response//dashboardWebCardDetailsforSVR.json";

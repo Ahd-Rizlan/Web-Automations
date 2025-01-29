@@ -42,6 +42,7 @@ public class api_DeletePaymentTemplateTest extends baseMethod {
 		savePaymentTemplate.authorisedWithValidToken();
 		savePaymentTemplate.setHeaders();
 		savePaymentTemplate.invokeSavePaymentTemplateApi();
+		savePaymentTemplate.saveTemplateIdToFile();
 	}
 
 	@Test (dependsOnMethods = { "addPaymentTemplate" })

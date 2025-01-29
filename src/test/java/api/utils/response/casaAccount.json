@@ -1,0 +1,41 @@
+{
+  "payload": {
+    "accountNumber": "111552420311",
+    "accountStatus": "A",
+    "bankCode": "7278",
+    "bankName": "SAMPATH BANK PLC",
+    "branchCode": "115",
+    "branchName": "KATTANKUDY BRANCH",
+    "currency": "LKR",
+    "productName": "DOUBLE S SAVINGS -PERSONAL",
+    "schemeType": "SBA",
+    "availableBalance": "1591753.75",
+    "floatBalance": "0.000000",
+    "lienAmount": "0.00",
+    "page": 1,
+    "fdAvailable": true,
+    "loanAvailable": true,
+    "recordCount": 4,
+    "isPrimary": "N",
+    "transactions": [
+      {
+        "tranType": "D",
+        "tranAmt": "1106"
+      },
+      {
+        "tranType": "D",
+        "tranAmt": "1105"
+      },
+      {
+        "tranType": "D",
+        "tranAmt": "1104"
+      }
+    ]
+  },
+  "responseHeader": {
+    "statusCode": true,
+    "statusDescription": "Success",
+    "errorCode": "",
+    "errorDescription": ""
+  }
+}

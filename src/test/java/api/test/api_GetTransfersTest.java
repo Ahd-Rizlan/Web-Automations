@@ -23,7 +23,7 @@ public class api_GetTransfersTest extends baseMethod {
 		setTestName(m.getName());
 	}
 	@Test(priority = 1)
-	public void checkGetMobileCashUnauthorizedAccess()  {
+	public void checkGetTransfersUnauthorizedAccess()  {
 		getTransfers.authorisedWithInvalidToken();
 		getTransfers.invokeGetTransfersApi();
 		getTransfers.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
@@ -31,7 +31,7 @@ public class api_GetTransfersTest extends baseMethod {
 	}
 
 	@Test(priority = 2)
-	public void checkMobileCashAuthorizedAccess()  {
+	public void checkGetTransfersAuthorizedAccess()  {
 		getTransfers.authorisedWithValidToken();
 		getTransfers.invokeGetTransfersApi();
 		getTransfers.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
