@@ -26,14 +26,14 @@ public class api_reverseMobileCashTest extends baseMethod {
 		setTestName(m.getName());
 	}
 	@Test(priority = 1)
-	public void checkGetMobileCashUnauthorizedAccess()  {
+	public void checkReverseMobileCashWithUnauthorizedAccess()  {
 		reverseMobileCash.authorisedWithInvalidToken();
 		reverseMobileCash.invokeReverseMobileCashApi();
 		reverseMobileCash.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
 
 	}
 	@Test(priority = 2)
-	public void checkMobileCashWithInvalidNic() throws IOException, ParseException {
+	public void checkReverseMobileCashWithInvalidNic() throws IOException, ParseException {
 		reverseMobileCash.authorisedWithValidToken();
 		reverseMobileCash.setPayloadWithInvalidNic();
 		reverseMobileCash.invokeReverseMobileCashApi();
@@ -41,7 +41,7 @@ public class api_reverseMobileCashTest extends baseMethod {
 		reverseMobileCash.validatePayload();
 	}
 	@Test(priority = 2)
-	public void checkMobileCashWithInvalidPin() throws IOException, ParseException {
+	public void checkReverseMobileCashWithInvalidPin() throws IOException, ParseException {
 		reverseMobileCash.authorisedWithValidToken();
 		reverseMobileCash.setPayloadWithInvalidPin();
 		reverseMobileCash.invokeReverseMobileCashApi();
@@ -49,7 +49,7 @@ public class api_reverseMobileCashTest extends baseMethod {
 		reverseMobileCash.validatePayload();
 	}
 	@Test(priority = 3)
-	public void checkMobileCashAuthorizedAccess() throws IOException, ParseException {
+	public void checkReverseMobileCashWithAuthorizedAccess() throws IOException, ParseException {
 		reverseMobileCash.authorisedWithValidToken();
 		reverseMobileCash.setPayloadWithValidData();
 		reverseMobileCash.invokeReverseMobileCashApi();

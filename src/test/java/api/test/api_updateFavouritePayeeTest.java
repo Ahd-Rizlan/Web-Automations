@@ -24,7 +24,7 @@ public class api_updateFavouritePayeeTest extends baseMethod {
 		setTestName(m.getName());
 	}
 	@Test(priority = 1)
-	public void checkGetMobileCashUnauthorizedAccess()  {
+	public void checkUpdateFavouritePayeeWithUnauthorizedAccess()  {
 		updateFavouritePayee.authorisedWithInvalidToken();
 		updateFavouritePayee.invokeUpdateFavouritePayeeApi();
 		updateFavouritePayee.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
@@ -32,7 +32,7 @@ public class api_updateFavouritePayeeTest extends baseMethod {
 	}
 
 	@Test(priority = 2)
-	public void checkMobileCashAuthorizedAccess()  {
+	public void checkUpdateFavouritePayeeWithAuthorizedAccess()  {
 		updateFavouritePayee.authorisedWithValidToken();
 		updateFavouritePayee.invokeUpdateFavouritePayeeApi();
 		updateFavouritePayee.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);

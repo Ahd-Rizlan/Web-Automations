@@ -22,14 +22,14 @@ public class api_getTransferPayeeListTest extends baseMethod {
 		setTestName(m.getName());
 	}
 	@Test(priority = 1)
-	public void checkGetMobileCashUnauthorizedAccess()  {
+	public void checkGetTransferPayeeListWithUnauthorizedAccess()  {
 		getTransferPayeeList.authorisedWithInvalidToken();
 		getTransferPayeeList.invokeGetTransferPayeeListApi();
 		getTransferPayeeList.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
 	}
 
 	@Test(priority = 2)
-	public void checkMobileCashAuthorizedAccess()  {
+	public void checkGetTransferPayeeListWithAuthorizedAccess()  {
 		getTransferPayeeList.authorisedWithValidToken();
 		getTransferPayeeList.invokeGetTransferPayeeListApi();
 		getTransferPayeeList.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);

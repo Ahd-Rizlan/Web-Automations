@@ -24,15 +24,14 @@ public class api_updateBeneficiariesTest extends baseMethod {
 		setTestName(m.getName());
 	}
 	@Test(priority = 1)
-	public void checkGetMobileCashUnauthorizedAccess()  {
+	public void checkUpdateBeneficiariesWithUnauthorizedAccess()  {
 		updateBeneficiaries.authorisedWithInvalidToken();
 		updateBeneficiaries.invokeUpdateBeneficiariesApi();
 		updateBeneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
-
 	}
 
 	@Test(priority = 2)
-	public void checkMobileCashAuthorizedAccess()  {
+	public void checkUpdateBeneficiariesWithAuthorizedAccess()  {
 		updateBeneficiaries.authorisedWithValidToken();
 		updateBeneficiaries.invokeUpdateBeneficiariesApi();
 		updateBeneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);

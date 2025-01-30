@@ -24,7 +24,7 @@ public class api_GetBranchListByBankCodeTest extends baseMethod {
 		setTestName(m.getName());
 	}
 	@Test(priority = 1)
-	public void checkGetMobileCashUnauthorizedAccess()  {
+	public void checkBranchListByBankCodeWithUnauthorizedAccess()  {
 		getBranchListByBankCode.authorisedWithInvalidToken();
 		getBranchListByBankCode.invokeGetBranchListByBankCodeApi();
 		getBranchListByBankCode.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
@@ -32,7 +32,7 @@ public class api_GetBranchListByBankCodeTest extends baseMethod {
 	}
 
 	@Test(priority = 2)
-	public void checkMobileCashAuthorizedAccess()  {
+	public void checkBranchListByBankCodeWithAuthorizedAccess()  {
 		getBranchListByBankCode.authorisedWithValidToken();
 		getBranchListByBankCode.invokeGetBranchListByBankCodeApi();
 		getBranchListByBankCode.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);

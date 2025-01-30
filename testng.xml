@@ -10,9 +10,9 @@
         <classes>
             <class name="api.test.api_CategoriesTest">
                 <methods>
-                    <include name="checkGetMobileCashUnauthorizedAccess"/>
+                    <include name="checkCategoriesWithUnauthorizedAccess"/>
                     <include name="checkCategoriesWithIncorrectMerchantCode"/>
-                    <include name="checkMobileCashAuthorizedAccess"/>
+                    <include name="checkCategoriesWithAuthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.api_DeletePaymentTemplateTest">
@@ -35,14 +35,14 @@
             </class>
             <class name="api.test.api_GetBankListTest">
                 <methods>
-                    <include name="checkGetMobileCashUnauthorizedAccess"/>
-                    <include name="checkMobileCashAuthorizedAccess"/>
+                    <include name="checkGetBankListWithUnauthorizedAccess"/>
+                    <include name="checkGetBankListWithAuthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.api_GetBranchListByBankCodeTest">
                 <methods>
-                    <include name="checkGetMobileCashUnauthorizedAccess"/>
-                    <include name="checkMobileCashAuthorizedAccess"/>
+                    <include name="checkBranchListByBankCodeWithUnauthorizedAccess"/>
+                    <include name="checkBranchListByBankCodeWithAuthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.api_GetCASAccountsTest">
@@ -88,8 +88,8 @@
             </class>
             <class name="api.test.api_GetTransfersTest">
                 <methods>
-                    <include name="checkGetMobileCashUnauthorizedAccess"/>
-                    <include name="checkMobileCashAuthorizedAccess"/>
+                    <include name="checkGetTransfersUnauthorizedAccess"/>
+                    <include name="checkGetTransfersAuthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.api_InitiateCardsForSVRApiTest">
@@ -132,8 +132,8 @@
             </class>
             <class name="api.test.api_deleteBeneficiariesTest">
                 <methods>
-                    <include name="checkGetMobileCashUnauthorizedAccess"/>
-                    <include name="checkMobileCashAuthorizedAccess"/>
+                    <include name="checkDeleteBeneficiariesWithUnauthorizedAccess"/>
+                    <include name="checkDeleteBeneficiariesWithAuthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.api_doTransferForVishwaTest">
@@ -168,8 +168,8 @@
             </class>
             <class name="api.test.api_getTransferPayeeListTest">
                 <methods>
-                    <include name="checkGetMobileCashUnauthorizedAccess"/>
-                    <include name="checkMobileCashAuthorizedAccess"/>
+                    <include name="checkGetTransferPayeeListWithUnauthorizedAccess"/>
+                    <include name="checkGetTransferPayeeListWithAuthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.api_getUnutilizedMobileCashTest">
@@ -189,22 +189,22 @@
             </class>
             <class name="api.test.api_reverseMobileCashTest">
                 <methods>
-                    <include name="checkGetMobileCashUnauthorizedAccess"/>
-                    <include name="checkMobileCashWithInvalidNic"/>
-                    <include name="checkMobileCashWithInvalidPin"/>
-                    <include name="checkMobileCashAuthorizedAccess"/>
+                    <include name="checkReverseMobileCashWithUnauthorizedAccess"/>
+                    <include name="checkReverseMobileCashWithInvalidNic"/>
+                    <include name="checkReverseMobileCashWithInvalidPin"/>
+                    <include name="checkReverseMobileCashWithAuthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.api_updateBeneficiariesTest">
                 <methods>
-                    <include name="checkGetMobileCashUnauthorizedAccess"/>
-                    <include name="checkMobileCashAuthorizedAccess"/>
+                    <include name="checkUpdateBeneficiariesWithUnauthorizedAccess"/>
+                    <include name="checkUpdateBeneficiariesWithAuthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.api_updateFavouritePayeeTest">
                 <methods>
-                    <include name="checkGetMobileCashUnauthorizedAccess"/>
-                    <include name="checkMobileCashAuthorizedAccess"/>
+                    <include name="checkUpdateFavouritePayeeWithUnauthorizedAccess"/>
+                    <include name="checkUpdateFavouritePayeeWithAuthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.api_updatePayeeAsFavouriteTest">

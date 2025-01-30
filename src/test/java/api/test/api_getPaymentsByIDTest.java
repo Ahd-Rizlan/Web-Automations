@@ -38,7 +38,7 @@ public class api_getPaymentsByIDTest extends baseMethod {
 		getPaymentsByID.setPaymentId(ConstantApiUtils.PAYMENT_ID);
 		getPaymentsByID.invokeGetPaymentsByIDApi();
 		getPaymentsByID.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
-		getPaymentsByID.validatePayload();
+		getPaymentsByID.validatePayload();  // Need a valid paymentId
 
 	}
 

@@ -31,7 +31,7 @@ public class api_CategoriesTest extends baseMethod {
 	//Negative cases
 	@Test(priority = 1)
 	//For unauthorized access
-	public void checkGetMobileCashUnauthorizedAccess()  {
+	public void checkCategoriesWithUnauthorizedAccess()  {
 		categories.authorisedWithInvalidToken();
 		categories.invokeCategoriesApi();
 		categories.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401); //404 is returned
@@ -48,7 +48,7 @@ public class api_CategoriesTest extends baseMethod {
 	}
 	//Happy path
 	@Test(priority = 2)
-	public void checkMobileCashAuthorizedAccess()  {
+	public void checkCategoriesWithAuthorizedAccess()  {
 		categories.authorisedWithValidToken();
 		categories.invokeCategoriesApi();
 		categories.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);

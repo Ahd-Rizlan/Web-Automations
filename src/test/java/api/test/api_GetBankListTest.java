@@ -24,7 +24,7 @@ public class api_GetBankListTest extends baseMethod {
 		setTestName(m.getName());
 	}
 	@Test(priority = 1)
-	public void checkGetMobileCashUnauthorizedAccess()  {
+	public void checkGetBankListWithUnauthorizedAccess()  {
 		getBankList.authorisedWithInvalidToken();
 		getBankList.invokeGetBankListApi();
 		getBankList.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
@@ -32,7 +32,7 @@ public class api_GetBankListTest extends baseMethod {
 	}
 
 	@Test(priority = 2)
-	public void checkMobileCashAuthorizedAccess()  {
+	public void checkGetBankListWithAuthorizedAccess()  {
 		getBankList.authorisedWithValidToken();
 		getBankList.invokeGetBankListApi();
 		getBankList.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);

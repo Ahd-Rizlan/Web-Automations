@@ -24,7 +24,7 @@ public class api_deleteBeneficiariesTest extends baseMethod {
 		setTestName(m.getName());
 	}
 	@Test(priority = 1)
-	public void checkGetMobileCashUnauthorizedAccess()  {
+	public void checkDeleteBeneficiariesWithUnauthorizedAccess()  {
 		deleteBeneficiaries.authorisedWithInvalidToken();
 		deleteBeneficiaries.invokeDeleteBeneficiariesApi();
 		deleteBeneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
@@ -32,7 +32,7 @@ public class api_deleteBeneficiariesTest extends baseMethod {
 	}
 
 	@Test(priority = 2)
-	public void checkMobileCashAuthorizedAccess()  {
+	public void checkDeleteBeneficiariesWithAuthorizedAccess()  {
 		deleteBeneficiaries.authorisedWithValidToken();
 		deleteBeneficiaries.invokeDeleteBeneficiariesApi();
 		deleteBeneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);

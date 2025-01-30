@@ -27,7 +27,6 @@ public class api_GetTransfersTest extends baseMethod {
 		getTransfers.authorisedWithInvalidToken();
 		getTransfers.invokeGetTransfersApi();
 		getTransfers.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
-
 	}
 
 	@Test(priority = 2)
