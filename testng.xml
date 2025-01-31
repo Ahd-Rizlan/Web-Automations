@@ -245,6 +245,13 @@
                     <include name="checkDashboardWebCardDetailsForSVRAuthorizedAccess"/>
                 </methods>
             </class>
+            <class name="api.test.getBillPaymentTemplateListTest">
+                <methods>
+                    <include name="checkGetBillPaymentTemplateListWithUnauthorizedAccess"/>
+                    <include name="checkGetBillPaymentTemplateListWithIncorrectMerchantCode"/>
+                    <include name="checkGetBillPaymentTemplateListWithAuthorizedAccess"/>
+                </methods>
+            </class>
         </classes>
     </test>
 </suite>
