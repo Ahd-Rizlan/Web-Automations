@@ -182,9 +182,9 @@
                 <methods>
                     <include name="checkBillPaymentsWithUnauthorizedAccess"/>
                     <include name="checkBillPaymentsWithIncorrectBillerId"/>
-                    <include name="checkValidatePaymentsWithIncorrectDebitAccount"/>
-                    <include name="checkValidatePaymentsWithIncorrectCurrencyType"/>
-                    <include name="checkValidatePaymentsWithAuthorizedAccess"/>
+                    <include name="checkVBillPaymentsWithIncorrectDebitAccount"/>
+                    <include name="checkBillPaymentsWithIncorrectCurrencyType"/>
+                    <include name="checkBillPaymentsWithAuthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.api_reverseMobileCashTest">

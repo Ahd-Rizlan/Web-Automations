@@ -38,7 +38,7 @@ public class api_validatePaymentTest extends baseMethod {
 		validatePayment.setPayloadWithIncorrectBillerId();
 		validatePayment.invokeValidatePaymentApi();
 		validatePayment.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
-		validatePayment.validatePayloadForIncorrectBillerId();
+		validatePayment.validatePayloadForIncorrectBillerId(); // Response has been changed on 2025-Feb-6
 		validatePayment.setPayloadWithValidData(); //revert changes for the next test
 	}
 
@@ -77,7 +77,7 @@ public class api_validatePaymentTest extends baseMethod {
 		validatePayment.setPayloadWithValidData();
 		validatePayment.invokeValidatePaymentApi();
 		validatePayment.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
-		validatePayment.validatePayload();
+		validatePayment.validatePayload(); // Response has been changed on 2025-Feb-6
 	}
 
 

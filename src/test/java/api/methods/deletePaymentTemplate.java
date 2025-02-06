@@ -61,7 +61,7 @@ public class deletePaymentTemplate extends baseMethod {
                 .log()
                 .all()
                 .post();
-        System.out.println("API Response" + response.prettyPrint());
+        System.out.println("API Response (deletePaymentTemplate)" + response.prettyPrint());
     }
 
     public void setPayloadWithValidTemplateID() throws IOException, ParseException {

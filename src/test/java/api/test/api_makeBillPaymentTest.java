@@ -42,7 +42,7 @@ public class api_makeBillPaymentTest extends baseMethod {
 	}
 
 	@Test(priority = 2)
-	public void checkValidatePaymentsWithIncorrectDebitAccount() throws IOException, ParseException {
+	public void checkVBillPaymentsWithIncorrectDebitAccount() throws IOException, ParseException {
 		makeBillPayment.authorisedWithValidToken();
 		makeBillPayment.setPayloadWithIncorrectDebitAccount();
 		makeBillPayment.invokeMakeBillPaymentApi();
@@ -52,7 +52,7 @@ public class api_makeBillPaymentTest extends baseMethod {
 	}
 
 	@Test(priority = 2)
-	public void checkValidatePaymentsWithIncorrectCurrencyType() throws IOException, ParseException {
+	public void checkBillPaymentsWithIncorrectCurrencyType() throws IOException, ParseException {
 		makeBillPayment.authorisedWithValidToken();
 		makeBillPayment.setPayloadWithIncorrectCurrency();
 		makeBillPayment.invokeMakeBillPaymentApi();
@@ -62,12 +62,12 @@ public class api_makeBillPaymentTest extends baseMethod {
 	}
 
 	@Test(priority = 3)
-	public void checkValidatePaymentsWithAuthorizedAccess() throws IOException, ParseException {
+	public void checkBillPaymentsWithAuthorizedAccess() throws IOException, ParseException {
 		makeBillPayment.authorisedWithValidToken();
 		makeBillPayment.setPayloadWithValidData();
 		makeBillPayment.invokeMakeBillPaymentApi();
 		makeBillPayment.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
-		makeBillPayment.validatePayload(); // 'reference' and '10738' have been excluded in the validation as both values are dynamic
+		makeBillPayment.validatePayload(); // response has been changed on 2025-Feb-06. Need a valid payload now
 	}
 
 }

@@ -43,7 +43,7 @@ public class deleteBeneficiaries extends baseMethod {
                 .log()
                 .all()
                 .post();
-        System.out.println("API Response" + response.prettyPrint());
+        System.out.println("API Response (deleteBeneficiaries)" + response.prettyPrint());
 
     }
 
