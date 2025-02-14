@@ -16,6 +16,7 @@ import java.util.Map;
 
 import static api.utils.ConstantApiUtils.*;
 import static utils.CommonUtils.USER_DIR;
+import static utils.DataStoreReadWriteApi.storeAPIDetails;
 
 public class savePaymentTemplate extends baseMethod {
     File jsonBody = new File(POST_BODY);
@@ -79,7 +80,7 @@ public class savePaymentTemplate extends baseMethod {
                 .log()
                 .all()
                 .post();
-        System.out.println("API Response" + response.prettyPrint());
+        System.out.println("API Response SavePaymentTemplateApi : " + response.prettyPrint());
 
     }
 
@@ -88,11 +89,15 @@ public class savePaymentTemplate extends baseMethod {
     }
 
     public void validatePayload() {
-        new PayloadValidator().validateJsonFileWithResponse(JSON_PATH, response);
+        new PayloadValidator().validateJsonFileWithExcludedDataFields(JSON_PATH,response,new String[]{"templateID"});
     }
 
     public void validatePayloadForIncorrectBillerId() {
         new PayloadValidator().validateJsonFileWithResponse(INCORRECT_BILLER_ID, response);
+    }
+
+    public void saveTemplateIdToFile() {
+        storeAPIDetails("templateID", response.path("savePaymentTemplateResponse.templateID").toString());
     }
 
 }

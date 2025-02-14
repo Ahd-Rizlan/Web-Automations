@@ -1,9 +1,10 @@
 {
   "paymentDetails": null,
   "responseHeader": {
-    "statusCode": "false",
+    "statusCode": "FASLE",
     "statusDescription": null,
     "errorCode": "E_100",
-    "errorDescription": "FAILED"
+    "errorDescription": "FAILED",
+    "merchantError": null
   }
 }

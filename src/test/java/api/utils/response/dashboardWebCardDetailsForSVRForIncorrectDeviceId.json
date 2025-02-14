@@ -1,0 +1,11 @@
+{
+  "LstDashboardWebCards": null,
+  "Code": 77,
+  "SubCode": 1,
+  "Message": "Initiated Key Authorization Invalid/ Expired",
+  "MessageCustomer": "Something went wrong while processing your request. Please try again later.",
+  "RequestID": "0050569CE44C.20250124083657.24b2d29420c94f4e9e3541f0aef28418.svr",
+  "ChainSerno": 0.0,
+  "ChainAuth": null,
+  "SingleUseChainDataList": []
+}

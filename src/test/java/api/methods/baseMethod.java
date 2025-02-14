@@ -11,17 +11,19 @@ import io.restassured.response.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.Assert;
+import org.testng.ITest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
 
 import static api.utils.ConstantApiUtils.*;
 import static utils.CommonUtils.*;
 
-public class baseMethod {
+public class baseMethod implements ITest {
     static final Logger LOG = LogManager.getLogger(baseMethod.class);
     public static Properties config = new Properties();
     private FileInputStream fis;
     public FileOutputStream fos;
+    private String testName;
 
 
     @BeforeClass
@@ -94,6 +96,16 @@ public class baseMethod {
 
     }
 
+    @Override
+    public String getTestName()
+    {
+        return this.testName;
+    }
+
+    public void setTestName( String tn )
+    {
+        this.testName = tn;
+    }
 
     public static class PayloadValidator {
         private final List<String> mismatches = new ArrayList<>(); // List to store mismatches
@@ -196,6 +208,5 @@ public class baseMethod {
         System.out.println(formattedTimestamp);
         return  formattedTimestamp;
     }
-
 
 }

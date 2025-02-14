@@ -32,9 +32,11 @@ public class beneficiariesByTranType extends baseMethod {
     public void authorisedWithInvalidToken() {
         headersMap.put(TXT_AUTHORIZATION, TXT_AUTHORIZATION_INVALID_VAL);
     }
+
     public void authorisedWithValidToken() {
         headersMap.put(TXT_AUTHORIZATION, config.getProperty("accessToken"));
     }
+
     public void setHeaders() {
         headersMap.put(TXT_CONTENT_TYPE, TXT_APPLICATION_JSON);
         headersMap.put(TXT_X_REQUEST_ID, TXT_X_REQUEST_ID_VALUE_ELEVEN);
@@ -44,8 +46,8 @@ public class beneficiariesByTranType extends baseMethod {
         jsonBody = new File(ConstantApiUtils.PATH_TO_PAYLOAD_FOLDER.concat("beneficiariesByTranTypeBody.json"));
         file = new FileReader(ConstantApiUtils.PATH_TO_PAYLOAD_FOLDER.concat("beneficiariesByTranTypeBody.json"));
         jsonObject = (JSONObject) jsonParser.parse(file);
-        JSONObject addBeneficiaries = (JSONObject) jsonObject.get("beneficiariesByTranType");
-        addBeneficiaries.put("tranType", EMPTY_TRAN_TYPE_VALUE);
+        JSONObject beneficiariesByTranType = (JSONObject) jsonObject.get("beneficiariesByTranType");
+        beneficiariesByTranType.put("tranType", EMPTY_TRAN_TYPE_VALUE);
         FileWriter writer = new FileWriter(jsonBody, false); //overwrites the content of file
         writer.write(jsonObject.toString());
         writer.close();
@@ -55,13 +57,12 @@ public class beneficiariesByTranType extends baseMethod {
         jsonBody = new File(ConstantApiUtils.PATH_TO_PAYLOAD_FOLDER.concat("beneficiariesByTranTypeBody.json"));
         file = new FileReader(ConstantApiUtils.PATH_TO_PAYLOAD_FOLDER.concat("beneficiariesByTranTypeBody.json"));
         jsonObject = (JSONObject) jsonParser.parse(file);
-        JSONObject addBeneficiaries = (JSONObject) jsonObject.get("beneficiariesByTranType");
-        addBeneficiaries.put("tranType", CORRECT_TRAN_TYPE_VALUE);
+        JSONObject beneficiariesByTranType = (JSONObject) jsonObject.get("beneficiariesByTranType");
+        beneficiariesByTranType.put("tranType", CORRECT_TRAN_TYPE_VALUE);
         FileWriter writer = new FileWriter(jsonBody, false);
         writer.write(jsonObject.toString());
         writer.close();
     }
-
 
     public void invokeBeneficiariesByTranTypeApi() {
         setHeaders();
@@ -75,7 +76,7 @@ public class beneficiariesByTranType extends baseMethod {
                 .log()
                 .all()
                 .post();
-        System.out.println("API Response" + response.prettyPrint());
+        System.out.println("API Response (beneficiariesByTranType) : " + response.prettyPrint());
     }
 
     public void validateResponseCode(int responseCode) {

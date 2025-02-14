@@ -59,7 +59,7 @@ public class initiateCardsForSVR extends baseMethod {
         body = new File(ConstantApiUtils.PATH_TO_PAYLOAD_FOLDER.concat("svrCardBody.json"));
         file = new FileReader(ConstantApiUtils.PATH_TO_PAYLOAD_FOLDER.concat("svrCardBody.json"));
         jsonObject = (JSONObject) jsonParser.parse(file);
-        jsonObject.put("DeviceID", INITIATE_CARDS_FOR_SVR_WITH_INVALID_DEVICE_ID);
+        jsonObject.put("DeviceId", INITIATE_CARDS_FOR_SVR_WITH_INVALID_DEVICE_ID);
         FileWriter writer = new FileWriter(body, false);
         writer.write(jsonObject.toString());
         writer.close();

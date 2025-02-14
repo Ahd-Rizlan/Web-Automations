@@ -125,8 +125,8 @@ public class cardCountSummeryApiMethods extends baseMethod {
                 .log()
                 .all()
                 .post();
-        System.out.println("API Response :CardCountSummery " + response.prettyPrint());
-
+        System.out.println("API Response (CardCountSummery) : " + response.prettyPrint());
+        System.out.println("API Request Body (CardCountSummery) : " + body.toString());
     }
 
     //Negative scenarios

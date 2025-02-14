@@ -1,9 +1,1 @@
-{
-  "deletePaymentTemplate": {
-    "templateIds": [
-      {
-        "templateID": "132156"
-      }
-    ]
-  }
-}
+{"deletePaymentTemplate":{"templateIds":[{"templateID":"132302"}]}}

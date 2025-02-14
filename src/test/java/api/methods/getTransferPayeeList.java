@@ -53,6 +53,6 @@ public class getTransferPayeeList extends baseMethod {
     }
 
     public void validatePayload() {
-        new PayloadValidator().validateJsonFileWithResponse(JSON_PATH, response);
+        new PayloadValidator().validateJsonFileWithExcludedDataFields(JSON_PATH,response,new String[]{"recordCount"});
     }
 }

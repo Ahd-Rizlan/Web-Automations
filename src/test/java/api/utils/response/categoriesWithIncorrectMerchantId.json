@@ -1,0 +1,14 @@
+{
+  "getCategoryListResponse": {
+    "Fault": {
+      "faultcode": "ns0:Server",
+      "faultstring": "Unauthorized merchant",
+      "detail": {
+        "SBLException": {
+          "message": "Unauthorized merchant",
+          "stackTraceString": null
+        }
+      }
+    }
+  }
+}

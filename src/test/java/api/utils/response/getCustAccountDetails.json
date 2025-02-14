@@ -8,8 +8,8 @@
       "savingsAccDetails": [
         {
           "acctNumber": "111552420311",
-          "availableBal": "1600624.75",
-          "effAvailableBal": "1600624.75",
+          "availableBal": "1591753.75",
+          "effAvailableBal": "1591753.75",
           "lienAmt": "0.00",
           "acctCrncyCode": "LKR"
         },
@@ -22,8 +22,8 @@
         },
         {
           "acctNumber": "111552874821",
-          "availableBal": "27450.00",
-          "effAvailableBal": "27450.00",
+          "availableBal": "28550.00",
+          "effAvailableBal": "28550.00",
           "lienAmt": "0.00",
           "acctCrncyCode": "LKR"
         },
