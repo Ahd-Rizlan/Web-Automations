@@ -17,7 +17,7 @@ public class ExtentReportManager {
         ExtentSparkReporter sparkReports = new ExtentSparkReporter(filePath);
         sparkReports.config().setReportName(reportName);
         sparkReports.config().setDocumentTitle(documentTitle);
-        sparkReports.config().setTheme(Theme.DARK);
+        sparkReports.config().setTheme(Theme.STANDARD);
 
         ExtentReports reports = new ExtentReports();
         reports.attachReporter(sparkReports);
@@ -29,11 +29,6 @@ public class ExtentReportManager {
         return reports;
     }
 
-
-    public static String getReportNameWithTimeStamp() {
-        String reportName = "TestReport" + "-API-Test-Report-" + ".html";
-        return reportName;
-    }
 
     //test case detail logging
     public static void logPassDetails(String log) {

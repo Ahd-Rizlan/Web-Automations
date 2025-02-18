@@ -45,8 +45,7 @@ public class TestNgListener implements ITestListener {
 
     @Override
     public void onStart(ITestContext context) {
-        String fileName = ExtentReportManager.getReportNameWithTimeStamp();
-        String fullReportPath = System.getProperty("user.dir") + "\\reports\\" + fileName;
+        String fullReportPath = System.getProperty("user.dir") + "\\reports\\" + "TestReport-API-Test-Report.html";
         reports = ExtentReportManager.createExtentReport(fullReportPath, "BOOK STORE API REPORT", "REST ASSURED FRAMEWORK", "Thilina Jayasinghe ");
         // configExtentReport();
 
