@@ -465,6 +465,28 @@ public abstract class BasePage extends helpers {
         }
     }
 
+    /**
+     *
+     * This method is used to navigate back on browser
+     *
+     */
+    public void browserNavigateBack() {
+
+        driver.navigate().back();
+        addScreenshotToTheReport("Navigate back from current browser location", Status.INFO);
+    }
+
+    /**
+     *
+     * This method is used to navigate forward on browser
+     *
+     */
+    public void browserNavigateForward() {
+        driver.navigate().forward();
+        addScreenshotToTheReport("Navigate forward from current browser location", Status.INFO);
+    }
+
+
     public void removeLastCharacterFromField(By fieldLocator) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, 10);

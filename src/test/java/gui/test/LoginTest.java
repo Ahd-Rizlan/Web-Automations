@@ -9,8 +9,6 @@ import pages.OTPPage;
 import utils.Drivers;
 import com.aventstack.extentreports.ExtentTest;
 import utils.TestContext;
-
-import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 
 public class LoginTest extends Drivers {
@@ -37,13 +35,13 @@ public class LoginTest extends Drivers {
     }
 
     @Test(priority = 2, dataProvider = "LoginData", description = "Validate the successful logging with correct user ID & Password", dataProviderClass = DataProviders.LoginDataProvider.class)
-    public void validateTheSuccessfulLogin(String emailSentSuccessMsg) {
+    public void validateTheSuccessfulLogin(String userName, String password, String emailSentSuccessMsg) {
         loginPage.validateTheLoginPage(LoginConstants.EXPECTED_TITLE, LoginConstants.LOGIN_TILE_NAME);
         loginPage.loginToSampathVishwaWeb(userName, password, emailSentSuccessMsg, LoginConstants.OTP_PAGE_HEADER, LoginConstants.TRUE);
     }
 
     @Test(priority = 3, dataProvider = "LoginData", description = "Browser back and forward functions", dataProviderClass = DataProviders.LoginDataProvider.class)
-    public void validateTheBrowserBackAndForward(String emailSentSuccessMsg) {
+    public void validateTheBrowserBackAndForward(String userName, String password,String emailSentSuccessMsg) {
         loginPage.validateTheLoginPage(LoginConstants.EXPECTED_TITLE, LoginConstants.LOGIN_TILE_NAME);
         loginPage.loginToSampathVishwaWeb(userName, password, emailSentSuccessMsg, LoginConstants.OTP_PAGE_HEADER, LoginConstants.FALASE);
         otpPage.validateTheOTPPage(LoginConstants.EXPECTED_TITLE, LoginConstants.OTP_PAGE_HEADER);
@@ -57,13 +55,13 @@ public class LoginTest extends Drivers {
     }
 
     @Test(priority = 4, dataProvider = "InvalidPassword", description = "Validate the logging with correct user ID & invalid password.", dataProviderClass = DataProviders.LoginDataProvider.class)
-    public void validateTheUnSuccessfulLoginWithIncorrectPassword(String IncorrectPassword, String ErrorMessage) {
+    public void validateTheUnSuccessfulLoginWithIncorrectPassword(String userName, String password, String IncorrectPassword, String ErrorMessage) {
         loginPage.validateTheLoginPage(LoginConstants.EXPECTED_TITLE, LoginConstants.LOGIN_TILE_NAME);
         loginPage.ValidateLoginWithIncorrectPassword(userName, password, IncorrectPassword, ErrorMessage);
     }
 
     @Test(priority = 5, dataProvider = "LogoutData", description = "Validate the successful logout", dataProviderClass = DataProviders.LoginDataProvider.class)
-    public void validateTheSuccessfulLogout(String emailSentSuccessMsg, String popupText) {
+    public void validateTheSuccessfulLogout(String userName, String password, String emailSentSuccessMsg, String popupText) {
         loginPage.validateTheLoginPage(LoginConstants.EXPECTED_TITLE, LoginConstants.LOGIN_TILE_NAME);
         loginPage.loginToSampathVishwaWeb(userName, password, emailSentSuccessMsg, LoginConstants.OTP_PAGE_HEADER, LoginConstants.FALASE);
         otpPage.validateTheOTPPage(LoginConstants.EXPECTED_TITLE, LoginConstants.OTP_PAGE_HEADER);

@@ -124,14 +124,10 @@ public class HomePage extends BasePage {
         }
     }
 
-    public void browserNavigateBack() {
-
-        driver.navigate().back();
-        addScreenshotToTheReport("Navigate back from current browser location", Status.INFO);
-    }
-
     public void ValidateUserProfileIcon() {
         try {
+            waitForElementToBeInvisible(lblLoadingIcon, 5);
+
             //validate user profile icon
             boolean userProfileIcon = isElementPresentBy(userIcon);
             if (userProfileIcon) {
@@ -146,11 +142,6 @@ public class HomePage extends BasePage {
         }
     }
 
-
-    public void browserNavigateForward() {
-        driver.navigate().forward();
-        addScreenshotToTheReport("Navigate forward from current browser location", Status.INFO);
-    }
 
     public void validateTheTitle() {
         waitForElementPresence(title);

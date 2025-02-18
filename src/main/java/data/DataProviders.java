@@ -20,19 +20,19 @@ public class DataProviders {
 
         @DataProvider(name = "LoginData")
         public static Iterator<Object[]> getLoginData() {
-            String[] columnNames = {"emailSentSuccessMsg"};
+            String[] columnNames = {"userName", "password" ,"emailSentSuccessMsg"};
             return XlsReader.getDataFromSheet(filePath, "LoginData", columnNames).iterator();
         }
 
         @DataProvider(name = "InvalidPassword")
         public static Iterator<Object[]> getIncorrectPasswordData() {
-            String[] columnNames = {"incorrectPassword", "errorMessage"};
+            String[] columnNames = {"userName", "password" ,"incorrectPassword", "errorMessage"};
             return XlsReader.getDataFromSheet(filePath, "InvalidLoginCredentials", columnNames).iterator();
         }
 
         @DataProvider(name = "LogoutData")
         public static Iterator<Object[]> getLogoutData() {
-            String[] columnNames = {"emailSentSuccessMsg", "popupText"};
+            String[] columnNames = {"userName", "password","emailSentSuccessMsg", "popupText"};
             return XlsReader.getDataFromSheet(filePath, "LogoutData", columnNames).iterator();
         }
 
