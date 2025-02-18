@@ -17,7 +17,7 @@ public class ExtentReportManager {
         ExtentSparkReporter sparkReports = new ExtentSparkReporter(filePath);
         sparkReports.config().setReportName(reportName);
         sparkReports.config().setDocumentTitle(documentTitle);
-        sparkReports.config().setTheme(Theme.STANDARD);
+        sparkReports.config().setTheme(Theme.DARK);
 
         ExtentReports reports = new ExtentReports();
         reports.attachReporter(sparkReports);
