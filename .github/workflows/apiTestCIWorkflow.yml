@@ -47,7 +47,7 @@ jobs:
           echo "Maven version:"
           mvn -version
       - name: Execute API regression test suite
-        run: mvn clean test -DsuiteXmlFile=api-testng.xml
+        run: mvn clean test -DsuiteXmlFile="api-testng.xml"
 
       - name: Archive logs
         if: always()
