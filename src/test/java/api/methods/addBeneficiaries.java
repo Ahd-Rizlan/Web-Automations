@@ -117,7 +117,7 @@ public class addBeneficiaries extends baseMethod {
                 .all()
                 .post();
         System.out.println("API Response (AddBeneficiaries) :" + response.prettyPrint());
-
+        printResponseLogInReport(response);
     }
 
     public void validateResponseCode(int responseCode) {

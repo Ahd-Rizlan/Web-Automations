@@ -56,6 +56,7 @@ public class getBillPaymentTemplateList extends baseMethod {
                 .all()
                 .post();
         System.out.println("API Response (getBillPaymentTemplateList) : " + response.prettyPrint());
+        printResponseLogInReport(response);
     }
 
     public void setPayloadWithInvalidMerchantCode() throws IOException, ParseException {

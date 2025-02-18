@@ -55,6 +55,7 @@ public class categories extends baseMethod {
                 .all()
                 .post();
         System.out.println("API Response (categories) : " + response.prettyPrint());
+        printResponseLogInReport(response);
     }
 
     public void setPayloadWithInvalidMerchantCode() throws IOException, ParseException {

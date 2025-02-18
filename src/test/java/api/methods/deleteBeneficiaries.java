@@ -44,7 +44,7 @@ public class deleteBeneficiaries extends baseMethod {
                 .all()
                 .post();
         System.out.println("API Response (deleteBeneficiaries)" + response.prettyPrint());
-
+        printResponseLogInReport(response);
     }
 
     public void validateResponseCode(int responseCode) {

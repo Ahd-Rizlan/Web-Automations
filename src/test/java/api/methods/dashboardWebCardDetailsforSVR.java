@@ -124,7 +124,7 @@ public class dashboardWebCardDetailsforSVR extends baseMethod {
                 .all()
                 .post();
         System.out.println("API Response :dashboardWebCardDetailsforSVR " + response.prettyPrint());
-
+        printResponseLogInReport(response);
     }
 
     //Negative scenarios

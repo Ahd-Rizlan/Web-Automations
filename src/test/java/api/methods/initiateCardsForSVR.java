@@ -98,7 +98,7 @@ public class initiateCardsForSVR extends baseMethod {
                 .all()
                 .post();
         System.out.println("API Response : InitiateCardsForSVR" + response.prettyPrint());
-
+        printResponseLogInReport(response);
     }
 
     public void validateResponseCode(int responseCode) {

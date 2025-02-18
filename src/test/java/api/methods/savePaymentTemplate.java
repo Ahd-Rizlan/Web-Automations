@@ -81,7 +81,7 @@ public class savePaymentTemplate extends baseMethod {
                 .all()
                 .post();
         System.out.println("API Response SavePaymentTemplateApi : " + response.prettyPrint());
-
+        printResponseLogInReport(response);
     }
 
     public void validateResponseCode(int responseCode) {

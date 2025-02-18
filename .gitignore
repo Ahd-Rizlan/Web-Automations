@@ -24,3 +24,8 @@ hs_err_pid*
 replay_pid*
 /target/
 /.idea/
+/reports/dashboard.html
+/reports/index.html
+/extent-reports/
+/screenshots/
+/src/test/resources/WEBDRIVERS/

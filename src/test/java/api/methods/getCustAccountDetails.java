@@ -50,7 +50,7 @@ public class getCustAccountDetails extends baseMethod {
                 .all()
                 .post();
         System.out.println("API Response" + response.prettyPrint());
-
+        printResponseLogInReport(response);
     }
 
 

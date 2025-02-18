@@ -15,7 +15,6 @@ import java.lang.reflect.Method;
 
 
 public class api_DeletePaymentTemplateTest extends baseMethod {
-	File schema = new File(System.getProperty("user.dir") + ConstantApiUtils.PATH_TO_SCHEMA_FOLDER + "Category_Schema.json");
 	public deletePaymentTemplate deletePaymentTemplate;
 	public api.methods.savePaymentTemplate savePaymentTemplate;
 

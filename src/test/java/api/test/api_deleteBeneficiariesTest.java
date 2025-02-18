@@ -13,7 +13,6 @@ import java.lang.reflect.Method;
 public class api_deleteBeneficiariesTest extends baseMethod {
     File schema = new File(System.getProperty("user.dir") + ConstantApiUtils.PATH_TO_SCHEMA_FOLDER + "Category_Schema.json");
     public deleteBeneficiaries deleteBeneficiaries;
-
     @BeforeClass()
     public void setUp() {
         deleteBeneficiaries = new deleteBeneficiaries();

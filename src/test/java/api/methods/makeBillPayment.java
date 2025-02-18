@@ -105,7 +105,7 @@ public class makeBillPayment extends baseMethod {
                 .all()
                 .post();
         System.out.println("API Response (makeBillPayment) : " + response.prettyPrint());
-
+        printResponseLogInReport(response);
     }
 
     public void validateResponseCode(int responseCode) {

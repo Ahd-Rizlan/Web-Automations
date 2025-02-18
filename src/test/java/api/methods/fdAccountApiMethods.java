@@ -51,6 +51,7 @@ public class fdAccountApiMethods extends baseMethod {
                 .all()
                 .get();
         System.out.println("API Response" + response.prettyPrint());
+        printResponseLogInReport(response);
     }
 
     public void validateFDAccountResponseCode(int responseCode) {

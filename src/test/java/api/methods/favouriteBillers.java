@@ -54,6 +54,7 @@ public class favouriteBillers extends baseMethod {
                 .all()
                 .get();
         System.out.println("API Response" + response.prettyPrint());
+        printResponseLogInReport(response);
     }
 
     public void validateResponseCode(int responseCode) {

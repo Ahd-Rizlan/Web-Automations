@@ -6,11 +6,9 @@ import data.DataProviders;
 import org.testng.annotations.*;
 import pages.*;
 import utils.Drivers;
-import utils.TestContext;
+import utils.report.TestContext;
 
 import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class TopNavigationBarTest extends Drivers {
     LoginPage loginPage;
