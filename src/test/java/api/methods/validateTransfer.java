@@ -48,7 +48,7 @@ public class validateTransfer extends baseMethod {
                 .all()
                 .post();
         System.out.println("API Response" + response.prettyPrint());
-
+        printResponseLogInReport(response);
     }
 
     public void validateResponseCode(int responseCode) {

@@ -7,11 +7,9 @@ import org.testng.annotations.*;
 import pages.HomePage;
 import pages.LoginPage;
 import utils.Drivers;
-import utils.TestContext;
+import utils.report.TestContext;
 
 import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class ExampleThreeTest extends Drivers {
 

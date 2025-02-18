@@ -55,7 +55,7 @@ public class getMobileCash extends baseMethod {
                 .all()
                 .post();
         System.out.println("API Response" + response.prettyPrint());
-
+        printResponseLogInReport(response);
     }
 
     public void validateResponseCode(int responseCode) {

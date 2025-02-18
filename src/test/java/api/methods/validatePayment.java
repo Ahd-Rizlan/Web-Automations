@@ -117,7 +117,7 @@ public class validatePayment extends baseMethod {
                 .all()
                 .post();
         System.out.println("API Response (validatePayment) : " + response.prettyPrint());
-
+        printResponseLogInReport(response);
     }
 
     public void validateResponseCode(int responseCode) {

@@ -126,7 +126,7 @@ public class dashboardCreditCardDetailsforSVR extends baseMethod {
                 .all()
                 .post();
         System.out.println("API Response :dashboardCreditCardDetailsforSVR " + response.prettyPrint());
-
+        printResponseLogInReport(response);
     }
 
     //Negative scenarios

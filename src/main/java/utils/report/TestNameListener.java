@@ -1,4 +1,4 @@
-package utils;
+package utils.report;
 
 import org.testng.ITestResult;
 import org.testng.Reporter;

@@ -14,6 +14,7 @@ import org.testng.Assert;
 import org.testng.ITest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
+import utils.report.ExtentReportManager;
 
 import static api.utils.ConstantApiUtils.*;
 import static utils.CommonUtils.*;
@@ -44,7 +45,6 @@ public class baseMethod implements ITest {
 
   @BeforeSuite
     public void getAccessToken() {
-
         try {
             fis = new FileInputStream(USER_DIR + ROOT_PATH_TO_API_PROPERTY_FILE);
             config.load(fis);
@@ -208,5 +208,11 @@ public class baseMethod implements ITest {
         System.out.println(formattedTimestamp);
         return  formattedTimestamp;
     }
+    static void printResponseLogInReport(Response response) {
+        ExtentReportManager.logInfoDetails("Response status is " + response.getStatusCode());
+        ExtentReportManager.logInfoDetails("Response body is ");
+        ExtentReportManager.logJson(response.getBody().prettyPrint());
+    }
+
 
 }

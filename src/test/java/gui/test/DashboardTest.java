@@ -9,14 +9,9 @@ import org.testng.annotations.*;
 import pages.DashboardPage;
 import pages.LoginPage;
 import utils.Drivers;
-import utils.TestContext;
+import utils.report.TestContext;
 
 import java.lang.reflect.Method;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import static java.sql.Types.NULL;
 
 public class DashboardTest extends Drivers {
 

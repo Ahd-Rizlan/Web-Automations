@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="All Test Suite">
+<suite name="Sampath SVR4 API Test Suite">
     <listeners>
-        <listener class-name="utils.CustomReport" />
-        <listener class-name="utils.TestNameListener" />
+        <listener class-name="utils.report.TestNgListener"/>
     </listeners>
     <test verbose="2" preserve-order="true"
-          name="C:/Users/himani/Documents/svr4-api-automations/src/test/java/api/test">
+          name="Sampath SVR4 API Test">
         <classes>
             <class name="api.test.api_CategoriesTest">
                 <methods>
@@ -150,8 +149,8 @@
             </class>
             <class name="api.test.api_getCustAccountDetailsTest">
                 <methods>
-                    <include name="checkFDAccountApiUnauthorizedAccess"/>
-                    <include name="checkFDAccountApiAuthorizedAccess"/>
+                    <include name="checkCustAccountDetailsApiUnauthorizedAccess"/>
+                    <include name="checkCustAccountDetailsApiAuthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.api_getPaymentsByIDTest">

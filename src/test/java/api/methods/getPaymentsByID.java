@@ -47,6 +47,7 @@ public class getPaymentsByID extends baseMethod {
                 .all()
                 .get();
         System.out.println("API Response (getPaymentsByID) : " + response.prettyPrint());
+        printResponseLogInReport(response);
     }
 
     public void validateResponseCode(int responseCode) {
