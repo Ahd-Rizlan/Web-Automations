@@ -323,6 +323,27 @@ public abstract class BasePage extends helpers {
     }
 
     /**
+     * Waits for the element to become invisible.
+     * <p>
+     * This method waits for the loading indicator, identified by a specific XPath, to become invisible
+     *
+     *  @param Locator the Locator to become invisible
+     *  @param Timeout the wait time in seconds
+     *
+     */
+    public void waitForElementToBeInvisible(By Locator, long Timeout) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, Timeout);
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(Locator));
+            addScreenshotToTheReport("Element "+Locator +" is not visible", Status.PASS);
+
+        } catch (Exception e) {
+            addScreenshotToTheReport("Element "+Locator +" is still visible after "+Timeout +" seconds", Status.FAIL);
+            System.err.println("Loading indicator is still visible: " + e.getMessage());
+        }
+    }
+
+    /**
      * Waits for the loading dropdown to become invisible.
      * <p>
      * This method waits for the loading dropdown, identified by a specific XPath, to become invisible
