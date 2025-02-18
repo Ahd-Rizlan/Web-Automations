@@ -323,6 +323,27 @@ public abstract class BasePage extends helpers {
     }
 
     /**
+     * Waits for the element to become invisible.
+     * <p>
+     * This method waits for the loading indicator, identified by a specific XPath, to become invisible
+     *
+     *  @param Locator the Locator to become invisible
+     *  @param Timeout the wait time in seconds
+     *
+     */
+    public void waitForElementToBeInvisible(By Locator, long Timeout) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, Timeout);
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(Locator));
+            addScreenshotToTheReport("Element "+Locator +" is not visible", Status.PASS);
+
+        } catch (Exception e) {
+            addScreenshotToTheReport("Element "+Locator +" is still visible after "+Timeout +" seconds", Status.FAIL);
+            System.err.println("Loading indicator is still visible: " + e.getMessage());
+        }
+    }
+
+    /**
      * Waits for the loading dropdown to become invisible.
      * <p>
      * This method waits for the loading dropdown, identified by a specific XPath, to become invisible
@@ -443,6 +464,28 @@ public abstract class BasePage extends helpers {
             System.err.println("Error sending keys to WebElement: " + e.getMessage());
         }
     }
+
+    /**
+     *
+     * This method is used to navigate back on browser
+     *
+     */
+    public void browserNavigateBack() {
+
+        driver.navigate().back();
+        addScreenshotToTheReport("Navigate back from current browser location", Status.INFO);
+    }
+
+    /**
+     *
+     * This method is used to navigate forward on browser
+     *
+     */
+    public void browserNavigateForward() {
+        driver.navigate().forward();
+        addScreenshotToTheReport("Navigate forward from current browser location", Status.INFO);
+    }
+
 
     public void removeLastCharacterFromField(By fieldLocator) {
         try {
