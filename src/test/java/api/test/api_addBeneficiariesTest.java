@@ -29,7 +29,7 @@ public class api_addBeneficiariesTest extends baseMethod {
     }
 
     //Negative cases
-    @Test(priority = 1)
+    @Test(priority = 1 , testName="verify the functionality of Adding Beneficiaries with Unauthorized Access")
     //For unauthorized access
     public void checkAddBeneficiariesUnauthorizedAccess() {
         addBeneficiaries.authorisedWithInvalidToken();

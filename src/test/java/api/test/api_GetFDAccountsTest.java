@@ -22,7 +22,7 @@ public class api_GetFDAccountsTest extends baseMethod {
 	public void resetData (Method m){
 		setTestName(m.getName());
 	}
-	@Test(priority = 1)
+	@Test(priority = 1,testName = "Verify that the FD Account is Not Accessible with Unauthorized Access")
 	public void checkFDAccountApiUnauthorizedAccess() {
 		fdaccountApiMethods.authoriseFDAccountsWithInvalidToken();
 		fdaccountApiMethods.setPageNo(ConstantApiUtils.PAGE_NO_ONE);
@@ -31,7 +31,7 @@ public class api_GetFDAccountsTest extends baseMethod {
 
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that the FD Account is  Accessible with Authorized Access")
 	public void checkFDAccountApiAuthorizedAccess() {
 		fdaccountApiMethods.authoriseFDAccountsWithValidToken();
 		fdaccountApiMethods.setPageNo(ConstantApiUtils.PAGE_NO_ONE);
