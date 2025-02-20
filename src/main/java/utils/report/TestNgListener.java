@@ -45,9 +45,8 @@ public class TestNgListener implements ITestListener {
 
     @Override
     public void onStart(ITestContext context) {
-        String fullReportPath = System.getProperty("user.dir") + "\\reports\\" + "TestReport-API-Test-Report.html";
+        String fullReportPath = System.getProperty("user.dir") + "\\extent-reports\\" + "TestReport-API-Test-Report.html";
         reports = ExtentReportManager.createExtentReport(fullReportPath, "BOOK STORE API REPORT", "REST ASSURED FRAMEWORK", "Thilina Jayasinghe ");
-        // configExtentReport();
 
     }
 
@@ -56,5 +55,4 @@ public class TestNgListener implements ITestListener {
         if (reports != null)
             reports.flush();
     }
-    //  ITestListener.super.onFinish(context);
 }

@@ -8,7 +8,7 @@ import pages.LoginPage;
 import pages.OTPPage;
 import utils.Drivers;
 import com.aventstack.extentreports.ExtentTest;
-import utils.TestContext;
+import utils.report.TestContext;
 import java.lang.reflect.Method;
 
 public class LoginTest extends Drivers {
