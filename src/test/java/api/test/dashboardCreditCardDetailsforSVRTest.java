@@ -43,7 +43,7 @@ public class dashboardCreditCardDetailsforSVRTest extends baseMethod {
 		dashboardCreditCardDetailsforSVR.setPayloadWithValidDeviceId();
 	}
 
-	@Test(priority = 1)
+	@Test(priority = 1,testName = "Verify that Credit CardDetails For SVR Dashboard are Not Retrieved with Unauthorized Access")
 	public void checkDashboardCreditCardDetailsForSVRApiUnauthorizedAccess() throws IOException, ParseException {
 		dashboardCreditCardDetailsforSVR.authorisedWithInvalidToken();
 		dashboardCreditCardDetailsforSVR.setPayloadWithValidDeviceId();
@@ -51,7 +51,7 @@ public class dashboardCreditCardDetailsforSVRTest extends baseMethod {
 		dashboardCreditCardDetailsforSVR.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
 	}
 
-	@Test(priority = 2) //Negative case for invalid InitiatedSerno
+	@Test(priority = 2,testName = "Verify that Credit CardDetails For SVR Dashboard are Not Retrieved with Invalid Initiated SerNo") //Negative case for invalid InitiatedSerno
 	public void checkDashboardCreditCardDetailsForSVRWithInvalidInitiatedSerno() throws IOException, ParseException {
 		dashboardCreditCardDetailsforSVR.setPayloadWithInvalid_InitiatedSerno();
 		dashboardCreditCardDetailsforSVR.invokeDashboardCreditCardDetailsForSVRApi();
@@ -59,7 +59,7 @@ public class dashboardCreditCardDetailsforSVRTest extends baseMethod {
 		dashboardCreditCardDetailsforSVR.validatePayloadForIncorrectInitiatedSerno();
 	}
 
-	@Test(priority = 2) //Negative case for invalid InitiatedKey | bug reported [SVR4-458]
+	@Test(priority = 2,testName = "Verify that Credit CardDetails For SVR Dashboard are Not Retrieved with Invalid Initiated Key") //Negative case for invalid InitiatedKey | bug reported [SVR4-458]
 	public void checkDashboardCreditCardDetailsForSVRWithInvalidInitiatedKey() throws IOException, ParseException {
 		dashboardCreditCardDetailsforSVR.setPayloadWithInvalid_InitiatedKey();
 		dashboardCreditCardDetailsforSVR.invokeDashboardCreditCardDetailsForSVRApi();
@@ -67,7 +67,7 @@ public class dashboardCreditCardDetailsforSVRTest extends baseMethod {
 		dashboardCreditCardDetailsforSVR.validatePayloadForIncorrectInitiatedKey();
 	}
 
-	@Test(priority = 2) //Negative case for invalid ChainSerNo | bug reported [SVR4-458]
+	@Test(priority = 2,testName = "Verify that Credit CardDetails For SVR Dashboard are Not Retrieved with Invalid ChainSerNo") //Negative case for invalid ChainSerNo | bug reported [SVR4-458]
 	public void checkDashboardCreditCardDetailsForSVRWithInvalidChainSerNo() throws IOException, ParseException {
 		dashboardCreditCardDetailsforSVR.setPayloadWithInvalid_ChainSerno();
 		dashboardCreditCardDetailsforSVR.invokeDashboardCreditCardDetailsForSVRApi();
@@ -75,7 +75,7 @@ public class dashboardCreditCardDetailsforSVRTest extends baseMethod {
 		dashboardCreditCardDetailsforSVR.validatePayloadForIncorrectChainSerNo();
 	}
 
-	@Test(priority = 2) //Negative case for invalid ChainAuth
+	@Test(priority = 2,testName = "Verify that Credit CardDetails For SVR Dashboard are Not Retrieved with Invalid Authorization Key") //Negative case for invalid ChainAuth
 	public void checkDashboardCreditCardDetailsForSVRWithInvalidChainAuth() throws IOException, ParseException {
 		dashboardCreditCardDetailsforSVR.setPayloadWithInvalid_ChainAuth();
 		dashboardCreditCardDetailsforSVR.invokeDashboardCreditCardDetailsForSVRApi();
@@ -83,14 +83,14 @@ public class dashboardCreditCardDetailsforSVRTest extends baseMethod {
 		dashboardCreditCardDetailsforSVR.validatePayloadForIncorrectChainAuth();
 	}
 
-	@Test(priority = 2) //Negative case for invalid DeviceId
+	@Test(priority = 2,testName = "Verify that Credit CardDetails For SVR Dashboard are Not Retrieved with Invalid Device Id") //Negative case for invalid DeviceId
 	public void checkDashboardCreditCardDetailsForSVRWithInvalidDeviceId() throws IOException, ParseException {
 		dashboardCreditCardDetailsforSVR.setPayloadWithInvalid_DeviceId();
 		dashboardCreditCardDetailsforSVR.invokeDashboardCreditCardDetailsForSVRApi();
 		dashboardCreditCardDetailsforSVR.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
 		dashboardCreditCardDetailsforSVR.validatePayloadForIncorrectDeviceId();
 	}
-	@Test(priority = 3)
+	@Test(priority = 3,testName = "Verify that Credit CardDetails For SVR Dashboard are Retrieved with Valid Authorized Access")
 	public void checkDashboardCreditCardDetailsForSVRAuthorizedAccess() {
 		dashboardCreditCardDetailsforSVR.invokeDashboardCreditCardDetailsForSVRApi();
 		dashboardCreditCardDetailsforSVR.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
