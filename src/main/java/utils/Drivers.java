@@ -22,6 +22,9 @@ public class Drivers{
     public static propertyFileReader property = new propertyFileReader();
     public static String browser = property.getProperty("gui-config", "BROWSER");
     public static String url = property.getProperty("gui-config", "URL");
+    public static String userName = property.getProperty("gui-config", "USERNAME");
+    public static String password = property.getProperty("gui-config", "PASSWORD");
+
     String projectRoot = System.getProperty("user.dir");
     String webDriverRoot = projectRoot + "/" + property.getProperty("gui-config","WEBDRIVERS");
     String chromeDriverPath = webDriverRoot + "chromedriver.exe";

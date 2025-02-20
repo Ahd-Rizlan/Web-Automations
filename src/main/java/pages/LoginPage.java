@@ -1,36 +1,48 @@
+/*
+ *   @author - salman R
+ */
 package pages;
 
 import com.aventstack.extentreports.Status;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import utils.CommonUtils;
 
 import java.util.Arrays;
 import java.util.List;
 
 
 public class LoginPage extends BasePage {
+
+    CommonUtils cu = new CommonUtils();
+
     public LoginPage(WebDriver driver) {
+
         super(driver);
+
     }
 
     public enum ElementType {
         button, label, span, div;
     }
 
-    // Update the naming conventions for this XPath according to project requirements.
-    // The current names are placeholders provided for reference only.
-    private static final By enterUserName = By.xpath("//input[contains(@name,'username')]");
-    private static final By enterPassWord = By.xpath("//input[contains(@name,'password')]");
-    private static final By userIcon = By.xpath("//img[contains(@class,'NavBar_user__Ena5m')]");
-    private static final By forgotPasswordHeading = By.xpath("//div[contains(@class, 'forgot_pageContainer__TAT35')]");
-    private static final By exclamationMark = By.xpath("//label[contains(normalize-space(text()), 'Enter New Password')]/following::div[text()='!']");
-    private static final By policyPopup = By.xpath("//div[contains(@class, 'justify-center flex')]");
-    private static final By policyList = By.xpath("//ul[contains(@class,'list-disc pl-5')]");
-    private static final By answerInputField = By.xpath("//input[contains(@name,'answer')]");
-    private static final By newPassword = By.xpath("//input[contains(@name,'newPassword')]");
-    private static final By confirmPassword = By.xpath("//input[contains(@name,'confirmPassword')]");
-    private static final By alertPopup = By.xpath("//span[text()='X']");
+    private static final By txtUserName = By.xpath("//input[contains(@name,'username')]");
+    private static final By txtPassword = By.xpath("//input[contains(@name,'password')]");
+    private static final By imgUserIcon = By.xpath("//img[contains(@class,'NavBar_user__Ena5m')]");
+    private static final By lblForgotPasswordHeading = By.xpath("//div[contains(@class, 'forgot_pageContainer__TAT35')]");
+    private static final By lblExclamationMark = By.xpath("//label[contains(normalize-space(text()), 'Enter New Password')]/following::div[text()='!']");
+    private static final By lblPpolicyPopup = By.xpath("//div[contains(@class, 'justify-center flex')]");
+    private static final By lstPolicyList = By.xpath("//ul[contains(@class,'list-disc pl-5')]");
+    private static final By txtAnswerInputField = By.xpath("//input[contains(@name,'answer')]");
+    private static final By txtNewPassword = By.xpath("//input[contains(@name,'newPassword')]");
+    private static final By txtConfirmPassword = By.xpath("//input[contains(@name,'confirmPassword')]");
+    private static final By btnCloseDashboardAlertPopup = By.xpath("//span[text()='X']");
+    private static final By btnCloseAlertLabel = By.xpath(" //button[@aria-label='close']");
+    private static final By btnLogin = By.xpath("//button[@type='submit']");
+    private static final By btnLoginDisabled = By.xpath("//button[@type='submit' and @disabled]/div");
+    private static final By msgError = By.xpath("//div[@role='alert']/div[contains(text(),'LOGIN FAILED')]");
+    private static final By btnBack = By.xpath("//button[text()='Back']");
 
     private static By getElementByTypeAndText(ElementType type, String text) {
         return By.xpath("//" + type.name() + "[contains(normalize-space(text()), \"" + text + "\")]");
@@ -42,6 +54,14 @@ public class LoginPage extends BasePage {
 
     private static By getPageTitle(String title) {
         return By.xpath("//title[contains(text(),'" + title + "')]");
+    }
+
+    private static By getPageHeader(String title) {
+        return By.xpath("//div[contains(text(),'" + title + "')]");
+    }
+
+    private static By getSuccessfulMsg(String title) {
+        return By.xpath("//div[contains(text(),'" + title + "')]");
     }
 
     private static By loginTile(String tileText) {
@@ -68,7 +88,6 @@ public class LoginPage extends BasePage {
         return By.xpath("");
     }
 
-
     /**
      * Validate the title of the login page
      *
@@ -77,45 +96,68 @@ public class LoginPage extends BasePage {
      */
     public void validateTheLoginPage(String expectedTitle, String loginTileName) {
         try {
+            //validate the title and tile
             boolean isTitleVisible = waitForElementPresence(getPageTitle(expectedTitle));
             boolean isTileVisible = waitForElementPresence(loginTile(loginTileName));
             if (isTitleVisible && isTileVisible) {
-                waitFor(5000);
                 addScreenshotToTheReport("Login page tile heading '" + loginTileName + "' and title '" + expectedTitle + "' is visible.", Status.PASS);
             } else {
-                addScreenshotToTheReport("Title or login tile is not visible as expected.", Status.FAIL);
-                throw new RuntimeException("Title or login tile is not visible as expected.");
+                addScreenshotToTheReport("Title or login tile is not visible as expected", Status.FAIL);
+                throw new RuntimeException("Title or login tile is not visible as expected");
             }
 
         } catch (Exception e) {
             addScreenshotToTheReport("Error verifying page title '" + expectedTitle + "' and login tile heading '" + loginTileName + "'.", Status.FAIL);
-            throw new RuntimeException("Failed to validate the title and tile: " + e.getMessage(), e);
+            throw new RuntimeException("Error - Failed to validate the title and tile: " + e.getMessage(), e);
         }
     }
 
     /**
      * Login to the application
      *
-     * @param name          - User name
-     * @param password      - Login password
-     * @param expectedTitle - Dashboard title text
+     * @param name           - User name
+     * @param password       - Login password
+     * @param successMsg     - Success message on login in
+     * @param expectedHeader - Expected header text in login page
+     * @param isRevertBack   - Should the journey revert back after login in
      */
-    public void loginToSampathVishwaWeb(String name, String password, String expectedTitle, String buttonName) {
+    public void loginToSampathVishwaWeb(String name, String password, String successMsg, String expectedHeader, boolean isRevertBack) {
         try {
-            sendKeysToElement(enterUserName, name);
-            sendKeysToElement(enterPassWord, password);
-            clickOnElement(getElementByTypeAndText(ElementType.button, buttonName));
-            clickOnElement(getElementByTypeAndText(ElementType.button, buttonName));
-            waitFor(10000);
-            if (isElementPresentBy(getPageTitle(expectedTitle))) {
-                addScreenshotToTheReport("Login successful, Sampath vishwa '" + expectedTitle + "' title is present.", Status.PASS);
+            //Enter credentials and click login
+            sendKeysToElement(txtUserName, name);
+            sendKeysToElement(txtPassword, password);
+            clickOnElement(btnLogin);
+
+            //Validate the success message
+            if (isElementPresentBy(getSuccessfulMsg(successMsg))) {
+                addScreenshotToTheReport("'" + successMsg + "' success message is present.", Status.PASS);
             } else {
-                addScreenshotToTheReport("Login successful, Sampath vishwa '" + expectedTitle + "' title is not present.", Status.FAIL);
+                addScreenshotToTheReport("'" + successMsg + "' success message is not present.", Status.FAIL);
                 throw new RuntimeException("Login is unsuccessful.");
             }
         } catch (Exception e) {
-            addScreenshotToTheReport("Unable to verify dashboard page title '" + expectedTitle + "''.", Status.FAIL);
-            throw new RuntimeException("Failed to validate the dashboard page title: ", e);
+            addScreenshotToTheReport("Unable to verify dashboard page title '" + successMsg + "''.", Status.FAIL);
+            throw new RuntimeException("Failed to validate the dashboard page title: " + e.getMessage(), e);
+        }
+        try {
+
+            //validate the page header
+            if (isElementPresentBy(getPageHeader(expectedHeader))) {
+                addScreenshotToTheReport("'" + expectedHeader + "'  page header is present.", Status.PASS);
+            } else {
+                addScreenshotToTheReport("'" + expectedHeader + "' page header is not present.", Status.FAIL);
+                throw new RuntimeException("Login is unsuccessful");
+            }
+
+            if (isRevertBack) {
+                //Navigate back to login page
+                clickOnElement(btnBack);
+            }
+
+        } catch (Exception e) {
+            addScreenshotToTheReport("Unable to verify dashboard page header '" + expectedHeader + "''.", Status.FAIL);
+            throw new RuntimeException("Error - Failed to validate the dashboard page header " + e.getMessage(), e);
+
         }
     }
 
@@ -129,15 +171,15 @@ public class LoginPage extends BasePage {
      */
     public void ValidateLoginWithIncorrectUserID(String name, String password, String buttonName, String errorText) {
         try {
-            sendKeysToElement(enterUserName, name);
-            sendKeysToElement(enterPassWord, password);
+            sendKeysToElement(txtUserName, name);
+            sendKeysToElement(txtPassword, password);
             clickOnElement(getElementByTypeAndText(ElementType.button, buttonName));
             boolean isErrorMessageVisible = waitForElementPresence(errorMessage(errorText));
             if (isErrorMessageVisible) {
                 addScreenshotToTheReport("User not able to Login with incorrect User ID.", Status.PASS);
             } else {
                 addScreenshotToTheReport("User able to Login with incorrect User ID.", Status.FAIL);
-                throw new RuntimeException("Error - Login is successful.");
+                throw new RuntimeException("Error - Login is unsuccessful.");
             }
         } catch (Exception e) {
             addScreenshotToTheReport("Unable to verify incorrect user login", Status.FAIL);
@@ -148,26 +190,66 @@ public class LoginPage extends BasePage {
     /**
      * validate the incorrect Login with incorrect user ID
      *
-     * @param name       - User name
-     * @param password   - Login password
-     * @param buttonName - Login button name
-     * @param errorText  - error message text
+     * @param name            - User name
+     * @param validPassword   - Login password
+     * @param invalidPassword - Invalid password
+     * @param errorText       - error message text
      */
-    public void ValidateLoginWithIncorrectPassword(String name, String password, String buttonName, String errorText) {
+    public void ValidateLoginWithIncorrectPassword(String name, String validPassword, String invalidPassword, String errorText) {
         try {
-            sendKeysToElement(enterUserName, name);
-            sendKeysToElement(enterPassWord, password);
-            clickOnElement(getElementByTypeAndText(ElementType.button, buttonName));
-            boolean isErrorMessageVisible = waitForElementPresence(errorMessage(errorText));
-            if (isErrorMessageVisible) {
-                addScreenshotToTheReport("User not able to Login with incorrect Password.", Status.PASS);
+
+            //Attempt to login using invalid credentials
+            sendKeysToElement(txtUserName, name);
+            sendKeysToElement(txtPassword, invalidPassword);
+            clickOnElement(btnLogin);
+            waitForElementToBeInvisible(btnLoginDisabled, 4);
+
+            //Extract the message from alert
+            String[] ErrorMsg = CommonUtils.splitText(getTextFromElement(msgError), ":");
+            int attemptCount = Integer.parseInt(ErrorMsg[1].trim());
+            clickOnElement(btnCloseAlertLabel);
+
+            //Validate the error message
+            if (errorText.equals(ErrorMsg[0]) && attemptCount < 5 && 1 < attemptCount) {
+                addScreenshotToTheReport("Error message successfully displayed mentioning the remaining number of attempts", Status.PASS);
             } else {
-                addScreenshotToTheReport("User able to Login with incorrect Password.", Status.FAIL);
-                throw new RuntimeException("Error - Login is successful.");
+                addScreenshotToTheReport("Error message was not successfully displayed mentioning the remaining number of attempts", Status.FAIL);
+                throw new RuntimeException("Error - Error message was not successfully displayed");
             }
+
+            //Re-Login with correct credentials
+            sendKeysToElement(txtUserName, name);
+            sendKeysToElement(txtPassword, validPassword);
+            clickOnElement(btnLogin);
+            waitForElementToBeInvisible(btnLoginDisabled, 5);
+            clickOnElement(btnCloseAlertLabel);
+            clickOnElement(btnBack);
+
+
+            //Re-attempt to login using invalid credentials
+            waitForElementPresence(txtUserName);
+            sendKeysToElement(txtUserName, name);
+            sendKeysToElement(txtPassword, invalidPassword);
+            clickOnElement(btnLogin);
+            waitForElementToBeInvisible(btnLoginDisabled, 5);
+            waitForElementPresence(msgError);
+
+            //Extract the message from alert
+            String[] updatedErrorMsg = CommonUtils.splitText(getTextFromElement(msgError), ":");
+            int reAttemptCount = Integer.parseInt(updatedErrorMsg[1].trim());
+            waitForElementPresence(btnBack);
+
+            //Validate reattempt counter
+            if (reAttemptCount == 4) {
+                addScreenshotToTheReport("Re-Attempt counter was updated successfully", Status.PASS);
+            } else {
+                addScreenshotToTheReport("Re-Attempt counter was not updated successfully", Status.FAIL);
+                throw new RuntimeException("Error - Error message was not successfully displayed");
+            }
+
         } catch (Exception e) {
             addScreenshotToTheReport("Unable to verify incorrect Password", Status.FAIL);
-            throw new RuntimeException("Failed to validate the incorrect Password. ", e);
+            throw new RuntimeException("Error - Failed to validate the incorrect Password. " + e.getMessage(), e);
         }
     }
 
@@ -183,10 +265,10 @@ public class LoginPage extends BasePage {
     public void validateLoginWithOnlyUserIDOrPassword(String inputValue, String buttonName, String placeholderText, boolean isUserID) {
         try {
             if (isUserID) {
-                sendKeysToElement(enterUserName, inputValue);
+                sendKeysToElement(txtUserName, inputValue);
             } else {
-                clearTheElement(enterUserName);
-                sendKeysToElement(enterPassWord, inputValue);
+                clearTheElement(txtUserName);
+                sendKeysToElement(txtPassword, inputValue);
 
             }
 
@@ -204,7 +286,7 @@ public class LoginPage extends BasePage {
         } catch (Exception e) {
             String errorContext = isUserID ? "UserID" : "Password";
             addScreenshotToTheReport("Unable to verify incorrect " + errorContext, Status.FAIL);
-            throw new RuntimeException("Failed to validate login with only " + errorContext + ".", e);
+            throw new RuntimeException("Error - Failed to validate login with only " + errorContext + ".", e);
         }
     }
 
@@ -217,8 +299,8 @@ public class LoginPage extends BasePage {
      */
     public void loginToSampathVishwaWebUsingEnterAndMouseClick(String name, String password, String expectedTitle, String buttonName, boolean mouseClick) {
         try {
-            sendKeysToElement(enterUserName, name);
-            sendKeysToElement(enterPassWord, password);
+            sendKeysToElement(txtUserName, name);
+            sendKeysToElement(txtPassword, password);
             if (mouseClick) {
                 mouseClick(getElementByTypeAndText(ElementType.button, buttonName));
                 addScreenshotToTheReport("Login attempted using mouse click on the '" + buttonName + "' button.", Status.PASS);
@@ -231,11 +313,11 @@ public class LoginPage extends BasePage {
                 addScreenshotToTheReport("Login successful. Sampath Vishwa '" + expectedTitle + "' title is present.", Status.PASS);
             } else {
                 addScreenshotToTheReport("Login failed. Sampath Vishwa '" + expectedTitle + "' title is not present.", Status.FAIL);
-                throw new RuntimeException("Login is unsuccessful.");
+                throw new RuntimeException("Error - Login is unsuccessful.");
             }
         } catch (Exception e) {
             addScreenshotToTheReport("Unable to verify dashboard page title: '" + expectedTitle + "'.", Status.FAIL);
-            throw new RuntimeException("Failed to validate the dashboard page title: ", e);
+            throw new RuntimeException("Error - Failed to validate the dashboard page title: ", e);
         }
     }
 
@@ -250,10 +332,10 @@ public class LoginPage extends BasePage {
      */
     public void logoutFromSampathVishwaWeb(String buttonName, String popupText, String confirmButtonText, String loginPageTitle) {
         try {
-            clickOnElement(alertPopup);
-            boolean userProfileIcon = isElementPresentBy(userIcon);
+            clickOnElement(btnCloseDashboardAlertPopup);
+            boolean userProfileIcon = isElementPresentBy(imgUserIcon);
             if (userProfileIcon) {
-                clickOnElement(userIcon);
+                clickOnElement(imgUserIcon);
                 addScreenshotToTheReport("Successfully clicked on user profile icon on top navigation bar.", Status.PASS);
                 boolean logoutButton = isElementPresentBy(logoutButton(buttonName));
                 if (logoutButton) {
@@ -272,11 +354,11 @@ public class LoginPage extends BasePage {
                                 addScreenshotToTheReport("Successfully logged out from the sampath vishwa application.", Status.PASS);
                             } else {
                                 addScreenshotToTheReport("Unable to logged out from the sampath vishwa application.", Status.FAIL);
-                                throw new RuntimeException("User is unable to logged out from the sampath vishwa application.");
+                                throw new RuntimeException("Error - User is unable to logged out from the sampath vishwa application.");
                             }
                         } else {
                             addScreenshotToTheReport("'" + confirmButtonText + "'Logout button is not visible.", Status.FAIL);
-                            throw new RuntimeException("'" + confirmButtonText + "'Logout button is not visible.");
+                            throw new RuntimeException(" Error - Logout button is not visible.");
                         }
                     } else {
                         addScreenshotToTheReport("'" + popupText + "' Logout pop is not visible.", Status.FAIL);
@@ -309,11 +391,11 @@ public class LoginPage extends BasePage {
                 addScreenshotToTheReport("Successfully clicks on '" + buttonName + "' button.", Status.PASS);
             } else {
                 addScreenshotToTheReport("Failed to clicks on '" + buttonName + "' button.", Status.FAIL);
-                throw new RuntimeException("Failed to clicks on '" + buttonName + "' button.");
+                throw new RuntimeException("Error - Failed to clicks on '" + buttonName + "' button.");
             }
         } catch (Exception e) {
             addScreenshotToTheReport("Unable to clicks on '" + buttonName + "' button.", Status.FAIL);
-            throw new RuntimeException("Unable to clicks on '" + buttonName + "' button.", e);
+            throw new RuntimeException("Error - Unable to clicks on '" + buttonName + "' button.", e);
         }
     }
 
@@ -345,7 +427,7 @@ public class LoginPage extends BasePage {
                 ValidateForgotPasswordHeading(headingText, 1);
                 clickOnElement(getElementByTypeAndText(ElementType.button, buttonName));
                 ValidateTheRequiredFieldMessage(unaReqFieldText, inputFieldText);
-                sendKeysToElement(enterUserName, userName);
+                sendKeysToElement(txtUserName, userName);
                 clickOnElement(getElementByTypeAndText(ElementType.button, buttonName));
                 addScreenshotToTheReport("Clicks on the '" + buttonName + "' button.", Status.PASS);
                 boolean maidName = waitForElementPresence(getElementByTypeAndText(ElementType.label, maidFieldText));
@@ -353,7 +435,7 @@ public class LoginPage extends BasePage {
                     ValidateForgotPasswordHeading(headingText, 2);
                     clickOnElement(getElementByTypeAndText(ElementType.button, buttonName));
                     ValidateTheRequiredFieldMessage(questionRFieldText, maidFieldText);
-                    sendKeysToElement(answerInputField, textToType);
+                    sendKeysToElement(txtAnswerInputField, textToType);
                     clickOnElement(getElementByTypeAndText(ElementType.button, buttonName));
                     addScreenshotToTheReport("Clicks on the '" + buttonName + "' button.", Status.PASS);
                     boolean petName = waitForElementPresence(getElementByTypeAndText(ElementType.label, petFieldText));
@@ -361,7 +443,7 @@ public class LoginPage extends BasePage {
                         ValidateForgotPasswordHeading(headingText, 3);
                         clickOnElement(getElementByTypeAndText(ElementType.button, buttonName));
                         ValidateTheRequiredFieldMessage(questionRFieldText, petFieldText);
-                        sendKeysToElement(answerInputField, textToType);
+                        sendKeysToElement(txtAnswerInputField, textToType);
                         clickOnElement(getElementByTypeAndText(ElementType.button, buttonName));
                         addScreenshotToTheReport("Clicks on the '" + buttonName + "' button.", Status.PASS);
                         boolean newAndConfirm = waitForElementPresence(getElementByTypeAndText(ElementType.label, newPassword)) &&
@@ -422,7 +504,7 @@ public class LoginPage extends BasePage {
     public void ValidateForgotPasswordHeading(String headingText, int stepNumber) {
         try {
             String expectedMessage = headingText + "\nStep " + stepNumber + " of 4";
-            String actualMessage = getTextFromElement(forgotPasswordHeading);
+            String actualMessage = getTextFromElement(lblForgotPasswordHeading);
             if (actualMessage.equals(expectedMessage)) {
                 addScreenshotToTheReport("Forgot password heading is visible with the page step: '" + expectedMessage + "'.", Status.PASS);
             } else {
@@ -440,11 +522,11 @@ public class LoginPage extends BasePage {
      */
     public void ValidatePasswordPolicy() {
         try {
-            boolean policyIcon = waitForElementPresence(exclamationMark);
+            boolean policyIcon = waitForElementPresence(lblExclamationMark);
             if (policyIcon) {
-                clickOnElement(exclamationMark);
+                clickOnElement(lblExclamationMark);
                 addScreenshotToTheReport("Clicks on Exclamation mark on Enter New Password field.", Status.PASS);
-                boolean policyWindow = waitForElementPresence(policyPopup);
+                boolean policyWindow = waitForElementPresence(lblPpolicyPopup);
                 if (policyWindow) {
                     addScreenshotToTheReport("Password policy window popup is visible.", Status.PASS);
 
@@ -472,7 +554,7 @@ public class LoginPage extends BasePage {
     public void validateListItems(String expectedItems) {
         try {
             List<String> expectedItemList = Arrays.stream(expectedItems.split("\\\\n")).map(item -> item.replaceAll("^\"|\"$", "").trim()).toList();
-            WebElement listElement = driver.findElement(policyList);
+            WebElement listElement = driver.findElement(lstPolicyList);
             List<WebElement> listItems = listElement.findElements(By.tagName("li"));
             for (int i = 0; i < expectedItemList.size(); i++) {
                 String expectedItem = expectedItemList.get(i).trim();
@@ -505,12 +587,12 @@ public class LoginPage extends BasePage {
             for (int i = 0; i < passwordText.length(); i++) {
                 char currentChar = passwordText.charAt(i);
                 typedPassword += currentChar;
-                typeWithoutClear(newPassword, String.valueOf(currentChar)); // Simulates typing character
+                typeWithoutClear(txtNewPassword, String.valueOf(currentChar)); // Simulates typing character
                 waitFor(500);
                 checkPolicyMessages(typedPassword, policyLines);
                 if (i > 1 && passwordText.charAt(i) == passwordText.charAt(i - 1) && passwordText.charAt(i - 1) == passwordText.charAt(i - 2)) {
                     addScreenshotToTheReport("Consecutive character policy triggered: " + typedPassword, Status.FAIL);
-                    removeLastCharacterFromField(newPassword);
+                    removeLastCharacterFromField(txtNewPassword);
                     typedPassword = typedPassword.substring(0, typedPassword.length() - 1); // Remove last character
                     waitFor(500);
                     checkPolicyMessages(typedPassword, policyLines);
@@ -566,7 +648,6 @@ public class LoginPage extends BasePage {
             throw new RuntimeException("Expected policy message '" + expectedMessage + "' not visible.");
         }
     }
-
 
 
 }
