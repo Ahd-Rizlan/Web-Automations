@@ -32,19 +32,19 @@ public class ExtentReportManager {
 
     //test case detail logging
     public static void logPassDetails(String log) {
-        TestNgListener.extentTest.get().pass(MarkupHelper.createLabel(log, ExtentColor.GREEN));
+//        TestNgListener.extentTest.get().pass(MarkupHelper.createLabel(log, ExtentColor.GREEN));
     }
     public static void logFailureDetails(String log) {
-        TestNgListener.extentTest.get().fail(MarkupHelper.createLabel(log, ExtentColor.RED));
+//        TestNgListener.extentTest.get().fail(MarkupHelper.createLabel(log, ExtentColor.RED));
     }
     public static void logExceptionDetails(String log) {
         TestNgListener.extentTest.get().fail(log);
     }
     public static void logInfoDetails(String log) {
-        TestNgListener.extentTest.get().info(MarkupHelper.createLabel(log, ExtentColor.GREY));
+//        TestNgListener.extentTest.get().info(MarkupHelper.createLabel(log, ExtentColor.GREY));
     }
 
     public static void logJson(String json) {
-        TestNgListener.extentTest.get().info(MarkupHelper.createCodeBlock(json, CodeLanguage.JSON));
+//        TestNgListener.extentTest.get().info(MarkupHelper.createCodeBlock(json, CodeLanguage.JSON));
     }
 }
