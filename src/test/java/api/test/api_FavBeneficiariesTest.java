@@ -23,14 +23,14 @@ public class api_FavBeneficiariesTest extends baseMethod {
 	public void resetData (Method m){
 		setTestName(m.getName());
 	}
-	@Test(priority = 1)
+	@Test(priority = 1,testName = "Verify that Credit Card Details are Not Accessible with Unauthorized Access for Favourite Beneficiaries")
 	public void checkCreditCardDetailsApiUnauthorizedAccess() {
 		favBeneficiaries.authorisedWithInvalidToken();
 		favBeneficiaries.invokeFavBeneficiaries();
 		favBeneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that Credit Card Details are Accessible with Authorized Access for Favourite Beneficiaries")
 	public void checkCreditCardDetailsApiAuthorizedAccess() {
 		favBeneficiaries.authorisedWithValidToken();
 		favBeneficiaries.invokeFavBeneficiaries();

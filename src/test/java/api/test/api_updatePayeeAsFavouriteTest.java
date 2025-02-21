@@ -23,7 +23,7 @@ public class api_updatePayeeAsFavouriteTest extends baseMethod {
 	public void resetData (Method m){
 		setTestName(m.getName());
 	}
-	@Test(priority = 1)
+	@Test(priority = 1,testName = "Verify that Billers Cannot be Marked as Favourite With Unauthorized Access")
 	public void checkUpdatePayeeAsFavouriteUnauthorizedAccess()  {
 		updatePayeeAsFavourite.authorisedWithInvalidToken();
 		updatePayeeAsFavourite.invokeUpdatePayeeAsFavouriteApi();
@@ -31,7 +31,7 @@ public class api_updatePayeeAsFavouriteTest extends baseMethod {
 
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that Billers Can be Marked as Favourite With Unauthorized Access")
 	public void checkUpdatePayeeAsFavouriteAuthorizedAccess()  {
 		updatePayeeAsFavourite.authorisedWithValidToken();
 		updatePayeeAsFavourite.invokeUpdatePayeeAsFavouriteApi();

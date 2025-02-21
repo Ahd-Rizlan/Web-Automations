@@ -22,14 +22,14 @@ public class api_GetTransfersTest extends baseMethod {
 	public void resetData (Method m){
 		setTestName(m.getName());
 	}
-	@Test(priority = 1)
+	@Test(priority = 1 ,testName = "Verify that Transfer Details are Not Retrieved With Unauthorized Access")
 	public void checkGetTransfersUnauthorizedAccess()  {
 		getTransfers.authorisedWithInvalidToken();
 		getTransfers.invokeGetTransfersApi();
 		getTransfers.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that Transfer Details are  Retrieved With Authorized Access")
 	public void checkGetTransfersAuthorizedAccess()  {
 		getTransfers.authorisedWithValidToken();
 		getTransfers.invokeGetTransfersApi();

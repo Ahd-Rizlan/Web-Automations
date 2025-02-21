@@ -22,14 +22,14 @@ public class api_getAccountsByTrantypeTest extends baseMethod {
 	public void resetData (Method m){
 		setTestName(m.getName());
 	}
-	@Test(priority = 1)
+	@Test(priority = 1,testName = "Verify that Debit Accounts are Not Retrieved with Unauthorized Access")
 	public void checkGetAccountsByTrantypeWithUnauthorizedAccess() {
 		getAccountsByTrantype.authorisedWithInvalidToken();
 		getAccountsByTrantype.invokeGetAccountsByTrantypeApi();
 		getAccountsByTrantype.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that Debit Accounts are Retrieved with Authorized Access")
 	public void checkGetAccountsByTrantypeWithAuthorizedAccess() {
 		getAccountsByTrantype.authorisedWithValidToken();
 		getAccountsByTrantype.invokeGetAccountsByTrantypeApi();

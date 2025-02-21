@@ -24,7 +24,7 @@ public class api_FavouriteBillersTest extends baseMethod {
         setTestName(m.getName());
     }
 
-    @Test(priority = 1)   // Bug reported : SVR4-517
+    @Test(priority = 1,testName = "Verify that Favourite Billers are Not Retrieved With Unauthorized Access")   // Bug reported : SVR4-517
     public void checkFavouriteBillersApiWithUnauthorizedAccess() {
 
         favouriteBillers.authorisedWithInvalidToken();
@@ -34,7 +34,7 @@ public class api_FavouriteBillersTest extends baseMethod {
         favouriteBillers.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
     }
 
-    @Test(priority = 2) // Bug reported : SVR4-517
+    @Test(priority = 2,testName = "Verify that Favourite Billers are  Retrieved With Authorized Access")  // Bug reported : SVR4-517
     public void checkFavouriteBillersApiWithAuthorizedAccess() {
 
         favouriteBillers.authorisedWithValidToken();

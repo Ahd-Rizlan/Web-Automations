@@ -24,14 +24,14 @@ public class api_UpdatePaymentTemplateTest extends baseMethod {
 	public void resetData (Method m){
 		setTestName(m.getName());
 	}
-	@Test(priority = 1)
+	@Test(priority = 1,testName = "Verify that payment template cannot be Edited with Unauthorized Access")
 	public void checkCreditCardDetailsApiUnauthorizedAccess() {
 		updatePaymentTemplate.authorisedWithInvalidToken();
 		updatePaymentTemplate.invokeUpdatePaymentTemplate();
 		updatePaymentTemplate.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that payment template can be Edited with Authorized Access")
 	public void checkCreditCardDetailsApiAuthorizedAccess() {
 		updatePaymentTemplate.authorisedWithValidToken();
 		updatePaymentTemplate.invokeUpdatePaymentTemplate();

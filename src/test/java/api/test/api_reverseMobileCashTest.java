@@ -25,14 +25,14 @@ public class api_reverseMobileCashTest extends baseMethod {
 	public void resetData (Method m){
 		setTestName(m.getName());
 	}
-	@Test(priority = 1)
+	@Test(priority = 1,testName = "Verify that the Mobile Cash Cannot be Cancelled (Reversed) with Unauthorized Access")
 	public void checkReverseMobileCashWithUnauthorizedAccess()  {
 		reverseMobileCash.authorisedWithInvalidToken();
 		reverseMobileCash.invokeReverseMobileCashApi();
 		reverseMobileCash.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
 
 	}
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that the Mobile Cash Cannot be Cancelled (Reversed) with Invalid NIC Number")
 	public void checkReverseMobileCashWithInvalidNic() throws IOException, ParseException {
 		reverseMobileCash.authorisedWithValidToken();
 		reverseMobileCash.setPayloadWithInvalidNic();
@@ -40,7 +40,7 @@ public class api_reverseMobileCashTest extends baseMethod {
 		reverseMobileCash.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
 		reverseMobileCash.validatePayload();
 	}
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that the Mobile Cash Cannot be Cancelled (Reversed) with Invalid PIN Number")
 	public void checkReverseMobileCashWithInvalidPin() throws IOException, ParseException {
 		reverseMobileCash.authorisedWithValidToken();
 		reverseMobileCash.setPayloadWithInvalidPin();
@@ -48,7 +48,7 @@ public class api_reverseMobileCashTest extends baseMethod {
 		reverseMobileCash.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
 		reverseMobileCash.validatePayload();
 	}
-	@Test(priority = 3)
+	@Test(priority = 3,testName = "Verify that the Mobile Cash Can be Cancelled (Reversed) with Authorized Access")
 	public void checkReverseMobileCashWithAuthorizedAccess() throws IOException, ParseException {
 		reverseMobileCash.authorisedWithValidToken();
 		reverseMobileCash.setPayloadWithValidData();

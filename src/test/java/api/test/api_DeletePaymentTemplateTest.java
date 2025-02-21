@@ -27,14 +27,14 @@ public class api_DeletePaymentTemplateTest extends baseMethod {
 	public void resetData (Method m){
 		setTestName(m.getName());
 	}
-	@Test(priority = 1)
+	@Test(priority = 1,testName = "Verify that payment template cannot be Deleted with Unauthorized Access")
 	public void checkDeletePaymentTemplateApiUnauthorizedAccess() {
 		deletePaymentTemplate.authorisedWithInvalidToken();
 		deletePaymentTemplate.invokeDeletePaymentTemplate();
 		deletePaymentTemplate.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that a new payment Created before Deleting the Template")
 	public void addPaymentTemplate(){
 		//Create a template and save the templateID in data-store
 		savePaymentTemplate.authorisedWithValidToken();
@@ -43,7 +43,7 @@ public class api_DeletePaymentTemplateTest extends baseMethod {
 		savePaymentTemplate.saveTemplateIdToFile();
 	}
 
-	@Test (dependsOnMethods = { "addPaymentTemplate" })
+	@Test (dependsOnMethods = { "addPaymentTemplate" },testName = "Verify that payment template can be Deleted with Authorized Access")
 	public void deletePaymentTemplateApiAuthorizedAccess() throws IOException, ParseException {
 		deletePaymentTemplate.authorisedWithValidToken();
 		deletePaymentTemplate.setPayloadWithValidTemplateID();

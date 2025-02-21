@@ -22,7 +22,7 @@ public class api_getUnutilizedMobileCashTest extends baseMethod {
 	public void resetData (Method m){
 		setTestName(m.getName());
 	}
-	@Test(priority = 1)
+	@Test(priority = 1, testName = "Verify that the Un-Utilized Mobile Cash Cannot Retried with Unauthorized Access")
 	public void checkUnutilizedMobileCashWithUnauthorizedAccess()  {
 		getUnutilizedMobileCash.authorisedWithInvalidToken();
 		getUnutilizedMobileCash.invokeGetUnutilizedMobileCashApi();
@@ -30,7 +30,7 @@ public class api_getUnutilizedMobileCashTest extends baseMethod {
 
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2, testName = "Verify that the Un-Utilized Mobile Cash Can Retried with Authorized Access")
 	public void checkUnutilizedMobileCashWithAuthorizedAccess()  {
 		getUnutilizedMobileCash.authorisedWithValidToken();
 		getUnutilizedMobileCash.invokeGetUnutilizedMobileCashApi();

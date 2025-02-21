@@ -24,7 +24,7 @@ public class api_GetMobileCashTest extends baseMethod {
         setTestName(m.getName());
     }
 
-    @Test(priority = 1)
+    @Test(priority = 1,testName = "Verify that Cash for Mobile is Not Retrieved With Unauthorized Access")
     public void checkGetMobileCashUnauthorizedAccess() {
         getMobileCash.authorisedWithInvalidToken();
         getMobileCash.invokeGetMobileCashApi();
@@ -32,7 +32,7 @@ public class api_GetMobileCashTest extends baseMethod {
 
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2,testName = "Verify that Cash for Mobile is Retrieved With Authorized Access")
     public void checkMobileCashAuthorizedAccess() {
         getMobileCash.authorisedWithValidToken();
         getMobileCash.invokeGetMobileCashApi();

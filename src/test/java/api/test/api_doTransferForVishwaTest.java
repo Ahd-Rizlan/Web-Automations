@@ -22,7 +22,7 @@ public class api_doTransferForVishwaTest extends baseMethod {
 	public void resetData (Method m){
 		setTestName(m.getName());
 	}
-	@Test(priority = 1)
+	@Test(priority = 1,testName = "Verify that Transfer for Vishwa Cannot be Done with Unauthorized Access")
 	public void checkDoTransferForVishwaWithUnauthorizedAccess()  {
 		doTransferForVishwa.authorisedWithInvalidToken();
 		doTransferForVishwa.invokeDoTransferForVishwaApi();
@@ -30,7 +30,7 @@ public class api_doTransferForVishwaTest extends baseMethod {
 
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that Transfer for Vishwa Can be Done with Authorized Access")
 	public void checkDoTransferForVishwaWithAuthorizedAccess()  {
 		doTransferForVishwa.authorisedWithValidToken();
 		doTransferForVishwa.invokeDoTransferForVishwaApi();

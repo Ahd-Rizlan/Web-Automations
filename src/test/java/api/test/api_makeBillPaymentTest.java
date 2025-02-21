@@ -24,14 +24,14 @@ public class api_makeBillPaymentTest extends baseMethod {
 	public void resetData (Method m){
 		setTestName(m.getName());
 	}
-	@Test(priority = 1)
+	@Test(priority = 1,testName = "Verify that Bill Payments are not successful with Unauthorized Access")
 	public void checkBillPaymentsWithUnauthorizedAccess()  {
 		makeBillPayment.authorisedWithInvalidToken();
 		makeBillPayment.invokeMakeBillPaymentApi();
 		makeBillPayment.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
 
 	}
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that Bill Payments are not successful with Invalid Biller Id")
 	public void checkBillPaymentsWithIncorrectBillerId() throws IOException, ParseException {
 		makeBillPayment.authorisedWithValidToken();
 		makeBillPayment.setPayloadWithIncorrectBillerId();
@@ -41,7 +41,7 @@ public class api_makeBillPaymentTest extends baseMethod {
 		makeBillPayment.setPayloadWithValidData(); //revert changes for the next test
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that Bill Payments are not successful with Incorrect Debit Account")
 	public void checkVBillPaymentsWithIncorrectDebitAccount() throws IOException, ParseException {
 		makeBillPayment.authorisedWithValidToken();
 		makeBillPayment.setPayloadWithIncorrectDebitAccount();
@@ -51,7 +51,7 @@ public class api_makeBillPaymentTest extends baseMethod {
 		makeBillPayment.setPayloadWithValidData(); //revert changes for the next test
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that Bill Payments are not successful with Invalid Token")
 	public void checkBillPaymentsWithIncorrectCurrencyType() throws IOException, ParseException {
 		makeBillPayment.authorisedWithValidToken();
 		makeBillPayment.setPayloadWithIncorrectCurrency();
@@ -61,7 +61,7 @@ public class api_makeBillPaymentTest extends baseMethod {
 		makeBillPayment.setPayloadWithValidData(); //revert changes for the next test
 	}
 
-	@Test(priority = 3)
+	@Test(priority = 3,testName = "Verify that Bill Payments are Successful with Authorized Access")
 	public void checkBillPaymentsWithAuthorizedAccess() throws IOException, ParseException {
 		makeBillPayment.authorisedWithValidToken();
 		makeBillPayment.setPayloadWithValidData();
