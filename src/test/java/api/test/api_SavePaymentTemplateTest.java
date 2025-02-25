@@ -24,13 +24,13 @@ public class api_SavePaymentTemplateTest extends baseMethod {
 	public void resetData (Method m){
 		setTestName(m.getName());
 	}
-	@Test(priority = 1)
+	@Test(priority = 1,testName = "Verify that a new payment template cannot be saved with Unauthorized Access")
 	public void checkSavePaymentTemplateWithUnauthorizedAccess()  {
 		savePaymentTemplate.authorisedWithInvalidToken();
 		savePaymentTemplate.invokeSavePaymentTemplateApi();
 		savePaymentTemplate.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
 	}
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that a new payment template cannot be saved with Incorrect Biller Id")
 	public void checkSavePaymentTemplateWithIncorrectBillerId() throws IOException, ParseException {
 		savePaymentTemplate.authorisedWithValidToken();
 		savePaymentTemplate.setPayloadWithIncorrectBillerId();
@@ -40,7 +40,7 @@ public class api_SavePaymentTemplateTest extends baseMethod {
 		savePaymentTemplate.setPayloadWithValidData(); //revert changes for the next test
 	}
 
-	@Test(priority = 3)
+	@Test(priority = 3,testName = "Verify that a new payment template can be saved with Authorized Access")
 	public void checkSavePaymentTemplateWithAuthorizedAccess() throws IOException, ParseException {
 		savePaymentTemplate.authorisedWithValidToken();
 		savePaymentTemplate.setPayloadWithValidData();

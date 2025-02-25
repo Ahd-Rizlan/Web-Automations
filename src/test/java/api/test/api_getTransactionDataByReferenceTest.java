@@ -22,7 +22,7 @@ public class api_getTransactionDataByReferenceTest extends baseMethod {
 	public void resetData (Method m){
 		setTestName(m.getName());
 	}
-	@Test(priority = 1)
+	@Test(priority = 1 ,testName = "Verify that FD Account Transaction Data Cannot be Retrieved by Unauthorized Access")
 	public void checkFDAccountApiUnauthorizedAccess() {
 		getTransactionDatabyReference.authorisedWithInvalidToken();
 		getTransactionDatabyReference.setTransactionId(ConstantApiUtils.TRANSACTION_ID);
@@ -31,7 +31,7 @@ public class api_getTransactionDataByReferenceTest extends baseMethod {
 
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that FD Account Transaction Data Can be Retrieved by Authorized Access")
 	public void checkFDAccountApiAuthorizedAccess() {
 
 		getTransactionDatabyReference.authorisedWithValidToken();

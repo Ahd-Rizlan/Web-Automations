@@ -25,14 +25,14 @@ public class api_validatePaymentTest extends baseMethod {
 	public void resetData (Method m){
 		setTestName(m.getName());
 	}
-	@Test(priority = 1)
+	@Test(priority = 1, testName = "Verify that Bill Payments Cannot be Validated with Unauthorized Access")
 	public void checkValidatePaymentsWithUnauthorizedAccess()  {
 		validatePayment.authorisedWithInvalidToken();
 		validatePayment.invokeValidatePaymentApi();
 		validatePayment.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
 
 	}
-	@Test(priority = 2)
+	@Test(priority = 2, testName = "Verify that Bill Payments Cannot be Validated with Incorrect Biller Id")
 	public void checkValidatePaymentsWithIncorrectBillerId() throws IOException, ParseException {
 		validatePayment.authorisedWithValidToken();
 		validatePayment.setPayloadWithIncorrectBillerId();
@@ -42,7 +42,7 @@ public class api_validatePaymentTest extends baseMethod {
 		validatePayment.setPayloadWithValidData(); //revert changes for the next test
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2, testName = "Verify that Bill Payments Cannot be Validated with Incorrect Account Number ")
 	public void checkValidatePaymentsWithIncorrectAccountNumber() throws IOException, ParseException {
 		validatePayment.authorisedWithValidToken();
 		validatePayment.setPayloadWithIncorrectAccountNumber();
@@ -51,7 +51,7 @@ public class api_validatePaymentTest extends baseMethod {
 		validatePayment.validatePayloadForIncorrectAccountNumber();
 		validatePayment.setPayloadWithValidData(); //revert changes for the next test
 	}
-	@Test(priority = 2)
+	@Test(priority = 2, testName = "Verify that Bill Payments Cannot be Validated with Incorrect Currency Type")
 	public void checkValidatePaymentsWithIncorrectCurrencyType() throws IOException, ParseException {
 		validatePayment.authorisedWithValidToken();
 		validatePayment.setPayloadWithIncorrectCurrency();
@@ -61,7 +61,7 @@ public class api_validatePaymentTest extends baseMethod {
 		validatePayment.setPayloadWithValidData(); //revert changes for the next test
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2, testName = "Verify that Bill Payments Cannot be Validated with Empty Bank Code")
 	public void checkValidatePaymentsWithEmptyBankCode() throws IOException, ParseException {
 		validatePayment.authorisedWithValidToken();
 		validatePayment.setPayloadWithIncorrectTransactionType();
@@ -71,7 +71,7 @@ public class api_validatePaymentTest extends baseMethod {
 		validatePayment.setPayloadWithValidData(); //revert changes for the next test
 	}
 
-	@Test(priority = 3)
+	@Test(priority = 3, testName = "Verify that Bill Payments Can be Validated with Authorized Access")
 	public void checkValidatePaymentsWithAuthorizedAccess() throws IOException, ParseException {
 		validatePayment.authorisedWithValidToken();
 		validatePayment.setPayloadWithValidData();

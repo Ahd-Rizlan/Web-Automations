@@ -23,7 +23,7 @@ public class api_GetBankListTest extends baseMethod {
 	public void resetData (Method m){
 		setTestName(m.getName());
 	}
-	@Test(priority = 1)
+	@Test(priority = 1,testName = "Verify that Debited  Banks are Not Retrieved with Unauthorized Access")
 	public void checkGetBankListWithUnauthorizedAccess()  {
 		getBankList.authorisedWithInvalidToken();
 		getBankList.invokeGetBankListApi();
@@ -31,7 +31,7 @@ public class api_GetBankListTest extends baseMethod {
 
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that Debited  Banks are Retrieved with Authorized Access")
 	public void checkGetBankListWithAuthorizedAccess()  {
 		getBankList.authorisedWithValidToken();
 		getBankList.invokeGetBankListApi();

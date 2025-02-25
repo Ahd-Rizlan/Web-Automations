@@ -23,7 +23,7 @@ public class api_getPaymentsByIDTest extends baseMethod {
 	public void resetData (Method m){
 		setTestName(m.getName());
 	}
-	@Test(priority = 1)
+	@Test(priority = 1,testName = "Verify that Payments Details are Not Retrieved with Unauthorized Access")
 	public void checkGetPaymentsByIDApiWithUnauthorizedAccess() {
 		getPaymentsByID.authorisedWithInvalidToken();
 		getPaymentsByID.setPaymentId(ConstantApiUtils.PAYMENT_ID);
@@ -32,7 +32,7 @@ public class api_getPaymentsByIDTest extends baseMethod {
 
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that Payments Details are Retrieved with Authorized Access")
 	public void checkGetPaymentsByIDApiWithAuthorizedAccess() {
 		getPaymentsByID.authorisedWithValidToken();
 		getPaymentsByID.setPaymentId(ConstantApiUtils.PAYMENT_ID);

@@ -21,7 +21,7 @@ public class api_GetCASAccountsTest extends baseMethod {
 	public void resetData (Method m){
 		setTestName(m.getName());
 	}
-	@Test(priority = 1)
+	@Test(priority = 1, testName = "Verify that the CASA Account is Not Accessible with Unauthorized Access")
 	public void checkCasaAccountApiUnauthorizedAccess() {
 		casaaccountApiMethods.authorisedWithInvalidToken();
 		casaaccountApiMethods.setPageNo(ConstantApiUtils.PAGE_NO_ONE);
@@ -29,7 +29,7 @@ public class api_GetCASAccountsTest extends baseMethod {
 		casaaccountApiMethods.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that the CASA Account is Accessible with Authorized Access")
 	public void checkCasaAccountApiAuthorizedAccess() {
 		casaaccountApiMethods.authorisedWithValidToken();
 		casaaccountApiMethods.setPageNo(ConstantApiUtils.PAGE_NO_ONE);

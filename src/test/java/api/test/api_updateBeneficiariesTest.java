@@ -23,14 +23,14 @@ public class api_updateBeneficiariesTest extends baseMethod {
 	public void resetData (Method m){
 		setTestName(m.getName());
 	}
-	@Test(priority = 1)
+	@Test(priority = 1,testName = "Verify that the Beneficiaries cannot be Updated with Unauthorized Access")
 	public void checkUpdateBeneficiariesWithUnauthorizedAccess()  {
 		updateBeneficiaries.authorisedWithInvalidToken();
 		updateBeneficiaries.invokeUpdateBeneficiariesApi();
 		updateBeneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2 , testName = "Verify that the Beneficiaries can be Updated with Authorized Access")
 	public void checkUpdateBeneficiariesWithAuthorizedAccess()  {
 		updateBeneficiaries.authorisedWithValidToken();
 		updateBeneficiaries.invokeUpdateBeneficiariesApi();

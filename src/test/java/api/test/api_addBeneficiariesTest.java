@@ -29,7 +29,7 @@ public class api_addBeneficiariesTest extends baseMethod {
     }
 
     //Negative cases
-    @Test(priority = 1)
+    @Test(priority = 1 , testName="Verify that Adding Beneficiaries cannot be with Unauthorized Access")
     //For unauthorized access
     public void checkAddBeneficiariesUnauthorizedAccess() {
         addBeneficiaries.authorisedWithInvalidToken();
@@ -38,7 +38,7 @@ public class api_addBeneficiariesTest extends baseMethod {
     }
 
 
-    @Test(priority = 2)
+    @Test(priority = 2, testName = "Verify that Adding Beneficiaries cannot be with Incorrect Account Type")
     //For incorrect account type
     public void checkAddBeneficiariesWithIncorrectAccountType() throws IOException, ParseException {
         addBeneficiaries.authorisedWithValidToken();
@@ -48,7 +48,7 @@ public class api_addBeneficiariesTest extends baseMethod {
         addBeneficiaries.validatePayloadForIncorrectAccountType();
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2, testName = "Verify that Adding Beneficiaries cannot be with Empty Account Type")
     //For empty account type
     public void checkAddBeneficiariesWithEmptyAccountName() throws IOException, ParseException {
         addBeneficiaries.authorisedWithValidToken();
@@ -58,7 +58,7 @@ public class api_addBeneficiariesTest extends baseMethod {
         addBeneficiaries.validatePayloadForEmptyAccountName();
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2, testName = "Verify that Adding Beneficiaries cannot be with Incorrect Account Number")
     //For incorrect account name
     public void checkAddBeneficiariesWithIncorrectAccountNumber() throws IOException, ParseException {
         addBeneficiaries.authorisedWithValidToken();
@@ -68,7 +68,7 @@ public class api_addBeneficiariesTest extends baseMethod {
         addBeneficiaries.validatePayloadForIncorrectAccountNumber();
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2, testName = "Verify that Adding Beneficiaries cannot be with Empty Bank code")
     //For empty bank code
     public void checkAddBeneficiariesWithEmptyBankCode() throws IOException, ParseException {
         addBeneficiaries.authorisedWithValidToken();
@@ -78,7 +78,7 @@ public class api_addBeneficiariesTest extends baseMethod {
         addBeneficiaries.validatePayloadForEmptyBankCode();
     }
 
-    @Test(priority = 3)
+    @Test(priority = 3, testName = "Verify that Adding Beneficiaries can be with Authorized Access")
     //For happy path
     public void checkAddBeneficiariesWithAuthorizedAccess() throws IOException, ParseException {
         addBeneficiaries.authorisedWithValidToken();

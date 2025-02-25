@@ -22,7 +22,7 @@ public class api_InitiateCardsForSVRApiTest extends baseMethod {
 	public void resetData (Method m){
 		setTestName(m.getName());
 	}
-	@Test(priority = 1)
+	@Test(priority = 1,testName = "Verify that Cards for SVR are not initiated with Unauthorized Access")
 	public void checkInitiateCardsForSVRApiUnauthorizedAccess() throws IOException, ParseException {
 		initiatecardsForSVR.authorisedWithInvalidToken();
 		initiatecardsForSVR.setPayloadWithValidDeviceId();
@@ -32,7 +32,7 @@ public class api_InitiateCardsForSVRApiTest extends baseMethod {
 	}
 
 
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that Cards for SVR are not initiated with Invalid DeviceId while other details are valid ")
 	public void checkInitiateCardsForSVRApiWithInvalidDeviceID() throws IOException, ParseException {
 		initiatecardsForSVR.authorisedWithValidToken();
 		initiatecardsForSVR.setPayloadWithInvalidDeviceId();
@@ -42,7 +42,7 @@ public class api_InitiateCardsForSVRApiTest extends baseMethod {
 		//(SVR4-454) Issue detected (even an incorrect device-id is submitted with a correct time-stamp, a valid response is detected)
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that Cards for SVR are not initiated with Invalid TimeStamp while other details are valid")
 	public void checkInitiateCardsForSVRApiWithInvalidTimeStamp() throws IOException, ParseException {
 		initiatecardsForSVR.authorisedWithValidToken();
 		initiatecardsForSVR.setPayloadWithValidDeviceId();
@@ -53,7 +53,7 @@ public class api_InitiateCardsForSVRApiTest extends baseMethod {
 
 	}
 
-	@Test(priority = 3)
+	@Test(priority = 3,testName = "Verify that Cards for SVR are initiated with Authorized Access")
 	public void checkInitiateCardsForSVRApiAuthorizedAccess() throws IOException, ParseException {
 		initiatecardsForSVR.authorisedWithValidToken();
 		initiatecardsForSVR.setPayloadWithValidDeviceId();

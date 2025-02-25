@@ -22,7 +22,7 @@ public class api_getCustAccountDetailsTest extends baseMethod {
 	public void resetData (Method m){
 		setTestName(m.getName());
 	}
-	@Test(priority = 1)
+	@Test(priority = 1,testName = "Verify that Account Details are Not Retrieved With Unauthorized Access")
 	public void checkCustAccountDetailsApiUnauthorizedAccess() {
 		getCustAccountDetails.authorisedWithInvalidToken();
 		getCustAccountDetails.invokeGetCustAccountDetailsApi();
@@ -30,7 +30,7 @@ public class api_getCustAccountDetailsTest extends baseMethod {
 
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that Account Details are Retrieved With Authorized Access")
 	public void checkCustAccountDetailsApiAuthorizedAccess() {
 
 		getCustAccountDetails.authorisedWithValidToken();

@@ -49,7 +49,7 @@ public class dashboardWebCardDetailsforSVRTest extends baseMethod {
         dashboardWebCardDetailsforSVR.setPayloadWithValidDeviceId();
     }
 
-    @Test(priority = 1)
+    @Test(priority = 1,testName = "Verify that WebCard Details For SVR Dashboard are Not Retrieved with Unauthorized Access")
     //For unauthorized access
     public void checkDashboardWebCardDetailsForSVRApiUnauthorizedAccess() throws IOException, ParseException {
         dashboardWebCardDetailsforSVR.authorisedWithInvalidToken();
@@ -58,7 +58,7 @@ public class dashboardWebCardDetailsforSVRTest extends baseMethod {
         dashboardWebCardDetailsforSVR.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
     }
 
-    @Test(priority = 2) //Negative case for invalid InitiatedSerno
+    @Test(priority = 2,testName = "Verify that WebCard Details For SVR Dashboard are Not Retrieved with Invalid Initiated Serno") //Negative case for invalid InitiatedSerno
     public void checkDashboardWebCardDetailsForSVRWithInvalidInitiatedSerno() throws IOException, ParseException {
         dashboardWebCardDetailsforSVR.setPayloadWithInvalid_InitiatedSerno();
         dashboardWebCardDetailsforSVR.invokeDashboardWebCardDetailsForSVRApi();
@@ -66,7 +66,7 @@ public class dashboardWebCardDetailsforSVRTest extends baseMethod {
         dashboardWebCardDetailsforSVR.validatePayloadForIncorrectInitiatedSerno();
     }
 
-    @Test(priority = 2) //Negative case for invalid InitiatedKey | bug reported [SVR4-458]
+    @Test(priority = 2,testName = "Verify that WebCard Details For SVR Dashboard are Not Retrieved with Invalid Initiated Key") //Negative case for invalid InitiatedKey | bug reported [SVR4-458]
     public void checkDashboardWebCardDetailsForSVRWithInvalidInitiatedKey() throws IOException, ParseException {
         dashboardWebCardDetailsforSVR.setPayloadWithInvalid_InitiatedKey();
         dashboardWebCardDetailsforSVR.invokeDashboardWebCardDetailsForSVRApi();
@@ -74,7 +74,7 @@ public class dashboardWebCardDetailsforSVRTest extends baseMethod {
         dashboardWebCardDetailsforSVR.validatePayloadForIncorrectInitiatedKey();
     }
 
-    @Test(priority = 2) //Negative case for invalid ChainSerNo | bug reported [SVR4-458]
+    @Test(priority = 2,testName = "Verify that WebCard Details For SVR Dashboard are Not Retrieved with Invalid ChainSerNo") //Negative case for invalid ChainSerNo | bug reported [SVR4-458]
     public void checkDashboardWebCardDetailsForSVRWithInvalidChainSerNo() throws IOException, ParseException {
         dashboardWebCardDetailsforSVR.setPayloadWithInvalid_ChainSerno();
         dashboardWebCardDetailsforSVR.invokeDashboardWebCardDetailsForSVRApi();
@@ -82,7 +82,7 @@ public class dashboardWebCardDetailsforSVRTest extends baseMethod {
         dashboardWebCardDetailsforSVR.validatePayloadForIncorrectChainSerNo();
     }
 
-    @Test(priority = 2) //Negative case for invalid ChainAuth
+    @Test(priority = 2,testName = "Verify that WebCard Details For SVR Dashboard are Not Retrieved with Invalid Chain Authorization Key") //Negative case for invalid ChainAuth
     public void checkDashboardWebCardDetailsForSVRWithInvalidChainAuth() throws IOException, ParseException {
         dashboardWebCardDetailsforSVR.setPayloadWithInvalid_ChainAuth();
         dashboardWebCardDetailsforSVR.invokeDashboardWebCardDetailsForSVRApi();
@@ -90,7 +90,7 @@ public class dashboardWebCardDetailsforSVRTest extends baseMethod {
         dashboardWebCardDetailsforSVR.validatePayloadForIncorrectChainAuth();
     }
 
-    @Test(priority = 2) //Negative case for invalid DeviceId
+    @Test(priority = 2,testName = "Verify that WebCard Details For SVR Dashboard are Not Retrieved with Invalid Device Id") //Negative case for invalid DeviceId
     public void checkDashboardWebCardDetailsForSVRWithInvalidDeviceId() throws IOException, ParseException {
         dashboardWebCardDetailsforSVR.setPayloadWithInvalid_DeviceId();
         dashboardWebCardDetailsforSVR.invokeDashboardWebCardDetailsForSVRApi();
@@ -98,7 +98,7 @@ public class dashboardWebCardDetailsforSVRTest extends baseMethod {
         dashboardWebCardDetailsforSVR.validatePayloadForIncorrectDeviceId();
     }
 
-    @Test(priority = 3)
+    @Test(priority = 3,testName = "Verify that WebCard Details For SVR Dashboard are Retrieved with Valid Authorized Access")
     public void checkDashboardWebCardDetailsForSVRAuthorizedAccess() { //bug reported [SVR4-510] - Resolved
         dashboardWebCardDetailsforSVR.invokeDashboardWebCardDetailsForSVRApi();
         dashboardWebCardDetailsforSVR.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);

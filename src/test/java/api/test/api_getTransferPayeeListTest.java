@@ -21,14 +21,14 @@ public class api_getTransferPayeeListTest extends baseMethod {
 	public void resetData (Method m){
 		setTestName(m.getName());
 	}
-	@Test(priority = 1)
+	@Test(priority = 1,testName = "Verify that the Transfer Payee List Cannot be Retrieve with Unauthorized Access")
 	public void checkGetTransferPayeeListWithUnauthorizedAccess()  {
 		getTransferPayeeList.authorisedWithInvalidToken();
 		getTransferPayeeList.invokeGetTransferPayeeListApi();
 		getTransferPayeeList.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that the Transfer Payee List Retrieve with Authorized Access")
 	public void checkGetTransferPayeeListWithAuthorizedAccess()  {
 		getTransferPayeeList.authorisedWithValidToken();
 		getTransferPayeeList.invokeGetTransferPayeeListApi();

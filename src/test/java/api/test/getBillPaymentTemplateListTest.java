@@ -29,7 +29,7 @@ public class getBillPaymentTemplateListTest extends baseMethod {
     }
 
 	//Negative cases
-	@Test(priority = 1)
+	@Test(priority = 1,testName = "Verify that The Bill Payment Templates are Cannot be Retrieved with Unauthorized Access")
 	//For unauthorized access
 	public void checkGetBillPaymentTemplateListWithUnauthorizedAccess()  {
 		getBillPaymentTemplateList.authorisedWithInvalidToken();
@@ -37,7 +37,7 @@ public class getBillPaymentTemplateListTest extends baseMethod {
 		getBillPaymentTemplateList.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that The Bill Payment Templates are Cannot be Retrieved with Incorrect Merchant Code")
 	//For incorrect MerchantCode
 	public void checkGetBillPaymentTemplateListWithIncorrectMerchantCode() throws IOException, ParseException {
 		getBillPaymentTemplateList.authorisedWithValidToken();
@@ -48,7 +48,7 @@ public class getBillPaymentTemplateListTest extends baseMethod {
 	}
 
 	//Happy path
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that The Bill Payment Templates are Can be Retrieved with Authorized Access")
 	public void checkGetBillPaymentTemplateListWithAuthorizedAccess()  {
 		getBillPaymentTemplateList.authorisedWithValidToken();
 		getBillPaymentTemplateList.invokeGetBillPaymentTemplateListApi();

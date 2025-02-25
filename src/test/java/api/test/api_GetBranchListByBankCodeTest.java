@@ -23,7 +23,7 @@ public class api_GetBranchListByBankCodeTest extends baseMethod {
 	public void resetData (Method m){
 		setTestName(m.getName());
 	}
-	@Test(priority = 1)
+	@Test(priority = 1,testName = "Verify that Branch List is Not Retrieved with Unauthorized Access")
 	public void checkBranchListByBankCodeWithUnauthorizedAccess()  {
 		getBranchListByBankCode.authorisedWithInvalidToken();
 		getBranchListByBankCode.invokeGetBranchListByBankCodeApi();
@@ -31,7 +31,7 @@ public class api_GetBranchListByBankCodeTest extends baseMethod {
 
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that Branch List is Retrieved with Authorized Access")
 	public void checkBranchListByBankCodeWithAuthorizedAccess()  {
 		getBranchListByBankCode.authorisedWithValidToken();
 		getBranchListByBankCode.invokeGetBranchListByBankCodeApi();

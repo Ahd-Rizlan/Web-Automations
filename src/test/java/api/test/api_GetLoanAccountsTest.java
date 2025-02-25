@@ -22,7 +22,7 @@ public class api_GetLoanAccountsTest extends baseMethod {
 	public void resetData (Method m){
 		setTestName(m.getName());
 	}
-	@Test(priority = 1)
+	@Test(priority = 1, testName = "Verify that the Loan Account is Not Accessible with Unauthorized Access")
 	public void checkLoanAccountsApiWithUnauthorizedAccess() {
 		getLoanAccounts.authorisedWithInvalidToken();
 		getLoanAccounts.setPageNo(ConstantApiUtils.PAGE_NO_ONE);
@@ -31,7 +31,7 @@ public class api_GetLoanAccountsTest extends baseMethod {
 
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2, testName = "Verify that the Loan Account is Accessible with Authorized Access")
 	public void checkLoanAccountsApiWithAuthorizedAccess() {
 
 		getLoanAccounts.authorisedWithValidToken();

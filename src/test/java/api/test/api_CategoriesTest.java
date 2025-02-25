@@ -29,7 +29,7 @@ public class api_CategoriesTest extends baseMethod {
     }
 
 	//Negative cases
-	@Test(priority = 1)
+	@Test(priority = 1,testName = "Verify that the Categories cannot be Retrieved with Unauthorized Access")
 	//For unauthorized access
 	public void checkCategoriesWithUnauthorizedAccess()  {
 		categories.authorisedWithInvalidToken();
@@ -37,7 +37,7 @@ public class api_CategoriesTest extends baseMethod {
 		categories.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401); //404 is returned
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that the Categories cannot be Retrieved with Incorrect Merchant Code")
 	//For incorrect MerchantCode | bug reported : SVR4-494
 	public void checkCategoriesWithIncorrectMerchantCode() throws IOException, ParseException {
 		categories.authorisedWithValidToken();
@@ -47,7 +47,7 @@ public class api_CategoriesTest extends baseMethod {
 		categories.validatePayloadForIncorrectMerchantCode();
 	}
 	//Happy path
-	@Test(priority = 2)
+	@Test(priority = 2,testName = "Verify that the Categories can be Retrieved with Unauthorized Access")
 	public void checkCategoriesWithAuthorizedAccess()  {
 		categories.authorisedWithValidToken();
 		categories.invokeCategoriesApi();
