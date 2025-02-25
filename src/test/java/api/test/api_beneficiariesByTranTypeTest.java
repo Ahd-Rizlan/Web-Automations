@@ -25,7 +25,7 @@ public class api_beneficiariesByTranTypeTest extends baseMethod {
         setTestName(m.getName());
     }
     //Negative cases
-    @Test(priority = 1)
+    @Test(priority = 1,testName = "Verify that Beneficiaries for each transaction type cannot be accessed with Unauthorized Access")
     //For unauthorized access
     public void checkBeneficiariesByTranTypeWithUnauthorizedAccess() {
         beneficiariesByTranType.authorisedWithInvalidToken();
@@ -34,7 +34,7 @@ public class api_beneficiariesByTranTypeTest extends baseMethod {
 
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2,testName ="Verify that Beneficiaries Cannot Be Accessed With Empty Transaction Type" )
     //For empty transaction type
     public void checkBeneficiariesByTranTypeWithEmptyTranType() throws IOException, ParseException {
         beneficiariesByTranType.authorisedWithValidToken();
@@ -44,7 +44,7 @@ public class api_beneficiariesByTranTypeTest extends baseMethod {
         beneficiariesByTranType.validatePayloadForEmptyTranType();
     }
 
-    @Test(priority = 3)
+    @Test(priority = 3,testName = "Verify that Beneficiaries for each transaction type can be accessed with Authorized Access")
     //For happy path
     public void checkBeneficiariesByTranTypeWithCorrectTranType() throws IOException, ParseException {
         beneficiariesByTranType.authorisedWithValidToken();
