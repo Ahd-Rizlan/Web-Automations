@@ -37,7 +37,7 @@ public class api_validateTransferTest extends baseMethod {
         validateTransfer.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
 
     }
-    @Test(priority = 1, testName = "Verify that Transfers can be done with Authorized Access")
+    @Test(priority = 2, testName = "Verify that Transfers can be done with Authorized Access")
     public void checkValidateTransferWithUnAuthorizedAccess() {
         validateTransfer.authorisedWithValidToken();
         validateTransfer.invokeValidateTransferApi();
