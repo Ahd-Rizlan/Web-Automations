@@ -23,7 +23,7 @@ public class api_deleteBeneficiariesTest extends baseMethod {
         setTestName(m.getName());
     }
 
-    @Test(priority = 1)
+    @Test(priority = 1,testName = "Verify that the Beneficiaries cannot be deleted with Unauthorized Access ")
     //For Unauthorized access
     public void checkDeleteBeneficiariesWithUnauthorizedAccess() {
         deleteBeneficiaries.authorisedWithInvalidToken();
@@ -32,7 +32,7 @@ public class api_deleteBeneficiariesTest extends baseMethod {
 
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2,testName = "Verify that the Beneficiaries can be deleted with Authorized Access ")
     public void checkDeleteBeneficiariesWithAuthorizedAccess() {
         deleteBeneficiaries.authorisedWithValidToken();
         deleteBeneficiaries.invokeDeleteBeneficiariesApi();
