@@ -29,3 +29,4 @@ replay_pid*
 /extent-reports/
 /screenshots/
 /src/test/resources/WEBDRIVERS/
+/extent-reports/*
