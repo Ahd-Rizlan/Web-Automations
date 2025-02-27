@@ -7,6 +7,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.report.helpers;
 
+import java.awt.image.BufferedImage;
+import java.util.List;
+
 public abstract class BasePage extends helpers {
 
     protected WebDriver driver;
@@ -218,6 +221,33 @@ public abstract class BasePage extends helpers {
             return false;
         }
     }
+
+    /**
+     * Checks if an elements are present in the DOM, identified by the provided locator.
+     * <p>
+     * This method waits for the element to be present in the DOM for up to 20 seconds.
+     *
+     * @param locator the locator used to find the element
+     * @return size if the elements are present, 0 if the element is not found or an error occurs
+     *
+     */
+    public int isElementsPresentBy(By locator) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, 20);
+            wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+            List<WebElement> records =  driver.findElements(locator);
+            if (!records.isEmpty())
+            {
+                return records.size();
+            }else {
+                return 0;
+            }
+        } catch (Exception e) {
+            System.err.println("Element not present: " + e.getMessage());
+            return 0;
+        }
+    }
+
 
     /**
      * Checks if a WebElement is present and visible.

@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -185,6 +187,46 @@ public class CommonUtils extends Drivers {
     public static int findPosition(By[] headers, By target) {
         List<By> list = Arrays.asList(headers);
         return list.indexOf(target) + 1;
+    }
+
+    /**
+     * Function to check if the text contains alphabetic characters
+     *
+     * @param text - text content to validate the characters
+     * @return boolean - text content availability
+     */
+    public static boolean containsAlphabaticCharacters(String text) {
+        return text.matches(".*[a-zA-Z].*");
+    }
+
+    /**
+     * Function to check if the text contains numeric characters
+     *
+     * @param text - text content to validate the characters
+     * @return boolean - text content availability
+     */
+    public static boolean containsNumericCharacters(String text) {
+        return text.matches("^[\\d.,]+$");
+    }
+
+    /**
+     * Function to check if the text contains alphabetic and numeric characters
+     *
+     * @param text - text content to validate the characters
+     * @return boolean - text content availability
+     */
+    public static boolean containsAlphAndNumCharacters(String text) {
+        return text.matches("^(?=.*[a-zA-Z])(?=.*\\d).+$");
+    }
+
+    /**
+     * Function to check if the text contains alphabetic, numeric and special characters
+     *
+     * @param text - text content to validate the characters
+     * @return boolean - text content availability
+     */
+    public static boolean containsAlphNumAndSpecialCharacters(String text) {
+        return text.matches("^[a-zA-Z0-9!@#$%^&*()_+{}\\[\\]:;<>,.?/~\\\\-]+$");
     }
 
     public enum sortType {DATE, NUMBER, STRING, SELECT}

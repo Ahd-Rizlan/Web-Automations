@@ -51,8 +51,8 @@ public class Drivers{
 
             switch (browser) {
                 case "Chrome":
-                    ChromeDriverManager.chromedriver().setup();
-                    //System.setProperty("webdriver.chrome.driver", chromeDriverPath);
+//                    ChromeDriverManager.chromedriver().setup();
+                    System.setProperty("webdriver.chrome.driver", chromeDriverPath);
                     driver = new ChromeDriver();
                     driver.manage().window().maximize();
                     break;

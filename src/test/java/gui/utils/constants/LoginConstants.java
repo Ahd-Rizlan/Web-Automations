@@ -19,7 +19,7 @@ public class LoginConstants {
     public static final String CONFIRM_AND_LOGOUT_BUTTON_TEXT = "Confirm & Logout";
 
     //-----------------One time data ----------------------
-    public static final int[] OTP = {1, 1, 1, 1, 1, 1};
+    public static final String OTP = "111111";
 
     //-----------------One time data ----------------------
     public static final boolean TRUE = true;
