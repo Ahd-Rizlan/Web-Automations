@@ -15,6 +15,8 @@ import static utils.CommonUtils.USER_DIR;
 
 public class favBeneficiaries extends baseMethod {
     File jsonBody = new File(POST_BODY);
+
+    File jsonBodyWithEmptyBene = new File(POST_BODY_WITH_EMPTY_BENE);
     private static final Map<String, String> headersMap = new HashMap<>();
     private static final String baseHost = config.getProperty("sitSampathHost");
     private static Response response;
@@ -22,7 +24,10 @@ public class favBeneficiaries extends baseMethod {
     JSONObject jsonObject;
     JSONParser jsonParser = new JSONParser();
     private static final String JSON_PATH = USER_DIR + FAV_BENEFICIARIES_RESPONSE;
+    private static final String JSON_PATH_FOR_EMPTY_BENE = USER_DIR + FAV_BENEFICIARIES_RESPONSE_FOR_EMPTY_BENE;
+
     private static final String POST_BODY = USER_DIR + FAV_BENEFICIARIES_BODY;
+    private static final String POST_BODY_WITH_EMPTY_BENE= USER_DIR + EMPTY_FAV_BENEFICIARIES_BODY;
 
     public void authorisedWithInvalidToken() {
         headersMap.put(TXT_AUTHORIZATION, TXT_AUTHORIZATION_INVALID_VAL);
@@ -53,12 +58,29 @@ public class favBeneficiaries extends baseMethod {
         System.out.println("API Response" + response.prettyPrint());
         printResponseLogInReport(response);
     }
-
+    public void invokeFavBeneficiariesWithEmptyBene() {
+        setHeaders();
+        RestAssured.useRelaxedHTTPSValidation();
+        response = RestAssured.given()
+                .baseUri(baseHost)
+                .headers(headersMap)
+                .basePath(GET_FAV_BENEFICIARIES_PATH)
+                .body(jsonBodyWithEmptyBene)
+                .when()
+                .log()
+                .all()
+                .post();
+        System.out.println("API Response" + response.prettyPrint());
+        printResponseLogInReport(response);
+    }
     public void validateResponseCode(int responseCode) {
         response.then().assertThat().statusCode(responseCode);
     }
 
     public void validatePayload() {
         new PayloadValidator().validateJsonFileWithResponse(JSON_PATH, response);
+    }
+    public void validatePayloadWithFavBene() {
+        new PayloadValidator().validateJsonFileWithResponse(JSON_PATH_FOR_EMPTY_BENE, response);
     }
 }
