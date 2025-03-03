@@ -22,14 +22,15 @@
             </class>
             <class name="api.test.api_FavBeneficiariesTest">
                 <methods>
-                    <include name="checkCreditCardDetailsApiUnauthorizedAccess"/>
-                    <include name="checkCreditCardDetailsApiAuthorizedAccess"/>
+                    <include name="checkFavBeneficiaryDetailsApiUnauthorizedAccess"/>
+                    <include name="checkFavBeneficiaryDetailsApiAuthorizedAccess"/>
+                    <include name="checkFavBeneficiaryDetailsNotRetrievedWithNoFavBeneficiaries"/>
                 </methods>
             </class>
             <class name="api.test.api_FavouriteBillersTest">
                 <methods>
-                    <include name="checkFavouriteBillersApiWithUnauthorizedAccess"/>
                     <include name="checkFavouriteBillersApiWithAuthorizedAccess"/>
+                    <include name="checkFavouriteBillersApiWithUnauthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.api_GetBankListTest">
@@ -220,6 +221,20 @@
                     <include name="checkValidatePaymentsWithIncorrectCurrencyType"/>
                     <include name="checkValidatePaymentsWithEmptyBankCode"/>
                     <include name="checkValidatePaymentsWithAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_validateTransferTest">
+                <methods>
+                    <include name="checkValidateTransferWithUnauthorizedAccess"/>
+                    <include name="checkValidateTransferWithUnAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_withdrawMobileCash">
+                <methods>
+                    <include name="checkwithdrawMobileCashWithUnauthorizedAccess"/>
+                    <include name="checkwithdrawMobileCashWithInvalidNic"/>
+                    <include name="checkwithdrawMobileCashWithInvalidPin"/>
+                    <include name="checkwithdrawMobileCashWithAuthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.dashboardCreditCardDetailsforSVRTest">
