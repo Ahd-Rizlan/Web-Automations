@@ -33,7 +33,7 @@ public class favouriteBillers extends baseMethod {
     private String pageNoValue;
     private String pageLimitValue;
     private static final String JSON_PATH = USER_DIR + GET_FAVOURITE_BILLERS_RESPONSE;
-
+    private static final String JSON_PATH_WITH_INVALID_InvalidMerchantCode = USER_DIR + GET_FAVOURITE_BILLERS_WITH_INVALID_MERCHANTCODE_RESPONSE;
     public void authorisedWithInvalidToken() {
         headersMap.put(TXT_AUTHORIZATION, TXT_AUTHORIZATION_INVALID_VAL);
     }
@@ -58,7 +58,7 @@ public class favouriteBillers extends baseMethod {
         jsonBody = new File(ConstantApiUtils.PATH_TO_PAYLOAD_FOLDER.concat("favBillersBody.json"));
         file = new FileReader(ConstantApiUtils.PATH_TO_PAYLOAD_FOLDER.concat("favBillersBody.json"));
         jsonObject = (JSONObject) jsonParser.parse(file);
-        JSONObject favouriteBillers = (JSONObject) jsonObject.get("favouriteBillersResponse");
+        JSONObject favouriteBillers = (JSONObject) jsonObject.get("favouriteBillers");
         favouriteBillers.put("merchantCode", INVALID_MERCHANT_CODE);
         FileWriter writer = new FileWriter(jsonBody, false); //overwrites the content of file
         writer.write(jsonObject.toString());
@@ -70,27 +70,12 @@ public class favouriteBillers extends baseMethod {
         file = new FileReader(ConstantApiUtils.PATH_TO_PAYLOAD_FOLDER.concat("favBillersBody.json"));
         jsonObject = (JSONObject) jsonParser.parse(file);
         JSONObject favouriteBillers = (JSONObject) jsonObject.get("favouriteBillers");
-        favouriteBillers.put("merchantCode", INVALID_MERCHANT_CODE);
+        favouriteBillers.put("merchantCode", VALID_MERCHANT_CODE);
         FileWriter writer = new FileWriter(jsonBody, false); //overwrites the content of file
         writer.write(jsonObject.toString());
         writer.close();
     }
-       public void invokeFavouriteBillersApi() {
-        setHeaders();
-        response = RestAssured.given()
-                .relaxedHTTPSValidation()
-                .baseUri(baseHost)
-                .headers(headersMap)
-                .basePath(GET_FAVOURITE_BILLERS_PATH)
-                .queryParam(pageLimit, pageLimitValue)
-                .queryParam(pageNo, pageNoValue)
-                .when()
-                .log()
-                .all()
-                .get();
-        System.out.println("API Response" + response.prettyPrint());
-        printResponseLogInReport(response);
-    }
+
     public void invokeFavouriteBillersApiPost() {
         setHeaders();
         response = RestAssured.given()
@@ -117,5 +102,7 @@ public class favouriteBillers extends baseMethod {
         new PayloadValidator().validateJsonFileWithResponse(JSON_PATH, response);
     }
 
-
+    public void validatePayloadWithInvalidInvalidMerchantCode() {
+        new PayloadValidator().validateJsonFileWithResponse(JSON_PATH_WITH_INVALID_InvalidMerchantCode, response);
+    }
 }

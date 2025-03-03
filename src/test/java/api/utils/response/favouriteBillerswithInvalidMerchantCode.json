@@ -1,0 +1,10 @@
+{
+  "favouriteBillersResponse": {
+    "responseHeader": {
+      "statusCode": false,
+      "statusDescription": "FAILED",
+      "errorCode": "",
+      "errorDescription": "Failure - Biller Sharing REST service"
+    }
+  }
+}

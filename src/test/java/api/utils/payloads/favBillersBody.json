@@ -1,7 +1,1 @@
-{
-  "favouriteBillers": {
-    "pageLimit": 12,
-    "pageNo": 1,
-    "merchantCode": "ORC"
-  }
-}
+{"favouriteBillers":{"pageLimit":12,"merchantCode":"ORCX","pageNo":1}}

@@ -26,44 +26,32 @@ public class api_FavouriteBillersTest extends baseMethod {
         setTestName(m.getName());
     }
 
-//    @Test(priority = 1,testName = "Verify that Favourite Billers are Not Retrieved With Unauthorized Access")   // Bug reported : SVR4-517
-//    public void checkFavouriteBillersApiWithUnauthorizedAccess() {
-//
-//        favouriteBillers.authorisedWithInvalidToken();
-//        favouriteBillers.setPageLimit(ConstantApiUtils.PAGE_LIMIT_ONE);
-//        favouriteBillers.setPageNo(ConstantApiUtils.PAGE_NO_TWO);
-//        favouriteBillers.invokeFavouriteBillersApi();
-//        favouriteBillers.validateResponseCode(ConstantApiUtils.API_STATS_CODE_404);
-//    }
 
-//    @Test(priority = 2,testName = "Verify that Favourite Billers are  Retrieved With Authorized Access")  // Bug reported : SVR4-517
-//    public void checkFavouriteBillersApiWithAuthorizedAccess() {
-//
-//        favouriteBillers.authorisedWithValidToken();
-//        favouriteBillers.setPageLimit(ConstantApiUtils.PAGE_LIMIT_ONE);
-//        favouriteBillers.setPageNo(ConstantApiUtils.PAGE_NO_TWO);
-//        favouriteBillers.invokeFavouriteBillersApi();
-//        favouriteBillers.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
-//        favouriteBillers.validatePayload();
-//    }
-    @Test(priority = 2,testName = "Verify that Favourite Billers are  Retrieved With Authorized Access")  // Bug reported : SVR4-517
+    @Test(priority = 2,testName = "Verify that Favourite Billers are  Retrieved With Authorized Access")
     public void checkFavouriteBillersApiWithAuthorizedAccess() {
-
         favouriteBillers.authorisedWithValidToken();
         favouriteBillers.invokeFavouriteBillersApiPost();
         favouriteBillers.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
         favouriteBillers.validatePayload();
     }
+    @Test(priority = 2,testName = "Verify that Favourite Billers are Not Retrieved With Invalid Merchant Code")
+    public void checkFavouriteBillersApiWithInvalidMerchantCode() throws IOException, ParseException {
 
+        favouriteBillers.authorisedWithValidToken();
+        favouriteBillers.setPayloadWithInvalidMerchantCode();
+        favouriteBillers.invokeFavouriteBillersApiPost();
+        favouriteBillers.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
+        favouriteBillers.validatePayloadWithInvalidInvalidMerchantCode();
+    }
 
-    @Test(priority = 1,testName = "Verify that Favourite Billers are Not Retrieved With Unauthorized Access")   // Bug reported : SVR4-517
+    @Test(priority = 1,testName = "Verify that Favourite Billers are Not Retrieved With Unauthorized Access")
     public void checkFavouriteBillersApiWithUnauthorizedAccess() throws IOException, ParseException {
 
         favouriteBillers.authorisedWithInvalidToken();
-        favouriteBillers.setPayloadWithInvalidMerchantCode();
-//        favouriteBillers.setPageLimit(ConstantApiUtils.PAGE_LIMIT_ONE);
-//        favouriteBillers.setPageNo(ConstantApiUtils.PAGE_NO_TWO);
+        favouriteBillers.setPayloadWithValidMerchantCode();
+        favouriteBillers.setPageLimit(ConstantApiUtils.PAGE_LIMIT_ONE);
+        favouriteBillers.setPageNo(ConstantApiUtils.PAGE_NO_TWO);
         favouriteBillers.invokeFavouriteBillersApiPost();
-//        favouriteBillers.validateResponseCode(ConstantApiUtils.API_STATS_CODE_404);
+        favouriteBillers.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
     }
 }

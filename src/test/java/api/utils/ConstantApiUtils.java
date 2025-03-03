@@ -150,6 +150,7 @@ public class ConstantApiUtils {
     public static final String GET_CUST_ACCOUNT_DETAILS_RESPONSE = "//src//test//java//api//utils//response//getCustAccountDetails.json";
     public static final String GET_LOAN_ACCOUNTS_RESPONSE = "//src//test//java//api//utils//response//loanAccounts.json";
     public static final String GET_FAVOURITE_BILLERS_RESPONSE = "//src//test//java//api//utils//response//favouriteBillers.json";
+    public static final String GET_FAVOURITE_BILLERS_WITH_INVALID_MERCHANTCODE_RESPONSE = "//src//test//java//api//utils//response//favouriteBillerswithInvalidMerchantCode.json";
     public static final String GET_MOBILE_CACHE_RESPONSE = "//src//test//java//api//utils//response//mobileCash.json";
     public static final String GET_CATEGORIES_RESPONSE = "//src//test//java//api//utils//response//categories.json";
     public static final String GET_BILL_PAYMENT_TEMPLATE_RESPONSE = "//src//test//java//api//utils//response//getBillPaymentTemplateList.json";
