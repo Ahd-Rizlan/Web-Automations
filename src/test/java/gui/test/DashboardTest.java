@@ -30,15 +30,15 @@ public class DashboardTest extends Drivers {
     }
 
 
-    //Pre-requisite
-    @Test(priority = 1, dataProvider = "LoginData", description = "Login to the Sampath vishwa application", dataProviderClass = DataProviders.LoginDataProvider.class)
-    public void validateTheBrowserBackAndForward(String userName, String password,String emailSentSuccessMsg) {
+    @Test(priority = 1, dataProvider = "LoginData", description = "Pre-Requisite :: Login to the Sampath vishwa application", dataProviderClass = DataProviders.LoginDataProvider.class)
+    public void logIntoDahsboard(String userName, String password,String emailSentSuccessMsg) {
         driver.get(url);
         loginPage.validateTheLoginPage(LoginConstants.EXPECTED_TITLE, LoginConstants.LOGIN_TILE_NAME);
         loginPage.loginToSampathVishwaWeb(userName, password, emailSentSuccessMsg, LoginConstants.OTP_PAGE_HEADER, LoginConstants.FALASE);
         otpPage.validateTheOTPPage(LoginConstants.EXPECTED_TITLE, LoginConstants.OTP_PAGE_HEADER);
         otpPage.enterOTPAndContinue(LoginConstants.OTP);
-        dashboardPage.closeAlertPopup();
+//        Uncomment below once popup feature is deployed
+//        dashboardPage.closeAlertPopup();
         dashboardPage.validateTheTitle();
     }
 
@@ -49,50 +49,47 @@ public class DashboardTest extends Drivers {
 
     @Test(priority = 3, dataProvider = "DashboardFDValidationData", description = "Validate the 6 key points in FD account", dataProviderClass = DataProviders.DashboardDataProvider.class)
     public void validateFixedDepositAccountAtDashboard(String fDAccountNumber, String currencyAndAvailableBalance, String maturityAmount, String maturityDate, String interestRate) {
-        dashboardPage.navigateBackToDashboard();
         dashboardPage.validateFixedDepositAccountAtDashboard(fDAccountNumber, currencyAndAvailableBalance, maturityAmount, maturityDate, interestRate);
     }
 
     @Test(priority = 4, description = "Validate the availability of options under 'Quick Action Widget'")
     public void validateQuickActionAtDashboard() {
-        dashboardPage.navigateBackToDashboard();
         dashboardPage.validateQuickActionAtDashboard();
     }
 
     @Test(priority = 5, description = "Validate the direction to the respective journeys upon clicking on Quick Action options")
     public void validateQuickActionsWidgetsFunctionality() {
-        dashboardPage.navigateBackToDashboard();
         dashboardPage.validateQuickActionsWidgetsFunctionality(DashboardConstants.BUTTON_TEXT_DASHBOARD);
     }
 
 
     @Test(priority = 6, description = "Validate that availability of msg/ads set by bank admins in the dashboard")
     public void validateMsgOrAdvertisements() {
-        dashboardPage.navigateBackToDashboard();
         dashboardPage.validateMessagesAndAdvertisements();
     }
 
     @Test(priority = 7, description = "Validate that availability of RVT transfer in dashboard")
     public void validateAvailabilityOfRVTTransfer() {
-        dashboardPage.navigateBackToDashboard();
         dashboardPage.validateRVTTransferWidgetRecords(DashboardConstants.CURRENCY_VALUES);
     }
 
     @Test(priority = 8, description = "Validate that availability of RVT payments in dashboard")
     public void validateAvailabilityOfRVTPayments() {
-        dashboardPage.navigateBackToDashboard();
         dashboardPage.validateRVTPaymentWidgetRecords(DashboardConstants.CURRENCY_VALUES);
     }
 
     @Test(priority = 9, description = "Validate that availability of RVT payments in dashboard")
     public void validateRVTMobileCashWidgetRecords() {
-        dashboardPage.navigateBackToDashboard();
         dashboardPage.validateRVTMobileCashWidgetRecords(DashboardConstants.CURRENCY_VALUES);
     }
     @Test(priority = 10, description = "Validate the availability of favourite payee in dashboard")
     public void validateAvailabilityOfFavouritePayee() {
-        dashboardPage.navigateBackToDashboard();
         dashboardPage.validateFavouritePayeeWidget();
+    }
+
+    @AfterMethod(description = "Rollback to dashboard")
+    public void rollBackToDashboard() {
+        dashboardPage.navigateBackToDashboard();
     }
 
 //    @Test(priority = 8, description = "Validate visibility of total values in graphical view")

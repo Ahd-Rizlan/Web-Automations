@@ -21,7 +21,7 @@ public class helpers {
     public helpers() {
     }
 
-    public static void addScreenshotToTheReport(String actionName, Status status) {
+    public static void addToReport(String actionName, Status status) {
         actionName = sanitizeActionName(actionName);
         try {
             String dateName = new SimpleDateFormat("yyyy-MM-dd_HH.mm").format(new Date());
@@ -46,6 +46,56 @@ public class helpers {
         } catch (Exception e) {
             logger.error("Failed to capture screenshot for action: {}", actionName, e);
         }
+    }
+    /**
+     * Add context to report
+     *
+     * @param actionName             - Action context
+     * @param status                 - Status of the report
+     * @param enableScreenshot       - if screenshot is needed or not (true / false)
+     */
+    public static void addToReport(String actionName, Status status,boolean enableScreenshot) {
+        actionName = sanitizeActionName(actionName);
+        if(enableScreenshot){
+            try {
+                String dateName = new SimpleDateFormat("yyyy-MM-dd_HH.mm").format(new Date());
+                File source = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+                String destination = file_path + "/screenshots/" + actionName + "_" + dateName + ".png";
+                FileUtils.copyFile(source, new File(destination));
+                logger.info("Screenshot captured for action: {}", actionName);
+
+                ExtentTest test = TestContext.getExtentTest();
+                if (test != null) {
+                    test.log(status, actionName, MediaEntityBuilder.createScreenCaptureFromPath(destination).build());
+                }
+
+                //Use when the scripts are run on the CI/CD
+                 /*   String dateName = new SimpleDateFormat("yyyy-MM-dd_HH.mm").format(new Date());
+            String base64Screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BASE64);
+            logger.info("Screenshot captured for action: {} at {}", actionName, dateName);
+            ExtentTest test = TestContext.getExtentTest();
+            if (test != null) {
+                test.log(status, actionName + " at " + dateName, MediaEntityBuilder.createScreenCaptureFromBase64String(base64Screenshot).build());
+            }*/
+
+            } catch (Exception e) {
+                logger.error("Failed to capture screenshot for action: {}", actionName, e);
+            }
+        }else {
+            try {
+                String dateName = new SimpleDateFormat("yyyy-MM-dd_HH.mm").format(new Date());
+                logger.info("Logging report for action: {}", actionName);
+
+                ExtentTest test = TestContext.getExtentTest();
+                if (test != null) {
+                    test.log(status,actionName );
+                }
+            } catch (Exception e) {
+                logger.error("Failed to log report for action: {}", actionName, e);
+            }
+
+        }
+
     }
 
     private static String sanitizeActionName(String actionName) {

@@ -5,14 +5,10 @@ package pages;
 
 import com.aventstack.extentreports.Status;
 import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import utils.CommonUtils;
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -60,9 +56,9 @@ public class DashboardPage extends BasePage {
     private static final By lblRVTPaymentAccountName = By.xpath("//div[contains(@class,'RecentVishwaTransactions_transactionCard')][1]//div[contains(@class,'transactionDetails')]/span[1]");
     private static final By lblRVTPaymentReference = By.xpath("//div[contains(@class,'RecentVishwaTransactions_transactionCard')][1]//div[contains(@class,'transactionDetails')]/span[contains(@class,'RecentVishwaTransactions')][1]");
     private static final By lblRVTPaymentDate = By.xpath("//div[contains(@class,'RecentVishwaTransactions_transactionCard')][1]//div[contains(@class,'transactionDetails')]/span[contains(@class,'RecentVishwaTransactions')][2]");
-    private static final By lblSendMoneyHeader = By.xpath("//div[text()='Make Transactions']/ancestor::div[contains(@class,'flex-col')]/following-sibling::div/span[contains(text(),'Send Money')]");
-    private static final By lblMobileCashHeader = By.xpath(" //div[text()='Make Transactions']/ancestor::div[contains(@class,'flex-col')]/following-sibling::div/span[contains(text(),'Mobile Cash')]");
-    private static final By lblBillPaymentHeader = By.xpath("//span[text()='Bill Payments']/ancestor::div[contains(@class,'flex-col')]/following-sibling::div/span[contains(text(),'Bill Payments')]");
+    private static final By lblSendMoneyHeader = By.xpath("//div[text()='Make Transactions']/ancestor::div[contains(@class,'rounded-lg')]/following-sibling::div//span[contains(text(),'Send Money')]");
+    private static final By lblMobileCashHeader = By.xpath(" //div[text()='Make Transactions']/ancestor::div[contains(@class,'rounded-lg')]/following-sibling::div//span[contains(text(),'Mobile Cash')]");
+    private static final By lblBillPaymentHeader = By.xpath("//span[text()='Bill Payments']/ancestor::div[contains(@class,'rounded-lg')]/following-sibling::div//span[contains(text(),'Bill Payments')]");
     private static final By imgAccountPortfolio = By.xpath("//canvas[@role='img']");
     private static final By imgAdvertisement = By.xpath("//span[contains(text(),'Maintenance & Updates')]/parent::div//img[contains(@src,'/SVRClientWebV4/_next/image')]");
     private static final By lblOpenFDPopupHeader = By.xpath("//span[text()='Open Fixed Deposit']");
@@ -151,9 +147,9 @@ public class DashboardPage extends BasePage {
             boolean userProfileIcon = isElementPresentBy(iconUser);
             if (userProfileIcon) {
                 clickOnElement(iconUser);
-                addScreenshotToTheReport("Successfully clicked on user profile icon on top navigation bar.", Status.PASS);
+                addToReport("Successfully clicked on user profile icon on top navigation bar.", Status.PASS);
             } else {
-                addScreenshotToTheReport("User profile icon is not visible.", Status.FAIL);
+                addToReport("User profile icon is not visible.", Status.FAIL);
                 throw new RuntimeException("Error - User profile icon is not visible.");
             }
 
@@ -161,43 +157,43 @@ public class DashboardPage extends BasePage {
             boolean logoutButton = isElementPresentBy(logoutButton(buttonName));
             if (logoutButton) {
                 clickOnElement(logoutButton(buttonName));
-                addScreenshotToTheReport("Successfully clicked on the logout button.", Status.PASS);
+                addToReport("Successfully clicked on the logout button.", Status.PASS);
             } else {
-                addScreenshotToTheReport("Logout button inside user dropdown is not visible.", Status.FAIL);
+                addToReport("Logout button inside user dropdown is not visible.", Status.FAIL);
                 throw new RuntimeException("Error - Logout button inside user dropdown is not visible. ");
             }
 
             //validate popup
             boolean popup = isElementPresentBy(txtlogoutPopup(popupText));
             if (popup) {
-                addScreenshotToTheReport("'" + popupText + "' Logout popup is visible.", Status.PASS);
+                addToReport("'" + popupText + "' Logout popup is visible.", Status.PASS);
             } else {
-                addScreenshotToTheReport("'" + popupText + "' Logout popup is not visible.", Status.FAIL);
+                addToReport("'" + popupText + "' Logout popup is not visible.", Status.FAIL);
                 throw new RuntimeException("'" + popupText + "' Logout pop is not visible.");
             }
 
             //Validate confirm button
             boolean confirmButton = isElementPresentBy(getElementByTypeAndText(DashboardPage.ElementType.button, buttonName));
             if (confirmButton) {
-                addScreenshotToTheReport("'" + confirmButtonText + "'Logout button is visible.", Status.PASS);
+                addToReport("'" + confirmButtonText + "'Logout button is visible.", Status.PASS);
                 clickOnElement(getElementByTypeAndText(DashboardPage.ElementType.button, buttonName));
-                addScreenshotToTheReport("'" + confirmButtonText + "'Logout button is clicked.", Status.PASS);
+                addToReport("'" + confirmButtonText + "'Logout button is clicked.", Status.PASS);
             } else {
-                addScreenshotToTheReport("'" + confirmButtonText + "'Logout button is not visible.", Status.FAIL);
+                addToReport("'" + confirmButtonText + "'Logout button is not visible.", Status.FAIL);
                 throw new RuntimeException("'" + confirmButtonText + "'Logout button is not visible.");
             }
 
             // Validate landing page on logout
             boolean loginPage = isElementPresentBy(getPageTitle(loginPageTitle));
             if (loginPage) {
-                addScreenshotToTheReport("Successfully logged out from the sampath vishwa application.", Status.PASS);
+                addToReport("Successfully logged out from the sampath vishwa application.", Status.PASS);
             } else {
-                addScreenshotToTheReport("Unable to logged out from the sampath vishwa application.", Status.FAIL);
+                addToReport("Unable to logged out from the sampath vishwa application.", Status.FAIL);
                 throw new RuntimeException("Error - User is unable to logged out from the sampath vishwa application.");
             }
 
         } catch (Exception e) {
-            addScreenshotToTheReport("Unable to logged out from the system.", Status.FAIL);
+            addToReport("Unable to logged out from the system.", Status.FAIL);
             throw new RuntimeException("Error - Unable to logged out from the system.", e);
         }
     }
@@ -211,13 +207,13 @@ public class DashboardPage extends BasePage {
             //validate user profile icon
             boolean userProfileIcon = isElementPresentBy(iconUser);
             if (userProfileIcon) {
-                addScreenshotToTheReport("Successfully validated user profile icon on top navigation bar", Status.PASS);
+                addToReport("Successfully validated user profile icon on top navigation bar", Status.PASS);
             } else {
-                addScreenshotToTheReport("User profile icon is not visible", Status.FAIL);
+                addToReport("User profile icon is not visible", Status.FAIL);
                 throw new RuntimeException("Error -User profile icon is not visible");
             }
         } catch (Exception e) {
-            addScreenshotToTheReport("User profile icon is not visible", Status.FAIL);
+            addToReport("User profile icon is not visible", Status.FAIL);
             throw new RuntimeException("Error in loading user profile icon", e);
         }
     }
@@ -227,7 +223,7 @@ public class DashboardPage extends BasePage {
      */
     public void validateTheTitle() {
         waitForElementPresence(title);
-        addScreenshotToTheReport("Successfully validated the title '" + title + "'", Status.PASS);
+        addToReport("Successfully validated the title '" + title + "'", Status.PASS);
     }
     /**
      * Validate free trial navigation
@@ -256,52 +252,52 @@ public class DashboardPage extends BasePage {
     public void validateSavingsAccountAtDashboard(String savingsAccountNumber, String currencyAndAvailableBalance, String primaryStatus, String accountStatus, String productName) {
         try {
 
-            waitForElementToBeInvisible(lblLoadingIcon, 5);
+            waitForElementToBeInvisible(lblLoadingIcon, 10);
             isElementClickable(btnDeposits);
 
             //Validate savings account details
-            String SavingAccountNo = getTextFromElement(lblSavingsACNumber).toString();
+            String SavingAccountNo = getTextFromElement(lblSavingsACNumber);
             if (SavingAccountNo.equalsIgnoreCase(savingsAccountNumber)) {
-                addScreenshotToTheReport("Successfully validated account number : '" + SavingAccountNo + "'", Status.PASS);
+                addToReport("Successfully validated account number : '" + SavingAccountNo + "'", Status.PASS,false);
             } else {
-                addScreenshotToTheReport("Account number is not validated", Status.FAIL);
+                addToReport("Account number is not validated", Status.FAIL);
                 throw new RuntimeException("Error - Account number validation failed");
             }
             //Validate currency and balance
-            String CurrencyAndAvailableBalance = getTextFromElement(lblCurrencyAndAvailableBalance).toString();
+            String CurrencyAndAvailableBalance = getTextFromElement(lblCurrencyAndAvailableBalance);
             if (CurrencyAndAvailableBalance.equalsIgnoreCase(currencyAndAvailableBalance)) {
-                addScreenshotToTheReport("Successfully validated currency and amount : '" + CurrencyAndAvailableBalance + "'", Status.PASS);
+                addToReport("Successfully validated currency and amount : '" + CurrencyAndAvailableBalance + "'", Status.PASS,false);
             } else {
-                addScreenshotToTheReport("Currency and amount is not validated", Status.FAIL);
+                addToReport("Currency and amount is not validated", Status.FAIL);
                 throw new RuntimeException("Error - Currency and amount validation failed");
             }
             //Validate primary status
-            String PrimaryStatus = getTextFromElement(lblSavingsPrimaryStatus).toString();
+            String PrimaryStatus = getTextFromElement(lblSavingsPrimaryStatus);
             if (PrimaryStatus.equalsIgnoreCase(primaryStatus)) {
-                addScreenshotToTheReport("Successfully validated primary status : '" + PrimaryStatus + "'", Status.PASS);
+                addToReport("Successfully validated primary status : '" + PrimaryStatus + "'", Status.PASS,false);
             } else {
-                addScreenshotToTheReport("Primary status is not validated", Status.FAIL);
+                addToReport("Primary status is not validated", Status.FAIL);
                 throw new RuntimeException("Error - Primary status validation failed");
             }
             //Validate account status
-            String AccountStatus = getTextFromElement(lblSavingsAccountStatus).toString();
+            String AccountStatus = getTextFromElement(lblSavingsAccountStatus);
             if (AccountStatus.equalsIgnoreCase(accountStatus)) {
-                addScreenshotToTheReport("Successfully validated account status : '" + AccountStatus + "'", Status.PASS);
+                addToReport("Successfully validated account status : '" + AccountStatus + "'", Status.PASS,false);
             } else {
-                addScreenshotToTheReport("Account status is not validated", Status.FAIL);
+                addToReport("Account status is not validated", Status.FAIL);
                 throw new RuntimeException("Error - Account status validation failed");
             }
-            //Validate primary status
-            String ProductName = getTextFromElement(lblSavingsAccountProductName).toString();
+            //Validate product name
+            String ProductName = getTextFromElement(lblSavingsAccountProductName);
             if (ProductName.equalsIgnoreCase(productName)) {
-                addScreenshotToTheReport("Successfully validated product name : '" + ProductName + "'", Status.PASS);
+                addToReport("Successfully validated product name : '" + ProductName + "'", Status.PASS);
             } else {
-                addScreenshotToTheReport("Product Name is not validated", Status.FAIL);
+                addToReport("Product Name is not validated", Status.FAIL);
                 throw new RuntimeException("Error - Product Name validation failed");
             }
 
         } catch (Exception e) {
-            addScreenshotToTheReport("Validate Savings Account At Dashboard failed", Status.FAIL);
+            addToReport("Validate Savings Account At Dashboard failed", Status.FAIL);
             throw new RuntimeException("Error  - Validate Savings Account At Dashboard", e);
         }
     }
@@ -317,8 +313,8 @@ public class DashboardPage extends BasePage {
         try {
             //wait for the loading icon to diminish
             waitForLoadingToBeInvisible();
-            waitForElementPresence(lblLoadingIcon);
-            waitForElementToBeInvisible(lblLoadingIcon, 10);
+//            waitForElementPresence(lblLoadingIcon);
+            waitForElementToBeInvisible(lblLoadingIcon, 15);
 
             //click button deposit
             isElementClickable(btnDeposits);
@@ -326,52 +322,52 @@ public class DashboardPage extends BasePage {
 
             //wait for the loading icon to diminish
             waitForLoadingToBeInvisible();
-            waitForElementPresence(lblLoadingIcon);
-            waitForElementToBeInvisible(lblLoadingIcon, 10);
+//            waitForElementPresence(lblLoadingIcon);
+            waitForElementToBeInvisible(lblLoadingIcon, 15);
 
             //Validate fd account number
             String FDAccountNo = getTextFromElement(lblFDAccountNumber);
             if (FDAccountNo.equalsIgnoreCase(fDAccountNumber)) {
-                addScreenshotToTheReport("Successfully validated fd account number : '" + FDAccountNo + "'", Status.PASS);
+                addToReport("Successfully validated fd account number : '" + FDAccountNo + "'", Status.PASS,false);
             } else {
-                addScreenshotToTheReport("FD Account number : '" + FDAccountNo + "' is not validated", Status.FAIL);
+                addToReport("FD Account number : '" + FDAccountNo + "' is not validated", Status.FAIL);
                 throw new RuntimeException("Error - FD Account number validation failed");
             }
             //Validate currency and balance
             String CurrencyAndAvailableBalance = getTextFromElement(lblCurrencyAndAvailableBalance);
             if (CurrencyAndAvailableBalance.equalsIgnoreCase(currencyAndAvailableBalance)) {
-                addScreenshotToTheReport("Successfully validated currency and amount : '" + CurrencyAndAvailableBalance + "'", Status.PASS);
+                addToReport("Successfully validated currency and amount : '" + CurrencyAndAvailableBalance + "'", Status.PASS,false);
             } else {
-                addScreenshotToTheReport("Currency and amount : '" + CurrencyAndAvailableBalance + "' is not validated", Status.FAIL);
+                addToReport("Currency and amount : '" + CurrencyAndAvailableBalance + "' is not validated", Status.FAIL);
                 throw new RuntimeException("Error - Currency and amount validation failed");
             }
             //Validate Maturity Amount
             String FDMaturityValue = getTextFromElement(lblFDMaturityValue);
             if (FDMaturityValue.equalsIgnoreCase(maturityAmount)) {
-                addScreenshotToTheReport("Successfully validated maturity amount : '" + FDMaturityValue + "'", Status.PASS);
+                addToReport("Successfully validated maturity amount : '" + FDMaturityValue + "'", Status.PASS,false);
             } else {
-                addScreenshotToTheReport("Maturity amount : '" + FDMaturityValue + "' is not validated", Status.FAIL);
+                addToReport("Maturity amount : '" + FDMaturityValue + "' is not validated", Status.FAIL);
                 throw new RuntimeException("Error - Maturity amount validation failed");
             }
             //Validate Maturity Date
             String[] FDMaturityDate = CommonUtils.splitText(getTextFromElement(lblFDMaturityDate), " ");
             if (FDMaturityDate[0].equalsIgnoreCase(maturityDate)) {
-                addScreenshotToTheReport("Successfully validated maturity date : '" + FDMaturityDate[0] + "'", Status.PASS);
+                addToReport("Successfully validated maturity date : '" + FDMaturityDate[0] + "'", Status.PASS,false);
             } else {
-                addScreenshotToTheReport("Maturity date : '" + FDMaturityDate[0] + "' is not validated", Status.FAIL);
+                addToReport("Maturity date : '" + FDMaturityDate[0] + "' is not validated", Status.FAIL);
                 throw new RuntimeException("Error - Maturity date validation failed");
             }
             //Validate Interest Rate
             String InterestRate = getTextFromElement(lblFDInterestRate);
             if (InterestRate.equalsIgnoreCase(interestRate)) {
-                addScreenshotToTheReport("Successfully validated interest rate : '" + InterestRate + "'", Status.PASS);
+                addToReport("Successfully validated interest rate : '" + InterestRate + "'", Status.PASS);
             } else {
-                addScreenshotToTheReport("Interest rate : '" + InterestRate + "' is not validated", Status.FAIL);
+                addToReport("Interest rate : '" + InterestRate + "' is not validated", Status.FAIL);
                 throw new RuntimeException("Error - Interest rate validation failed");
             }
 
         } catch (Exception e) {
-            addScreenshotToTheReport("Fixed deposit key points validation failed", Status.FAIL);
+            addToReport("Fixed deposit key points validation failed", Status.FAIL);
             throw new RuntimeException("Failed - Fixed deposit key points validation failed", e);
         }
     }
@@ -383,87 +379,87 @@ public class DashboardPage extends BasePage {
             //validate quick action send money
             boolean sendMoney = isElementPresentBy(btnQActionsSendMoney);
             if (sendMoney) {
-                addScreenshotToTheReport("Successfully validated quick action send money button ", Status.PASS);
+                addToReport("Successfully validated quick action send money button ", Status.PASS,false);
             } else {
-                addScreenshotToTheReport("Quick action send money button is not visible", Status.FAIL);
+                addToReport("Quick action send money button is not visible", Status.FAIL);
                 throw new RuntimeException("Error - Quick action send money button is not visible");
             }
             //validate quick action bill payment
             boolean billPayment = isElementPresentBy(btnQActionsBillPayment);
             if (billPayment) {
-                addScreenshotToTheReport("Successfully validated quick action bill payment button ", Status.PASS);
+                addToReport("Successfully validated quick action bill payment button ", Status.PASS,false);
             } else {
-                addScreenshotToTheReport("Quick action bill payment button is not visible", Status.FAIL);
+                addToReport("Quick action bill payment button is not visible", Status.FAIL);
                 throw new RuntimeException("Error - Quick action bill payment button is not visible");
             }
             //validate quick action sampath slipless
             boolean sampathSleepless = isElementPresentBy(btnQActionsSampathSlipless);
             if (sampathSleepless) {
-                addScreenshotToTheReport("Successfully validated quick action sampath slipless button ", Status.PASS);
+                addToReport("Successfully validated quick action sampath slipless button ", Status.PASS,false);
             } else {
-                addScreenshotToTheReport("Quick action  sampath slipless is not visible", Status.FAIL);
+                addToReport("Quick action  sampath slipless is not visible", Status.FAIL);
                 throw new RuntimeException("Error - Quick action  sampath slipless is not visible");
             }
             //validate quick action open fd
             boolean openFD = isElementPresentBy(btnQActionsOpenNewFD);
             if (openFD) {
-                addScreenshotToTheReport("Successfully validated quick action open fixed deposit button ", Status.PASS);
+                addToReport("Successfully validated quick action open fixed deposit button ", Status.PASS,false);
             } else {
-                addScreenshotToTheReport("Quick action  open fixed deposit is not visible", Status.FAIL);
+                addToReport("Quick action  open fixed deposit is not visible", Status.FAIL);
                 throw new RuntimeException("Error - Quick action  open fixed deposit is not visible");
             }
             //validate quick action open SA
             boolean openSA = isElementPresentBy(btnQActionsOpenSA);
             if (openSA) {
-                addScreenshotToTheReport("Successfully validated quick action open savings account button ", Status.PASS);
+                addToReport("Successfully validated quick action open savings account button ", Status.PASS,false);
             } else {
-                addScreenshotToTheReport("Quick action  open savings account is not visible", Status.FAIL);
+                addToReport("Quick action  open savings account is not visible", Status.FAIL);
                 throw new RuntimeException("Error - Quick action  open savings account is not visible");
             }
             //validate quick action apply for web card
             boolean webCard = isElementPresentBy(btnQActionsApplyWebCard);
             if (webCard) {
-                addScreenshotToTheReport("Successfully validated quick action web card  button ", Status.PASS);
+                addToReport("Successfully validated quick action web card  button ", Status.PASS,false);
             } else {
-                addScreenshotToTheReport("Quick action  web card is not visible", Status.FAIL);
+                addToReport("Quick action  web card is not visible", Status.FAIL);
                 throw new RuntimeException("Error - Quick action  web card is not visible");
             }
             //validate quick action stop card
             boolean stopCard = isElementPresentBy(btnQActionsStopCard);
             if (stopCard) {
-                addScreenshotToTheReport("Successfully validated quick action stop card  button ", Status.PASS);
+                addToReport("Successfully validated quick action stop card  button ", Status.PASS,false);
             } else {
-                addScreenshotToTheReport("Quick action  stop card is not visible", Status.FAIL);
+                addToReport("Quick action  stop card is not visible", Status.FAIL);
                 throw new RuntimeException("Error - Quick action  stop card is not visible");
             }
             //validate quick action stop cheque
             boolean stopCheque = isElementPresentBy(btnQActionsStopCheque);
             if (stopCheque) {
-                addScreenshotToTheReport("Successfully validated quick action stop cheque  button ", Status.PASS);
+                addToReport("Successfully validated quick action stop cheque  button ", Status.PASS);
             } else {
-                addScreenshotToTheReport("Quick action  stop cheque is not visible", Status.FAIL);
+                addToReport("Quick action  stop cheque is not visible", Status.FAIL);
                 throw new RuntimeException("Error - Quick action  stop cheque is not visible");
             }
             scrollDownPage();
             //validate quick action mobile cash
             boolean mobileCash = isElementPresentBy(btnQActionsMobileCash);
             if (mobileCash) {
-                addScreenshotToTheReport("Successfully validated quick action mobile cash  button ", Status.PASS);
+                addToReport("Successfully validated quick action mobile cash  button ", Status.PASS,false);
             } else {
-                addScreenshotToTheReport("Quick action  mobile cash is not visible", Status.FAIL);
+                addToReport("Quick action  mobile cash is not visible", Status.FAIL);
                 throw new RuntimeException("Error - Quick action  mobile cash is not visible");
             }
             //validate quick action obtain new loan
             boolean newLoan = isElementPresentBy(btnQActionsObtainNewLoan);
             if (newLoan) {
-                addScreenshotToTheReport("Successfully validated quick action obtain new loan  button ", Status.PASS);
+                addToReport("Successfully validated quick action obtain new loan  button ", Status.PASS);
             } else {
-                addScreenshotToTheReport("Quick action  obtain new loan is not visible", Status.FAIL);
+                addToReport("Quick action  obtain new loan is not visible", Status.FAIL);
                 throw new RuntimeException("Error - Quick action  obtain new loan is not visible");
             }
 
         } catch (Exception e) {
-            addScreenshotToTheReport("Quick action buttons validation failed", Status.FAIL);
+            addToReport("Quick action buttons validation failed", Status.FAIL);
             throw new RuntimeException("Failed - Quick action buttons validation failed", e);
         }
     }
@@ -478,22 +474,22 @@ public class DashboardPage extends BasePage {
             boolean userProfileIcon = isElementPresentBy(iconUser);
             if (userProfileIcon) {
                 clickOnElement(iconUser);
-                addScreenshotToTheReport("Successfully clicked on user profile icon on top navigation bar", Status.PASS);
+                addToReport("Successfully clicked on user profile icon on top navigation bar", Status.PASS);
             } else {
-                addScreenshotToTheReport("User profile icon is not visible", Status.FAIL);
+                addToReport("User profile icon is not visible", Status.FAIL);
                 throw new RuntimeException("Error - User profile icon is not visible");
             }
             //validate logout button
             boolean logoutButton = isElementPresentBy(logoutButton(buttonName));
             if (logoutButton) {
-                addScreenshotToTheReport("Successfully validated settings icon", Status.PASS);
+                addToReport("Successfully validated settings icon", Status.PASS);
             } else {
-                addScreenshotToTheReport("Settings icon is not visible", Status.FAIL);
+                addToReport("Settings icon is not visible", Status.FAIL);
                 throw new RuntimeException("Settings icon is not visible ");
             }
 
         } catch (Exception e) {
-            addScreenshotToTheReport("Settings icon is not visible", Status.FAIL);
+            addToReport("Settings icon is not visible", Status.FAIL);
             throw new RuntimeException("Error - Settings icon is not visible", e);
         }
     }
@@ -508,16 +504,17 @@ public class DashboardPage extends BasePage {
             waitForElementPresence(lblLoadingIcon);
             waitForElementToBeInvisible(lblLoadingIcon, 10);
 
+            scrollDownPage();
             //validate advertisement at dashboard
             boolean advertisement = isElementPresentBy(imgAdvertisement);
             if (advertisement) {
-                addScreenshotToTheReport("Successfully validated the published advertisement", Status.PASS);
+                addToReport("Successfully validated the published advertisement", Status.PASS);
             } else {
-                addScreenshotToTheReport("Advertisement is not visible.", Status.FAIL);
+                addToReport("Advertisement is not visible.", Status.FAIL);
                 throw new RuntimeException("Error - Advertisement is not visible.");
             }
         } catch (Exception e) {
-            addScreenshotToTheReport("Advertisement is not visible", Status.FAIL);
+            addToReport("Advertisement is not visible", Status.FAIL);
             throw new RuntimeException("Error - Advertisement is not visible in the dashboard", e);
         }
     }
@@ -542,12 +539,12 @@ public class DashboardPage extends BasePage {
             clickOnElement(btnQActionsSendMoney);
             boolean sendMoney = isElementPresentBy(lblSendMoneyHeader);
             if (sendMoney) {
-                addScreenshotToTheReport("Successfully validated the send money page header", Status.PASS);
+                addToReport("Successfully validated the send money page header", Status.PASS);
             } else {
-                addScreenshotToTheReport("Send money page header is not visible.", Status.FAIL);
+                addToReport("Send money page header is not visible.", Status.FAIL);
                 throw new RuntimeException("Error - Send money page header is not visible.");
             }
-            waitForElementToBeInvisible(btnMenuOptions(btnDashboard), 5);
+            waitForElementToBeInvisible(btnQActionsSendMoney, 5);
             clickOnElement(btnMenuOptions(btnDashboard));
             waitForElementToBeInvisible(lblLoadingIcon, 5);
 
@@ -555,12 +552,12 @@ public class DashboardPage extends BasePage {
             clickOnElement(btnQActionsBillPayment);
             boolean billPayment = isElementPresentBy(lblBillPaymentHeader);
             if (billPayment) {
-                addScreenshotToTheReport("Successfully validated the bill payment page header", Status.PASS);
+                addToReport("Successfully validated the bill payment page header", Status.PASS);
             } else {
-                addScreenshotToTheReport("Bill payment page header is not visible.", Status.FAIL);
+                addToReport("Bill payment page header is not visible.", Status.FAIL);
                 throw new RuntimeException("Error - Bill payment page header is not visible.");
             }
-            waitForElementToBeInvisible(btnMenuOptions(btnDashboard), 5);
+            waitForElementToBeInvisible(btnQActionsBillPayment, 5);
             clickOnElement(btnMenuOptions(btnDashboard));
             waitForElementToBeInvisible(lblLoadingIcon, 5);
 
@@ -568,13 +565,13 @@ public class DashboardPage extends BasePage {
             clickOnElement(btnQActionsOpenNewFD);
             boolean openFD = isElementPresentBy(lblOpenFDPopupHeader);
             if (openFD) {
-                addScreenshotToTheReport("Successfully validated the open new fixed deposit page header", Status.PASS);
+                addToReport("Successfully validated the open new fixed deposit page header", Status.PASS);
             } else {
-                addScreenshotToTheReport("Open new fixed deposit page header is not visible.", Status.FAIL);
+                addToReport("Open new fixed deposit page header is not visible.", Status.FAIL);
                 throw new RuntimeException("Error - Open new fixed deposit page header is not visible.");
             }
             clickOnElement(btnCloseFDPopup);
-            waitForElementToBeInvisible(btnMenuOptions(btnDashboard), 5);
+            waitForElementToBeInvisible(btnCloseFDPopup, 5);
             clickOnElement(btnMenuOptions(btnDashboard));
             waitForElementToBeInvisible(lblLoadingIcon, 5);
 
@@ -582,12 +579,12 @@ public class DashboardPage extends BasePage {
             clickOnElement(btnQActionsOpenSA);
             boolean openSA = isElementPresentBy(lblOpenSavingsAccountHeader);
             if (openSA) {
-                addScreenshotToTheReport("Successfully validated the open savings account page header", Status.PASS);
+                addToReport("Successfully validated the open savings account page header", Status.PASS);
             } else {
-                addScreenshotToTheReport("Open savings account page header is not visible.", Status.FAIL);
+                addToReport("Open savings account page header is not visible.", Status.FAIL);
                 throw new RuntimeException("Error - Open savings account page header is not visible.");
             }
-            waitForElementToBeInvisible(btnMenuOptions(btnDashboard), 5);
+            waitForElementToBeInvisible(btnQActionsOpenSA, 5);
             clickOnElement(btnMenuOptions(btnDashboard));
             waitForElementToBeInvisible(lblLoadingIcon, 5);
 
@@ -596,13 +593,13 @@ public class DashboardPage extends BasePage {
             clickOnElement(btnQActionsMobileCash);
             boolean mobileCash = isElementPresentBy(lblMobileCashHeader);
             if (mobileCash) {
-                addScreenshotToTheReport("Successfully validated the mobile cash page header", Status.PASS);
+                addToReport("Successfully validated the mobile cash page header", Status.PASS);
             } else {
-                addScreenshotToTheReport("Mobile cash page header is not visible.", Status.FAIL);
+                addToReport("Mobile cash page header is not visible.", Status.FAIL);
                 throw new RuntimeException("Error - Mobile cash page header is not visible.");
             }
         } catch (Exception e) {
-            addScreenshotToTheReport("Quick action button function failed", Status.FAIL);
+            addToReport("Quick action button function failed", Status.FAIL);
             throw new RuntimeException("Error - Quick action button function failed", e);
         }
     }
@@ -617,9 +614,9 @@ public class DashboardPage extends BasePage {
         boolean alert = isElementPresentBy(alertPopup);
         if (alert) {
             clickOnElement(alertPopup);
-            addScreenshotToTheReport("Successfully closed alert popup", Status.PASS);
+            addToReport("Successfully closed alert popup", Status.PASS);
         } else {
-            addScreenshotToTheReport("User profile icon is not visible.", Status.INFO);
+            addToReport("User profile icon is not visible.", Status.INFO);
         }
     }
 
@@ -647,7 +644,7 @@ public class DashboardPage extends BasePage {
             //Obtain the record count
             int recordCount = isElementsPresentBy(lblRVTTransferRecord);
             if (recordCount != 10) {
-                addScreenshotToTheReport(" Recent vishwa transactions displayed is not 10", Status.FAIL);
+                addToReport(" Recent vishwa transactions displayed is not 10", Status.FAIL);
                 throw new RuntimeException("Error - Incorrect number of Recent vishwa transactions displayed");
             }
 
@@ -665,9 +662,9 @@ public class DashboardPage extends BasePage {
                 if (!AccName.get(inc).isEmpty() &&
                         AccName.get(inc).contains("Account") &&
                         CommonUtils.containsAlphabaticCharacters(AccName.get(inc))) {
-                    addScreenshotToTheReport(" Recent vishwa transactions of record number : '" + inc + "' where Account name : '" + AccName.get(inc), Status.PASS);
+                    addToReport(" Recent vishwa transactions of record number : '" + inc + "' where Account name : '" + AccName.get(inc), Status.PASS,false);
                 } else {
-                    addScreenshotToTheReport(" Failed to validate Recent vishwa transactions of record number : '" + inc + "' where Account name : '" + AccName.get(inc), Status.FAIL);
+                    addToReport(" Failed to validate Recent vishwa transactions of record number : '" + inc + "' where Account name : '" + AccName.get(inc), Status.FAIL);
                     throw new RuntimeException("Error - Account name of Recent vishwa transactions not displayed");
                 }
 
@@ -676,9 +673,9 @@ public class DashboardPage extends BasePage {
                 if (!AmtAndCurrency.get(inc).isEmpty() &&
                         Arrays.asList(currencyType).contains(CurrencyAndAmt[0]) &&
                         CommonUtils.containsNumericCharacters(CurrencyAndAmt[1])) {
-                    addScreenshotToTheReport(" Recent vishwa transactions of record number : '" + inc + "' where Account name : '" + AccName.get(inc) + "' , currency and amount : '" + AmtAndCurrency.get(inc), Status.PASS);
+                    addToReport(" Recent vishwa transactions of record number : '" + inc + "' where Account name : '" + AccName.get(inc) + "' , currency and amount : '" + AmtAndCurrency.get(inc), Status.PASS,false);
                 } else {
-                    addScreenshotToTheReport(" Failed to validate Recent vishwa transactions of record number : '" + inc + "' where currency and amount : '" + AmtAndCurrency.get(inc), Status.FAIL);
+                    addToReport(" Failed to validate Recent vishwa transactions of record number : '" + inc + "' where currency and amount : '" + AmtAndCurrency.get(inc), Status.FAIL);
                     throw new RuntimeException("Error - Currency amd amount of Recent vishwa transactions not displayed");
                 }
 
@@ -689,14 +686,15 @@ public class DashboardPage extends BasePage {
                         CommonUtils.containsNumericCharacters(dateContent[1]) &&
                         CommonUtils.containsNumericCharacters(dateContent[2]) &&
                         CommonUtils.containsAlphAndNumCharacters(dateContent[4])) {
-                    addScreenshotToTheReport(" Recent vishwa transactions of record number : '" + inc + "' where Account name : '" + AccName.get(inc) + "' , Currency and amount : '" + AmtAndCurrency.get(inc) + "' and date : '" + Date.get(inc) + "'", Status.PASS);
+                    addToReport(" Recent vishwa transactions of record number : '" + inc + "' where Account name : '" + AccName.get(inc) + "' , Currency and amount : '" + AmtAndCurrency.get(inc) + "' and date : '" + Date.get(inc) + "'", Status.PASS,false);
                 } else {
-                    addScreenshotToTheReport(" Failed to validate Recent vishwa transactions of record number : '" + inc + "' where date : '" + Date.get(inc), Status.FAIL);
+                    addToReport(" Failed to validate Recent vishwa transactions of record number : '" + inc + "' where date : '" + Date.get(inc), Status.FAIL);
                     throw new RuntimeException("Error - Incorrect date for Recent vishwa transactions displayed");
                 }
             }
+            addToReport(" Recent vishwa transactions of records are successfully validated",Status.PASS);
         } catch (Exception e) {
-            addScreenshotToTheReport("Recent vishawa transfer validation of transactions failed", Status.FAIL);
+            addToReport("Recent vishawa transfer validation of transactions failed", Status.FAIL);
             throw new RuntimeException("Error - Validation of transfer under recent vishawa transactions failed", e);
         }
     }
@@ -721,7 +719,7 @@ public class DashboardPage extends BasePage {
             //Obtain the record count
             int recordCount = isElementsPresentBy(lblRVTTransferRecord);
             if (recordCount != 10) {
-                addScreenshotToTheReport(" Recent vishwa payments displayed is not 10", Status.FAIL);
+                addToReport(" Recent vishwa payments displayed is not 10", Status.FAIL);
                 throw new RuntimeException("Error - Incorrect number of Recent vishwa payments displayed");
             }
 
@@ -738,26 +736,26 @@ public class DashboardPage extends BasePage {
 
                 //Validate account name
                 if (!AccName.get(inc).isEmpty() && CommonUtils.containsAlphabaticCharacters(AccName.get(inc).trim())) {
-                    addScreenshotToTheReport(" Recent vishwa payments of record number : '" + inc + "' where Account name : '" + AccName.get(inc), Status.PASS);
+                    addToReport(" Recent vishwa payments of record number : '" + inc + "' where Account name : '" + AccName.get(inc), Status.PASS,false);
                 } else {
-                    addScreenshotToTheReport(" Failed to validate account name : '" + AccName.get(inc)+"' for recent vishwa payment of record number : '" + inc , Status.FAIL);
+                    addToReport(" Failed to validate account name : '" + AccName.get(inc)+"' for recent vishwa payment of record number : '" + inc , Status.FAIL);
                     throw new RuntimeException("Error - Incorrect account name for payment under recent vishwa transactions displayed");
                 }
 
                 //Validate currency and amount
                 String[] CurrencyAndAmt = AmtAndCurrency.get(inc).split(" ");
                 if (!AmtAndCurrency.get(inc).isEmpty() && Arrays.asList(currencyType).contains(CurrencyAndAmt[0].trim()) && CommonUtils.containsNumericCharacters(CurrencyAndAmt[1].trim())) {
-                    addScreenshotToTheReport(" Recent vishwa payments of record number : '" + inc + "' where account name : '" + AccName.get(inc) + "' , currency and amount : '" + AmtAndCurrency.get(inc) + "' and date : '" + Date.get(inc) + "'", Status.PASS);
+                    addToReport(" Recent vishwa payments of record number : '" + inc + "' where account name : '" + AccName.get(inc) + "' , currency and amount : '" + AmtAndCurrency.get(inc) + "' and date : '" + Date.get(inc) + "'", Status.PASS,false);
                 } else {
-                    addScreenshotToTheReport(" Failed to validate currency and amount : '" + AmtAndCurrency.get(inc) + "' of recent vishva payment of record number : '" + inc , Status.FAIL);
+                    addToReport(" Failed to validate currency and amount : '" + AmtAndCurrency.get(inc) + "' of recent vishva payment of record number : '" + inc , Status.FAIL);
                     throw new RuntimeException("Error - Incorrect amount for Recent vishwa payment displayed");
                 }
 
                 //Validate payment reference
                 if (!PaymentReference.get(inc).isEmpty() &&  CommonUtils.containsAlphNumAndSpecialCharacters(PaymentReference.get(inc).trim())) {
-                    addScreenshotToTheReport(" Recent vishwa payments of record number : '" + inc + "' where payment reference : '" + PaymentReference.get(inc)  , Status.PASS);
+                    addToReport(" Recent vishwa payments of record number : '" + inc + "' where payment reference : '" + PaymentReference.get(inc)  , Status.PASS,false);
                 } else {
-                    addScreenshotToTheReport(" Failed to validate payment reference : '" + PaymentReference.get(inc) + "' of recent vishwa payment of record number : '" + inc , Status.FAIL);
+                    addToReport(" Failed to validate payment reference : '" + PaymentReference.get(inc) + "' of recent vishwa payment of record number : '" + inc , Status.FAIL);
                     throw new RuntimeException("Error - Incorrect payment reference for Recent vishwa payment displayed");
                 }
 
@@ -768,14 +766,14 @@ public class DashboardPage extends BasePage {
                         CommonUtils.containsNumericCharacters(dateContent[1]) &&
                         CommonUtils.containsNumericCharacters(dateContent[2]) &&
                         CommonUtils.containsAlphAndNumCharacters(dateContent[4])) {
-                    addScreenshotToTheReport(" Recent vishwa transactions of record number : '" + inc + "' where Account name : '" + AccName.get(inc) + "' , Currency and amount : '" + AmtAndCurrency.get(inc) + "' and date : '" + Date.get(inc) + "'", Status.PASS);
+                    addToReport(" Recent vishwa transactions of record number : '" + inc + "' where Account name : '" + AccName.get(inc) + "' , Currency and amount : '" + AmtAndCurrency.get(inc) + "' and date : '" + Date.get(inc) + "'", Status.PASS);
                 } else {
-                    addScreenshotToTheReport(" Failed to validate Recent vishwa transactions of record number : '" + inc + "' where date : '" + Date.get(inc), Status.FAIL);
+                    addToReport(" Failed to validate Recent vishwa transactions of record number : '" + inc + "' where date : '" + Date.get(inc), Status.FAIL);
                     throw new RuntimeException("Error - Incorrect date for Recent vishwa transactions displayed");
                 }
             }
         } catch (Exception e) {
-            addScreenshotToTheReport("Recent vishawa transfer validation of payments record failed", Status.FAIL);
+            addToReport("Recent vishawa transfer validation of payments record failed", Status.FAIL);
             throw new RuntimeException("Error - Recent vishawa transfer validation of payments record failed", e);
         }
     }
@@ -802,7 +800,7 @@ public class DashboardPage extends BasePage {
             //Obtain the record count
             int recordCount = isElementsPresentBy(lblRVTTransferRecord);
             if (recordCount != 10) {
-                addScreenshotToTheReport(" Recent vishwa transactions displayed is not 10", Status.FAIL);
+                addToReport(" Recent vishwa transactions displayed is not 10", Status.FAIL);
                 throw new RuntimeException("Error - Incorrect number of Recent vishwa transactions displayed");
             }
 
@@ -817,9 +815,9 @@ public class DashboardPage extends BasePage {
             for (int inc = 0; inc < recordCount; inc++) {
                 //Validate the account name
                 if (!MobileNo.get(inc).isEmpty() && CommonUtils.containsNumericCharacters(MobileNo.get(inc))) {
-                    addScreenshotToTheReport(" Recent vishwa transactions of record number : '" + inc + "' where mobile number : '" + MobileNo.get(inc), Status.PASS);
+                    addToReport(" Recent vishwa transactions of record number : '" + inc + "' where mobile number : '" + MobileNo.get(inc), Status.PASS);
                 } else {
-                    addScreenshotToTheReport(" Failed to validate Recent vishva transactions of record number : '" + inc + "' where mobile number : '" + MobileNo.get(inc), Status.FAIL);
+                    addToReport(" Failed to validate Recent vishva transactions of record number : '" + inc + "' where mobile number : '" + MobileNo.get(inc), Status.FAIL);
                     throw new RuntimeException("Error - Mobile number of Recent vishwa transactions not displayed");
                 }
 
@@ -828,9 +826,9 @@ public class DashboardPage extends BasePage {
                 if (!AmtAndCurrency.get(inc).isEmpty() &&
                         Arrays.asList(currencyType).contains(CurrencyAndAmt[0]) &&
                         CommonUtils.containsNumericCharacters(CurrencyAndAmt[1])) {
-                    addScreenshotToTheReport(" Recent vishwa transactions of record number : '" + inc + "' where account name : '" + MobileNo.get(inc) + "' , currency and amount : '" + AmtAndCurrency.get(inc), Status.PASS);
+                    addToReport(" Recent vishwa transactions of record number : '" + inc + "' where account name : '" + MobileNo.get(inc) + "' , currency and amount : '" + AmtAndCurrency.get(inc), Status.PASS);
                 } else {
-                    addScreenshotToTheReport(" Failed to validate Recent vishwa transactions of record number : '" + inc + "' where currency and amount : '" + AmtAndCurrency.get(inc), Status.FAIL);
+                    addToReport(" Failed to validate Recent vishwa transactions of record number : '" + inc + "' where currency and amount : '" + AmtAndCurrency.get(inc), Status.FAIL);
                     throw new RuntimeException("Error - Currency amd amount of Recent vishwa transactions not displayed");
                 }
 
@@ -841,14 +839,14 @@ public class DashboardPage extends BasePage {
                         CommonUtils.containsNumericCharacters(dateContent[1]) &&
                         CommonUtils.containsNumericCharacters(dateContent[2]) &&
                         CommonUtils.containsAlphAndNumCharacters(dateContent[4])) {
-                    addScreenshotToTheReport(" Recent vishwa transactions of record number : '" + inc + "' where account name : '" + MobileNo.get(inc) + "' , currency and amount : '" + AmtAndCurrency.get(inc) + "' and date : '" + Date.get(inc) + "'", Status.PASS);
+                    addToReport(" Recent vishwa transactions of record number : '" + inc + "' where account name : '" + MobileNo.get(inc) + "' , currency and amount : '" + AmtAndCurrency.get(inc) + "' and date : '" + Date.get(inc) + "'", Status.PASS);
                 } else {
-                    addScreenshotToTheReport(" Failed to validate Recent vishwa transactions of record number : '" + inc + "' where date : '" + Date.get(inc), Status.FAIL);
+                    addToReport(" Failed to validate Recent vishwa transactions of record number : '" + inc + "' where date : '" + Date.get(inc), Status.FAIL);
                     throw new RuntimeException("Error - Incorrect date for Recent vishwa transactions displayed");
                 }
             }
         } catch (Exception e) {
-            addScreenshotToTheReport("Recent vishawa transfer validation for mobile cash failed", Status.FAIL);
+            addToReport("Recent vishawa transfer validation for mobile cash failed", Status.FAIL);
             throw new RuntimeException("Error - Recent vishawa transfer validation for mobile cash failed", e);
         }
     }
@@ -871,7 +869,7 @@ public class DashboardPage extends BasePage {
             //Obtain the record count
             int recordCount = isElementsPresentBy(lblFavouritePayeeWidgetRow);
             if (recordCount == 0) {
-                addScreenshotToTheReport("Favourite payee records are not displayed", Status.FAIL);
+                addToReport("Favourite payee records are not displayed", Status.FAIL);
                 throw new RuntimeException("Error - Favourite payee records are not displayed");
             }
             //Extract the latest records from the list
@@ -887,30 +885,30 @@ public class DashboardPage extends BasePage {
 
                 //Validate the account name
                 if (!AccNickName.get(inc).isEmpty()) {
-                    addScreenshotToTheReport(" Favourite payee nickname : '" + AccNickName.get(inc) + "' for the record number : '" + inc, Status.PASS);
+                    addToReport(" Favourite payee nickname : '" + AccNickName.get(inc) + "' for the record number : '" + inc, Status.PASS);
                 } else {
-                    addScreenshotToTheReport(" Failed to validate favourite payee nickname : '" + AccNickName.get(inc) + "' for the record number : '" + inc, Status.FAIL);
+                    addToReport(" Failed to validate favourite payee nickname : '" + AccNickName.get(inc) + "' for the record number : '" + inc, Status.FAIL);
                     throw new RuntimeException("Error - Favourite payee is not displayed");
                 }
 
                 //Validate the bank name
                 if (!BankName.get(inc).isEmpty() && CommonUtils.containsAlphabaticCharacters(BankName.get(inc).trim())) {
-                    addScreenshotToTheReport(" Favourite payee bank name : '" + BankName.get(inc) + "' for the record number : '" + inc, Status.PASS);
+                    addToReport(" Favourite payee bank name : '" + BankName.get(inc) + "' for the record number : '" + inc, Status.PASS);
                 } else {
-                    addScreenshotToTheReport(" Failed to validate favourite payee bank name : '" + BankName.get(inc) + "' for the record number : '" + inc, Status.FAIL);
+                    addToReport(" Failed to validate favourite payee bank name : '" + BankName.get(inc) + "' for the record number : '" + inc, Status.FAIL);
                     throw new RuntimeException("Error - Favourite payee is not displayed");
                 }
 
                 //Validate the account number
                 if (!AccountNumber.get(inc).isEmpty() && CommonUtils.containsNumericCharacters(AccountNumber.get(inc))) {
-                    addScreenshotToTheReport(" Favourite payee account number : '" + AccountNumber.get(inc) + "' for the record number : '" + inc, Status.PASS);
+                    addToReport(" Favourite payee account number : '" + AccountNumber.get(inc) + "' for the record number : '" + inc, Status.PASS);
                 } else {
-                    addScreenshotToTheReport(" Failed to validate favourite payee account name : '" + AccountNumber.get(inc) + "' for the record number : '" + inc, Status.FAIL);
+                    addToReport(" Failed to validate favourite payee account name : '" + AccountNumber.get(inc) + "' for the record number : '" + inc, Status.FAIL);
                     throw new RuntimeException("Error - Favourite payee is not displayed");
                 }
             }
         } catch (Exception e) {
-            addScreenshotToTheReport("Recent vishawa transfer validation for favourite payee failed", Status.FAIL);
+            addToReport("Recent vishawa transfer validation for favourite payee failed", Status.FAIL);
             throw new RuntimeException("Error - Recent vishawa transfer validation of favourite payee failed", e);
         }
     }
@@ -921,7 +919,7 @@ public class DashboardPage extends BasePage {
      */
     public void navigateBackToDashboard(){
         clickOnElement(btnDashboard);
-        waitForElementToBeInvisible(lblLoadingIcon, 7);
+        waitForElementToBeInvisible(lblLoadingIcon, 15);
     }
 
 
