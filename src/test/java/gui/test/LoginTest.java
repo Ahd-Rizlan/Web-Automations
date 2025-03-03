@@ -3,7 +3,7 @@ package gui.test;
 import data.DataProviders;
 import gui.utils.constants.LoginConstants;
 import org.testng.annotations.*;
-import pages.HomePage;
+import pages.DashboardPage;
 import pages.LoginPage;
 import pages.OTPPage;
 import utils.Drivers;
@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 
 public class LoginTest extends Drivers {
 
-    HomePage homePage;
+    DashboardPage dashboardPage;
     LoginPage loginPage;
     OTPPage otpPage;
     ExtentTest exTest;
@@ -23,7 +23,7 @@ public class LoginTest extends Drivers {
         String methodName = method.getName();
         exTest = extent.createTest(methodName);
         TestContext.setExtentTest(exTest);
-        homePage = new HomePage(driver);
+        dashboardPage = new DashboardPage(driver);
         loginPage = new LoginPage(driver);
         otpPage = new OTPPage(driver);
         driver.get(url);
@@ -46,11 +46,11 @@ public class LoginTest extends Drivers {
         loginPage.loginToSampathVishwaWeb(userName, password, emailSentSuccessMsg, LoginConstants.OTP_PAGE_HEADER, LoginConstants.FALASE);
         otpPage.validateTheOTPPage(LoginConstants.EXPECTED_TITLE, LoginConstants.OTP_PAGE_HEADER);
         otpPage.enterOTPAndContinue(LoginConstants.OTP);
-        homePage.validateTheTitle();
-        homePage.ValidateUserProfileIcon();
-        homePage.browserNavigateBack();
+        dashboardPage.validateTheTitle();
+        dashboardPage.ValidateUserProfileIcon();
+        dashboardPage.browserNavigateBack();
         loginPage.validateTheLoginPage(LoginConstants.EXPECTED_TITLE, LoginConstants.LOGIN_TILE_NAME);
-        homePage.browserNavigateForward();
+        dashboardPage.browserNavigateForward();
         loginPage.validateTheLoginPage(LoginConstants.EXPECTED_TITLE, LoginConstants.LOGIN_TILE_NAME);
     }
 
@@ -66,8 +66,8 @@ public class LoginTest extends Drivers {
         loginPage.loginToSampathVishwaWeb(userName, password, emailSentSuccessMsg, LoginConstants.OTP_PAGE_HEADER, LoginConstants.FALASE);
         otpPage.validateTheOTPPage(LoginConstants.EXPECTED_TITLE, LoginConstants.OTP_PAGE_HEADER);
         otpPage.enterOTPAndContinue(LoginConstants.OTP);
-        homePage.validateTheTitle();
-        homePage.logoutFromSampathVishwaWeb(LoginConstants.LOGOUT_BUTTON_TEXT, popupText, LoginConstants.CONFIRM_AND_LOGOUT_BUTTON_TEXT, LoginConstants.LOGIN_TILE_NAME);
+        dashboardPage.validateTheTitle();
+        dashboardPage.logoutFromSampathVishwaWeb(LoginConstants.LOGOUT_BUTTON_TEXT, popupText, LoginConstants.CONFIRM_AND_LOGOUT_BUTTON_TEXT, LoginConstants.LOGIN_TILE_NAME);
     }
 
     //---------------------------  Work-in progress -------------------------------

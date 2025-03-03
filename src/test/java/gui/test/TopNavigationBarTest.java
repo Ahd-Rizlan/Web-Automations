@@ -13,8 +13,6 @@ import java.lang.reflect.Method;
 public class TopNavigationBarTest extends Drivers {
     LoginPage loginPage;
     DashboardPage dashboardPage;
-    ExamplePageOne examplePageOnePage;
-    ExamplePageTwo examplePageTwo;
     ExtentTest test;
 
 

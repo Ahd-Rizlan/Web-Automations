@@ -7,7 +7,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.report.helpers;
 
-import java.awt.image.BufferedImage;
 import java.util.List;
 
 public abstract class BasePage extends helpers {
@@ -32,12 +31,12 @@ public abstract class BasePage extends helpers {
             WebDriverWait wait = new WebDriverWait(driver, 10);
             WebElement webElement = wait.until(ExpectedConditions.elementToBeClickable(byLocator));
             webElement.clear();
-            addScreenshotToTheReport("Clear the input textbox.", Status.PASS);
+            addToReport("Clear the input textbox.", Status.PASS,false);
             webElement.sendKeys(inputText);
-            addScreenshotToTheReport("Type '" + inputText + "' on textbox.", Status.PASS);
+            addToReport("Type '" + inputText + "' on textbox.", Status.PASS,false);
             waitFor(2000);
         } catch (Exception e) {
-            addScreenshotToTheReport("Unable to type on '" + inputText + "'  textbox.", Status.FAIL);
+            addToReport("Unable to type on '" + inputText + "'  textbox.", Status.FAIL);
             System.err.println("Error sending keys to WebElement: " + e.getMessage());
         }
     }
@@ -56,13 +55,13 @@ public abstract class BasePage extends helpers {
             WebDriverWait wait = new WebDriverWait(driver, 10);
             WebElement element = wait.until(ExpectedConditions.elementToBeClickable(webElement));
             element.clear();
-            addScreenshotToTheReport("Clear the input textbox.", Status.PASS);
+            addToReport("Clear the input textbox.", Status.PASS);
             element.sendKeys(inputText);
-            addScreenshotToTheReport("Type '" + inputText + "' into the element.", Status.PASS);
+            addToReport("Type '" + inputText + "' into the element.", Status.PASS);
             waitFor(2000);
 
         } catch (Exception e) {
-            addScreenshotToTheReport("Unable to type '" + inputText + "' into the element.", Status.FAIL);
+            addToReport("Unable to type '" + inputText + "' into the element.", Status.FAIL);
             System.err.println("Error sending keys to WebElement: " + e.getMessage());
         }
     }
@@ -79,9 +78,9 @@ public abstract class BasePage extends helpers {
             WebDriverWait wait = new WebDriverWait(driver, 10);
             WebElement webElement = wait.until(ExpectedConditions.elementToBeClickable(byLocator));
             webElement.sendKeys(Keys.ENTER);
-            addScreenshotToTheReport("Press the 'Enter' key.", Status.PASS);
+            addToReport("Press the 'Enter' key.", Status.PASS);
         } catch (Exception e) {
-            addScreenshotToTheReport("Error sending Enter key to element.", Status.FAIL);
+            addToReport("Error sending Enter key to element.", Status.FAIL);
             System.err.println("Error sending Enter key to element: " + e.getMessage());
         }
     }
@@ -98,9 +97,9 @@ public abstract class BasePage extends helpers {
             WebDriverWait wait = new WebDriverWait(driver, 10);
             WebElement webElement = wait.until(ExpectedConditions.elementToBeClickable(byLocator));
             webElement.sendKeys(Keys.TAB);
-            addScreenshotToTheReport("Press the 'Tab' key.", Status.PASS);
+            addToReport("Press the 'Tab' key.", Status.PASS);
         } catch (Exception e) {
-            addScreenshotToTheReport("Error sending Tab key to element.", Status.FAIL);
+            addToReport("Error sending Tab key to element.", Status.FAIL);
             System.err.println("Error sending Tab key to element: " + e.getMessage());
         }
     }
@@ -117,10 +116,10 @@ public abstract class BasePage extends helpers {
             WebDriverWait wait = new WebDriverWait(driver, 10);
             wait.until(ExpectedConditions.elementToBeClickable(locator));
             locator.click();
-            addScreenshotToTheReport("Click on the '" + locator + "' web element locator.", Status.PASS);
+            addToReport("Click on the '" + locator + "' web element locator.", Status.PASS);
 
         } catch (Exception e) {
-            addScreenshotToTheReport("Error occur when clicking on the '" + locator + "' web element locator.", Status.FAIL);
+            addToReport("Error occur when clicking on the '" + locator + "' web element locator.", Status.FAIL);
             System.err.println("Error occur when clicking on the web element locator: " + e.getMessage());
         }
     }
@@ -139,9 +138,9 @@ public abstract class BasePage extends helpers {
             WebDriverWait wait = new WebDriverWait(driver, 10);
             wait.until(ExpectedConditions.elementToBeClickable(locator));
             driver.findElement(locator).click();
-            addScreenshotToTheReport("Successfully clicked on the '" + locator + "' element.", Status.PASS);
+            addToReport("Successfully clicked on the '" + locator + "' element.", Status.PASS,false);
         } catch (Exception e) {
-            addScreenshotToTheReport("Error occur when clicking on the '" + locator + "' element.", Status.FAIL);
+            addToReport("Error occur when clicking on the '" + locator + "' element.", Status.FAIL);
             System.err.println("Error occur when clicking on the element: " + e.getMessage());
         }
     }
@@ -344,10 +343,10 @@ public abstract class BasePage extends helpers {
         try {
             WebDriverWait wait = new WebDriverWait(driver, 10);
             wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div/img[@alt=\"loading...\"]")));
-            addScreenshotToTheReport("Loading indicator is not visible", Status.PASS);
+            addToReport("Loading indicator is not visible", Status.PASS);
 
         } catch (Exception e) {
-            addScreenshotToTheReport("Loading indicator is still visible", Status.FAIL);
+            addToReport("Loading indicator is still visible", Status.FAIL);
             System.err.println("Loading indicator is still visible: " + e.getMessage());
         }
     }
@@ -365,10 +364,10 @@ public abstract class BasePage extends helpers {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Timeout);
             wait.until(ExpectedConditions.invisibilityOfElementLocated(Locator));
-            addScreenshotToTheReport("Element "+Locator +" is not visible", Status.PASS);
+            addToReport("Element "+Locator +" is not visible", Status.PASS,false);
 
         } catch (Exception e) {
-            addScreenshotToTheReport("Element "+Locator +" is still visible after "+Timeout +" seconds", Status.FAIL);
+            addToReport("Element "+Locator +" is still visible after "+Timeout +" seconds", Status.FAIL);
             System.err.println("Loading indicator is still visible: " + e.getMessage());
         }
     }
@@ -382,10 +381,10 @@ public abstract class BasePage extends helpers {
         try {
             WebDriverWait wait = new WebDriverWait(driver, 10);
             wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[@class='css-fraxkc']")));
-            addScreenshotToTheReport("Loading dropdown is not visible:", Status.PASS);
+            addToReport("Loading dropdown is not visible:", Status.PASS);
 
         } catch (Exception e) {
-            addScreenshotToTheReport("Loading dropdown is still visible:", Status.FAIL);
+            addToReport("Loading dropdown is still visible:", Status.FAIL);
             System.err.println("Loading dropdown is still visible: " + e.getMessage());
         }
     }
@@ -399,10 +398,10 @@ public abstract class BasePage extends helpers {
         try {
             JavascriptExecutor js = (JavascriptExecutor) driver;
             js.executeScript("window.scrollBy(0, document.body.scrollHeight);");
-            addScreenshotToTheReport("Successfully scrolled down the page", Status.PASS);
+            addToReport("Successfully scrolled down the page", Status.PASS);
 
         } catch (Exception e) {
-            addScreenshotToTheReport("Error scrolling down the page", Status.FAIL);
+            addToReport("Error scrolling down the page", Status.FAIL);
             System.err.println("Error scrolling down the page: " + e.getMessage());
         }
     }
@@ -418,9 +417,9 @@ public abstract class BasePage extends helpers {
         try {
             JavascriptExecutor js = (JavascriptExecutor) driver;
             js.executeScript("arguments[0].scrollIntoView();", webElement);
-            addScreenshotToTheReport("Successfully scrolled to the WebElement", Status.PASS);
+            addToReport("Successfully scrolled to the WebElement", Status.PASS);
         } catch (Exception e) {
-            addScreenshotToTheReport("Error scrolling to WebElement", Status.FAIL);
+            addToReport("Error scrolling to WebElement", Status.FAIL);
             System.err.println("Error scrolling to WebElement: " + e.getMessage());
         }
     }
@@ -434,9 +433,9 @@ public abstract class BasePage extends helpers {
         try {
             JavascriptExecutor js = (JavascriptExecutor) driver;
             js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-            addScreenshotToTheReport("Error scrolling to the bottom of the page.", Status.PASS);
+            addToReport("Error scrolling to the bottom of the page.", Status.PASS);
         } catch (Exception e) {
-            addScreenshotToTheReport("Successfully scrolled to the WebElement", Status.FAIL);
+            addToReport("Successfully scrolled to the WebElement", Status.FAIL);
             System.err.println("Error scrolling to the bottom of the page: " + e.getMessage());
         }
     }
@@ -453,10 +452,10 @@ public abstract class BasePage extends helpers {
             WebDriverWait wait = new WebDriverWait(driver, 10);
             WebElement webElement = wait.until(ExpectedConditions.elementToBeClickable(byLocator));
             webElement.clear();
-            addScreenshotToTheReport("Clear the '" + byLocator + "' input textbox.", Status.PASS);
+            addToReport("Clear the '" + byLocator + "' input textbox.", Status.PASS);
             waitFor(2000);
         } catch (Exception e) {
-            addScreenshotToTheReport("Unable to clear the '" + byLocator + "'  textbox.", Status.FAIL);
+            addToReport("Unable to clear the '" + byLocator + "'  textbox.", Status.FAIL);
             System.err.println("Error clearing the web element " + e.getMessage());
         }
     }
@@ -468,9 +467,9 @@ public abstract class BasePage extends helpers {
             WebElement element = driver.findElement(locator);
             Actions actions = new Actions(driver);
             actions.moveToElement(element).click().perform();
-            addScreenshotToTheReport("Successfully clicked on the '" + locator + "' element using mouse actions.", Status.PASS);
+            addToReport("Successfully clicked on the '" + locator + "' element using mouse actions.", Status.PASS);
         } catch (Exception e) {
-            addScreenshotToTheReport("Error occurred when clicking on the '" + locator + "' element.", Status.FAIL);
+            addToReport("Error occurred when clicking on the '" + locator + "' element.", Status.FAIL);
             System.err.println("Error occurred when clicking on the element: " + e.getMessage());
         }
     }
@@ -487,10 +486,10 @@ public abstract class BasePage extends helpers {
             WebDriverWait wait = new WebDriverWait(driver, 10);
             WebElement webElement = wait.until(ExpectedConditions.elementToBeClickable(byLocator));
             webElement.sendKeys(inputText);
-            addScreenshotToTheReport("Type '" + inputText + "' on textbox.", Status.PASS);
+            addToReport("Type '" + inputText + "' on textbox.", Status.PASS);
             waitFor(2000);
         } catch (Exception e) {
-            addScreenshotToTheReport("Unable to type on '" + inputText + "'  textbox.", Status.FAIL);
+            addToReport("Unable to type on '" + inputText + "'  textbox.", Status.FAIL);
             System.err.println("Error sending keys to WebElement: " + e.getMessage());
         }
     }
@@ -503,7 +502,7 @@ public abstract class BasePage extends helpers {
     public void browserNavigateBack() {
 
         driver.navigate().back();
-        addScreenshotToTheReport("Navigate back from current browser location", Status.INFO);
+        addToReport("Navigate back from current browser location", Status.INFO);
     }
 
     /**
@@ -513,7 +512,7 @@ public abstract class BasePage extends helpers {
      */
     public void browserNavigateForward() {
         driver.navigate().forward();
-        addScreenshotToTheReport("Navigate forward from current browser location", Status.INFO);
+        addToReport("Navigate forward from current browser location", Status.INFO);
     }
 
 
