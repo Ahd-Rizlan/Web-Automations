@@ -68,7 +68,7 @@ public class OTPPage extends BasePage {
      * @param otp - expected title text
      *
      */
-    public void enterOTPAndContinue(int[] otp) {
+    public void enterOTPAndContinue(String otp) {
 
         try {
 
@@ -83,9 +83,13 @@ public class OTPPage extends BasePage {
             }
 
             //Enter OTP values and continue
-            for (int inc = 1; inc <= otp.length; inc++) {
-                sendKeysToElement(tfOTP(inc), String.valueOf(otp[inc - 1]));
-            }
+//            for (int inc = 1; inc <= otp.length; inc++) {
+//                sendKeysToElement(tfOTP(inc), String.valueOf(otp[inc - 1]));
+//            }
+
+            //Remove above code if no significant DOM changes in future
+            sendKeysToElement(tfOTP(1), String.valueOf(otp));
+
             clickOnElement(btnConfirm);
         } catch (Exception e) {
             addScreenshotToTheReport("Error when entering OTP", Status.FAIL);

@@ -1,5 +1,6 @@
 package data;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.testng.annotations.DataProvider;
@@ -36,11 +37,34 @@ public class DataProviders {
             return XlsReader.getDataFromSheet(filePath, "LogoutData", columnNames).iterator();
         }
 
-        @DataProvider(name = "FDValidationData")
-        public static Iterator<Object[]> FDValidationData() {
-            String[] columnNames = {"fDAccountNumber", "currencyAndAvailableBalance", "maturityAmount", "maturityDate", "interestRate"};
-            return XlsReader.getDataFromSheet(filePath, "FDValidation", columnNames).iterator();
+
+    }
+    public static class DashboardDataProvider {
+        private static final String filePath;
+
+        static {
+            String projectRoot = System.getProperty("user.dir");
+            filePath = projectRoot + "/" + property.getProperty("gui-config", "TESTDATA_PATH");
         }
+
+        @DataProvider(name = "DashboardSavingsValidationData")
+        public static Iterator<Object[]> getDashboardSavingsValidationData() {
+            String[] columnNames = {"savingsAccountNumber", "currencyAndAvailableBalance", "productName"};
+            return XlsReader.getDataFromSheet(filePath, "DashboardSavingsValidationData", columnNames).iterator();
+        }
+
+        @DataProvider(name = "DashboardFDValidationData")
+        public static Iterator<Object[]> getDashboardFDValidationData() {
+            String[] columnNames = {"fDAccountNumber", "currencyAndAvailableBalance", "maturityAmount", "maturityDate", "interestRate"};
+            return XlsReader.getDataFromSheet(filePath, "DashboardFDValidation", columnNames).iterator();
+        }
+
+        @DataProvider(name = "DashboardRVTTransferData")
+        public static Iterator<Object[]> getDashboardRVTTransferData() {
+            String[] columnNames = {"accountName", "currencyAndAmount", "date"};
+            return XlsReader.getDataFromSheet(filePath, "DashboardRVTTransferValidation", columnNames).iterator();
+        }
+
 
     }
 }
