@@ -134,11 +134,15 @@ public class ConstantApiUtils {
     public static final String DO_TRANSFER_FOR_VISHWA_BODY = "//src//test//java//api//utils//payloads//doTransferForVishwaBody.json";
 
     public static final String FAV_BENEFICIARIES_RESPONSE = "//src//test//java//api//utils//response//favBeneficiaries.json";
+    public static final String FAV_BENEFICIARIES_RESPONSE_FOR_EMPTY_BENE= "//src//test//java//api//utils//response//favBeneficiariesWithEmptyBene.json";
     public static final String UPDATE_PAYMENT_TEMPLATE_RESPONSE = "//src//test//java//api//utils//response//updatePaymentTemplate.json";
     public static final String UPDATE_PAYMENT_TEMPLATE_BODY = "//src//test//java//api//utils//payloads//updatePaymentTemplateBody.json";
     public static final String DELETE_PAYMENT_TEMPLATE_RESPONSE = "//src//test//java//api//utils//response//deletePaymentTemplate.json";
     public static final String DELETE_PAYMENT_TEMPLATE_BODY = "//src//test//java//api//utils//payloads//deletePaymentTemplateBody.json";
+    public static final String EMPTY_FAV_BENEFICIARIES_BODY= "//src//test//java//api//utils//payloads//favBeneficiariesBodyWithNoBeneficiaries.json";
     public static final String FAV_BENEFICIARIES_BODY = "//src//test//java//api//utils//payloads//favBeneficiariesBody.json";
+    public static final String FAV_BILLERS_BODY = "//src//test//java//api//utils//payloads//favBillersBody.json";
+
     public static final String FD_ACCOUNT_RESPONSE = "//src//test//java//api//utils//response//fdAccount.json";
     public static final String GET_ACCOUNT_BY_TRAN_TYPE_RESPONSE = "//src//test//java//api//utils//response//accountsByTrantype.json";
     public static final String GET_BANK_LIST_RESPONSE = "//src//test//java//api//utils//response//getBankList.json";

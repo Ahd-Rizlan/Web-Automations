@@ -1,0 +1,13 @@
+{
+  "favBeneficiariesResponse": {
+    "responseHeader": {
+      "statusCode": true,
+      "statusDescription": "SUCCESS"
+    },
+    "pageNo": 10,
+    "pageLimit": 1,
+    "recordCount": 1,
+    "returnMessage": "no records available for userName: botuser",
+    "beneficiaryListDetails": []
+  }
+}

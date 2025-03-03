@@ -1,12 +1,35 @@
 {
-  "responseHeader": {
-    "statusCode": false,
-    "statusDescription": "Fail",
-    "errorCode": "PP_003",
-    "errorDescription": "No records available for userName: botuser"
-  },
-  "pageNo": 2,
-  "pageLimit": 1,
-  "totalCount": 0,
-  "paymentTemplateResponse": []
+  "favouriteBillersResponse": {
+    "responseHeader": {
+      "statusCode": true,
+      "statusDescription": "Success"
+    },
+    "pageNo": 1,
+    "pageLimit": 12,
+    "totalCount": 1,
+    "paymentTemplateList": [
+      {
+        "templateID": 132132,
+        "templateName": "nick",
+        "billerID": "0000000274",
+        "amount": 0,
+        "favorite": true,
+        "billerName": "Lady J",
+        "billerFieldList": [
+          {
+            "fieldValue": "0763256987",
+            "fieldSequence": 1,
+            "fieldName": "Invoice Number",
+            "fieldLength": 10,
+            "mandatoryFlag": "Y",
+            "reEnter": "N",
+            "rStatus": "V",
+            "fieldDisplaySequence": 1,
+            "fieldId": "1697",
+            "fieldType": "Text"
+          }
+        ]
+      }
+    ]
+  }
 }

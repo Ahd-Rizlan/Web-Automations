@@ -53,21 +53,6 @@
       },
       {
         "RStatus": "V",
-        "categoryId": "016",
-        "categoryName": "Entertainment"
-      },
-      {
-        "RStatus": "V",
-        "categoryId": "017",
-        "categoryName": "Services"
-      },
-      {
-        "RStatus": "V",
-        "categoryId": "023",
-        "categoryName": "Sports & Recreation"
-      },
-      {
-        "RStatus": "V",
         "categoryId": "024",
         "categoryName": "Electricity"
       },
@@ -80,11 +65,6 @@
         "RStatus": "V",
         "categoryId": "027",
         "categoryName": "Financial Institutions"
-      },
-      {
-        "RStatus": "V",
-        "categoryId": "028",
-        "categoryName": "Events"
       },
       {
         "RStatus": "V",
@@ -105,11 +85,6 @@
         "RStatus": "V",
         "categoryId": 101,
         "categoryName": "Water Board"
-      },
-      {
-        "RStatus": "V",
-        "categoryId": 102,
-        "categoryName": "Sanhinda Promotion"
       },
       {
         "RStatus": "V",

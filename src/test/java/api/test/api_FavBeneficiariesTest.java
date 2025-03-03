@@ -23,19 +23,25 @@ public class api_FavBeneficiariesTest extends baseMethod {
 	public void resetData (Method m){
 		setTestName(m.getName());
 	}
-	@Test(priority = 1,testName = "Verify that Credit Card Details are Not Accessible with Unauthorized Access for Favourite Beneficiaries")
-	public void checkCreditCardDetailsApiUnauthorizedAccess() {
+	@Test(priority = 1,testName = "Verify that Favourite Beneficiaries List is Not Accessible with Unauthorized Access ")
+	public void checkFavBeneficiaryDetailsApiUnauthorizedAccess() {
 		favBeneficiaries.authorisedWithInvalidToken();
 		favBeneficiaries.invokeFavBeneficiaries();
 		favBeneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
 	}
 
-	@Test(priority = 2,testName = "Verify that Credit Card Details are Accessible with Authorized Access for Favourite Beneficiaries")
-	public void checkCreditCardDetailsApiAuthorizedAccess() {
+	@Test(priority = 2,testName = "Verify that Favourite Beneficiaries List is Accessible with Authorized Access")
+	public void checkFavBeneficiaryDetailsApiAuthorizedAccess() {
 		favBeneficiaries.authorisedWithValidToken();
 		favBeneficiaries.invokeFavBeneficiaries();
 		favBeneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
 		favBeneficiaries.validatePayload();
 	}
-
+	@Test(priority = 2,testName = "Verify that Favourite Beneficiaries  Not retrieved When Its Empty" )
+	public void checkFavBeneficiaryDetailsNotRetrievedWithNoFavBeneficiaries() {
+		favBeneficiaries.authorisedWithValidToken();
+		favBeneficiaries.invokeFavBeneficiaries();
+		favBeneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
+		favBeneficiaries.invokeFavBeneficiariesWithEmptyBene();
+	}
 }

@@ -37,7 +37,20 @@ public class api_deleteBeneficiariesTest extends baseMethod {
         deleteBeneficiaries.authorisedWithValidToken();
         deleteBeneficiaries.invokeDeleteBeneficiariesApi();
         deleteBeneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
-       // deleteBeneficiaries.validatePayload(); //Bug reported [SVR4-557]
+        deleteBeneficiaries.validatePayload(); //Bug reported [SVR4-557]
+
+
+        //Real Response
+//        {
+//            "deleteBeneficiariesResponse": {
+//            "responseHeader": {
+//                "statusCode": true,
+//                        "statusDescription": "571468 record deleted."
+//            },
+//            "returnCode": "202 ACCEPTED"
+//        }
+//        }
+
     }
 
 }

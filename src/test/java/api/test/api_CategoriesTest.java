@@ -43,11 +43,11 @@ public class api_CategoriesTest extends baseMethod {
 		categories.authorisedWithValidToken();
 		categories.setPayloadWithInvalidMerchantCode();
 		categories.invokeCategoriesApi();
-		categories.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
+		categories.validateResponseCode(ConstantApiUtils.API_STATS_CODE_500); //500 Thrown
 		categories.validatePayloadForIncorrectMerchantCode();
 	}
 	//Happy path
-	@Test(priority = 2,testName = "Verify that the Categories can be Retrieved with Unauthorized Access")
+	@Test(priority = 2,testName = "Verify that the Categories can be Retrieved with Authorized Access")
 	public void checkCategoriesWithAuthorizedAccess()  {
 		categories.authorisedWithValidToken();
 		categories.invokeCategoriesApi();

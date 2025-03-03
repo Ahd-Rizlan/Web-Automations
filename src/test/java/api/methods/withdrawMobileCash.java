@@ -94,6 +94,9 @@ public class withdrawMobileCash extends baseMethod {
         response.then().assertThat().statusCode(responseCode);
     }
 
+
+
+    ///have to add invalid payloads as well
     public void validatePayload() {
         new PayloadValidator().validateJsonFileWithResponse(JSON_PATH, response);
     }
