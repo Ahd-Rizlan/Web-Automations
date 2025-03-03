@@ -141,6 +141,8 @@ public class ConstantApiUtils {
     public static final String DELETE_PAYMENT_TEMPLATE_BODY = "//src//test//java//api//utils//payloads//deletePaymentTemplateBody.json";
     public static final String EMPTY_FAV_BENEFICIARIES_BODY= "//src//test//java//api//utils//payloads//favBeneficiariesBodyWithNoBeneficiaries.json";
     public static final String FAV_BENEFICIARIES_BODY = "//src//test//java//api//utils//payloads//favBeneficiariesBody.json";
+    public static final String FAV_BILLERS_BODY = "//src//test//java//api//utils//payloads//favBillersBody.json";
+
     public static final String FD_ACCOUNT_RESPONSE = "//src//test//java//api//utils//response//fdAccount.json";
     public static final String GET_ACCOUNT_BY_TRAN_TYPE_RESPONSE = "//src//test//java//api//utils//response//accountsByTrantype.json";
     public static final String GET_BANK_LIST_RESPONSE = "//src//test//java//api//utils//response//getBankList.json";

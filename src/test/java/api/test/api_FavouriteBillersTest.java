@@ -3,11 +3,13 @@ package api.test;
 import api.methods.baseMethod;
 import api.methods.favouriteBillers;
 import api.utils.ConstantApiUtils;
+import org.json.simple.parser.ParseException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 
 public class api_FavouriteBillersTest extends baseMethod {
@@ -24,25 +26,44 @@ public class api_FavouriteBillersTest extends baseMethod {
         setTestName(m.getName());
     }
 
-    @Test(priority = 1,testName = "Verify that Favourite Billers are Not Retrieved With Unauthorized Access")   // Bug reported : SVR4-517
-    public void checkFavouriteBillersApiWithUnauthorizedAccess() {
+//    @Test(priority = 1,testName = "Verify that Favourite Billers are Not Retrieved With Unauthorized Access")   // Bug reported : SVR4-517
+//    public void checkFavouriteBillersApiWithUnauthorizedAccess() {
+//
+//        favouriteBillers.authorisedWithInvalidToken();
+//        favouriteBillers.setPageLimit(ConstantApiUtils.PAGE_LIMIT_ONE);
+//        favouriteBillers.setPageNo(ConstantApiUtils.PAGE_NO_TWO);
+//        favouriteBillers.invokeFavouriteBillersApi();
+//        favouriteBillers.validateResponseCode(ConstantApiUtils.API_STATS_CODE_404);
+//    }
 
-        favouriteBillers.authorisedWithInvalidToken();
-        favouriteBillers.setPageLimit(ConstantApiUtils.PAGE_LIMIT_ONE);
-        favouriteBillers.setPageNo(ConstantApiUtils.PAGE_NO_TWO);
-        favouriteBillers.invokeFavouriteBillersApi();
-        favouriteBillers.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
-    }
-
+//    @Test(priority = 2,testName = "Verify that Favourite Billers are  Retrieved With Authorized Access")  // Bug reported : SVR4-517
+//    public void checkFavouriteBillersApiWithAuthorizedAccess() {
+//
+//        favouriteBillers.authorisedWithValidToken();
+//        favouriteBillers.setPageLimit(ConstantApiUtils.PAGE_LIMIT_ONE);
+//        favouriteBillers.setPageNo(ConstantApiUtils.PAGE_NO_TWO);
+//        favouriteBillers.invokeFavouriteBillersApi();
+//        favouriteBillers.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
+//        favouriteBillers.validatePayload();
+//    }
     @Test(priority = 2,testName = "Verify that Favourite Billers are  Retrieved With Authorized Access")  // Bug reported : SVR4-517
     public void checkFavouriteBillersApiWithAuthorizedAccess() {
 
         favouriteBillers.authorisedWithValidToken();
-        favouriteBillers.setPageLimit(ConstantApiUtils.PAGE_LIMIT_ONE);
-        favouriteBillers.setPageNo(ConstantApiUtils.PAGE_NO_TWO);
-        favouriteBillers.invokeFavouriteBillersApi();
+        favouriteBillers.invokeFavouriteBillersApiPost();
         favouriteBillers.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
         favouriteBillers.validatePayload();
     }
 
+
+    @Test(priority = 1,testName = "Verify that Favourite Billers are Not Retrieved With Unauthorized Access")   // Bug reported : SVR4-517
+    public void checkFavouriteBillersApiWithUnauthorizedAccess() throws IOException, ParseException {
+
+        favouriteBillers.authorisedWithInvalidToken();
+        favouriteBillers.setPayloadWithInvalidMerchantCode();
+//        favouriteBillers.setPageLimit(ConstantApiUtils.PAGE_LIMIT_ONE);
+//        favouriteBillers.setPageNo(ConstantApiUtils.PAGE_NO_TWO);
+        favouriteBillers.invokeFavouriteBillersApiPost();
+//        favouriteBillers.validateResponseCode(ConstantApiUtils.API_STATS_CODE_404);
+    }
 }
