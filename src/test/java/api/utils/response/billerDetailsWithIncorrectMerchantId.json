@@ -1,0 +1,11 @@
+{
+  "getBillerDetailsResponse": {
+    "return": {
+      "RStatus": null,
+      "billerAccountNo": null,
+      "billerCategoryId": null,
+      "billerId": null,
+      "billerName": null
+    }
+  }
+}

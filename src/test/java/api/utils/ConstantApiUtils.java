@@ -70,6 +70,8 @@ public class ConstantApiUtils {
 
     public static final String GET_MOBILE_CASH_PATH = "/apis/transaction/web/getMobileCash/1.0.0";
     public static final String GET_CATEGORIES_PATH = "/apis/payments/bill_payment/categories/1.0.0";
+    public static final String GET_BILLER_DETAIL_PATH = "/apis/payments/bill_payment/biller/1.0.0";
+
     public static final String GET_BILL_PAYMENT_TEMPLATE_LIST_PATH = "/apis/payments/web/getBillPaymentTemplateList/1.0.0";
     public static final String GET_WITHDRAW_MOBILE_CASH_PATH = "/apis/transaction/web/withdrawMobileCash/1.0.0";
 
@@ -153,8 +155,11 @@ public class ConstantApiUtils {
     public static final String GET_FAVOURITE_BILLERS_WITH_INVALID_MERCHANTCODE_RESPONSE = "//src//test//java//api//utils//response//favouriteBillerswithInvalidMerchantCode.json";
     public static final String GET_MOBILE_CACHE_RESPONSE = "//src//test//java//api//utils//response//mobileCash.json";
     public static final String GET_CATEGORIES_RESPONSE = "//src//test//java//api//utils//response//categories.json";
+    public static final String GET_BILLER_DETAIL_RESPONSE = "//src//test//java//api//utils//response//getBillerDetails.json";
     public static final String GET_BILL_PAYMENT_TEMPLATE_RESPONSE = "//src//test//java//api//utils//response//getBillPaymentTemplateList.json";
     public static final String GET_CATEGORIES_BODY = "//src//test//java//api//utils//payloads//categoriesBody.json";
+    public static final String GET_BILLER_DETAIL_BODY = "//src//test//java//api//utils//payloads//getBillerDetailsBody.json";
+
     public static final String GET_BILL_PAYMENT_TEMPLATE_LIST_BODY = "//src//test//java//api//utils//payloads//getBillPaymentTemplateListBody.json";
     public static final String GET_MOBILE_CACHE_BODY = "//src//test//java//api//utils//payloads//mobileCashBody.json";
     public static final String GET_PAYMENTS_RESPONSE = "//src//test//java//api//utils//response//payments.json";
@@ -202,6 +207,7 @@ public class ConstantApiUtils {
     public static final String GET_MAKE_BILL_PAYMENT_WITH_INCORRECT_DEBIT_ACCOUNT_RESPONSE = "//src//test//java//api//utils//response//makeBillPaymentWithIncorrecDebitAccount.json";
     public static final String GET_MAKE_BILL_PAYMENT_WITH_INCORRECT_CURRENCY_RESPONSE = "//src//test//java//api//utils//response//makeBillPaymentWithIncorrectCurrencyType.json";
     public static final String GET_CATEGORIES_WITH_INCORRECT_MERCHANT_ID_RESPONSE = "//src//test//java//api//utils//response//categoriesWithIncorrectMerchantId.json";
+    public static final String GET_BILLER_DETAILS_WITH_INCORRECT_MERCHANT_ID_RESPONSE = "//src//test//java//api//utils//response//billerDetailsWithIncorrectMerchantId.json";
     public static final String GET_BILL_PAYMENT_TEMPLATE_LIST_WITH_INCORRECT_MERCHANT_ID_RESPONSE = "//src//test//java//api//utils//response//getBillPaymentTemplateListWithIncorrectMerchantId.json";
     //---------Others------------
     public static final String PAGE_NO_ONE = "1";
