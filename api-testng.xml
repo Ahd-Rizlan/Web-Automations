@@ -30,6 +30,7 @@
             <class name="api.test.api_FavouriteBillersTest">
                 <methods>
                     <include name="checkFavouriteBillersApiWithAuthorizedAccess"/>
+                    <include name="checkFavouriteBillersApiWithInvalidMerchantCode"/>
                     <include name="checkFavouriteBillersApiWithUnauthorizedAccess"/>
                 </methods>
             </class>
@@ -146,6 +147,13 @@
                 <methods>
                     <include name="checkGetAccountsByTrantypeWithUnauthorizedAccess"/>
                     <include name="checkGetAccountsByTrantypeWithAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_getBillerDetailsTest">
+                <methods>
+                    <include name="checkBillerDetailsWithUnauthorizedAccess"/>
+                    <include name="checkCategoriesWithIncorrectMerchantCode"/>
+                    <include name="checkCategoriesWithAuthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.api_getCustAccountDetailsTest">
