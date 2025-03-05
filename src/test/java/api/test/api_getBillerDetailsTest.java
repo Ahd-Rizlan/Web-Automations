@@ -34,7 +34,7 @@ public class api_getBillerDetailsTest extends baseMethod {
     public void checkBillerDetailsWithUnauthorizedAccess()  {
         getBillerDetails.authorisedWithInvalidToken();
         getBillerDetails.invokeBillerDetailsApi();
-        getBillerDetails.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401); //404 is returned
+        getBillerDetails.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
     }
 
     @Test(priority = 2,testName = "Verify that the Biller Details cannot be Retrieved with Incorrect Merchant Code")
