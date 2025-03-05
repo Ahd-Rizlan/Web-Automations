@@ -292,6 +292,24 @@ public abstract class BasePage extends helpers {
     }
 
     /**
+     * Checks if a specific attribute is present on a WebElement.
+     * <p>
+     * This method retrieves the value of the specified attribute from the WebElement.
+     *
+     * @param webElement the WebElement to check for the attribute
+     * @param attribute  the name of the attribute to retrive value
+     * @return value the attribute contains
+     */
+    public String getAttributetext(WebElement webElement, String attribute) {
+        try {
+            return webElement.getAttribute(attribute);
+        } catch (Exception e) {
+            System.err.println("Error checking attribute presence: " + e.getMessage());
+            return e.getMessage();
+        }
+    }
+
+    /**
      * Checks if an element is invisible, identified by the provided By locator.
      * <p>
      * This method waits for the element to become invisible for up to 10 seconds.
@@ -417,6 +435,18 @@ public abstract class BasePage extends helpers {
         try {
             JavascriptExecutor js = (JavascriptExecutor) driver;
             js.executeScript("arguments[0].scrollIntoView();", webElement);
+            addToReport("Successfully scrolled to the WebElement", Status.PASS);
+        } catch (Exception e) {
+            addToReport("Error scrolling to WebElement", Status.FAIL);
+            System.err.println("Error scrolling to WebElement: " + e.getMessage());
+        }
+    }
+
+    public void scrollToWebElement(By locator) {
+        try {
+            WebElement element = driver.findElement(locator);
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            js.executeScript("arguments[0].scrollIntoView(true);", element);
             addToReport("Successfully scrolled to the WebElement", Status.PASS);
         } catch (Exception e) {
             addToReport("Error scrolling to WebElement", Status.FAIL);

@@ -7,6 +7,7 @@ import org.testng.annotations.*;
 import pages.DashboardPage;
 import pages.LoginPage;
 import pages.OTPPage;
+import pages.SavedPayeesPage;
 import utils.Drivers;
 import com.aventstack.extentreports.ExtentTest;
 import utils.report.TestContext;
@@ -18,6 +19,7 @@ public class DashboardTest extends Drivers {
     OTPPage otpPage;
     ExtentTest exTest;
     DashboardPage dashboardPage;
+    SavedPayeesPage savedPayeesPage;
 
     @BeforeMethod
     private void OpenURL(Method method) {
@@ -27,6 +29,7 @@ public class DashboardTest extends Drivers {
         dashboardPage = new DashboardPage(driver);
         loginPage = new LoginPage(driver);
         otpPage = new OTPPage(driver);
+        savedPayeesPage = new SavedPayeesPage(driver);
     }
 
 
@@ -86,18 +89,45 @@ public class DashboardTest extends Drivers {
     public void validateAvailabilityOfFavouritePayee() {
         dashboardPage.validateFavouritePayeeWidget();
     }
+    @Test(priority = 11, description = "Validate the re-initiation of transactions from favourite payee in dashboard")
+    public void validateReInitiationOfTransactionsFromFavouritePayee() {
+        String[] FRecordData =  dashboardPage.getFPWidgetFirstRecordDetails();
+        savedPayeesPage.validateQFTPopup(FRecordData);
+//        savedPayeesPage.validateQFTPopup(dashboardPage.getFPWidgetFirstRecordDetails());
+    }
+
+    @Test(priority = 12, description = "Validate the add new payee from favourite payee widget in dashboard")
+    public void validateAddNewPayeeFromFavouritePayee() {
+        dashboardPage.navigateToAddFavouritePayee();
+        savedPayeesPage.addNewFavouritePayee();
+    }
+
+    @Test(priority = 13, dataProvider = "DashboardLoanValidationData", description = "Validate the 6 key points in loan account", dataProviderClass = DataProviders.DashboardDataProvider.class)
+    public void validateLoanAccountAtDashboard(String loanAccountNumber, String loanAmt, String outstanding, String loanPeriod, String interestRate) {
+        dashboardPage.validateLoanAccountAtDashboard(loanAccountNumber,loanAmt,outstanding,loanPeriod,interestRate);
+    }
+    @Test(priority = 14, description = "Validate the availability of favourite biller in dashboard")
+    public void validateAvailabilityOfFavouriteBiller() {
+        dashboardPage. validateFavouriteBillerWidget();
+    }
+    @Test(priority = 15, description = "Validate the re-initiation of transactions from favourite biller in dashboard")
+    public void validateReInitiationOfTransactionsFromFavouriteBiller() {
+        String[] BRecordData =  dashboardPage.getFPWidgetFirstRecordDetails();
+        savedPayeesPage.validateFBillerPopup(BRecordData);
+    }
 
     @AfterMethod(description = "Rollback to dashboard")
     public void rollBackToDashboard() {
         dashboardPage.navigateBackToDashboard();
     }
 
+
+
 //    @Test(priority = 8, description = "Validate visibility of total values in graphical view")
 //    public void validateAccountPortfolio() {
 //        dashboardPage.navigateBackToDashboard();
 //        dashboardPage.validateImage();
 //    }
-
 
 //
 //    @Test(priority = 10, description = "Validate that settings option is available on the user info dropdown menu at dashboard")

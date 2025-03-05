@@ -58,7 +58,11 @@ public class DataProviders {
             String[] columnNames = {"fDAccountNumber", "currencyAndAvailableBalance", "maturityAmount", "maturityDate", "interestRate"};
             return XlsReader.getDataFromSheet(filePath, "DashboardFDValidation", columnNames).iterator();
         }
-
+        @DataProvider(name = "DashboardLoanValidationData")
+        public static Iterator<Object[]> getDashboardLoanValidationData() {
+            String[] columnNames = {"loanAccountNumber", "loanAmt", "outstanding", "loanPeriod", "interestRate"};
+            return XlsReader.getDataFromSheet(filePath, "DashboardLoanValidation", columnNames).iterator();
+        }
         @DataProvider(name = "DashboardRVTTransferData")
         public static Iterator<Object[]> getDashboardRVTTransferData() {
             String[] columnNames = {"accountName", "currencyAndAmount", "date"};

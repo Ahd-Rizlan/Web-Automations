@@ -228,6 +228,15 @@ public class CommonUtils extends Drivers {
     public static boolean containsAlphNumAndSpecialCharacters(String text) {
         return text.matches("^[a-zA-Z0-9!@#$%^&*()_+{}\\[\\]:;<>,.?/~\\\\-]+$");
     }
+    /**
+     * Function to remove space from string
+     *
+     * @param text - text to remove space characters
+     * @return text - text after removing space characters
+     */
+    public static String removeSpaceCharacters(String text) {
+        return text.replaceAll("\\s", "");
+    }
 
     public enum sortType {DATE, NUMBER, STRING, SELECT}
 
