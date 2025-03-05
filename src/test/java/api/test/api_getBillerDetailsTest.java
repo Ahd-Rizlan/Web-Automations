@@ -38,7 +38,7 @@ public class api_getBillerDetailsTest extends baseMethod {
     }
 
     @Test(priority = 2,testName = "Verify that the Biller Details cannot be Retrieved with Incorrect Merchant Code")
-    public void checkCategoriesWithIncorrectMerchantCode() throws IOException, ParseException {
+    public void checkBillerDetailsWithIncorrectMerchantCode() throws IOException, ParseException {
         getBillerDetails.authorisedWithValidToken();
         getBillerDetails.setPayloadWithInvalidMerchantCode();
         getBillerDetails.invokeBillerDetailsApi();
@@ -47,7 +47,7 @@ public class api_getBillerDetailsTest extends baseMethod {
     }
     //Happy path
     @Test(priority = 2,testName = "Verify that the Biller Details can be Retrieved with Authorized Access")
-    public void checkCategoriesWithAuthorizedAccess()  {
+    public void checkBillerDetailsWithAuthorizedAccess()  {
         getBillerDetails.authorisedWithValidToken();
         getBillerDetails.invokeBillerDetailsApi();
         getBillerDetails.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
