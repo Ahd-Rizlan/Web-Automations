@@ -31,7 +31,7 @@ public class api_updatePayeeAsFavouriteTest extends baseMethod {
 
 	}
 
-	@Test(priority = 2,testName = "Verify that Billers Can be Marked as Favourite With Unauthorized Access")
+	@Test(priority = 2,testName = "Verify that Billers Can be Marked as Favourite With Authorized Access")
 	public void checkUpdatePayeeAsFavouriteAuthorizedAccess()  {
 		updatePayeeAsFavourite.authorisedWithValidToken();
 		updatePayeeAsFavourite.invokeUpdatePayeeAsFavouriteApi();
