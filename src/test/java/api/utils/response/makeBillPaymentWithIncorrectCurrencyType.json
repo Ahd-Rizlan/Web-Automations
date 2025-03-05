@@ -4,7 +4,7 @@
       "statusCode": false,
       "statusDescription": "FAIL",
       "errorCode": "TR_DET_S_024",
-      "errorDescription": "CURRENCY_CONVERTION_FAILED"
+      "errorDescription": "Currency Conversion Failed"
     }
   }
 }

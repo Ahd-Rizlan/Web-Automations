@@ -40,16 +40,6 @@ public class api_deleteBeneficiariesTest extends baseMethod {
         deleteBeneficiaries.validatePayload(); //Bug reported [SVR4-557]
 
 
-        //Real Response
-//        {
-//            "deleteBeneficiariesResponse": {
-//            "responseHeader": {
-//                "statusCode": true,
-//                        "statusDescription": "571468 record deleted."
-//            },
-//            "returnCode": "202 ACCEPTED"
-//        }
-//        }
 
     }
 

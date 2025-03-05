@@ -22,15 +22,15 @@
         },
         {
           "acctNumber": "111552874821",
-          "availableBal": "18677.00",
-          "effAvailableBal": "18677.00",
+          "availableBal": "10677.00",
+          "effAvailableBal": "10677.00",
           "lienAmt": "0.00",
           "acctCrncyCode": "LKR"
         },
         {
           "acctNumber": "111552875032",
-          "availableBal": "13000.00",
-          "effAvailableBal": "13000.00",
+          "availableBal": "21000.00",
+          "effAvailableBal": "21000.00",
           "lienAmt": "0.00",
           "acctCrncyCode": "LKR"
         }
