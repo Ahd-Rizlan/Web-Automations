@@ -104,7 +104,7 @@ public class api_GetCardCountSummaryforSVRTest extends baseMethod {
     public void checkCardCountSummeryApiAuthorizedAccess() {
         cardcountSummeryApiMethods.invokeCardCountSummeryApi();
         cardcountSummeryApiMethods.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
-        //cardcountSummeryApiMethods.validatePayload();  Unable to validate the response as all field values are dynamic
+        cardcountSummeryApiMethods.validatePayload();
     }
 
 }
