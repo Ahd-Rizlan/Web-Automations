@@ -105,6 +105,7 @@ public class api_GetCardCountSummaryforSVRTest extends baseMethod {
         cardcountSummeryApiMethods.invokeCardCountSummeryApi();
         cardcountSummeryApiMethods.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
         cardcountSummeryApiMethods.validatePayload();
+        //Respond May change and throw an assertion error
     }
 
 }
