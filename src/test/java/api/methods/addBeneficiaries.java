@@ -16,6 +16,7 @@ import java.util.Map;
 
 import static api.utils.ConstantApiUtils.*;
 import static utils.CommonUtils.USER_DIR;
+import static utils.DataStoreReadWriteApi.storeAPIDetails;
 
 public class addBeneficiaries extends baseMethod {
     File jsonBody = new File(POST_BODY);
@@ -111,7 +112,9 @@ public class addBeneficiaries extends baseMethod {
                 .baseUri(baseHost)
                 .headers(headersMap)
                 .basePath(GET_ADD_BENEFICIARIES_PATH)
+                //The API URL
                 .body(jsonBody)
+                //payloads//addBeneficiariesBody.json";
                 .when()
                 .log()
                 .all()
@@ -143,4 +146,9 @@ public class addBeneficiaries extends baseMethod {
     public void validatePayloadForEmptyBankCode() {
         new PayloadValidator().validateJsonFileWithResponse(EMPTY_BANK_CODE, response);
     }
+//    public void saveTemplateIdToFile() {
+//        //goes through the API responce and update the template ID
+//        storeAPIDetails("beneficiariID", response.path("deleteBeneficiaries.beneficiariID").toString());
+//    //edit this such away that the this goes throuth the responce and update id
+//    }
 }
