@@ -13,7 +13,7 @@ import java.util.Map;
 
 import static api.utils.ConstantApiUtils.*;
 import static utils.CommonUtils.USER_DIR;
-import static utils.DataStoreReadWriteApi.storeAPIDetails;
+
 
 public class addBeneficiaries extends baseMethod {
     File jsonBody = new File(POST_BODY);
@@ -145,19 +145,5 @@ public class addBeneficiaries extends baseMethod {
     public void validatePayloadForEmptyBankCode() {
         new PayloadValidator().validateJsonFileWithResponse(EMPTY_BANK_CODE, response);
     }
-//    public void saveBeneNameToFile() throws IOException, ParseException {
-//        // Go through the payload and get the accountName
-//        file = new FileReader(ConstantApiUtils.PATH_TO_PAYLOAD_FOLDER.concat("addBeneficiariesBody.json"));
-//        jsonObject = (JSONObject) jsonParser.parse(file);
-//        // Accessing the nested "addBeneficiaries" object and then "accountName"
-//        JSONObject addBeneficiaries = (JSONObject) jsonObject.get("addBeneficiaries");
-//            String accountName = addBeneficiaries.get("accountName").toString();
-//        System.out.println(accountName
-//        );
-//            storeAPIDetails("accountName", accountName);  // Store the accountName value
-//
-//
-//    }
 
-//    public int
 }
