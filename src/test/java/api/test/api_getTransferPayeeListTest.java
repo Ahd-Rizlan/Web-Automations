@@ -38,9 +38,6 @@ public class api_getTransferPayeeListTest extends baseMethod {
 		getTransferPayeeList.setPayloadWithValidData();
 		getTransferPayeeList.invokeGetTransferPayeeListApi();
 		getTransferPayeeList.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
-
-//		getTransferPayeeList.validatePayload();
-
 		getTransferPayeeList.extractBeneficiaryIDForAccount(VALID_ACCOUNT_NAME);
 
 	}
