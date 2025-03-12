@@ -1,6 +1,1 @@
-{
-  "getTransferPayeeList": {
-    "pageLimit": "10",
-    "pageNo": "1"
-  }
-}
+{"getTransferPayeeList":{"pageLimit":"600","pageNo":"1"}}

@@ -84,6 +84,7 @@ public class api_addBeneficiariesTest extends baseMethod {
         addBeneficiaries.authorisedWithValidToken();
         addBeneficiaries.setPayloadWithValidData();
         addBeneficiaries.invokeAddBeneficiariesApi();
+
       //  addBeneficiaries.saveTemplateIdToFile();
         addBeneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
         addBeneficiaries.validatePayload();
