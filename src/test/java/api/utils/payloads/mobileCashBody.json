@@ -6,5 +6,7 @@
   "pageNo": 1,
   "paymentRequestDateFrom": "",
   "paymentRequestDateTo": "",
-  "status": ""
+  "status": "",
+  "txnType": "ONLINE"
+
 }

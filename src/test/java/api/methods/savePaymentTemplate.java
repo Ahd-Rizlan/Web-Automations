@@ -75,7 +75,9 @@ public class savePaymentTemplate extends baseMethod {
                 .baseUri(baseHost)
                 .headers(headersMap)
                 .basePath(GET_SAVE_PAYMENT_TEMPLATE_PATH)
+                //The API URL
                 .body(jsonBody)
+                //payloads//savePaymentTemplateBody.json";
                 .when()
                 .log()
                 .all()
@@ -97,6 +99,7 @@ public class savePaymentTemplate extends baseMethod {
     }
 
     public void saveTemplateIdToFile() {
+        //goes through the API responce and update the template ID
         storeAPIDetails("templateID", response.path("savePaymentTemplateResponse.templateID").toString());
     }
 

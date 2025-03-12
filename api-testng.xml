@@ -152,8 +152,8 @@
             <class name="api.test.api_getBillerDetailsTest">
                 <methods>
                     <include name="checkBillerDetailsWithUnauthorizedAccess"/>
-                    <include name="checkCategoriesWithIncorrectMerchantCode"/>
-                    <include name="checkCategoriesWithAuthorizedAccess"/>
+                    <include name="checkBillerDetailsWithIncorrectMerchantCode"/>
+                    <include name="checkBillerDetailsWithAuthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.api_getCustAccountDetailsTest">

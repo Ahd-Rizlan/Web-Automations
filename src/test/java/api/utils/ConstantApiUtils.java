@@ -214,7 +214,7 @@ public class ConstantApiUtils {
     public static final String PAGE_NO_TWO = "2";
 
     public static final String PAGE_LIMIT_ONE = "1";
-    public static final String TRANSACTION_ID = "30";
+    public static final String TRANSACTION_ID = "15587";
 
     //-------------Form-params-------------
     public static final String GRANT_TYPE = "grant_type";
@@ -263,7 +263,7 @@ public class ConstantApiUtils {
     public static final String CORRECT_TRAN_TYPE_VALUE = "CC";
 
     // getPaymentsByID
-    public static final String PAYMENT_ID = "3433";
+    public static final String PAYMENT_ID = "11089";
 
     //validatePayment
     public static final String INVALID_BILLER_ID = "00000000020";

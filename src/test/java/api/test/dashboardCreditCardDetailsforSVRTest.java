@@ -94,7 +94,8 @@ public class dashboardCreditCardDetailsforSVRTest extends baseMethod {
 	public void checkDashboardCreditCardDetailsForSVRAuthorizedAccess() {
 		dashboardCreditCardDetailsforSVR.invokeDashboardCreditCardDetailsForSVRApi();
 		dashboardCreditCardDetailsforSVR.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
-		//cardcountSummeryApiMethods.validatePayload();  Unable to validate the response as all field values are dynamic
+		dashboardCreditCardDetailsforSVR.validatePayload();
+		//Unable to validate the response as all field values are dynamic
 	}
 
 

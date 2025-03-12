@@ -1,12 +1,35 @@
 {
   "responseHeader": {
-    "statusCode": false,
-    "statusDescription": "",
-    "errorCode": "TR_004",
-    "errorDescription": "GET_TRANSFERS_FAILED"
+    "statusCode": true,
+    "statusDescription": "Success",
+    "errorCode": "",
+    "errorDescription": ""
   },
-  "tranList": null,
-  "totalCount": 0,
-  "pageNo": 0,
-  "pageLimit": 0
+  "tranList": [
+    {
+      "tranId": 15516,
+      "status": "SUCCESS",
+      "transactionAmount": 1000.00,
+      "currency": "LKR",
+      "transactionCategory": "MC",
+      "transactionType": "ONLINE",
+      "fromAccountNumber": "001250012566",
+      "recipientPhone": "1234567890",
+      "transactionDate": "2025-03-06T09:22:51.508+0530"
+    },
+    {
+      "tranId": 15512,
+      "status": "FAIL",
+      "transactionAmount": 1000.00,
+      "currency": "LKR",
+      "transactionCategory": "MC",
+      "transactionType": "ONLINE",
+      "fromAccountNumber": "001250012566",
+      "recipientPhone": "",
+      "transactionDate": "2025-03-06T09:21:38.382+0530"
+    }
+  ],
+  "totalCount": 2,
+  "pageNo": 1,
+  "pageLimit": 10
 }
