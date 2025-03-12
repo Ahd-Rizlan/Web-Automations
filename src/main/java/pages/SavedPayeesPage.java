@@ -32,7 +32,9 @@ public class SavedPayeesPage extends BasePage {
     private static final By ddQFTFromAccount = By.id("accountfrom");
     private static final By ddQFTPurpose = By.id("bank");
     private static final By tblSavedPayeesRows = By.xpath("//tbody//tr");
+    private static final By tblSavedBillerRows = By.xpath("//tbody//tr");
     private static final By tblSPAddToFavPayeeUnchecked = By.xpath("//tbody//tr/following::img[contains(@srcset,'5a2f492b')]");
+    private static final By tblFBAddToFavPayeeUnchecked = By.xpath("//tbody//tr//img[contains(@srcset,'5a2f492b')]");
     private static final By tblSPAddToFavPayeeChecked = By.xpath("//tbody//tr/following::img[contains(@srcset,'c7bd4030')]");
     private static final By lblPopupMsgFavPayeeAdded = By.xpath("//div[contains(text(),'Favourite Payee Added Successfully!')]");
     private static final By lblPopupMsgFavPayeeRemoved = By.xpath("//div[contains(text(),'Favourite Payee Removed Successfully!')]");
@@ -53,7 +55,7 @@ public class SavedPayeesPage extends BasePage {
         return By.xpath("//input[@placeholder='Account Name']");
     }
 
-    private static By tblSPObtainCellValue(int Row, int Col) {
+    private static By tblObtainCellValue(int Row, int Col) {
         return By.xpath("//tbody//tr[" + Row + "]/td[" + Col + "]");
     }
 
@@ -66,6 +68,9 @@ public class SavedPayeesPage extends BasePage {
     }
 
     private static By icnSavedPayeesAddToFav(int Row) {
+        return By.xpath("//tbody//tr[contains(@class,'rounded-lg overflow-hidden')][" + Row + "]//div[contains(@class,'items-center justify-center')]/img");
+    }
+    private static By icnSavedBillerAddToFav(int Row) {
         return By.xpath("//tbody//tr[contains(@class,'rounded-lg overflow-hidden')][" + Row + "]//div[contains(@class,'items-center justify-center')]/img");
     }
 
@@ -88,6 +93,8 @@ public class SavedPayeesPage extends BasePage {
             String AccNickName = QFTData[0];
             String BankName = QFTData[1];
             String AccountNumber = QFTData[2];
+            waitForElementPresence(tfQFTBranchName);
+
             //validate account name presence
             boolean boolSavingsAccount = isElementPresentBy(lblQFTSavingsAccountName());
             if (boolSavingsAccount) {
@@ -186,13 +193,13 @@ public class SavedPayeesPage extends BasePage {
     }
 
     /**
-     * Validate the title and header of the otp page
+     * Validate the Favourite biller popup
      *
      * @param FBillerData - Favourite biller data
      */
     public void validateFBillerPopup(String[] FBillerData) {
         try {
-            String BName = FBillerData[0];
+            String BName = FBillerData[1];
             String FieldName = FBillerData[2];
 
             //validate account label
@@ -284,7 +291,7 @@ public class SavedPayeesPage extends BasePage {
 
             //Update the last record as fav payee
             //Retrieve nickname where 4the column is dedicated for nickName
-            String nickName = getTextFromElement(tblSPObtainCellValue(totalRowsSP, 4)).trim();
+            String nickName = getTextFromElement(tblObtainCellValue(totalRowsSP, 4)).trim();
             if (!nickName.isEmpty()) {
                 addToReport("Successfully obtained nickname : " + nickName, Status.PASS, false);
             } else {
@@ -310,7 +317,6 @@ public class SavedPayeesPage extends BasePage {
             }
 
             //Revert the changes
-            //deselect record
             scrollToWebElement(icnSavedPayeesAddToFav(totalRowsSP));
             clickOnElement(icnSavedPayeeByNName(nickName));
 

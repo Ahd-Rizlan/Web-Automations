@@ -68,7 +68,11 @@ public class DataProviders {
             String[] columnNames = {"accountName", "currencyAndAmount", "date"};
             return XlsReader.getDataFromSheet(filePath, "DashboardRVTTransferValidation", columnNames).iterator();
         }
-
+        @DataProvider(name = "DashboardRVTPaymentPopup")
+        public static Iterator<Object[]> getDashboardRVTPaymentPopupData() {
+            String[] columnNames = {"toAccount"};
+            return XlsReader.getDataFromSheet(filePath, "DashboardRVTPaymentPopup", columnNames).iterator();
+        }
 
     }
 }

@@ -5,8 +5,18 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import ru.yandex.qatools.ashot.AShot;
+import ru.yandex.qatools.ashot.Screenshot;
+import ru.yandex.qatools.ashot.comparison.ImageDiff;
+import ru.yandex.qatools.ashot.comparison.ImageDiffer;
+import ru.yandex.qatools.ashot.coordinates.WebDriverCoordsProvider;
 import utils.report.helpers;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public abstract class BasePage extends helpers {
@@ -554,6 +564,62 @@ public abstract class BasePage extends helpers {
         } catch (Exception e) {
             System.err.println("Error removing the last character: " + e.getMessage());
         }
+    }
+
+    /**
+     * Compares two images where one is extracted based on by locator and the other is provided by the path
+     * <p>
+     * This method also takes in threshold value as argument
+     *
+     * @param byLocator the By locator used to identify the input element
+     * @param pathOfExpectedImage the path of the expected image
+     * @param threshold threshold value to compare
+     * @return true if the images are same or differences between the images is within provided threshold, false if the images are different
+     */
+    public boolean compareImage(By byLocator, String pathOfExpectedImage,int threshold) throws IOException {
+
+        System.out.println("Start of image verification");
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebElement webElement = wait.until(ExpectedConditions.elementToBeClickable(byLocator));
+
+        Screenshot screenshot = new AShot()
+                .coordsProvider(new WebDriverCoordsProvider())
+                .takeScreenshot(driver, webElement);
+
+        BufferedImage actualImage = removeWhiteBackground(screenshot.getImage());
+        BufferedImage expectedImage = ImageIO.read(new File(pathOfExpectedImage));
+
+        ImageDiffer imgDiff = new ImageDiffer();
+        ImageDiff diff = imgDiff.makeDiff(actualImage, expectedImage);
+        int difSize = diff.getDiffSize();
+        if (difSize > threshold) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Compares two images where one is extracted based on by locator and the other is provided by the path
+     *
+     * @param image Buffered image
+     * @return image after removing the white background
+     */
+    public static BufferedImage removeWhiteBackground(BufferedImage image) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                Color color = new Color(image.getRGB(x, y), true);
+
+                // If pixel is near white, make it fully transparent
+                if (color.getRed() > 230 && color.getGreen() > 230 && color.getBlue() > 230) {
+                    image.setRGB(x, y, new Color(255, 255, 255, 0).getRGB()); // Transparent
+                }
+            }
+        }
+        return image;
     }
 
 }
