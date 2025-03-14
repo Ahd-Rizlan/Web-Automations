@@ -11,34 +11,35 @@ import static api.utils.ConstantApiUtils.*;
 import static utils.CommonUtils.USER_DIR;
 
 public class baseRequest {
-    private static baseMethod baseMethod = new baseMethod();
-    public static Map<String, String> headersMap = new HashMap<>();
+    private  baseMethod baseMethod = new baseMethod();
+    public  Map<String, String> headersMap = new HashMap<>();
 
-    public static Response response;
-    public static String POST_BODY;
-    public static File jsonBody;
+    private  Response response;
+    private  String POST_BODY;
+    private  File jsonBody;
+    private String basePath;
 
-    public static void setHeaders() {
+    public  void setHeaders() {
         headersMap.put(TXT_CONTENT_TYPE, TXT_APPLICATION_JSON);
         headersMap.put(TXT_X_REQUEST_ID, TXT_X_REQUEST_ID_VALUE_HUNDRED_AND_TWENTY_THREE);
     }
 
-    public static void setHeaders(String X_REQUEST_ID_VALUE) {
+    public  void setHeaders(String X_REQUEST_ID_VALUE) {
         headersMap.put(TXT_CONTENT_TYPE, TXT_APPLICATION_JSON);
         headersMap.put(TXT_X_REQUEST_ID, X_REQUEST_ID_VALUE);
     }
 
-    public static void setHeaders(String CONTENT_TYPE, String X_REQUEST_ID_VALUE) {
+    public  void setHeaders(String CONTENT_TYPE, String X_REQUEST_ID_VALUE) {
         headersMap.put(TXT_CONTENT_TYPE, CONTENT_TYPE);
         headersMap.put(TXT_X_REQUEST_ID, X_REQUEST_ID_VALUE);
     }
 
-    public static void setAUTHORIZATION(String AUTHORIZATION) {
+    public  void setAuthorization(String AUTHORIZATION) {
         headersMap.put(TXT_AUTHORIZATION, AUTHORIZATION);
     }
 
-    public String getPOST_BODY() {
-        return POST_BODY;
+    public void setBasePath(String basePath) {
+        this.basePath = basePath;
     }
 
     public void setPOST_BODY(String postBody) {
@@ -46,7 +47,7 @@ public class baseRequest {
         jsonBody = new File(POST_BODY);
     }
 
-    public static void invokePostRequest(String basePath) {
+    public void invokePostRequest() {
         setHeaders();
         RestAssured.useRelaxedHTTPSValidation();
         response = RestAssured.given()
