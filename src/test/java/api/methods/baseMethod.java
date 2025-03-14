@@ -20,8 +20,13 @@ import static api.utils.ConstantApiUtils.*;
 import static utils.CommonUtils.*;
 
 public class baseMethod implements ITest {
+
+
+
     static final Logger LOG = LogManager.getLogger(baseMethod.class);
+
     public static Properties config = new Properties();
+    private final String baseHost = config.getProperty("sitSampathHost");
     private FileInputStream fis;
     public FileOutputStream fos;
     private String testName;
@@ -212,6 +217,10 @@ public class baseMethod implements ITest {
         ExtentReportManager.logInfoDetails("Response status is " + response.getStatusCode());
         ExtentReportManager.logInfoDetails("Response body is ");
         ExtentReportManager.logJson(response.getBody().prettyPrint());
+    }
+
+    public String getBaseHost() {
+        return baseHost;
     }
 
 
