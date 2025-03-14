@@ -1,15 +1,1 @@
-{
-  "updateBeneficiaries": {
-    "accountType": "OTH",
-    "accountName": "Sam",
-    "accountNickName": "testSan",
-    "creditCardNumber": "",
-    "accountNumber": "3254242452452",
-    "bank": "",
-    "beneficiaryID": 3,
-    "branch": "",
-    "recipientNIC": "",
-    "recipientName": "",
-    "recipientMobile": ""
-  }
-}
+{"updateBeneficiaries":{"bank":"4567","recipientNIC":"","recipientMobile":"","accountName":"test test","creditCardNumber":"","accountType":"TPS","accountNickName":"Varuna","recipientName":"","accountNumber":"120755789005","branch":"","beneficiaryID":"571611"}}
