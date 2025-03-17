@@ -213,14 +213,16 @@ public class ConstantApiUtils {
     public static final String PAGE_NO_ONE = "1";
     public static final String PAGE_NO_TWO = "2";
 
+
     public static final String PAGE_LIMIT_ONE = "1";
+    public static final String PAGE_LIMIT_SIX_HUNDRED = "600";
     public static final String TRANSACTION_ID = "15587";
 
     //-------------Form-params-------------
     public static final String GRANT_TYPE = "grant_type";
     public static final String GRANT_TYPE_PASSWORD = "password";
     public static final String USERNAME = "username";
-    public static final String USERNAMETEXT = "botuser";
+    public static final String USERNAMETEXT = "OMNI/botuser";
     public static final String PASSWORD = "password";
     public static final String PASSWORDTEXT = "Hoax@1234";
     public static final String SCOPE = "scope";
@@ -249,7 +251,8 @@ public class ConstantApiUtils {
     public static final String INVALID_ACCOUNT_TYPE = "TPSx";
     public static final String VALID_ACCOUNT_TYPE = "TPS";
     public static final String EMPTY_ACCOUNT_NAME_VALUE = "";
-    public static final String VALID_ACCOUNT_NAME = "test test";
+    public static final String VALID_ACCOUNT_NAME = "Rizlan";
+    public static final String VALID_ACCOUNT_NICK_NAME = "Rizlan";
 
     public static final String INCORRECT_ACCOUNT_NUMBER_VALUE = "123";
     public static final String CORRECT_ACCOUNT_NUMBER_VALUE = "1207557890051";

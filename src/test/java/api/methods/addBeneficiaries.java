@@ -7,16 +7,13 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
 import static api.utils.ConstantApiUtils.*;
 import static utils.CommonUtils.USER_DIR;
-import static utils.DataStoreReadWriteApi.storeAPIDetails;
+
 
 public class addBeneficiaries extends baseMethod {
     File jsonBody = new File(POST_BODY);
@@ -65,6 +62,7 @@ public class addBeneficiaries extends baseMethod {
         JSONObject addBeneficiaries = (JSONObject) jsonObject.get("addBeneficiaries");
         addBeneficiaries.put("accountType", VALID_ACCOUNT_TYPE);
         addBeneficiaries.put("accountName", VALID_ACCOUNT_NAME);
+        addBeneficiaries.put("accountNickName",VALID_ACCOUNT_NICK_NAME);
         addBeneficiaries.put("accountNumber", CORRECT_ACCOUNT_NUMBER_VALUE);
         addBeneficiaries.put("bank", CORRECT_BANK_CODE_VALUE);
         FileWriter writer = new FileWriter(jsonBody, false);
@@ -114,6 +112,7 @@ public class addBeneficiaries extends baseMethod {
                 .basePath(GET_ADD_BENEFICIARIES_PATH)
                 //The API URL
                 .body(jsonBody)
+
                 //payloads//addBeneficiariesBody.json";
                 .when()
                 .log()
@@ -146,9 +145,5 @@ public class addBeneficiaries extends baseMethod {
     public void validatePayloadForEmptyBankCode() {
         new PayloadValidator().validateJsonFileWithResponse(EMPTY_BANK_CODE, response);
     }
-//    public void saveTemplateIdToFile() {
-//        //goes through the API responce and update the template ID
-//        storeAPIDetails("beneficiariID", response.path("deleteBeneficiaries.beneficiariID").toString());
-//    //edit this such away that the this goes throuth the responce and update id
-//    }
+
 }

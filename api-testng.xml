@@ -135,6 +135,7 @@
                 <methods>
                     <include name="checkDeleteBeneficiariesWithUnauthorizedAccess"/>
                     <include name="checkDeleteBeneficiariesWithAuthorizedAccess"/>
+                    <include name="checkGetTransferPayeeListWithAuthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.api_doTransferForVishwaTest">
@@ -206,6 +207,8 @@
             <class name="api.test.api_updateBeneficiariesTest">
                 <methods>
                     <include name="checkUpdateBeneficiariesWithUnauthorizedAccess"/>
+                    <include name="checkAddBeneficiariesWithAuthorizedAccess"/>
+                    <include name="checkGetTransferPayeeListWithAuthorizedAccess"/>
                     <include name="checkUpdateBeneficiariesWithAuthorizedAccess"/>
                 </methods>
             </class>

@@ -1,13 +1,1 @@
-{
-  "deleteBeneficiariesResponse": {
-    "responseHeader": {
-      "statusCode": false,
-      "statusDescription": "FAIL",
-      "errorCode": "404",
-      "errorDescription": "HTTP/1.1 404 Not Found"
-    },
-    "timestamp": "",
-    "status": "",
-    "path": ""
-  }
-}
+{"deleteBeneficiariesResponse":{"returnCode":"202 ACCEPTED","responseHeader":{"statusDescription":"571605 record deleted.","statusCode":true}}}
