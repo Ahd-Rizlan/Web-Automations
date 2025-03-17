@@ -6,8 +6,24 @@
     },
     "pageNo": 1,
     "pageLimit": 1,
-    "recordCount": 0,
-    "returnMessage": "no records available for userName: botuser",
-    "beneficiaryListDetails": []
+    "recordCount": 1,
+    "beneficiaryListDetails": [
+      {
+        "beneficiaryID": 569900,
+        "accountNo": "5341780000025498",
+        "accountName": "Vineth",
+        "payeeNickname": "Himan",
+        "bankCode": "7904",
+        "branchCode": "001",
+        "bankName": "HNB FINANCE PLC",
+        "recipientNIC": null,
+        "recipientName": null,
+        "recipientMobile": null,
+        "accountType": "CC",
+        "createdDate": "2023/08/10 17:06:54",
+        "modifiedDate": "2025/02/24 08:10:53",
+        "isFavourite": true
+      }
+    ]
   }
 }

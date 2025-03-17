@@ -30,6 +30,7 @@
             <class name="api.test.api_FavouriteBillersTest">
                 <methods>
                     <include name="checkFavouriteBillersApiWithAuthorizedAccess"/>
+                    <include name="checkFavouriteBillersApiWithInvalidMerchantCode"/>
                     <include name="checkFavouriteBillersApiWithUnauthorizedAccess"/>
                 </methods>
             </class>
@@ -134,6 +135,7 @@
                 <methods>
                     <include name="checkDeleteBeneficiariesWithUnauthorizedAccess"/>
                     <include name="checkDeleteBeneficiariesWithAuthorizedAccess"/>
+                    <include name="checkGetTransferPayeeListWithAuthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.api_doTransferForVishwaTest">
@@ -146,6 +148,13 @@
                 <methods>
                     <include name="checkGetAccountsByTrantypeWithUnauthorizedAccess"/>
                     <include name="checkGetAccountsByTrantypeWithAuthorizedAccess"/>
+                </methods>
+            </class>
+            <class name="api.test.api_getBillerDetailsTest">
+                <methods>
+                    <include name="checkBillerDetailsWithUnauthorizedAccess"/>
+                    <include name="checkBillerDetailsWithIncorrectMerchantCode"/>
+                    <include name="checkBillerDetailsWithAuthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.api_getCustAccountDetailsTest">
@@ -198,6 +207,8 @@
             <class name="api.test.api_updateBeneficiariesTest">
                 <methods>
                     <include name="checkUpdateBeneficiariesWithUnauthorizedAccess"/>
+                    <include name="checkAddBeneficiariesWithAuthorizedAccess"/>
+                    <include name="checkGetTransferPayeeListWithAuthorizedAccess"/>
                     <include name="checkUpdateBeneficiariesWithAuthorizedAccess"/>
                 </methods>
             </class>

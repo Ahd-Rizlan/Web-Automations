@@ -72,6 +72,8 @@ public class ConstantApiUtils {
 
     public static final String GET_MOBILE_CASH_PATH = "/apis/transaction/web/getMobileCash/1.0.0";
     public static final String GET_CATEGORIES_PATH = "/apis/payments/bill_payment/categories/1.0.0";
+    public static final String GET_BILLER_DETAIL_PATH = "/apis/payments/bill_payment/biller/1.0.0";
+
     public static final String GET_BILL_PAYMENT_TEMPLATE_LIST_PATH = "/apis/payments/web/getBillPaymentTemplateList/1.0.0";
     public static final String GET_WITHDRAW_MOBILE_CASH_PATH = "/apis/transaction/web/withdrawMobileCash/1.0.0";
 
@@ -155,8 +157,11 @@ public class ConstantApiUtils {
     public static final String GET_FAVOURITE_BILLERS_WITH_INVALID_MERCHANTCODE_RESPONSE = "//src//test//java//api//utils//response//favouriteBillerswithInvalidMerchantCode.json";
     public static final String GET_MOBILE_CACHE_RESPONSE = "//src//test//java//api//utils//response//mobileCash.json";
     public static final String GET_CATEGORIES_RESPONSE = "//src//test//java//api//utils//response//categories.json";
+    public static final String GET_BILLER_DETAIL_RESPONSE = "//src//test//java//api//utils//response//getBillerDetails.json";
     public static final String GET_BILL_PAYMENT_TEMPLATE_RESPONSE = "//src//test//java//api//utils//response//getBillPaymentTemplateList.json";
     public static final String GET_CATEGORIES_BODY = "//src//test//java//api//utils//payloads//categoriesBody.json";
+    public static final String GET_BILLER_DETAIL_BODY = "//src//test//java//api//utils//payloads//getBillerDetailsBody.json";
+
     public static final String GET_BILL_PAYMENT_TEMPLATE_LIST_BODY = "//src//test//java//api//utils//payloads//getBillPaymentTemplateListBody.json";
     public static final String GET_MOBILE_CACHE_BODY = "//src//test//java//api//utils//payloads//mobileCashBody.json";
     public static final String GET_PAYMENTS_RESPONSE = "//src//test//java//api//utils//response//payments.json";
@@ -204,19 +209,22 @@ public class ConstantApiUtils {
     public static final String GET_MAKE_BILL_PAYMENT_WITH_INCORRECT_DEBIT_ACCOUNT_RESPONSE = "//src//test//java//api//utils//response//makeBillPaymentWithIncorrecDebitAccount.json";
     public static final String GET_MAKE_BILL_PAYMENT_WITH_INCORRECT_CURRENCY_RESPONSE = "//src//test//java//api//utils//response//makeBillPaymentWithIncorrectCurrencyType.json";
     public static final String GET_CATEGORIES_WITH_INCORRECT_MERCHANT_ID_RESPONSE = "//src//test//java//api//utils//response//categoriesWithIncorrectMerchantId.json";
+    public static final String GET_BILLER_DETAILS_WITH_INCORRECT_MERCHANT_ID_RESPONSE = "//src//test//java//api//utils//response//billerDetailsWithIncorrectMerchantId.json";
     public static final String GET_BILL_PAYMENT_TEMPLATE_LIST_WITH_INCORRECT_MERCHANT_ID_RESPONSE = "//src//test//java//api//utils//response//getBillPaymentTemplateListWithIncorrectMerchantId.json";
     //---------Others------------
     public static final String PAGE_NO_ONE = "1";
     public static final String PAGE_NO_TWO = "2";
 
+
     public static final String PAGE_LIMIT_ONE = "1";
-    public static final String TRANSACTION_ID = "30";
+    public static final String PAGE_LIMIT_SIX_HUNDRED = "600";
+    public static final String TRANSACTION_ID = "15587";
 
     //-------------Form-params-------------
     public static final String GRANT_TYPE = "grant_type";
     public static final String GRANT_TYPE_PASSWORD = "password";
     public static final String USERNAME = "username";
-    public static final String USERNAMETEXT = "botuser";
+    public static final String USERNAMETEXT = "OMNI/botuser";
     public static final String PASSWORD = "password";
     public static final String PASSWORDTEXT = "Hoax@1234";
     public static final String SCOPE = "scope";
@@ -245,7 +253,8 @@ public class ConstantApiUtils {
     public static final String INVALID_ACCOUNT_TYPE = "TPSx";
     public static final String VALID_ACCOUNT_TYPE = "TPS";
     public static final String EMPTY_ACCOUNT_NAME_VALUE = "";
-    public static final String VALID_ACCOUNT_NAME = "test test";
+    public static final String VALID_ACCOUNT_NAME = "Rizlan";
+    public static final String VALID_ACCOUNT_NICK_NAME = "Rizlan";
 
     public static final String INCORRECT_ACCOUNT_NUMBER_VALUE = "123";
     public static final String CORRECT_ACCOUNT_NUMBER_VALUE = "1207557890051";
@@ -259,7 +268,7 @@ public class ConstantApiUtils {
     public static final String CORRECT_TRAN_TYPE_VALUE = "CC";
 
     // getPaymentsByID
-    public static final String PAYMENT_ID = "3433";
+    public static final String PAYMENT_ID = "11089";
 
     //validatePayment
     public static final String INVALID_BILLER_ID = "00000000020";

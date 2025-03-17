@@ -1,0 +1,35 @@
+{
+  "getBillerDetailsResponse": {
+    "return": {
+      "RStatus": "V",
+      "billerAccountNo": "000110069456",
+      "billerCategoryId": "001",
+      "billerId": "0000000008",
+      "billerName": "Sri Lanka Telecom - New Invoice Numbers(14 Digits)",
+      "billerFieldList": [
+        {
+          "RStatus": "V",
+          "fieldDisplaySequence": 1,
+          "fieldId": 837,
+          "fieldLength": 15,
+          "fieldName": "Invoice Number With (-)",
+          "fieldType": "Text",
+          "justify": "Left",
+          "mandotoryFlg": "Y",
+          "reEnter": "Y"
+        },
+        {
+          "RStatus": "V",
+          "fieldDisplaySequence": 2,
+          "fieldId": 838,
+          "fieldLength": 10,
+          "fieldName": "Telephone Number with Area Code",
+          "fieldType": "Number",
+          "justify": "Left",
+          "mandotoryFlg": "Y",
+          "reEnter": "N"
+        }
+      ]
+    }
+  }
+}

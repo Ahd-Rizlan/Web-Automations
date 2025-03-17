@@ -1,11 +1,12 @@
 {
   "amountFrom": null,
   "amountTo": null,
-  "debitAccount": "001250012566",
+  "debitAccount": "",
   "pageLimit": 10,
   "pageNo": 1,
-  "paymentRequestDateFrom": "2025-03-05",
-  "paymentRequestDateTo": "2025-03-06",
+  "paymentRequestDateFrom": "",
+  "paymentRequestDateTo": "",
   "status": "",
   "txnType": "ONLINE"
+
 }

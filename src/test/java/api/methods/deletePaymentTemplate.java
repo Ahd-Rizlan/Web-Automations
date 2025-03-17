@@ -76,16 +76,9 @@ public class deletePaymentTemplate extends baseMethod {
 
         deletePaymentTemplate.put("templateIds", templateIds);
         jsonMap.put("deletePaymentTemplate", deletePaymentTemplate);
-
-        // Update the templateID inside the list
         updateTemplateID(jsonMap, getAPIDetails("templateID"));
-
-        // Print updated JSON-like structure
-        //System.out.println("Updated JSON : " + jsonMap);
-
-        // Create a FileWriter and write the updated JSON content to the file
         try (FileWriter writer = new FileWriter(jsonBody, false)) { // false means overwrite the content
-            // Convert the jsonMap to a JSONObject and write to the file
+
             JSONObject updatedJson = new JSONObject(jsonMap);
             writer.write(updatedJson.toString());
         } catch (IOException e) {
@@ -102,15 +95,9 @@ public class deletePaymentTemplate extends baseMethod {
         new PayloadValidator().validateJsonFileWithExcludedDataFields(JSON_PATH,response,new String[]{"statusDescription"} );
     }
 
-    // Custom method to update the 'templateID' inside deletePaymentTemplateBody
     public  void updateTemplateID(Map<String, Object> jsonMap, String newTemplateID) {
-        // Access the deletePaymentTemplate object
         Map<String, Object> deletePaymentTemplate = (Map<String, Object>) jsonMap.get("deletePaymentTemplate");
-
-        // Access the templateIds list inside the deletePaymentTemplate
         List<Map<String, String>> templateIds = (List<Map<String, String>>) deletePaymentTemplate.get("templateIds");
-
-        // Update the templateID of the first element (you can change the logic if you have multiple elements)
         if (!templateIds.isEmpty()) {
             Map<String, String> firstTemplate = templateIds.get(0);
             firstTemplate.put("templateID", newTemplateID);
