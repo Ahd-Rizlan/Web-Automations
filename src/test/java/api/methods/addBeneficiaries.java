@@ -19,15 +19,13 @@ import static utils.CommonUtils.USER_DIR;
 
 public class addBeneficiaries extends baseMethod {
 
-
-    private String BASE_PATH = GET_ADD_BENEFICIARIES_PATH;
-
-    private String PATH_TO_PAYLOAD_FOLDER = GET_ADD_BENEFICIARIES_BODY;
+    private final String BASE_PATH = GET_ADD_BENEFICIARIES_PATH;
+    private final String PATH_TO_PAYLOAD = GET_ADD_BENEFICIARIES_BODY;
     private static final String JSON_PATH = USER_DIR + GET_ADD_BENEFICIARIES_RESPONSE;
 
-    private baseRequest baseRequest = new baseRequest(GET_ADD_BENEFICIARIES_PATH );
-    private validatePayload validatePayload = new validatePayload(baseRequest);
-    private validateResponce validateResponce = new validateResponce(baseRequest);
+    private final baseRequest baseRequest = new baseRequest(BASE_PATH );
+    private final validatePayload validatePayload = new validatePayload(baseRequest);
+    private final validateResponce validateResponce = new validateResponce(baseRequest);
 
 
 
@@ -85,14 +83,14 @@ public class addBeneficiaries extends baseMethod {
 
 
     public void setPayloadWithInvalidAccountType() throws IOException, ParseException {
-        validatePayload.setPayloadWithValidData(ConstantApiUtils.GET_ADD_BENEFICIARIES_BODY,"addBeneficiaries","accountType", INVALID_ACCOUNT_TYPE);
+        validatePayload.setPayloadWithValidData(PATH_TO_PAYLOAD,"addBeneficiaries","accountType", INVALID_ACCOUNT_TYPE);
     }
 
     public void setPayloadWithValidData() throws IOException, ParseException {
-        validatePayload.setPayloadWithValidData(ConstantApiUtils.GET_ADD_BENEFICIARIES_BODY,"addBeneficiaries","accountType", VALID_ACCOUNT_TYPE);
-        validatePayload.setPayloadWithValidData(ConstantApiUtils.GET_ADD_BENEFICIARIES_BODY,"addBeneficiaries","accountName", VALID_ACCOUNT_NAME);
-        validatePayload.setPayloadWithValidData(ConstantApiUtils.GET_ADD_BENEFICIARIES_BODY,"addBeneficiaries","accountNumber", CORRECT_ACCOUNT_NUMBER_VALUE);
-        validatePayload.setPayloadWithValidData(ConstantApiUtils.GET_ADD_BENEFICIARIES_BODY,"addBeneficiaries","bank", CORRECT_BANK_CODE_VALUE);
+        validatePayload.setPayloadWithValidData(PATH_TO_PAYLOAD,"addBeneficiaries","accountType", VALID_ACCOUNT_TYPE);
+        validatePayload.setPayloadWithValidData(PATH_TO_PAYLOAD,"addBeneficiaries","accountName", VALID_ACCOUNT_NAME);
+        validatePayload.setPayloadWithValidData(PATH_TO_PAYLOAD,"addBeneficiaries","accountNumber", CORRECT_ACCOUNT_NUMBER_VALUE);
+        validatePayload.setPayloadWithValidData(PATH_TO_PAYLOAD,"addBeneficiaries","bank", CORRECT_BANK_CODE_VALUE);
 
     }
 
