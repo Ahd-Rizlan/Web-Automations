@@ -45,47 +45,44 @@ public class api_addBeneficiariesTest extends baseMethod {
 //        addBeneficiaries.setPayloadWithInvalidAccountType();
 //        addBeneficiaries.invokeAddBeneficiariesApi();
 //        addBeneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
-//        addBeneficiaries.validatePayloadForIncorrectAccountType();
+//        addBeneficiaries.validateResponsePayloadForIncorrectAccountType();
 //    }
 //
-//    @Test(priority = 2, testName = "Verify that Adding Beneficiaries cannot be with Empty Account Type")
-//    //For empty account type
-//    public void checkAddBeneficiariesWithEmptyAccountName() throws IOException, ParseException {
-//        addBeneficiaries.authorisedWithValidToken();
-//        addBeneficiaries.setPayloadWithEmptyAccountName();
-//        addBeneficiaries.invokeAddBeneficiariesApi();
-//        addBeneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
-//        addBeneficiaries.validatePayloadForEmptyAccountName();
-//    }
-//
-//    @Test(priority = 2, testName = "Verify that Adding Beneficiaries cannot be with Incorrect Account Number")
-//    //For incorrect account name
-//    public void checkAddBeneficiariesWithIncorrectAccountNumber() throws IOException, ParseException {
-//        addBeneficiaries.authorisedWithValidToken();
-//        addBeneficiaries.setPayloadWithIncorrectAccountNumber();
-//        addBeneficiaries.invokeAddBeneficiariesApi();
-//        addBeneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
-//        addBeneficiaries.validatePayloadForIncorrectAccountNumber();
-//    }
-//
-//    @Test(priority = 2, testName = "Verify that Adding Beneficiaries cannot be with Empty Bank code")
-//    //For empty bank code
-//    public void checkAddBeneficiariesWithEmptyBankCode() throws IOException, ParseException {
-//        addBeneficiaries.authorisedWithValidToken();
-//        addBeneficiaries.setPayloadWithEmptyBankCode();
-//        addBeneficiaries.invokeAddBeneficiariesApi();
-//        addBeneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
-//        addBeneficiaries.validatePayloadForEmptyBankCode();
-//    }
+    @Test(priority = 2, testName = "Verify that Adding Beneficiaries cannot be with Empty Account Type")
+    //For empty account type
+    public void checkAddBeneficiariesWithEmptyAccountName() throws IOException, ParseException {
+        addBeneficiaries.authorisedWithValidToken();
+        addBeneficiaries.setPayloadWithEmptyAccountName();
+        addBeneficiaries.invokeAddBeneficiariesApi();
+        addBeneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
+        addBeneficiaries.validateResponsePayloadForEmptyAccountName();
+    }
+
+    @Test(priority = 2, testName = "Verify that Adding Beneficiaries cannot be with Incorrect Account Number")
+    public void checkAddBeneficiariesWithIncorrectAccountNumber() throws IOException, ParseException {
+        addBeneficiaries.authorisedWithValidToken();
+        addBeneficiaries.setPayloadWithIncorrectAccountNumber();
+        addBeneficiaries.invokeAddBeneficiariesApi();
+        addBeneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
+        addBeneficiaries.validateResponsePayloadForIncorrectAccountNumber();
+    }
+
+    @Test(priority = 2, testName = "Verify that Adding Beneficiaries cannot be with Empty Bank code")
+    public void checkAddBeneficiariesWithEmptyBankCode() throws IOException, ParseException {
+        addBeneficiaries.authorisedWithValidToken();
+        addBeneficiaries.setPayloadWithEmptyBankCode();
+        addBeneficiaries.invokeAddBeneficiariesApi();
+        addBeneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
+        addBeneficiaries.validateResponsePayloadForEmptyBankCode();
+    }
 
     @Test(priority = 3, testName = "Verify that Adding Beneficiaries can be with Authorized Access")
-    //For happy path
     public void checkAddBeneficiariesWithAuthorizedAccess() throws IOException, ParseException {
         addBeneficiaries.authorisedWithValidToken();
         addBeneficiaries.setPayloadWithValidData();
         addBeneficiaries.invokeAddBeneficiariesApi();
         addBeneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
-        addBeneficiaries.validatePayload();
+        addBeneficiaries.validateResponsePayload();
     }
 
 }

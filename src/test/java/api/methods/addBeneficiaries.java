@@ -2,7 +2,7 @@ package api.methods;
 
 import api.utils.baseRequest;
 import api.utils.validatePayload;
-import api.utils.validateResponce;
+import api.utils.validateResponse;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
@@ -18,7 +18,7 @@ public class addBeneficiaries extends baseMethod {
 
     private final baseRequest baseRequest = new baseRequest(BASE_PATH );
     private final validatePayload validatePayload = new validatePayload(baseRequest);
-    private final validateResponce validateResponce = new validateResponce(baseRequest);
+    private final validateResponse validateResponse = new validateResponse(baseRequest);
 
 
 
@@ -154,7 +154,7 @@ public class addBeneficiaries extends baseMethod {
     //---------------------------------------------------------------------imp on request Validate responce
 //
     public void validatePayload() {
-        validateResponce.validateResponce(JSON_PATH);
+        validateResponse.validateResponse(JSON_PATH);
     }
 //
 //    public void validatePayloadForIncorrectAccountType() {
