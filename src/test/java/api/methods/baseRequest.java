@@ -16,8 +16,13 @@ public class baseRequest {
 
     private  Response response;
     private  String POST_BODY;
-    private  File jsonBody;
+
+    public  File jsonBody;
     private String basePath;
+
+    public baseRequest(String basePath) {
+        this.basePath = basePath;
+    }
 
     public  void setHeaders() {
         headersMap.put(TXT_CONTENT_TYPE, TXT_APPLICATION_JSON);
@@ -37,14 +42,26 @@ public class baseRequest {
     public  void setAuthorization(String AUTHORIZATION) {
         headersMap.put(TXT_AUTHORIZATION, AUTHORIZATION);
     }
+    public void validateResponseCode(int responseCode) {
+        response.then().assertThat().statusCode(responseCode);
+    }
 
     public void setBasePath(String basePath) {
         this.basePath = basePath;
     }
 
-    public void setPOST_BODY(String postBody) {
+    public String setPOST_BODY(String postBody) {
         POST_BODY = USER_DIR + postBody;
         jsonBody = new File(POST_BODY);
+        return POST_BODY;
+    }
+
+//    public File getJsonBody() {
+//        return jsonBody;
+//    }
+
+    public Response getResponse() {
+        return response;
     }
 
     public void invokePostRequest() {
@@ -59,8 +76,35 @@ public class baseRequest {
                 .log()
                 .all()
                 .post();
-        System.out.println("API Response (beneficiariesByTranType) : " + response.prettyPrint());
+        System.out.println("API Response : " + response.prettyPrint());
         baseMethod.printResponseLogInReport(response);
     }
-
+    public void invokeGetRequest() {
+        setHeaders();
+        RestAssured.useRelaxedHTTPSValidation();
+        response = RestAssured.given()
+                .baseUri(baseMethod.getBaseHost())
+                .headers(headersMap)
+                .basePath(basePath)
+                .when()
+                .log()
+                .all()
+                .post();
+        System.out.println("API Response : " + response.prettyPrint());
+        baseMethod.printResponseLogInReport(response);
+    }
+    public void invokeDeleteRequest() {
+        setHeaders();
+        RestAssured.useRelaxedHTTPSValidation();
+        response = RestAssured.given()
+                .baseUri(baseMethod.getBaseHost())
+                .headers(headersMap)
+                .basePath(basePath)
+                .when()
+                .log()
+                .all()
+                .post();
+        System.out.println("API Response : " + response.prettyPrint());
+        baseMethod.printResponseLogInReport(response);
+    }
 }

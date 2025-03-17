@@ -54,6 +54,7 @@ public class ConstantApiUtils {
     //------------------------folder paths--------------------
     public static final String PATH_TO_SCHEMA_FOLDER = "/src/test/java/api/utils/Schemas/";
     public static final String PATH_TO_PAYLOAD_FOLDER = System.getProperty("user.dir").concat("/src/test/java/api/utils/payloads/");
+//    public static final String USER_DIR = System.getProperty("user.dir");
 
     //-------------------------path params ---------------------------------------
     public static final String GET_PAYMENTS_BY_ID_PATH = "/apis/payments/web/getPaymentsByID/1.0.0";
