@@ -1,5 +1,6 @@
-package api.methods;
+package api.utils;
 
+import api.methods.baseMethod;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 
@@ -11,7 +12,7 @@ import static api.utils.ConstantApiUtils.*;
 import static utils.CommonUtils.USER_DIR;
 
 public class baseRequest {
-    private  baseMethod baseMethod = new baseMethod();
+    private final api.methods.baseMethod baseMethod = new baseMethod();
     public  Map<String, String> headersMap = new HashMap<>();
 
     private  Response response;

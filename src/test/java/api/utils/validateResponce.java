@@ -1,6 +1,7 @@
-package api.methods;
+package api.utils;
 
 
+import api.methods.baseMethod;
 
 public class validateResponce {
     private baseRequest baseRequest ;

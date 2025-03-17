@@ -213,7 +213,7 @@ public class baseMethod implements ITest {
         System.out.println(formattedTimestamp);
         return  formattedTimestamp;
     }
-    static void printResponseLogInReport(Response response) {
+    public static void printResponseLogInReport(Response response) {
         ExtentReportManager.logInfoDetails("Response status is " + response.getStatusCode());
         ExtentReportManager.logInfoDetails("Response body is ");
         ExtentReportManager.logJson(response.getBody().prettyPrint());

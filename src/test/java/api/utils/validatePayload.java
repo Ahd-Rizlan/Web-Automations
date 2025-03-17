@@ -1,6 +1,7 @@
-package api.methods;
+package api.utils;
 
 import api.utils.ConstantApiUtils;
+import api.utils.baseRequest;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;

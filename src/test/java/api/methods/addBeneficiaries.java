@@ -1,18 +1,11 @@
 package api.methods;
 
-import api.utils.ConstantApiUtils;
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import api.utils.baseRequest;
+import api.utils.validatePayload;
+import api.utils.validateResponce;
 import org.json.simple.parser.ParseException;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import static api.utils.ConstantApiUtils.*;
 import static utils.CommonUtils.USER_DIR;
