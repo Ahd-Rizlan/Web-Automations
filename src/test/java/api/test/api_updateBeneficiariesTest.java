@@ -41,14 +41,14 @@ public class api_updateBeneficiariesTest extends baseMethod {
 	}
 
 
-	@Test(priority = 1, testName = "Verify that Adding Beneficiaries can be with Authorized Access")
-	public void checkAddBeneficiariesWithAuthorizedAccess() throws IOException, ParseException {
-		addBeneficiaries.authorisedWithValidToken();
-		addBeneficiaries.setPayloadWithValidData();
-		addBeneficiaries.invokeAddBeneficiariesApi();
-		addBeneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
-		addBeneficiaries.validatePayload();
-	}
+//	@Test(priority = 1, testName = "Verify that Adding Beneficiaries can be with Authorized Access")
+//	public void checkAddBeneficiariesWithAuthorizedAccess() throws IOException, ParseException {
+//		addBeneficiaries.authorisedWithValidToken();
+//		addBeneficiaries.setPayloadWithValidData();
+//		addBeneficiaries.invokeAddBeneficiariesApi();
+//		addBeneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
+//		addBeneficiaries.validatePayload();
+//	}
 
 	@Test(priority = 2, testName = "Verify that the Transfer Payee List Retrieve with Authorized Access", dependsOnMethods = "checkAddBeneficiariesWithAuthorizedAccess")
 	public void checkGetTransferPayeeListWithAuthorizedAccess() throws IOException, ParseException {
