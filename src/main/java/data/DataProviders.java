@@ -24,6 +24,11 @@ public class DataProviders {
             String[] columnNames = {"userName", "password" ,"emailSentSuccessMsg"};
             return XlsReader.getDataFromSheet(filePath, "LoginData", columnNames).iterator();
         }
+        @DataProvider(name = "LoginDataAlternateOne")
+        public static Iterator<Object[]> getLoginDataAlternateOne() {
+            String[] columnNames = {"userName", "password" ,"emailSentSuccessMsg"};
+            return XlsReader.getDataFromSheet(filePath, "LoginDataAlternateOne", columnNames).iterator();
+        }
 
         @DataProvider(name = "InvalidPassword")
         public static Iterator<Object[]> getIncorrectPasswordData() {
@@ -36,8 +41,6 @@ public class DataProviders {
             String[] columnNames = {"userName", "password","emailSentSuccessMsg", "popupText"};
             return XlsReader.getDataFromSheet(filePath, "LogoutData", columnNames).iterator();
         }
-
-
     }
     public static class DashboardDataProvider {
         private static final String filePath;
@@ -72,6 +75,12 @@ public class DataProviders {
         public static Iterator<Object[]> getDashboardRVTPaymentPopupData() {
             String[] columnNames = {"toAccount"};
             return XlsReader.getDataFromSheet(filePath, "DashboardRVTPaymentPopup", columnNames).iterator();
+        }
+
+        @DataProvider(name = "DashboardAccountPortfolio")
+        public static Iterator<Object[]> getDashboardAccountPortfolioData() {
+            String[] columnNames = {"imgLocation","userName","threshold"};
+            return XlsReader.getDataFromSheet(filePath, "DashboardAccountPortfolio", columnNames).iterator();
         }
 
     }

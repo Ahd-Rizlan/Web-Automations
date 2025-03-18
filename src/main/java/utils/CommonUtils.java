@@ -205,6 +205,16 @@ public class CommonUtils extends Drivers {
     }
 
     /**
+     * Function to check if the text contains numeric characters including negative values
+     *
+     * @param text - text content to validate the characters
+     * @return boolean - text content availability
+     */
+    public static boolean containsNumericCharactersWithNegativeValues(String text) {
+        return text.matches("^-?\\d{1,3}(,\\d{3})*(\\.\\d+)?$");
+    }
+
+    /**
      * Function to check if the text contains alphabetic and numeric characters
      *
      * @param text - text content to validate the characters

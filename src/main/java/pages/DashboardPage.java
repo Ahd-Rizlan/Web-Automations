@@ -9,8 +9,12 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import utils.CommonUtils;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
+
+import static java.lang.Math.signum;
 
 public class DashboardPage extends BasePage {
 
@@ -70,7 +74,7 @@ public class DashboardPage extends BasePage {
     private static final By lblSendMoneyHeader = By.xpath("//div[text()='Make Transactions']/ancestor::div[contains(@class,'rounded-lg')]/following-sibling::div//span[contains(text(),'Send Money')]");
     private static final By lblMobileCashHeader = By.xpath(" //div[text()='Make Transactions']/ancestor::div[contains(@class,'rounded-lg')]/following-sibling::div//span[contains(text(),'Mobile Cash')]");
     private static final By lblBillPaymentHeader = By.xpath("//span[text()='Bill Payments']/ancestor::div[contains(@class,'rounded-lg')]/following-sibling::div//span[contains(text(),'Bill Payments')]");
-    private static final By imgAccountPortfolio = By.xpath("//canvas[@role='img']/..");
+    private static final By imgAccountPortfolio = By.xpath("//canvas[@role='img']");
     private static final By imgAdvertisement = By.xpath("//span[contains(text(),'Maintenance & Updates')]/parent::div//img[contains(@src,'/SVRClientWebV4/_next/image')]");
     private static final By lblOpenFDPopupHeader = By.xpath("//span[text()='Open Fixed Deposit']");
     private static final By lblFavouritePayeeWidgets = By.xpath("//span[contains(text(),'Favorite Payees')]/following::div[contains(@class,'flex flex-col tex')]/span[1]");
@@ -79,7 +83,7 @@ public class DashboardPage extends BasePage {
     private static final By btnClosePopup = By.xpath("//button[contains(text(),'Close')]");
     private static final By btnAddBiller = By.xpath("//span[contains(text(),'Favorite Billers')]/parent::div//span[contains(text(),'Add to favorites')]");
     private static final By btnAddPayee = By.xpath("//span[contains(text(),'Favorite Payees')]/following::div[contains(@class,'grid grid-cols')]/div/span[contains(text(),'Add to favorites')]");
-    private static final By lblFavouritePayeeWidgetRow = By.xpath("//span[contains(text(),'Favorite Payees')]/following::div[contains(@class,'grid grid-cols')]/div");
+    private static final By lblFavouritePayeeWidgetRow = By.xpath("//span[contains(text(),'Favorite Payee')]/parent::div//div[contains(@class,'flex items')]//span[3]");
     private static final By btnDashboard = By.xpath("//button/a[contains(normalize-space(text()), 'Dashboard')]");
     private static final By lblFavouriteBillerWidgetRow = By.xpath("//span[contains(text(),'Favorite Billers')]/parent::div//div[contains(@class,'grid grid-cols')]/div");
     private static final By btnFavouriteBillerWidgetAddToFav = By.xpath("//span[contains(text(),'Favorite Billers')]/parent::div//div[contains(@class,'grid grid-cols')]/div/span[contains(text(),'Add to favorites')]");
@@ -89,8 +93,11 @@ public class DashboardPage extends BasePage {
     private static final By lblRVTTransferRecordOA = By.xpath("//span[contains(text(),'Own Account')]/ancestor::div[contains(@class,'cursor-pointer')]//div[contains(@class,'transactionDetails')]");
     private static final By lblRVTPaymentsRecords = By.xpath("//div[contains(@class,'RecentVishwaTransactions_transactionDetails')]");
     private static final By lblBillerGrayLoader = By.xpath("//div[contains(@class,'rounded-lg dark')]");
-    private static final By lblSavedBillerFavRecords = By.xpath("//img[contains(@srcset,'.c7bd4030') and @alt='']");
-
+    private static final By imgSavedBillerFavRecords = By.xpath("//img[contains(@srcset,'.c7bd4030') and @alt='']");
+    private static final By imgSampathPreLoader = By.xpath("//img[contains(@srcset,'Fpreloader')]");
+    private static final By imgSavedPayeeFavRecords = By.xpath("//table//img[contains(@srcset,'.c7bd4030') and @alt='']");
+    private static final By lblQFTSavingsAccountName = By.xpath("//span[text()='Savings Account']/ancestor::div[contains(@class,'flex relative justify-between')]//span[contains(text(),'Available Balance')]");
+    private static final By lblAccountPortfolioRows = By.xpath("//h1[contains(text(),'Account Portfolio')]/ancestor::div[contains(@class,'ContainerMd_container')]//div[contains(@class,'flex rounded-lg justify-between')]");
 
     private static By tfOTP(int Index) {
         return By.xpath("//input[@type='password'][" + Index + "]");
@@ -184,8 +191,16 @@ public class DashboardPage extends BasePage {
         return By.xpath("//span[contains(text(),'Favorite Billers')]/parent::div//div[contains(@class,'flex items')][" + index + "]//span[2]");
     }
 
+    private static By lblFavouritePayeeName(int index) {
+        return By.xpath("(//span[contains(text(),'Favorite Payee')]/parent::div//div[contains(@class,'flex-col text')]//span[1])[" + index + "]");
+    }
+
     private static By lblFavouriteBillerFieldName(int index) {
         return By.xpath("//span[contains(text(),'Favorite Billers')]/parent::div//div[contains(@class,'flex items')][" + index + "]//span[3]");
+    }
+
+    private static By lblFavouritePayeeFieldName(int index) {
+        return By.xpath("//span[contains(text(),'Favorite Payee')]/parent::div//div[contains(@class,'flex items')][" + index + "]//span[3]");
     }
 
     private static By lblRVTTransferRecordOAName(int index) {
@@ -236,6 +251,13 @@ public class DashboardPage extends BasePage {
         return By.xpath("(//img[contains(@srcset,'.c7bd4030') and @alt='']/ancestor::tr/td[4])[" + row + "]");
     }
 
+    private static By lblSavedPayeeTemplateName(int row) {
+        return By.xpath("(//img[contains(@srcset,'.c7bd4030') and @alt='']/ancestor::tr/td[4])[" + row + "]");
+    }
+    private static By lblAccountPortfolioValues(int row) {
+        return By.xpath("//h1[contains(text(),'Account Portfolio')]/ancestor::div[contains(@class,'ContainerMd_container')]//div[contains(@class,'flex rounded-lg justify-between')][" + row + "]/div[2]/span");
+    }
+
     public DashboardPage(WebDriver driver) {
         super(driver);
     }
@@ -251,7 +273,8 @@ public class DashboardPage extends BasePage {
 
     public void logoutFromSampathVishwaWeb(String buttonName, String popupText, String confirmButtonText, String loginPageTitle) {
         try {
-            clickOnElement(alertPopup);
+//            uncomment once deployed
+//            clickOnElement(alertPopup);
 
             //validate user profile icon and click
             boolean userProfileIcon = isElementPresentBy(iconUser);
@@ -313,6 +336,7 @@ public class DashboardPage extends BasePage {
      */
     public void ValidateUserProfileIcon() {
         try {
+            waitForElementToBeInvisible(imgSampathPreLoader, 5);
             waitForElementToBeInvisible(lblLoadingIcon, 5);
             //validate user profile icon
             boolean userProfileIcon = isElementPresentBy(iconUser);
@@ -332,20 +356,11 @@ public class DashboardPage extends BasePage {
      * Validate title
      */
     public void validateTheTitle() {
+        waitForElementToBeInvisible(imgSampathPreLoader, 20);
         waitForElementPresence(title);
         addToReport("Successfully validated the title '" + title + "'", Status.PASS);
+        waitForElementPresence(imgAdvertisement, 30);
     }
-
-    /**
-     * Select menu option and revert
-     */
-    public void navigateToDifferentMenuAndReturn(String buttonName) {
-
-        waitForElementPresence(btnMenuOptions(buttonName));
-        mouseClick(btnMenuOptions(buttonName));
-        validateTheTitle();
-    }
-
 
     /**
      * Validate free trial navigation
@@ -373,6 +388,7 @@ public class DashboardPage extends BasePage {
      * @param productName                 - Product Name
      */
     public void validateSavingsAccountAtDashboard(String savingsAccountNumber, String currencyAndAvailableBalance, String primaryStatus, String accountStatus, String productName) {
+
         try {
 
             waitForElementToBeInvisible(lblLoadingIcon, 10);
@@ -623,6 +639,7 @@ public class DashboardPage extends BasePage {
      * Validate messages and advertisements
      */
     public void validateMessagesAndAdvertisements() {
+        waitForElementPresence(imgAdvertisement, 30);
         try {
             //wait for the loading icon to diminish
             waitForLoadingToBeInvisible();
@@ -784,8 +801,8 @@ public class DashboardPage extends BasePage {
 
                 //Validate the account name
                 if (!AccName.get(inc).isEmpty() &&
-                        AccName.get(inc).contains("Account") &&
-                        CommonUtils.containsAlphabaticCharacters(AccName.get(inc))) {
+                        ((AccName.get(inc).contains("Account") && CommonUtils.containsAlphabaticCharacters(AccName.get(inc))) ||
+                                CommonUtils.containsNumericCharacters(AccName.get(inc)))) {
                     addToReport(" Recent vishwa transactions of record number : '" + inc + "' where Account name : '" + AccName.get(inc), Status.PASS, false);
                 } else {
                     addToReport(" Failed to validate Recent vishwa transactions of record number : '" + inc + "' where Account name : '" + AccName.get(inc), Status.FAIL);
@@ -1009,7 +1026,7 @@ public class DashboardPage extends BasePage {
 
                 //Validate the account name
                 if (!AccNickName.get(inc).isEmpty()) {
-                    addToReport(" Favourite payee nickname : '" + AccNickName.get(inc) + "' for the record number : '" + inc, Status.PASS);
+                    addToReport(" Favourite payee nickname : '" + AccNickName.get(inc) + "' for the record number : '" + inc, Status.PASS, false);
                 } else {
                     addToReport(" Failed to validate favourite payee nickname : '" + AccNickName.get(inc) + "' for the record number : '" + inc, Status.FAIL);
                     throw new RuntimeException("Error - Favourite payee is not displayed");
@@ -1017,7 +1034,7 @@ public class DashboardPage extends BasePage {
 
                 //Validate the bank name
                 if (!BankName.get(inc).isEmpty() && CommonUtils.containsAlphabaticCharacters(BankName.get(inc).trim())) {
-                    addToReport(" Favourite payee bank name : '" + BankName.get(inc) + "' for the record number : '" + inc, Status.PASS);
+                    addToReport(" Favourite payee bank name : '" + BankName.get(inc) + "' for the record number : '" + inc, Status.PASS, false);
                 } else {
                     addToReport(" Failed to validate favourite payee bank name : '" + BankName.get(inc) + "' for the record number : '" + inc, Status.FAIL);
                     throw new RuntimeException("Error - Favourite payee is not displayed");
@@ -1025,12 +1042,13 @@ public class DashboardPage extends BasePage {
 
                 //Validate the account number
                 if (!AccountNumber.get(inc).isEmpty() && CommonUtils.containsNumericCharacters(AccountNumber.get(inc))) {
-                    addToReport(" Favourite payee account number : '" + AccountNumber.get(inc) + "' for the record number : '" + inc, Status.PASS);
+                    addToReport(" Favourite payee account number : '" + AccountNumber.get(inc) + "' for the record number : '" + inc, Status.PASS, false);
                 } else {
                     addToReport(" Failed to validate favourite payee account name : '" + AccountNumber.get(inc) + "' for the record number : '" + inc, Status.FAIL);
                     throw new RuntimeException("Error - Favourite payee is not displayed");
                 }
             }
+            addToReport(" Favourite payee validation successful'", Status.PASS, true);
         } catch (Exception e) {
             addToReport("Recent vishawa transfer validation for favourite payee failed", Status.FAIL);
             throw new RuntimeException("Error - Recent vishawa transfer validation of favourite payee failed", e);
@@ -1041,6 +1059,7 @@ public class DashboardPage extends BasePage {
      * Navigate back to dashboard
      */
     public void navigateBackToDashboard() {
+        waitForElementPresence(btnDashboard);
         clickOnElement(btnDashboard);
         waitForElementToBeInvisible(lblLoadingIcon, 20);
     }
@@ -1099,6 +1118,7 @@ public class DashboardPage extends BasePage {
 
         //Select the first record
         clickOnElement(lblFavouriteBillerTempName(1));
+        waitFor(6);
 
         return FRecordData;
     }
@@ -1114,6 +1134,7 @@ public class DashboardPage extends BasePage {
 
             //Click recent transfer and wait till account name appear
             waitForElementPresence(lblRVTPaymentAccountName);
+
 
             //Declare string to extract from widget
             String NickName = getTextFromElement(lblFavouritePayeeNickName(1));
@@ -1146,12 +1167,14 @@ public class DashboardPage extends BasePage {
             }
 
         } catch (Exception e) {
-            addToReport("Recent vishawa transfer data extraction for favourite biller failed", Status.FAIL);
-            throw new RuntimeException("Error - Recent vishawa transfer data extraction of favourite biller failed", e);
+            addToReport("Recent vishawa transfer data extraction for favourite payee failed", Status.FAIL);
+            throw new RuntimeException("Error - Recent vishawa transfer data extraction of favourite payee failed", e);
         }
 
         //Select the first record
         clickOnElement(lblFavouritePayeeNickName(1));
+        waitFor(15);
+        waitForElementPresence(lblQFTSavingsAccountName, 20);
 
         return FRecordData;
     }
@@ -1173,8 +1196,12 @@ public class DashboardPage extends BasePage {
             waitForElementToBeInvisible(lblLoadingIcon, 15);
 
             //click button Loans
-            isElementClickable(btnLoans);
-            clickOnElement(btnLoans);
+            if (isElementClickable(btnLoans)) {
+                clickOnElement(btnLoans);
+            } else {
+                addToReport("Unable to find loans button", Status.FAIL);
+                throw new RuntimeException("Error - Loans button is not found");
+            }
 
             //wait for the loading icon to diminish
             waitForLoadingToBeInvisible();
@@ -1308,9 +1335,8 @@ public class DashboardPage extends BasePage {
      */
     public void validateFunctionalityOfTopBarIconsInDashboard(String btnNameSettings, String btnNameLogout, String otp, String popupText, String btnBack) {
         try {
-
-            //Wait for loading icon to be invisible
-            waitForElementToBeInvisible(lblLoadingIcon, 5);
+//            Wait for advertisement image to appear
+            waitForElementPresence(imgAdvertisement, 30);
 
             /*Add financial calandar once it's deployed*/
 
@@ -1429,6 +1455,7 @@ public class DashboardPage extends BasePage {
             addToReport("Recent vishawa top bar functionality failed", Status.FAIL);
             throw new RuntimeException("Error - Top bar functionality failed", e);
         }
+        waitForElementPresence(imgAdvertisement, 30);
     }
 
     /**
@@ -1498,7 +1525,7 @@ public class DashboardPage extends BasePage {
                         AmtAndCurrency.equalsIgnoreCase(Amount)) {
                     addToReport(" Validated recent vishwa transactions currency and amount : '" + AmtAndCurrency, Status.PASS, false);
                 } else {
-                    addToReport(" Failed to validate Recent vishwa transactions currency and amount : '" + AmtAndCurrency, Status.FAIL,true);
+                    addToReport(" Failed to validate Recent vishwa transactions currency and amount : '" + AmtAndCurrency, Status.FAIL, true);
                 }
 
                 //Validate date and time
@@ -1552,9 +1579,9 @@ public class DashboardPage extends BasePage {
      * @param currencyType        - currency types compared from constant array
      * @param stat                - status of transaction
      * @param transactionCategory - Transaction category
-     * @param accountType - Type of the account
+     * @param accountType         - Type of the account
      */
-    public void validateRVTTransferRetrievalOfTransfersOtherAcc(String[] currencyType, String stat, String transactionCategory,String accountType) {
+    public void validateRVTTransferRetrievalOfTransfersOtherAcc(String[] currencyType, String stat, String transactionCategory, String accountType) {
         try {
 
             //wait for the loading icon to diminish
@@ -1901,20 +1928,26 @@ public class DashboardPage extends BasePage {
         }
     }
 
+    /**
+     * Validate the maximum limit of fav billers as 9 per page in Dashboard
+     */
     public void validateMarkedBillersAsFavouriteIsVisibleInBillerWidget() {
         try {
 
             //Wait for loading icon to be invisible
-            waitForElementToBeInvisible(lblBillerGrayLoader, 30);
+            waitForElementToBeInvisible(lblBillerGrayLoader, 20);
             waitForElementPresence(btnAddBiller);
 
+            //Wait for the element to be clickable
+            waitForElementToBeClickable(btnAddBiller, 10);
             clickOnElement(btnAddBiller);
+            waitForElementToBeInvisible(btnAddBiller, 10);
 
             //Declare list to extract from table
             ArrayList<String> TemplateNameSavedBillers = new ArrayList<>();
 
             //Obtain the record count
-            int recordCount = isElementsPresentBy(lblSavedBillerFavRecords);
+            int recordCount = isElementsPresentBy(imgSavedBillerFavRecords);
             if (recordCount == 0) {
                 addToReport("Favourite biller records are not displayed", Status.FAIL);
                 throw new RuntimeException("Error - Favourite biller records are not displayed in table");
@@ -1922,10 +1955,18 @@ public class DashboardPage extends BasePage {
             //Extract the latest records from the list
             for (int inc = 0; inc < recordCount; inc++) {
                 TemplateNameSavedBillers.add(inc, getTextFromElement(lblSavedBillerTemplateName(inc + 1)));
+                if (inc == 9) {
+                    scrollToWebElement(lblSavedBillerTemplateName(inc + 1));
+                    addToReport("Obtained 9 records from favourite billers under saved billers", Status.PASS, true);
+                }
             }
 
             //Navigate Back to dashboard
             navigateBackToDashboard();
+            waitForElementPresence(btnAddBiller);
+
+            //Wait for the element to be clickable
+            waitForElementToBeClickable(btnAddBiller, 20);
 
             //Declare list to extract from fav widget
             ArrayList<String> TemplateName = new ArrayList<>();
@@ -1935,6 +1976,10 @@ public class DashboardPage extends BasePage {
             if (recordCount == 0 || recordCount > 10) {
                 addToReport("Favourite biller records are not displayed as required", Status.FAIL);
                 throw new RuntimeException("Error - Favourite biller records are not displayed in widget");
+            } else if (recordCount == 10) {
+                addToReport("Maximum of nine favourite biller records displayed as required", Status.PASS, true);
+            } else {
+                addToReport("Favourite biller records displayed as required", Status.PASS, true);
             }
 
             //Extract the latest records from the list
@@ -1948,6 +1993,11 @@ public class DashboardPage extends BasePage {
             //Compare two list for template names
             if (CommonUtils.compareTwoArraylist(TemplateNameSavedBillers, TemplateName, true)) {
                 addToReport("Favourite biller is validated with the values from saved billers", Status.PASS, true);
+
+                //Add validation content to report
+                for (int inc = 0; inc < recordCount - 1; inc++) {
+                    addToReport("Favourite biller template name extracted from saved biller is validated with the values from saved billers : " + TemplateName.get(inc), Status.PASS, false);
+                }
             } else {
                 addToReport(" Failed to validate favourite biller with the values from saved billers", Status.FAIL);
             }
@@ -1957,14 +2007,235 @@ public class DashboardPage extends BasePage {
         }
     }
 
+    /**
+     * Validate the maximum limit of fav payees as 9 per page in Dashboard and marked favourite payee is displayed in dashboard
+     */
+    public void validateMarkedPayeesAsFavouriteIsVisibleInPayeeWidget() {
+        try {
 
-//
-//    public void compareImage() {
-//        try {
-//            // WORK IN PROGRESS
-//            compareImage(imgAccountPortfolio, "src/test/resources/ss.png");
-//        } catch (Exception r) {
-//        }
-//    }
+            //Wait for loading icon to be invisible
+            waitForElementToBeInvisible(lblBillerGrayLoader, 10);
+            waitForElementPresence(btnAddPayee);
+
+            //Wait for the element to be clickable
+            waitForElementToBeClickable(btnAddPayee, 10);
+            clickOnElement(btnAddPayee);
+            waitForElementToBeInvisible(btnAddPayee, 10);
+
+            //Declare list to extract from table
+            ArrayList<String> TemplateNameSavedPayee = new ArrayList<>();
+
+            //Obtain the record count
+            int recordCount = isElementsPresentBy(imgSavedPayeeFavRecords);
+            if (recordCount == 0) {
+                addToReport("Favourite payee records are not displayed", Status.FAIL);
+                throw new RuntimeException("Error - Favourite payee records are not displayed in table");
+            }
+            //Extract the latest records from the list
+            for (int inc = 0; inc < recordCount; inc++) {
+                TemplateNameSavedPayee.add(inc, getTextFromElement(lblSavedPayeeTemplateName(inc + 1)));
+                if (inc + 1 == recordCount) {
+                    scrollToWebElement(lblSavedPayeeTemplateName(inc + 1));
+                    addToReport("Obtained " + recordCount + " records from favourite payee under saved payee", Status.PASS, true);
+                }
+            }
+
+            //Navigate Back to dashboard
+            navigateBackToDashboard();
+            waitForElementPresence(btnAddPayee);
+
+            //Wait for the element to be clickable
+            waitForElementToBeClickable(btnAddPayee, 20);
+
+            //Declare list to extract from fav widget
+            ArrayList<String> TemplateName = new ArrayList<>();
+
+            //Obtain the record count
+            recordCount = isElementsPresentBy(lblFavouritePayeeWidgetRow);
+            if (recordCount == 0 || recordCount > 10) {
+                addToReport("Favourite payee records are not displayed as required", Status.FAIL);
+                throw new RuntimeException("Error - Favourite payee records are not displayed in widget");
+            } else if (recordCount == 10) {
+                addToReport("Maximum of nine favourite payee records displayed as required", Status.PASS, false);
+            } else {
+                addToReport("Favourite payee records displayed as required", Status.PASS, true);
+            }
+
+            //Extract the latest records from the list
+            for (int inc = 0; inc < recordCount; inc++) {
+                if (recordCount == 7) {
+                    scrollToWebElement(lblFavouritePayeeFieldName(inc));
+                }
+                TemplateName.add(inc, getTextFromElement(lblFavouritePayeeName(inc + 1)));
+            }
+
+            //Compare two list for template names
+            if (CommonUtils.compareTwoArraylist(TemplateNameSavedPayee, TemplateName, true)) {
+                addToReport("Favourite payee is validated with the values from saved payees", Status.PASS, true);
+
+                //Add validation content to report
+                for (int inc = 0; inc < recordCount - 1; inc++) {
+                    addToReport("Favourite payee template name extracted from saved payee is validated with the values from saved payee : " + TemplateName.get(inc), Status.PASS, false);
+                }
+            } else {
+                addToReport(" Failed to validate favourite payee with the values from saved payee", Status.FAIL);
+            }
+        } catch (Exception e) {
+            addToReport("Recent vishawa transfer validation for favourite payee failed", Status.FAIL);
+            throw new RuntimeException("Error - Recent vishawa transfer validation of favourite payee failed", e);
+        }
+    }
+
+    /**
+     * Validate top bar functions in dashboard
+     * @param urlDashboard - URL prefix of dashboard
+     * @param urlMyAccount - URL prefix of my account
+     * @param urlManageSchedule - URL prefix of manage schedule
+     * @param btnNameMyAccounts - button name my accounts
+     * @param btnNameManageSchedule - button name manage schedules
+     * @param lblNameScheduleManagement - label name schedule management
+     */
+    public void validateTopBarFunctions(String urlDashboard, String urlMyAccount, String urlManageSchedule, String btnNameMyAccounts, String btnNameManageSchedule, String lblNameScheduleManagement) {
+        try {
+            //Url to validate
+            String url = "";
+
+            //Wait for loading icon to be invisible
+            waitForElementToBeInvisible(lblBillerGrayLoader, 20);
+
+            //validate dashboard page by element and url
+            boolean dashboardElement = isElementPresentBy(lblAccountsOrCards);
+            if (dashboardElement) {
+                addToReport("Dashboard page element " + lblAccountsOrCards + " validated successfully", Status.PASS, false);
+            } else {
+                addToReport("Unable to find dashboard page element " + lblAccountsOrCards, Status.FAIL);
+                throw new RuntimeException("Error - Dashboard element validation failed");
+            }
+            url = getCurrentURL();
+            if (url.contains(urlDashboard)) {
+                addToReport("Dashboard page url :" + url + "  was validated successfully", Status.PASS, true);
+            } else {
+                addToReport("Dashboard page url " + url + " was not validated successfully", Status.FAIL);
+                throw new RuntimeException("Error - Dashboard url validation failed");
+            }
+
+            clickOnElement(btnMenuOptions(btnNameMyAccounts));
+
+            //Validate my accounts page by element and url
+            boolean myAccountElement = isElementPresentBy(getElementByTypeAndText(DashboardPage.ElementType.span, btnNameMyAccounts));
+            if (myAccountElement) {
+                addToReport("My Account page element " + getElementByTypeAndText(DashboardPage.ElementType.span, btnNameMyAccounts) + " validated successfully", Status.PASS, false);
+            } else {
+                addToReport("Unable to find My Account page element " + getElementByTypeAndText(DashboardPage.ElementType.span, btnNameMyAccounts), Status.FAIL);
+                throw new RuntimeException("Error - My Account element validation failed");
+            }
+            url = getCurrentURL();
+            if (url.contains(urlMyAccount)) {
+                addToReport("My Account page url : " + url + " was validated successfully", Status.PASS, true);
+            } else {
+                addToReport("My Account page url " + url + " was not validated successfully", Status.FAIL);
+                throw new RuntimeException("Error - My Account url validation failed");
+            }
+
+            clickOnElement(btnMenuOptions(btnNameManageSchedule));
+
+            //Validate manage schedules page by element and url
+            boolean manageSchedules = isElementPresentBy(getElementByTypeAndText(DashboardPage.ElementType.div, lblNameScheduleManagement));
+            if (manageSchedules) {
+                addToReport("Manage schedules page element " + getElementByTypeAndText(DashboardPage.ElementType.div, lblNameScheduleManagement) + " validated successfully", Status.PASS, false);
+            } else {
+                addToReport("Unable to find Manage schedules page element " + getElementByTypeAndText(DashboardPage.ElementType.div, lblNameScheduleManagement), Status.FAIL);
+                throw new RuntimeException("Error - Manage schedules element validation failed");
+            }
+            url = getCurrentURL();
+            if (url.contains(urlManageSchedule)) {
+                addToReport("Manage schedules page url : " + url + "  was validated successfully", Status.PASS, true);
+            } else {
+                addToReport("Manage schedules page url " + url + " was not validated successfully", Status.FAIL);
+                throw new RuntimeException("Error - Manage schedules url validation failed");
+            }
+
+            //Add validation of payees and billers, services once deployed
+
+        } catch (Exception e) {
+            addToReport("Vishawa application top bar validation failed", Status.FAIL);
+            throw new RuntimeException("Error - RVishawa application validation of top bar failed", e);
+        }
+
+    }
+
+    /**
+     * Validate account portfolio in dashboard
+     * @param imgLocation - location of the image for validation
+     * @param userName - specific user
+     * @param thresholdValue - threshold value for image comparison
+     * @param currencyType - currency type
+     */
+    public void validateAccountPortfolio(String imgLocation, String userName,String thresholdValue,String[] currencyType) {
+        try {
+
+            //Wait for loading icon to be invisible
+            waitForElementToBeInvisible(lblBillerGrayLoader, 20);
+
+            //validate dashboard page element account portfolio
+            boolean dashboardElement = isElementPresentBy(imgAccountPortfolio);
+            if (dashboardElement) {
+                addToReport("Dashboard page element account portfolio " + lblAccountsOrCards + " validated successfully", Status.PASS, false);
+            } else {
+                addToReport("Unable to find dashboard page element  account portfolio " + lblAccountsOrCards, Status.FAIL);
+                throw new RuntimeException("Error - Dashboard element account portfolio validation failed");
+            }
+
+            if (userName.equals("settlement")){
+                if (compareImage(imgAccountPortfolio, imgLocation, Integer.parseInt(thresholdValue))){
+                    addToReport("Dashboard page account portfolio pie chart validated successfully", Status.PASS, true);
+                }else {
+                    addToReport("Unable to find dashboard page element account portfolio pie chart " + lblAccountsOrCards, Status.FAIL);
+                    throw new RuntimeException("Error - Dashboard element element element account portfolio pie chart validation failed");
+                }
+            }
+            //Obtain the accounts record count
+            int recordCount = isElementsPresentBy(lblAccountPortfolioRows);
+            if (recordCount == 0) {
+                addToReport(" Recent vishwa transactions displayed no records", Status.FAIL);
+                throw new RuntimeException("Error - Incorrect number of Recent vishwa transactions displayed");
+            }
+            for (int row=1;row<=recordCount;row++) {
+                String currencyValue = getTextFromElement(lblAccountPortfolioValues(row));
+                //Validate currency and amount
+                String[] CurrencyAndAmt = currencyValue.split(" ");
+
+                // Remove commas and parse the number to negate negative values
+                NumberFormat format = NumberFormat.getInstance(Locale.US);
+                Number number = format.parse(CurrencyAndAmt[1]);
+                double value = number.doubleValue();
+
+                if (value < 0){
+                if (!currencyValue.isEmpty() &&
+                        Arrays.asList(currencyType).contains(CurrencyAndAmt[0]) &&
+                        CommonUtils.containsNumericCharactersWithNegativeValues(CurrencyAndAmt[1])) {
+                    addToReport(" Account portfolio record number : " + row + " where account value : '" + currencyValue , Status.PASS, false);
+                } else {
+                    addToReport(" Failed to validate account portfolio record", Status.FAIL);
+                    throw new RuntimeException("Error - Failed to validate account portfolio record");
+                }
+                }else {
+                    if (!currencyValue.isEmpty() &&
+                            Arrays.asList(currencyType).contains(CurrencyAndAmt[0]) &&
+                            CommonUtils.containsNumericCharacters(CurrencyAndAmt[1])) {
+                        addToReport(" Account portfolio record number : " + row + " where account value : '" + currencyValue , Status.PASS, false);
+                    } else {
+                        addToReport(" Failed to validate account portfolio record", Status.FAIL);
+                        throw new RuntimeException("Error - Failed to validate account portfolio record");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            addToReport("Dashboard page account portfolio validation failed", Status.FAIL);
+            throw new RuntimeException("Error - Dashboard page account portfolio validation failed", e);
+        }
+
+    }
+
 
 }

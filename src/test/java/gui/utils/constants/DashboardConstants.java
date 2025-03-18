@@ -12,6 +12,10 @@ public class DashboardConstants {
     public static final String STATUS_PRIMARY = "Primary";
     public static final String STATUS_ACTIVE = "Active";
 
+    //---------------Menu Options-------------------
+    public static final String OPTION_MANAGE_SCHEDULES = "Manage Schedules";
+    public static final String OPTION_MY_ACCOUNTS = "My Accounts";
+
     //---------------OPTIONS-------------------
     public static final String OPTION_SETTINGS = "Settings";
 
@@ -40,5 +44,12 @@ public class DashboardConstants {
 
     //--------------STATUS------------------
     public static final String STATUS_PAYMENT_SUCCESS = "Payment Success";
+
+    //--------------KEY WORDS------------------
+    public static final String DASHBOARD = "dashboard";
+    public static final String MY_ACCOUNT = "myaccount";
+    public static final String MANAGE_SCHEDULE = "manage-schedule";
+    public static final String SCHEDULE_MANAGEMENT = "Schedule Management";
+
 
 }
