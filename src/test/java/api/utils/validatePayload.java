@@ -1,7 +1,5 @@
 package api.utils;
 
-import api.utils.ConstantApiUtils;
-import api.utils.baseRequest;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -12,18 +10,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import static api.utils.ConstantApiUtils.TXT_AUTHORIZATION;
-//import static api.utils.ConstantApiUtils.USER_DIR;
-import static utils.CommonUtils.*;
+import static utils.CommonUtils.USER_DIR;
+import static utils.DataStoreReadWriteApi.getAPIDetails;
+
 public class validatePayload {
     //    private  File jsonBody;
     private FileReader file;
     private JSONObject jsonObject;
     private JSONParser jsonParser = new JSONParser();
 
-    private baseRequest baseRequest ;
+    private baseRequest baseRequest;
+
     public validatePayload(baseRequest baseRequest) {
-        this.baseRequest =baseRequest;
+        this.baseRequest = baseRequest;
     }
+
     public void authorisedWithValidToken() {
         baseRequest.headersMap.put(TXT_AUTHORIZATION, ConstantApiUtils.TXT_AUTHORIZATION_VALID_VAL);
     }
@@ -38,6 +39,7 @@ public class validatePayload {
         jsonObject = (JSONObject) jsonParser.parse(file);
         JSONObject testFeature = (JSONObject) jsonObject.get(jsonPayloadObject);
         testFeature.put(dataTobeAdded, Data);
+        System.out.println("JSON- OBJECT"+testFeature.toString());
         FileWriter writer = new FileWriter(baseRequest.jsonBody, false); //overwrites the content of file
         writer.write(jsonObject.toString());
         writer.close();
@@ -54,5 +56,8 @@ public class validatePayload {
         writer.close();
     }
 
+    public void setBaseRequest(api.utils.baseRequest baseRequest) {
+        this.baseRequest = baseRequest;
 
+    }
 }

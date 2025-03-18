@@ -2,6 +2,7 @@ package api.test;
 
 import api.methods.Beneficiaries;
 import api.methods.baseMethod;
+import api.methods.getTransferPayeeList;
 import api.utils.ConstantApiUtils;
 import org.json.simple.parser.ParseException;
 import org.testng.annotations.BeforeClass;
@@ -12,13 +13,16 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
+import static api.utils.ConstantApiUtils.VALID_ACCOUNT_NAME;
+
 public class api_BeneficiariesTest extends baseMethod {
     File schema = new File(System.getProperty("user.dir") + ConstantApiUtils.PATH_TO_SCHEMA_FOLDER + "Category_Schema.json");
     public Beneficiaries Beneficiaries;
-
+    public getTransferPayeeList getTransferPayeeList;
     @BeforeClass()
     public void setUp() {
         Beneficiaries = new Beneficiaries();
+        getTransferPayeeList = new getTransferPayeeList();
     }
 
     @BeforeMethod()
@@ -29,7 +33,7 @@ public class api_BeneficiariesTest extends baseMethod {
     }
 
     //Negative cases
-    @Test(priority = 1 , testName="Verify that Adding Beneficiaries cannot be with Unauthorized Access")
+    @Test(priority = 1 , testName="Verify that CRUD Operations for Beneficiaries cannot be with Unauthorized Access")
     //For unauthorized access
     public void checkAddBeneficiariesUnauthorizedAccess() {
         Beneficiaries.authorisedWithInValidToken();
@@ -84,5 +88,28 @@ public class api_BeneficiariesTest extends baseMethod {
         Beneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
         Beneficiaries.validateResponsePayload();
     }
+
+
+    // ---------------------------- Update Beneficiaries -----------------------------------------------------
+    @Test(priority = 7, testName = "Verify that the Transfer Payee List Retrieve with Authorized Access")
+    public void checkGetTransferPayeeListWithAuthorizedAccess() throws IOException, ParseException {
+        getTransferPayeeList.authorisedWithValidToken();
+        getTransferPayeeList.setPayloadWithValidData();
+        getTransferPayeeList.invokeGetTransferPayeeListApi();
+        getTransferPayeeList.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
+        getTransferPayeeList.extractBeneficiaryIDForAccount(VALID_ACCOUNT_NAME);
+
+    }
+    @Test(priority = 8, testName = "Verify that the Beneficiaries can be Updated with Authorized Access", dependsOnMethods = "checkGetTransferPayeeListWithAuthorizedAccess")
+    public void checkUpdateBeneficiariesWithAuthorizedAccess() throws IOException, ParseException {
+        Beneficiaries.authorisedWithValidToken();
+        Beneficiaries.setPayloadWithBeneficiaryId();
+        Beneficiaries.updateBasePath(Beneficiaries.UPDATE_BENEFICIARY_BASE_PATH);
+        Beneficiaries.invokeBeneficiariesPOSTApi();
+        Beneficiaries.setResponseWithUpdatedBeneficiaryId();
+        Beneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
+        Beneficiaries.validateResponsePayloadForUpdateBeneficiary();
+    }
+
 
 }

@@ -53,13 +53,12 @@ public class baseRequest {
 
     public String setPOST_BODY(String postBody) {
         POST_BODY = USER_DIR + postBody;
-        jsonBody = new File(POST_BODY);
         return POST_BODY;
     }
 
-//    public File getJsonBody() {
-//        return jsonBody;
-//    }
+    public String getPOST_BODY() {
+        return POST_BODY;
+    }
 
     public Response getResponse() {
         return response;
