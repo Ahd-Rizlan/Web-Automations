@@ -14,9 +14,6 @@ import java.io.IOException;
 public class validateResponse {
     private baseRequest baseRequest ;
 
-    public void setBaseRequest(api.utils.baseRequest baseRequest) {
-        this.baseRequest = baseRequest;
-    }
 
     public validateResponse(baseRequest baseRequest) {
         this.baseRequest =baseRequest;

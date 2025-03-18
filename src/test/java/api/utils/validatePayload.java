@@ -14,7 +14,6 @@ import static utils.CommonUtils.USER_DIR;
 import static utils.DataStoreReadWriteApi.getAPIDetails;
 
 public class validatePayload {
-    //    private  File jsonBody;
     private FileReader file;
     private JSONObject jsonObject;
     private JSONParser jsonParser = new JSONParser();
