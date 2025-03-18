@@ -103,13 +103,23 @@ public class api_BeneficiariesTest extends baseMethod {
     @Test(priority = 8, testName = "Verify that the Beneficiaries can be Updated with Authorized Access", dependsOnMethods = "checkGetTransferPayeeListWithAuthorizedAccess")
     public void checkUpdateBeneficiariesWithAuthorizedAccess() throws IOException, ParseException {
         Beneficiaries.authorisedWithValidToken();
-        Beneficiaries.setPayloadWithBeneficiaryId();
-        Beneficiaries.updateBasePath(Beneficiaries.UPDATE_BENEFICIARY_BASE_PATH);
+        Beneficiaries.setPayloadForUpdateBeneficiaryForWithBeneficiaryId();
+        Beneficiaries.updateBasePathForUpdateBeneficiaries();
         Beneficiaries.invokeBeneficiariesPOSTApi();
         Beneficiaries.setResponseWithUpdatedBeneficiaryId();
         Beneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
         Beneficiaries.validateResponsePayloadForUpdateBeneficiary();
     }
 
-
+    // ---------------------------- Delete Beneficiaries -----------------------------------------------------
+    @Test(priority = 9,testName = "Verify that the Beneficiaries can be deleted with Authorized Access",dependsOnMethods = "checkGetTransferPayeeListWithAuthorizedAccess")
+    public void checkDeleteBeneficiariesWithAuthorizedAccess() throws IOException, ParseException {
+        Beneficiaries.authorisedWithValidToken();
+        Beneficiaries.setPayloadForDeleteBeneficiaryForWithBeneficiaryId();
+        Beneficiaries.updateBasePathForDeleteBeneficiaries();
+        Beneficiaries.invokeBeneficiariesPOSTApi();
+        Beneficiaries.setResponseWithDeletedBeneficiaryId();
+        Beneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
+        Beneficiaries.validateResponsePayloadForDeleteBeneficiary();
+    }
 }
