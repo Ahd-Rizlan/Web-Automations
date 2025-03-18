@@ -37,6 +37,7 @@ public class api_BeneficiariesTest extends baseMethod {
     //For unauthorized access
     public void checkAddBeneficiariesUnauthorizedAccess() {
         Beneficiaries.authorisedWithInValidToken();
+        Beneficiaries.updateBasePathForAddBeneficiaries();
         Beneficiaries.invokeBeneficiariesPOSTApi();
         Beneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
     }
@@ -47,6 +48,7 @@ public class api_BeneficiariesTest extends baseMethod {
     public void checkAddBeneficiariesWithIncorrectAccountType() throws IOException, ParseException {
         Beneficiaries.authorisedWithValidToken();
         Beneficiaries.setPayloadWithInvalidAccountType();
+        Beneficiaries.updateBasePathForAddBeneficiaries();
         Beneficiaries.invokeBeneficiariesPOSTApi();
         Beneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
         Beneficiaries.validateResponsePayloadForIncorrectAccountType();
@@ -57,6 +59,7 @@ public class api_BeneficiariesTest extends baseMethod {
     public void checkAddBeneficiariesWithEmptyAccountName() throws IOException, ParseException {
         Beneficiaries.authorisedWithValidToken();
         Beneficiaries.setPayloadWithEmptyAccountName();
+        Beneficiaries.updateBasePathForAddBeneficiaries();
         Beneficiaries.invokeBeneficiariesPOSTApi();
         Beneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
         Beneficiaries.validateResponsePayloadForEmptyAccountName();
@@ -66,6 +69,7 @@ public class api_BeneficiariesTest extends baseMethod {
 //    public void checkAddBeneficiariesWithIncorrectAccountNumber() throws IOException, ParseException {
 //        Beneficiaries.authorisedWithValidToken();
 //        Beneficiaries.setPayloadWithIncorrectAccountNumber();
+    //Beneficiaries.updateBasePathForAddBeneficiaries();
 //        Beneficiaries.invokeBeneficiariesPOSTApi();
 //        Beneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
 //        Beneficiaries.validateResponsePayloadForIncorrectAccountNumber();
@@ -75,6 +79,7 @@ public class api_BeneficiariesTest extends baseMethod {
     public void checkAddBeneficiariesWithEmptyBankCode() throws IOException, ParseException {
         Beneficiaries.authorisedWithValidToken();
         Beneficiaries.setPayloadWithEmptyBankCode();
+        Beneficiaries.updateBasePathForAddBeneficiaries();
         Beneficiaries.invokeBeneficiariesPOSTApi();
         Beneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
         Beneficiaries.validateResponsePayloadForEmptyBankCode();
@@ -84,6 +89,7 @@ public class api_BeneficiariesTest extends baseMethod {
     public void checkAddBeneficiariesWithAuthorizedAccess() throws IOException, ParseException {
         Beneficiaries.authorisedWithValidToken();
         Beneficiaries.setPayloadWithValidData();
+        Beneficiaries.updateBasePathForAddBeneficiaries();
         Beneficiaries.invokeBeneficiariesPOSTApi();
         Beneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
         Beneficiaries.validateResponsePayload();

@@ -21,9 +21,7 @@ public class baseRequest {
     public  File jsonBody;
     private String basePath;
 
-    public baseRequest(String basePath) {
-        this.basePath = basePath;
-    }
+
 
     public  void setHeaders() {
         headersMap.put(TXT_CONTENT_TYPE, TXT_APPLICATION_JSON);

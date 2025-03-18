@@ -16,7 +16,7 @@ public class Beneficiaries extends baseMethod {
     public final String ADD_BENEFICIARY_BASE_PATH = GET_ADD_BENEFICIARIES_PATH;
     public final String UPDATE_BENEFICIARY_BASE_PATH = GET_UPDATE_BENEFICIARIES_PATH;
     public final String DELETE_BENEFICIARY_BASE_PATH =GET_DELETE_BENEFICIARIES_PATH;
-    private final baseRequest baseRequest = new baseRequest(ADD_BENEFICIARY_BASE_PATH);
+    private final baseRequest baseRequest = new baseRequest();
     private final validatePayload validatePayload = new validatePayload(baseRequest);
     private final validateResponse validateResponse = new validateResponse(baseRequest);
 
@@ -46,7 +46,10 @@ public class Beneficiaries extends baseMethod {
     }
 
     //-----------------------------------------------  Change BasePath  -----------------------------------------------
-
+    public void updateBasePathForAddBeneficiaries() {
+        baseRequest.setBasePath(ADD_BENEFICIARY_BASE_PATH);
+        baseRequest.setPOST_BODY(GET_ADD_BENEFICIARIES_RESPONSE);
+    }
     public void updateBasePathForUpdateBeneficiaries() {
         baseRequest.setBasePath(UPDATE_BENEFICIARY_BASE_PATH);
         baseRequest.setPOST_BODY(GET_UPDATE_BENEFICIARIES_RESPONSE);
