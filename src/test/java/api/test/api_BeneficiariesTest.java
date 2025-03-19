@@ -28,7 +28,7 @@ public class api_BeneficiariesTest extends baseMethod {
     @BeforeMethod()
     //Reset data before every test
     public void resetData (Method m) throws IOException, ParseException {
-        Beneficiaries.setPayloadWithValidData();
+        Beneficiaries.setPayloadForAddBeneficiariesWithValidData();
         setTestName(m.getName());
     }
 
@@ -88,7 +88,7 @@ public class api_BeneficiariesTest extends baseMethod {
     @Test(priority = 6, testName = "Verify that Adding Beneficiaries can be with Authorized Access")
     public void checkAddBeneficiariesWithAuthorizedAccess() throws IOException, ParseException {
         Beneficiaries.authorisedWithValidToken();
-        Beneficiaries.setPayloadWithValidData();
+        Beneficiaries.setPayloadForAddBeneficiariesWithValidData();
         Beneficiaries.updateBasePathForAddBeneficiaries();
         Beneficiaries.invokeBeneficiariesPOSTApi();
         Beneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
@@ -99,11 +99,13 @@ public class api_BeneficiariesTest extends baseMethod {
     // ---------------------------- Update Beneficiaries -----------------------------------------------------
     @Test(priority = 7, testName = "Verify that the Transfer Payee List Retrieve with Authorized Access")
     public void checkGetTransferPayeeListWithAuthorizedAccess() throws IOException, ParseException {
-        getTransferPayeeList.authorisedWithValidToken();
-        getTransferPayeeList.setPayloadWithValidData();
-        getTransferPayeeList.invokeGetTransferPayeeListApi();
-        getTransferPayeeList.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
-        getTransferPayeeList.extractBeneficiaryIDForAccount(VALID_ACCOUNT_NAME);
+        Beneficiaries.authorisedWithValidToken();
+        Beneficiaries.setPayloadForGetBeneficiaryListWithPageLimit();
+        Beneficiaries.setPayloadForGetBeneficiaryListWithPageNumber();
+        Beneficiaries.updateBasePathForGetBeneficiariesList();
+        Beneficiaries.invokeBeneficiariesPOSTApi();
+        Beneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
+        Beneficiaries.extractBeneficiaryIDFomAddedName();
 
     }
     @Test(priority = 8, testName = "Verify that the Beneficiaries can be Updated with Authorized Access", dependsOnMethods = "checkGetTransferPayeeListWithAuthorizedAccess")
