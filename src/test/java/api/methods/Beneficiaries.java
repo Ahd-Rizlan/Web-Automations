@@ -9,6 +9,7 @@ import org.json.simple.parser.ParseException;
 import java.io.IOException;
 
 import static api.utils.ConstantApiUtils.*;
+import static api.utils.ConstantApiUtils.GET_BENEFICIARIES_BY_TRAN_TYPE_PATH;
 import static utils.CommonUtils.USER_DIR;
 import static utils.DataStoreReadWriteApi.getAPIDetails;
 
@@ -18,6 +19,7 @@ public class Beneficiaries extends baseMethod {
     private final String UPDATE_BENEFICIARY_BASE_PATH = GET_UPDATE_BENEFICIARIES_PATH;
     private final String DELETE_BENEFICIARY_BASE_PATH = GET_DELETE_BENEFICIARIES_PATH;
     public final String GET_BENEFICIARIES_LIST_PATH = GET_TRANSFER_PAYEE_LIST_PATH;
+    public final String GET_BENEFICIARIES_BY_TRANSACTION_TYPE_PATH = GET_BENEFICIARIES_BY_TRAN_TYPE_PATH;
 
 
     private final baseRequest baseRequest = new baseRequest();
@@ -30,6 +32,7 @@ public class Beneficiaries extends baseMethod {
     private final String PATH_TO_UPDATE_BENEFICIARIES_PAYLOAD = GET_UPDATE_BENEFICIARIES_BODY;
     private final String PATH_TO_DELETE_BENEFICIARIES_PAYLOAD = GET_DELETE_BENEFICIARIES_BODY;
     private final String PATH_TO_GET_BENEFICIARIES_LIST_PAYLOAD = GET_TRANSFER_PAYEE_lIST_BODY;
+    private final String PATH_TO_GET_BENEFICIARIES_BY_TRANSACTION_TYPE_PAYLOAD =GET_BENEFICIARIES_BY_TRAN_TYPE_BODY;
 
 
     private static final String INVALID_ACCOUNT_TYPE_RESPONSE = USER_DIR + GET_ADD_BENEFICIARIES_WITH_INCORRECT_ACCOUNT_TYPE_RESPONSE;
@@ -40,8 +43,9 @@ public class Beneficiaries extends baseMethod {
     private static final String UPDATE_BENEFICIARY_RESPONSE = USER_DIR + GET_UPDATE_BENEFICIARIES_RESPONSE;
     private static final String DELETE_BENEFICIARY_RESPONSE = USER_DIR + GET_DELETE_BENEFICIARIES_RESPONSE;
     private static final String GET_BENEFICIARIES_LIST_RESPONSE = USER_DIR + GET_TRANSFER_PAYEE_lIST_RESPONSE;
-
+    private static final String GET_BENEFICIARIES_BY_TRANSACTION_TYPE_RESPONSE = USER_DIR + GET_BENEFICIARIES_BY_TRAN_TYPE_RESPONSE;
     private String BENEFICIARY_ID;
+    private String[] FILES_TO_IGNORE;
     //-----------------------------------------------  Token SETUP  -----------------------------------------------
 
     public void authorisedWithValidToken() {
@@ -53,10 +57,6 @@ public class Beneficiaries extends baseMethod {
     }
 
     //-----------------------------------------------  Change BasePath  -----------------------------------------------
-    public void updateBasePathForGetBeneficiariesList() {
-        baseRequest.setBasePath(GET_BENEFICIARIES_LIST_PATH);
-        baseRequest.setPOST_BODY(GET_TRANSFER_PAYEE_lIST_RESPONSE);
-    }
 
     public void updateBasePathForAddBeneficiaries() {
         baseRequest.setBasePath(ADD_BENEFICIARY_BASE_PATH);
@@ -71,6 +71,14 @@ public class Beneficiaries extends baseMethod {
     public void updateBasePathForDeleteBeneficiaries() {
         baseRequest.setBasePath(DELETE_BENEFICIARY_BASE_PATH);
         baseRequest.setPOST_BODY(GET_DELETE_BENEFICIARIES_RESPONSE);
+    }
+    public void updateBasePathForGetBeneficiariesList() {
+        baseRequest.setBasePath(GET_BENEFICIARIES_LIST_PATH);
+        baseRequest.setPOST_BODY(GET_TRANSFER_PAYEE_lIST_RESPONSE);
+    }
+    public void updateBasePathForGetBeneficiariesByTransactionType() {
+        baseRequest.setBasePath(GET_BENEFICIARIES_BY_TRANSACTION_TYPE_PATH);
+        baseRequest.setPOST_BODY(GET_BENEFICIARIES_BY_TRAN_TYPE_RESPONSE);
     }
 
     //-----------------------------------------------  SETUP PAYLOAD  -----------------------------------------------
@@ -109,11 +117,13 @@ public class Beneficiaries extends baseMethod {
         validatePayload.setPayloadWithValidData(PATH_TO_DELETE_BENEFICIARIES_PAYLOAD, "deleteBeneficiaries", "beneficiariID", BENEFICIARY_ID);
     }
 
-    public void setPayloadForGetBeneficiaryListWithPageLimit() throws IOException, ParseException {
+    public void setPayloadForGetBeneficiaryList() throws IOException, ParseException {
         validatePayload.setPayloadWithInValidData(PATH_TO_GET_BENEFICIARIES_LIST_PAYLOAD, "getTransferPayeeList", "pageLimit", PAGE_LIMIT_SIX_HUNDRED);
-    }
-    public void setPayloadForGetBeneficiaryListWithPageNumber() throws IOException, ParseException {
         validatePayload.setPayloadWithInValidData(PATH_TO_GET_BENEFICIARIES_LIST_PAYLOAD, "getTransferPayeeList", "pageNo", PAGE_NO_ONE);
+
+    }
+    public void setPayloadForGetBeneficiaryByTransactionType() throws IOException, ParseException {
+        validatePayload.setPayloadWithInValidData(PATH_TO_GET_BENEFICIARIES_BY_TRANSACTION_TYPE_PAYLOAD, "beneficiariesByTranType", "tranType", CORRECT_TRAN_TYPE_VALUE);
     }
     //-----------------------------------------------  INVOKE METHODS  -----------------------------------------------
 
@@ -176,6 +186,11 @@ public class Beneficiaries extends baseMethod {
         validateResponse.validateResponse(DELETE_BENEFICIARY_RESPONSE);
     }
     public void validateResponsePayloadForGetBeneficiaryList() {
-        validateResponse.validateResponse(GET_BENEFICIARIES_LIST_PATH);
+        FILES_TO_IGNORE = new String[]{"recordCount","beneficiaryList","pageLimit","pageNo"};
+        validateResponse.validateResponseWithExcludedDataFields(GET_BENEFICIARIES_LIST_RESPONSE,FILES_TO_IGNORE);
+    }
+    public void validateResponsePayloadForGetBeneficiaryByTransactionType() {
+        FILES_TO_IGNORE = new String[]{"recordCount","beneficiaryListDetails"};
+        validateResponse.validateResponseWithExcludedDataFields(GET_BENEFICIARIES_BY_TRANSACTION_TYPE_RESPONSE,FILES_TO_IGNORE);
     }
 }

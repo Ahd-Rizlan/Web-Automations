@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 
 
-
 public class api_BeneficiariesTest extends baseMethod {
     File schema = new File(System.getProperty("user.dir") + ConstantApiUtils.PATH_TO_SCHEMA_FOLDER + "Category_Schema.json");
     public Beneficiaries Beneficiaries;
@@ -26,13 +25,13 @@ public class api_BeneficiariesTest extends baseMethod {
 
     @BeforeMethod()
     //Reset data before every test
-    public void resetData (Method m) throws IOException, ParseException {
+    public void resetData(Method m) throws IOException, ParseException {
         Beneficiaries.setPayloadForAddBeneficiariesWithValidData();
         setTestName(m.getName());
     }
 
     //Negative cases
-    @Test(priority = 1 , testName="Verify that CRUD Operations for Beneficiaries cannot be with Unauthorized Access")
+    @Test(priority = 1, testName = "Verify that CRUD Operations for Beneficiaries cannot be with Unauthorized Access")
     //For unauthorized access
     public void checkAddBeneficiariesUnauthorizedAccess() {
         Beneficiaries.authorisedWithInValidToken();
@@ -99,14 +98,15 @@ public class api_BeneficiariesTest extends baseMethod {
     @Test(priority = 7, testName = "Verify that the Transfer Payee List Retrieve with Authorized Access")
     public void checkGetTransferPayeeListWithAuthorizedAccess() throws IOException, ParseException {
         Beneficiaries.authorisedWithValidToken();
-        Beneficiaries.setPayloadForGetBeneficiaryListWithPageLimit();
-        Beneficiaries.setPayloadForGetBeneficiaryListWithPageNumber();
+        Beneficiaries.setPayloadForGetBeneficiaryList();
         Beneficiaries.updateBasePathForGetBeneficiariesList();
         Beneficiaries.invokeBeneficiariesPOSTApi();
         Beneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
         Beneficiaries.extractBeneficiaryIDFomAddedName();
+        Beneficiaries.validateResponsePayloadForGetBeneficiaryList();
 
     }
+
     @Test(priority = 8, testName = "Verify that the Beneficiaries can be Updated with Authorized Access", dependsOnMethods = "checkGetTransferPayeeListWithAuthorizedAccess")
     public void checkUpdateBeneficiariesWithAuthorizedAccess() throws IOException, ParseException {
         Beneficiaries.authorisedWithValidToken();
@@ -119,7 +119,7 @@ public class api_BeneficiariesTest extends baseMethod {
     }
 
     // ---------------------------- Delete Beneficiaries -----------------------------------------------------
-    @Test(priority = 9,testName = "Verify that the Beneficiaries can be deleted with Authorized Access",dependsOnMethods = "checkGetTransferPayeeListWithAuthorizedAccess")
+    @Test(priority = 9, testName = "Verify that the Beneficiaries can be deleted with Authorized Access", dependsOnMethods = "checkGetTransferPayeeListWithAuthorizedAccess")
     public void checkDeleteBeneficiariesWithAuthorizedAccess() throws IOException, ParseException {
         Beneficiaries.authorisedWithValidToken();
         Beneficiaries.setPayloadForDeleteBeneficiaryForWithBeneficiaryId();
@@ -128,5 +128,16 @@ public class api_BeneficiariesTest extends baseMethod {
         Beneficiaries.setResponseWithDeletedBeneficiaryId();
         Beneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
         Beneficiaries.validateResponsePayloadForDeleteBeneficiary();
+    }
+
+    @Test(priority = 10, testName = "Verify that Beneficiaries for each transaction type can be accessed with Authorized Access")
+    //For happy path
+    public void checkBeneficiariesByTranTypeWithCorrectTranType() throws IOException, ParseException {
+        Beneficiaries.authorisedWithValidToken();
+        Beneficiaries.setPayloadForGetBeneficiaryByTransactionType();
+        Beneficiaries.updateBasePathForGetBeneficiariesByTransactionType();
+        Beneficiaries.invokeBeneficiariesPOSTApi();
+        Beneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
+        Beneficiaries.validateResponsePayloadForGetBeneficiaryByTransactionType();
     }
 }
