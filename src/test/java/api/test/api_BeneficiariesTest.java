@@ -2,7 +2,6 @@ package api.test;
 
 import api.methods.Beneficiaries;
 import api.methods.baseMethod;
-import api.methods.getTransferPayeeList;
 import api.utils.ConstantApiUtils;
 import org.json.simple.parser.ParseException;
 import org.testng.annotations.BeforeClass;
