@@ -13,16 +13,16 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
-import static api.utils.ConstantApiUtils.VALID_ACCOUNT_NAME;
+
 
 public class api_BeneficiariesTest extends baseMethod {
     File schema = new File(System.getProperty("user.dir") + ConstantApiUtils.PATH_TO_SCHEMA_FOLDER + "Category_Schema.json");
     public Beneficiaries Beneficiaries;
-    public getTransferPayeeList getTransferPayeeList;
+
     @BeforeClass()
     public void setUp() {
         Beneficiaries = new Beneficiaries();
-        getTransferPayeeList = new getTransferPayeeList();
+
     }
 
     @BeforeMethod()
