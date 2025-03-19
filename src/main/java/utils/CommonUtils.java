@@ -4,12 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.*;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -210,6 +205,16 @@ public class CommonUtils extends Drivers {
     }
 
     /**
+     * Function to check if the text contains numeric characters including negative values
+     *
+     * @param text - text content to validate the characters
+     * @return boolean - text content availability
+     */
+    public static boolean containsNumericCharactersWithNegativeValues(String text) {
+        return text.matches("^-?\\d{1,3}(,\\d{3})*(\\.\\d+)?$");
+    }
+
+    /**
      * Function to check if the text contains alphabetic and numeric characters
      *
      * @param text - text content to validate the characters
@@ -228,6 +233,47 @@ public class CommonUtils extends Drivers {
     public static boolean containsAlphNumAndSpecialCharacters(String text) {
         return text.matches("^[a-zA-Z0-9!@#$%^&*()_+{}\\[\\]:;<>,.?/~\\\\-]+$");
     }
+    /**
+     * Function to remove space from string
+     *
+     * @param text - text to remove space characters
+     * @return text - text after removing space characters
+     */
+    public static String removeSpaceCharacters(String text) {
+        return text.replaceAll("\\s", "");
+    }
+
+    /**
+     * Function to compare two arraylist with or without the order
+     *
+     * @param list1 - List one to compare
+     * @param list2 - List two to compare
+     * @param ignoreOrder - True if ignore to check the same order between two lists else false
+     * @return - boolean value based on success or failure
+     */
+    public static boolean compareTwoArraylist(List<String> list1, List<String> list2, boolean ignoreOrder) {
+        if (ignoreOrder) {
+            Set<?> set1 = new HashSet<>(list1);
+            Set<?> set2 = new HashSet<>(list2);
+            if (set1.equals(set2)) {
+                System.out.println(" Lists have the same elements (ignoring order)");
+                return true;
+            } else {
+                System.out.println(" Lists do not have the same elements (ignoring order)");
+                return false;
+            }
+        } else {
+            if (list1.equals(list2)) {
+                System.out.println("Lists are exactly equal (including order)");
+                return true;
+            } else {
+                System.out.println("Lists are NOT exactly equal (including order)");
+                return false;
+            }
+        }
+
+    }
+
 
     public enum sortType {DATE, NUMBER, STRING, SELECT}
 

@@ -5,8 +5,18 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import ru.yandex.qatools.ashot.AShot;
+import ru.yandex.qatools.ashot.Screenshot;
+import ru.yandex.qatools.ashot.comparison.ImageDiff;
+import ru.yandex.qatools.ashot.comparison.ImageDiffer;
+import ru.yandex.qatools.ashot.coordinates.WebDriverCoordsProvider;
 import utils.report.helpers;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public abstract class BasePage extends helpers {
@@ -201,6 +211,28 @@ public abstract class BasePage extends helpers {
     }
 
     /**
+     * Waits until an element is present in the DOM.
+     * <p>
+     * This method waits for the element identified by the provided locator to be present in the DOM.
+     *
+     * @param locator the locator used to find the element
+     * @param waitTime dynamic wait time based on element
+     * @return true if the element is present, false if an error occurs or the element is not found
+     * @true -If the element is found
+     * @false -If the element is not found
+     */
+    public boolean waitForElementPresence(By locator,int waitTime) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, waitTime);
+            wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+            return true;
+        } catch (Exception e) {
+            System.err.println("Error waiting for element presence: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
      * Checks if an element is present in the DOM, identified by the provided locator.
      * <p>
      * This method waits for the element to be present in the DOM for up to 20 seconds.
@@ -292,6 +324,24 @@ public abstract class BasePage extends helpers {
     }
 
     /**
+     * Checks if a specific attribute is present on a WebElement.
+     * <p>
+     * This method retrieves the value of the specified attribute from the WebElement.
+     *
+     * @param webElement the WebElement to check for the attribute
+     * @param attribute  the name of the attribute to retrive value
+     * @return value the attribute contains
+     */
+    public String getAttributetext(WebElement webElement, String attribute) {
+        try {
+            return webElement.getAttribute(attribute);
+        } catch (Exception e) {
+            System.err.println("Error checking attribute presence: " + e.getMessage());
+            return e.getMessage();
+        }
+    }
+
+    /**
      * Checks if an element is invisible, identified by the provided By locator.
      * <p>
      * This method waits for the element to become invisible for up to 10 seconds.
@@ -373,6 +423,27 @@ public abstract class BasePage extends helpers {
     }
 
     /**
+     * Waits for the element to become invisible.
+     * <p>
+     * This method waits for the loading locator, identified by a specific XPath, to become clickable
+     *
+     *  @param Locator the Locator to become invisible
+     *  @param Timeout the wait time in seconds
+     *
+     */
+    public void waitForElementToBeClickable(By Locator, long Timeout) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, Timeout);
+            wait.until(ExpectedConditions.elementToBeClickable(Locator));
+            addToReport("Element "+Locator +" is clickable", Status.PASS,false);
+
+        } catch (Exception e) {
+            addToReport("Element "+Locator +" is not clickable after "+Timeout +" seconds", Status.FAIL);
+            System.err.println("Loading indicator is still visible: " + e.getMessage());
+        }
+    }
+
+    /**
      * Waits for the loading dropdown to become invisible.
      * <p>
      * This method waits for the loading dropdown, identified by a specific XPath, to become invisible
@@ -417,6 +488,18 @@ public abstract class BasePage extends helpers {
         try {
             JavascriptExecutor js = (JavascriptExecutor) driver;
             js.executeScript("arguments[0].scrollIntoView();", webElement);
+            addToReport("Successfully scrolled to the WebElement", Status.PASS);
+        } catch (Exception e) {
+            addToReport("Error scrolling to WebElement", Status.FAIL);
+            System.err.println("Error scrolling to WebElement: " + e.getMessage());
+        }
+    }
+
+    public void scrollToWebElement(By locator) {
+        try {
+            WebElement element = driver.findElement(locator);
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            js.executeScript("arguments[0].scrollIntoView(true);", element);
             addToReport("Successfully scrolled to the WebElement", Status.PASS);
         } catch (Exception e) {
             addToReport("Error scrolling to WebElement", Status.FAIL);
@@ -524,6 +607,76 @@ public abstract class BasePage extends helpers {
         } catch (Exception e) {
             System.err.println("Error removing the last character: " + e.getMessage());
         }
+    }
+
+    /**
+     * Compares two images where one is extracted based on by locator and the other is provided by the path
+     * <p>
+     * This method also takes in threshold value as argument
+     *
+     * @param byLocator the By locator used to identify the input element
+     * @param pathOfExpectedImage the path of the expected image
+     * @param threshold threshold value to compare provided in pixels
+     * @return true if the images are same or differences between the images is within provided threshold, false if the images are different
+     */
+    public boolean compareImage(By byLocator, String pathOfExpectedImage,int threshold) throws IOException {
+
+        System.out.println("Start of image verification");
+
+        //Obtain the element
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebElement webElement = wait.until(ExpectedConditions.elementToBeClickable(byLocator));
+        //Based on web element retrieved the image
+        Screenshot screenshot = new AShot()
+                .coordsProvider(new WebDriverCoordsProvider())
+                .takeScreenshot(driver, webElement);
+
+        //Read images
+        BufferedImage actualImage = removeWhiteBackground(screenshot.getImage());
+        BufferedImage expectedImage = ImageIO.read(new File(pathOfExpectedImage));
+
+        //Find differences between images
+        ImageDiffer imgDiff = new ImageDiffer();
+        ImageDiff diff = imgDiff.makeDiff(actualImage, expectedImage);
+        int difSize = diff.getDiffSize();
+        System.out.println("End of image verification");
+        if (difSize < threshold) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Compares two images where one is extracted based on by locator and the other is provided by the path
+     *
+     * @param image Buffered image
+     * @return image after removing the white background
+     */
+    public static BufferedImage removeWhiteBackground(BufferedImage image) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                Color color = new Color(image.getRGB(x, y), true);
+
+                // If pixel is near white, make it fully transparent
+                if (color.getRed() > 230 && color.getGreen() > 230 && color.getBlue() > 230) {
+                    image.setRGB(x, y, new Color(255, 255, 255, 0).getRGB()); // Transparent
+                }
+            }
+        }
+        return image;
+    }
+
+    /**
+     *
+     * This method is used to get the current URL of the page
+     *
+     */
+    public String getCurrentURL() {
+        return driver.getCurrentUrl();
     }
 
 }

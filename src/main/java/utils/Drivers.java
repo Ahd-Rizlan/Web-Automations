@@ -53,7 +53,11 @@ public class Drivers{
                 case "Chrome":
 //                    ChromeDriverManager.chromedriver().setup();
                     System.setProperty("webdriver.chrome.driver", chromeDriverPath);
-                    driver = new ChromeDriver();
+//                    driver = new ChromeDriver();
+                    ChromeOptions chromeOptionss = new ChromeOptions();
+                    chromeOptionss.addArguments("--no-sandbox");
+                    chromeOptionss.addArguments("--disable-dev-shm-usage");
+                    driver = new ChromeDriver(chromeOptionss);
                     driver.manage().window().maximize();
                     break;
 
