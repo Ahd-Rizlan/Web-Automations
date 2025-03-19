@@ -1,6 +1,6 @@
 package api.test;
 
-import api.methods.addBeneficiaries;
+
 import api.methods.baseMethod;
 import api.methods.validatePayment;
 import api.utils.ConstantApiUtils;

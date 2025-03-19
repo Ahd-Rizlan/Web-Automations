@@ -19,8 +19,9 @@ public class ConstantApiUtils {
     //--------------header values--------------------------------
     public static final String TXT_AUTHORIZATION = "Authorization";
     public static final String TXT_AUTHORIZATION_INVALID_VAL = "Bearer eyJ4NXQiOiJOMkpqTWpOaU0yRXhZalJrTnpaalptWTFZVEF4Tm1GbE5qZzRPV1UxWVdRMll6YzFObVk1TlEiLCJraWQiOiJNREpsTmpJeE4yRTFPR1psT0dWbU1HUXhPVEZsTXpCbU5tRmpaalEwWTJZd09HWTBOMkkwWXpFNFl6WmpOalJoWW1SbU1tUTBPRGRpTkRoak1HRXdNQV9SUzI1NiIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJ2MTF1c2VyNSIsImF1dCI6IkFQUExJQ0FUSU9OX1VTRVIiLCJhdWQiOiJUdnAxUFFNRGp5WnBjQmVia1U1OW5iWm0yUDBhIiwibmJmIjoxNzE2Mjg4OTQ0LCJhenAiOiJUdnAxUFFNRGp5WnBjQmVia1U1OW5iWm0yUDBhIiwic2NvcGUiOiJ2aXNod2Ffd2ViX2FwcCIsImlzcyI6Imh0dHBzOlwvXC9hcGlzaXQuc2FtcGF0aC5pbnQ6OTQ0M1wvb2F1dGgyXC90b2tlbiIsImdyb3VwcyI6WyJbSW50ZXJuYWxcL2V2ZXJ5b25lIiwiT01OSVwvc2FtcGF0aF9yZXRhaWxfdXNlcl0iXSwiZXhwIjoxNzE2MjkyNTQ0LCJpYXQiOjE3MTYyODg5NDQsImp0aSI6IjYwYWJmMWU1LTJhNjAtNGRhOS1iOWRhLWRmYjZiZTcxMWNlNSJ9.dI8y0QhEYyNX7GoQcfYmFyVrnfwnyrzeXRJS6A3IMN_mbeXsS6T9v2tf22w0jeviomQwCpCboQXpUHhUDageYwag8cTTEDVbkf6b2DBmeieEqPaFlBANEIQQt_tEBnSow33RqR6Yrex9Avu9cBFEEmHcctlnh2_O_67n-h5U96EPHGycdMcledoP-wX7i8Rg6pkZmdBZUN_0hgskbtMh9Tybe9gNjF-43jmbnHIS-qevM4nHukj1UjWJDtCAWOIKnEyIILd7MXhYruV5JA0PdZV00uSj28bHCbkmyPyz0pn8jm743AdA89GIXDIuaX5oayUMUT6l4tpoTsU4aKuwxjhx";
+    public static final String TXT_AUTHORIZATION_VALID_VAL = config.getProperty("accessToken");
 
-    public static final String  TXT_CONTENT_TYPE = "Content-Type";
+    public static final String TXT_CONTENT_TYPE = "Content-Type";
 
     public static final String TXT_APPLICATION_JSON = "application/json";
     public static final String TXT_APPLICATION_URL_ENCODE = "application/x-www-form-urlencoded";
@@ -36,7 +37,7 @@ public class ConstantApiUtils {
     public static final String TXT_X_REQUEST_ID_VALUE_ONE_TO_SIX = "123456";
     public static final String TXT_COOKIE = "Cookie";
     public static final String AUTHORIZATION = "Authorization";
-    public static final String VALID_TOKEN =  "Bearer"+config.getProperty("accessToken");
+    public static final String VALID_TOKEN = "Bearer" + config.getProperty("accessToken");
     public static final String TXT_IDENTITY_TYPE = "IdentityType";
     public static final String TXT_IDENTITY_VALUE = "IdentityValue";
     public static final String TXT_SERVICE_NAME = "ServiceName";
@@ -53,6 +54,7 @@ public class ConstantApiUtils {
     //------------------------folder paths--------------------
     public static final String PATH_TO_SCHEMA_FOLDER = "/src/test/java/api/utils/Schemas/";
     public static final String PATH_TO_PAYLOAD_FOLDER = System.getProperty("user.dir").concat("/src/test/java/api/utils/payloads/");
+//    public static final String USER_DIR = System.getProperty("user.dir");
 
     //-------------------------path params ---------------------------------------
     public static final String GET_PAYMENTS_BY_ID_PATH = "/apis/payments/web/getPaymentsByID/1.0.0";
@@ -105,7 +107,7 @@ public class ConstantApiUtils {
     public static final String DASHBOARD_CREDIT_CARD_DETAILS_FOR_SVR_PATH = "/apis/card/web/dashboardCreditCardDetailsforSVR/1.0.0";
     public static final String DASHBOARD_WEB_CARD_DETAILS_FOR_SVR_PATH = "/apis/card/web/dashboardWebCardDetailsforSVR/1.0.0";
     public static final String WITHDRAWAL_MOBILE_CASH_RESPONSE = "//src//test//java//api//utils//response//withdrawMobileCash.json";
-    public static final String WITHDRAWAL_MOBILE_CASH_BODY =  "//src//test//java//api//utils//payloads//withdrawMobileCashBody.json";
+    public static final String WITHDRAWAL_MOBILE_CASH_BODY = "//src//test//java//api//utils//payloads//withdrawMobileCashBody.json";
     public static final String REVERSE_MOBILE_CASH_RESPONSE = "//src//test//java//api//utils//response//reverseMobileCash.json";
     public static final String CARD_COUNT_SUMMARY_RESPONSE = "//src//test//java//api//utils//response//cardCountSummery.json";
     public static final String CARD_COUNT_SUMMARY_FOR_INCORRECT_INITIATED_SERNO_RESPONSE = "//src//test//java//api//utils//response//cardCountSummeryForIncorrectInitiatedSerno.json";
@@ -126,7 +128,7 @@ public class ConstantApiUtils {
     public static final String DASHBOARD_WEB_CARD_DETAILS_FOR_SVR_FOR_INCORRECT_CHAINAUTH_RESPONSE = "//src//test//java//api//utils//response//dashboardWebCardDetailsForSVRForIncorrectChainAuth.json";
     public static final String DASHBOARD_WEB_CARD_DETAILS_FOR_SVR_FOR_INCORRECT_DEVICEID_RESPONSE = "//src//test//java//api//utils//response//dashboardWebCardDetailsForSVRForIncorrectDeviceId.json";
 
-    public static final String REVERSE_MOBILE_CASH_BODY =  "//src//test//java//api//utils//payloads//reverseMobileCashBody.json";
+    public static final String REVERSE_MOBILE_CASH_BODY = "//src//test//java//api//utils//payloads//reverseMobileCashBody.json";
     public static final String CASA_ACCOUNT_RESPONSE = "//src//test//java//api//utils//response//casaAccount.json";
     public static final String CASA_GET_PAYMENTS_BY_ID_RESPONSE = "//src//test//java//api//utils//response//getPaymentsByID.json";
     public static final String CREDIT_CARD_DETAILS_RESPONSE = "//src//test//java//api//utils//response//creditCardDetails.json";
@@ -136,12 +138,12 @@ public class ConstantApiUtils {
     public static final String DO_TRANSFER_FOR_VISHWA_BODY = "//src//test//java//api//utils//payloads//doTransferForVishwaBody.json";
 
     public static final String FAV_BENEFICIARIES_RESPONSE = "//src//test//java//api//utils//response//favBeneficiaries.json";
-    public static final String FAV_BENEFICIARIES_RESPONSE_FOR_EMPTY_BENE= "//src//test//java//api//utils//response//favBeneficiariesWithEmptyBene.json";
+    public static final String FAV_BENEFICIARIES_RESPONSE_FOR_EMPTY_BENE = "//src//test//java//api//utils//response//favBeneficiariesWithEmptyBene.json";
     public static final String UPDATE_PAYMENT_TEMPLATE_RESPONSE = "//src//test//java//api//utils//response//updatePaymentTemplate.json";
     public static final String UPDATE_PAYMENT_TEMPLATE_BODY = "//src//test//java//api//utils//payloads//updatePaymentTemplateBody.json";
     public static final String DELETE_PAYMENT_TEMPLATE_RESPONSE = "//src//test//java//api//utils//response//deletePaymentTemplate.json";
     public static final String DELETE_PAYMENT_TEMPLATE_BODY = "//src//test//java//api//utils//payloads//deletePaymentTemplateBody.json";
-    public static final String EMPTY_FAV_BENEFICIARIES_BODY= "//src//test//java//api//utils//payloads//favBeneficiariesBodyWithNoBeneficiaries.json";
+    public static final String EMPTY_FAV_BENEFICIARIES_BODY = "//src//test//java//api//utils//payloads//favBeneficiariesBodyWithNoBeneficiaries.json";
     public static final String FAV_BENEFICIARIES_BODY = "//src//test//java//api//utils//payloads//favBeneficiariesBody.json";
     public static final String FAV_BILLERS_BODY = "//src//test//java//api//utils//payloads//favBillersBody.json";
 
