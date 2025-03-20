@@ -8,11 +8,14 @@
   "Status": null,
   "OrginalStatus": null,
   "Expiry": null,
-  "Code": 88,
-  "SubCode": 5,
-  "Message": "Long Time Span",
-  "MessageCustomer": "Something went wrong while processing your request. Please try again later.",
-  "ChainSerno": 0.0,
-  "ChainAuth": null,
-  "SingleUseChainDataList": []
+  "Code": 0,
+  "SubCode": 0,
+  "Message": null,
+  "MessageCustomer": null,
+  "RequestID": "0050569CE44C.20250320100737.3ca69d1bd7bb4b7fb12f8361f1c059a0.svr",
+  "ChainSerno": 442987.0,
+  "ChainAuth": "30BF6C9A3D712464E06400144FF82C51",
+  "SingleUseChainDataList": [
+
+  ]
 }

@@ -120,4 +120,8 @@ public class baseRequest {
         System.out.println("API Response : " + response.prettyPrint());
         baseMethod.printResponseLogInReport(response);
     }
+
+
+    //TODO add Empty Payload
+    //Add Payloads With Quaries
 }
