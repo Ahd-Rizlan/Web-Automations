@@ -255,6 +255,7 @@ public class ConstantApiUtils {
     public static final String EMPTY_ACCOUNT_NAME_VALUE = "";
     public static final String VALID_ACCOUNT_NAME = "Rizlan";
     public static final String VALID_ACCOUNT_NICK_NAME = "Rizlan";
+    public static final String TRUE_VALUE = "true";
 
     public static final String INCORRECT_ACCOUNT_NUMBER_VALUE = "123";
     public static final String CORRECT_ACCOUNT_NUMBER_VALUE = "1207557890051";

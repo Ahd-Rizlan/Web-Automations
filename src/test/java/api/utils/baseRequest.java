@@ -17,6 +17,7 @@ public class baseRequest {
 
     private  Response response;
     private  String POST_BODY;
+    private String Response_Body;
 
     public  File jsonBody;
     private String basePath;
@@ -47,6 +48,15 @@ public class baseRequest {
 
     public void setBasePath(String basePath) {
         this.basePath = basePath;
+    }
+
+
+    public void setResponse_Body(String ResponseBody) {
+        Response_Body =  ResponseBody;
+    }
+
+    public String getResponse_Body() {
+        return Response_Body;
     }
 
     public String setPOST_BODY(String postBody) {

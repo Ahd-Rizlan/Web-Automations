@@ -1,10 +1,1 @@
-{
-  "updateFavouritePayeeListResponse": {
-    "responseHeader": {
-      "statusCode": "false",
-      "statusDescription": "FAIL",
-      "errorCode": "404",
-      "errorDescription": "HTTP/1.1 404 Not Found"
-    }
-  }
-}
+{"updateFavouritePayeeListResponse":{"returnCode":"202 ACCEPTED","responseHeader":{"statusDescription":"BeneficiaryID :: 571691 record updated.","statusCode":true}}}
