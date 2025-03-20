@@ -22,6 +22,7 @@ public class Beneficiaries extends baseMethod {
     public final String GET_BENEFICIARIES_BY_TRANSACTION_TYPE_PATH = GET_BENEFICIARIES_BY_TRAN_TYPE_PATH;
     private final String UPDATE_FAVOURITE_PAYEE_BASE_PATH =GET_UPDATE_FAVOURITE_PAYEE_PATH;
 
+    private final String GET_FAVOURITE_PAYEE_LIST_BASE_PATH =GET_FAV_BENEFICIARIES_PATH;
 
 
     private final baseRequest baseRequest = new baseRequest();
@@ -37,7 +38,7 @@ public class Beneficiaries extends baseMethod {
     private final String PATH_TO_GET_BENEFICIARIES_LIST_PAYLOAD = GET_TRANSFER_PAYEE_lIST_BODY;
     private final String PATH_TO_GET_BENEFICIARIES_BY_TRANSACTION_TYPE_PAYLOAD =GET_BENEFICIARIES_BY_TRAN_TYPE_BODY;
     private final String PATH_TO_UPDATE_FAVOURITE_PAYEE_PAYLOAD = GET_UPDATE_FAVOURITE_PAYEE_BODY;
-
+    private final String PATH_TO_GET_FAVOURITE_PAYEE_LIST_PAYLOAD = FAV_BENEFICIARIES_BODY;
 
     //-----------------------------------------------  RESPONSE SETUP  -----------------------------------------------
 
@@ -50,8 +51,8 @@ public class Beneficiaries extends baseMethod {
     private static final String DELETE_BENEFICIARY_RESPONSE = USER_DIR + GET_DELETE_BENEFICIARIES_RESPONSE;
     private static final String GET_BENEFICIARIES_LIST_RESPONSE = USER_DIR + GET_TRANSFER_PAYEE_lIST_RESPONSE;
     private static final String GET_BENEFICIARIES_BY_TRANSACTION_TYPE_RESPONSE = USER_DIR + GET_BENEFICIARIES_BY_TRAN_TYPE_RESPONSE;
-    private static final String UPDATE_FAVOURITE_PAYEE_BASE_RESPONSE = USER_DIR + GET_UPDATE_FAVOURITE_PAYEE_RESPONSE;
-
+    private static final String UPDATE_FAVOURITE_PAYEE_RESPONSE = USER_DIR + GET_UPDATE_FAVOURITE_PAYEE_RESPONSE;
+    private static final String GET_FAVOURITE_PAYEE_LIST_RESPONSE =  USER_DIR + FAV_BENEFICIARIES_RESPONSE;
     private String BENEFICIARY_ID;
     private String[] FILES_TO_IGNORE;
     private Map<String,String> DataTobeAdded;
@@ -98,7 +99,13 @@ public class Beneficiaries extends baseMethod {
     }
     public void updateBasePathForUpdateFavouritePayee() {
         baseRequest.setBasePath(UPDATE_FAVOURITE_PAYEE_BASE_PATH);
-        baseRequest.setResponse_Body(UPDATE_FAVOURITE_PAYEE_BASE_RESPONSE);
+        baseRequest.setResponse_Body(UPDATE_FAVOURITE_PAYEE_RESPONSE);
+
+    }
+
+    public void updateBasePathForGetFavouritePayeeList() {
+        baseRequest.setBasePath(GET_FAV_BENEFICIARIES_PATH);
+        baseRequest.setResponse_Body(GET_FAVOURITE_PAYEE_LIST_RESPONSE);
 
     }
     //-----------------------------------------------  SETUP PAYLOAD  -----------------------------------------------
@@ -149,6 +156,11 @@ public class Beneficiaries extends baseMethod {
         BENEFICIARY_ID = getAPIDetails("beneficiaryID");
         validatePayload.setPayloadWithInValidData(PATH_TO_UPDATE_FAVOURITE_PAYEE_PAYLOAD, "updateFavouritePayee", "favourite", TRUE_VALUE);
         validatePayload.setPayloadWithValidData(PATH_TO_UPDATE_FAVOURITE_PAYEE_PAYLOAD, "updateFavouritePayee", "beneficiaryID", BENEFICIARY_ID);
+
+    }
+    public void setPayloadForGetFavouritePayeeList() throws IOException, ParseException {
+        validatePayload.setPayloadWithInValidData(PATH_TO_GET_FAVOURITE_PAYEE_LIST_PAYLOAD, "favBeneficiaries", "pageLimit", PAGE_LIMIT_SIX_HUNDRED);
+        validatePayload.setPayloadWithInValidData(PATH_TO_GET_FAVOURITE_PAYEE_LIST_PAYLOAD, "favBeneficiaries", "pageNo", PAGE_NO_ONE);
 
     }
     //-----------------------------------------------  INVOKE METHODS  -----------------------------------------------
@@ -227,7 +239,10 @@ public class Beneficiaries extends baseMethod {
         validateResponse.validateResponseWithExcludedDataFields(GET_BENEFICIARIES_BY_TRANSACTION_TYPE_RESPONSE,FILES_TO_IGNORE);
     }
     public void validateResponsePayloadUpdateFavouritePayee() {
-        validateResponse.validateResponse(UPDATE_FAVOURITE_PAYEE_BASE_RESPONSE);
+        validateResponse.validateResponse(UPDATE_FAVOURITE_PAYEE_RESPONSE);
     }
-
+    public void validateResponsePayloadForGetFavouritePayeeList() {
+        FILES_TO_IGNORE = new String[]{"recordCount","beneficiaryListDetails","pageLimit","pageNo"};
+        validateResponse.validateResponseWithExcludedDataFields(GET_FAVOURITE_PAYEE_LIST_RESPONSE,FILES_TO_IGNORE);
+    }
 }

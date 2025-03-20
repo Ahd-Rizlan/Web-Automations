@@ -1,7 +1,6 @@
 package api.test;
 
 import api.methods.baseMethod;
-import api.methods.favBeneficiaries;
 import api.methods.updatePaymentTemplate;
 import api.utils.ConstantApiUtils;
 import org.testng.annotations.BeforeClass;

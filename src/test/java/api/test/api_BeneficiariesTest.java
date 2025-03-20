@@ -119,6 +119,7 @@ public class api_BeneficiariesTest extends baseMethod {
         Beneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
         Beneficiaries.validateResponsePayloadForUpdateBeneficiary();
     }
+    // ---------------------------- Updated Beneficiaries as Favourite -----------------------------------------------------
 
     @Test(priority = 9, testName = "Verify that the Beneficiaries can be Updated as Favourite With  with Authorized Access", dependsOnMethods = "checkGetTransferPayeeListWithAuthorizedAccess")
     public void checkUpdateFavouritePayeeWithAuthorizedAccess() throws IOException, ParseException {
@@ -131,9 +132,18 @@ public class api_BeneficiariesTest extends baseMethod {
         Beneficiaries.validateResponsePayloadUpdateFavouritePayee();
 
     }
+    @Test(priority = 10,testName = "Verify that Favourite Beneficiaries List is Accessible with Authorized Access")
+    public void checkFavBeneficiaryListWithAuthorizedAccess() throws IOException, ParseException {
+        Beneficiaries.authorisedWithValidToken();
+        Beneficiaries.setPayloadForGetFavouritePayeeList();
+        Beneficiaries.updateBasePathForGetFavouritePayeeList();
+        Beneficiaries.invokeBeneficiariesPOSTApi();
+        Beneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
+        Beneficiaries.validateResponsePayloadForGetFavouritePayeeList();
 
+    }
     // ---------------------------- Delete Beneficiaries -----------------------------------------------------
-    @Test(priority = 10, testName = "Verify that the Beneficiaries can be deleted with Authorized Access", dependsOnMethods = "checkGetTransferPayeeListWithAuthorizedAccess")
+    @Test(priority = 11, testName = "Verify that the Beneficiaries can be deleted with Authorized Access", dependsOnMethods = "checkGetTransferPayeeListWithAuthorizedAccess")
     public void checkDeleteBeneficiariesWithAuthorizedAccess() throws IOException, ParseException {
         Beneficiaries.authorisedWithValidToken();
         Beneficiaries.setPayloadForDeleteBeneficiaryForWithBeneficiaryId();
@@ -144,7 +154,7 @@ public class api_BeneficiariesTest extends baseMethod {
         Beneficiaries.validateResponsePayloadForDeleteBeneficiary();
     }
 
-    @Test(priority = 11, testName = "Verify that Beneficiaries for each transaction type can be accessed with Authorized Access")
+    @Test(priority = 12, testName = "Verify that Beneficiaries for each transaction type can be accessed with Authorized Access")
     //For happy path
     public void checkBeneficiariesByTranTypeWithCorrectTranType() throws IOException, ParseException {
         Beneficiaries.authorisedWithValidToken();
