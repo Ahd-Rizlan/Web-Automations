@@ -77,6 +77,21 @@ public class baseRequest {
         System.out.println("API Response : " + response.prettyPrint());
         baseMethod.printResponseLogInReport(response);
     }
+    public void invokePutRequest() {
+        setHeaders();
+        RestAssured.useRelaxedHTTPSValidation();
+        response = RestAssured.given()
+                .baseUri(baseMethod.getBaseHost())
+                .headers(headersMap)
+                .basePath(basePath)
+                .body(jsonBody)
+                .when()
+                .log()
+                .all()
+                .put();
+        System.out.println("API Response : " + response.prettyPrint());
+        baseMethod.printResponseLogInReport(response);
+    }
     public void invokeGetRequest() {
         setHeaders();
         RestAssured.useRelaxedHTTPSValidation();

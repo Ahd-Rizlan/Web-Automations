@@ -8,10 +8,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Map;
 
 import static api.utils.ConstantApiUtils.TXT_AUTHORIZATION;
 import static utils.CommonUtils.USER_DIR;
-import static utils.DataStoreReadWriteApi.getAPIDetails;
 
 public class validatePayload {
     private FileReader file;
@@ -32,13 +32,16 @@ public class validatePayload {
         baseRequest.headersMap.put(TXT_AUTHORIZATION, ConstantApiUtils.TXT_AUTHORIZATION_INVALID_VAL);
     }
 
-    public void setPayloadWithValidData(String PathToPayload, String jsonPayloadObject, String dataTobeAdded, String Data) throws IOException, ParseException {
+
+    public void setPayloadWithValidData(String PathToPayload, String jsonPayloadObject, Map<String, String> dataToBeAdded) throws IOException, ParseException {
         baseRequest.jsonBody = new File(USER_DIR.concat(PathToPayload));
         file = new FileReader(baseRequest.jsonBody);
         jsonObject = (JSONObject) jsonParser.parse(file);
         JSONObject testFeature = (JSONObject) jsonObject.get(jsonPayloadObject);
-        testFeature.put(dataTobeAdded, Data);
-        System.out.println("JSON- OBJECT"+testFeature.toString());
+        for (Map.Entry<String, String> entry : dataToBeAdded.entrySet()) {
+            testFeature.put(entry.getKey(), entry.getValue());
+        }
+        System.out.println("JSON- OBJECT" + testFeature.toString());
         FileWriter writer = new FileWriter(baseRequest.jsonBody, false); //overwrites the content of file
         writer.write(jsonObject.toString());
         writer.close();
