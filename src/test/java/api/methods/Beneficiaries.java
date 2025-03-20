@@ -152,9 +152,10 @@ public class Beneficiaries extends baseMethod {
     }
 
     public void setPayloadForGetBeneficiaryList() throws IOException, ParseException {
-        validatePayload.setPayloadWithInValidData(PATH_TO_GET_BENEFICIARIES_LIST_PAYLOAD, "getTransferPayeeList", "pageLimit", PAGE_LIMIT_SIX_HUNDRED);
-        validatePayload.setPayloadWithInValidData(PATH_TO_GET_BENEFICIARIES_LIST_PAYLOAD, "getTransferPayeeList", "pageNo", PAGE_NO_ONE);
-
+        DataTobeAdded = new HashMap<>();
+        DataTobeAdded.put("pageLimit", PAGE_LIMIT_SIX_HUNDRED);
+        DataTobeAdded.put("pageNo", PAGE_NO_ONE);
+        validatePayload.setPayloadWithInValidData(PATH_TO_GET_BENEFICIARIES_LIST_PAYLOAD, "getTransferPayeeList", DataTobeAdded);
     }
 
     public void setPayloadForGetBeneficiaryByTransactionType() throws IOException, ParseException {
@@ -163,14 +164,19 @@ public class Beneficiaries extends baseMethod {
 
     public void setPayloadForUpdateFavouritePayee() throws IOException, ParseException {
         BENEFICIARY_ID = getAPIDetails("beneficiaryID");
-        validatePayload.setPayloadWithInValidData(PATH_TO_UPDATE_FAVOURITE_PAYEE_PAYLOAD, "updateFavouritePayee", "favourite", TRUE_VALUE);
-        validatePayload.setPayloadWithValidData(PATH_TO_UPDATE_FAVOURITE_PAYEE_PAYLOAD, "updateFavouritePayee", "beneficiaryID", BENEFICIARY_ID);
+        DataTobeAdded = new HashMap<>();
+        DataTobeAdded.put("favourite", TRUE_VALUE);
+        DataTobeAdded.put("beneficiaryID", BENEFICIARY_ID);
+
+        validatePayload.setPayloadWithValidData(PATH_TO_UPDATE_FAVOURITE_PAYEE_PAYLOAD, "updateFavouritePayee", DataTobeAdded);
 
     }
 
     public void setPayloadForGetFavouritePayeeList() throws IOException, ParseException {
-        validatePayload.setPayloadWithInValidData(PATH_TO_GET_FAVOURITE_PAYEE_LIST_PAYLOAD, "favBeneficiaries", "pageLimit", PAGE_LIMIT_SIX_HUNDRED);
-        validatePayload.setPayloadWithInValidData(PATH_TO_GET_FAVOURITE_PAYEE_LIST_PAYLOAD, "favBeneficiaries", "pageNo", PAGE_NO_ONE);
+        DataTobeAdded = new HashMap<>();
+        DataTobeAdded.put("pageLimit", PAGE_LIMIT_SIX_HUNDRED);
+        DataTobeAdded.put("pageNo", PAGE_NO_ONE);
+        validatePayload.setPayloadWithInValidData(PATH_TO_GET_FAVOURITE_PAYEE_LIST_PAYLOAD, "favBeneficiaries", DataTobeAdded);
 
     }
     //-----------------------------------------------  INVOKE METHODS  -----------------------------------------------
