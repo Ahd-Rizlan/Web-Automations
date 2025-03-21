@@ -136,7 +136,6 @@ public class Beneficiaries extends baseMethod {
         DataTobeAdded.put("accountName", VALID_ACCOUNT_NAME);
         DataTobeAdded.put("accountNumber", CORRECT_ACCOUNT_NUMBER_VALUE);
         DataTobeAdded.put("bank", CORRECT_BANK_CODE_VALUE);
-
         validatePayload.setPayloadWithValidData(PATH_TO_ADD_BENEFICIARIES_PAYLOAD, "addBeneficiaries", DataTobeAdded);
 
     }
