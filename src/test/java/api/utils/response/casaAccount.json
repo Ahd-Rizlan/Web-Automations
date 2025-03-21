@@ -9,15 +9,19 @@
     "currency": "LKR",
     "productName": "DOUBLE S SAVINGS -PERSONAL",
     "schemeType": "SBA",
-    "availableBalance": "1586703.75",
+    "availableBalance": "1561703.75",
     "floatBalance": "0.000000",
     "lienAmount": "0.00",
     "page": 1,
     "fdAvailable": true,
     "loanAvailable": true,
-    "recordCount": 4,
-    "isPrimary": "N",
+    "recordCount": 5,
+    "isPrimary": "Y",
     "transactions": [
+      {
+        "tranType": "D",
+        "tranAmt": "25000"
+      },
       {
         "tranType": "D",
         "tranAmt": "1000"
@@ -25,10 +29,6 @@
       {
         "tranType": "C",
         "tranAmt": "1000"
-      },
-      {
-        "tranType": "C",
-        "tranAmt": "50"
       }
     ]
   },

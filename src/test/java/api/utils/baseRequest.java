@@ -17,6 +17,7 @@ public class baseRequest {
 
     private  Response response;
     private  String POST_BODY;
+    private String Response_Body;
 
     public  File jsonBody;
     private String basePath;
@@ -49,6 +50,15 @@ public class baseRequest {
         this.basePath = basePath;
     }
 
+
+    public void setResponse_Body(String ResponseBody) {
+        Response_Body =  ResponseBody;
+    }
+
+    public String getResponse_Body() {
+        return Response_Body;
+    }
+
     public String setPOST_BODY(String postBody) {
         POST_BODY = USER_DIR + postBody;
         return POST_BODY;
@@ -74,6 +84,35 @@ public class baseRequest {
                 .log()
                 .all()
                 .post();
+        System.out.println("API Response : " + response.prettyPrint());
+        baseMethod.printResponseLogInReport(response);
+    }
+    public void invokePostRequestWithoutPayload() {
+        setHeaders();
+        RestAssured.useRelaxedHTTPSValidation();
+        response = RestAssured.given()
+                .baseUri(baseMethod.getBaseHost())
+                .headers(headersMap)
+                .basePath(basePath)
+                .when()
+                .log()
+                .all()
+                .post();
+        System.out.println("API Response : " + response.prettyPrint());
+        baseMethod.printResponseLogInReport(response);
+    }
+    public void invokePutRequest() {
+        setHeaders();
+        RestAssured.useRelaxedHTTPSValidation();
+        response = RestAssured.given()
+                .baseUri(baseMethod.getBaseHost())
+                .headers(headersMap)
+                .basePath(basePath)
+                .body(jsonBody)
+                .when()
+                .log()
+                .all()
+                .put();
         System.out.println("API Response : " + response.prettyPrint());
         baseMethod.printResponseLogInReport(response);
     }
@@ -105,4 +144,8 @@ public class baseRequest {
         System.out.println("API Response : " + response.prettyPrint());
         baseMethod.printResponseLogInReport(response);
     }
+
+
+    //TODO add Empty Payload
+    //Add Payloads With Quaries
 }

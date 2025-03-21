@@ -4,7 +4,7 @@
       "statusCode": "false",
       "statusDescription": "FAIL",
       "errorCode": "E_104",
-      "errorDescription": ""
+      "errorDescription": "Unauthorized merchant code or Biller id"
     },
     "customerCommissionAmt": null,
     "fieldData": [

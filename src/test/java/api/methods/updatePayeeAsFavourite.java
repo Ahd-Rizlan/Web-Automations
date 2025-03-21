@@ -11,6 +11,7 @@ import static api.utils.ConstantApiUtils.*;
 import static utils.CommonUtils.USER_DIR;
 
 public class updatePayeeAsFavourite extends baseMethod {
+    //this should come under Biller Templates (The Url Named Incorrectly)
     File jsonBody = new File(POST_BODY);
     private static final Map<String, String> headersMap = new HashMap<>();
     private static final String baseHost = config.getProperty("sitSampathHost");

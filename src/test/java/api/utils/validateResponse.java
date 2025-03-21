@@ -28,7 +28,7 @@ public class validateResponse {
     }
     public void setResponseWithValidUniqueId(String ResponseJsonPayloadObject, String ResponseResponseHeader, String KeyToAppendPayload, String InputToAppendPayload) throws IOException, ParseException {
         JSONParser jsonParser = new JSONParser();
-        String filePath = baseRequest.getPOST_BODY();
+        String filePath = baseRequest.getResponse_Body();
         File file = new File(filePath);
         try (FileReader fileReader = new FileReader(file)) {
             JSONObject jsonObject = (JSONObject) jsonParser.parse(fileReader);

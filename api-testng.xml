@@ -7,6 +7,19 @@
     <test verbose="2" preserve-order="true"
           name="Sampath SVR4 API Test">
         <classes>
+            <class name="api.test.api_BeneficiariesTest">
+                <methods>
+                    <include name="checkAddBeneficiariesUnauthorizedAccess"/>
+                    <include name="checkAddBeneficiariesWithIncorrectAccountType"/>
+                    <include name="checkAddBeneficiariesWithEmptyAccountName"/>
+                    <include name="checkAddBeneficiariesWithEmptyBankCode"/>
+                    <include name="checkAddBeneficiariesWithAuthorizedAccess"/>
+                    <include name="checkGetTransferPayeeListWithAuthorizedAccess"/>
+                    <include name="checkUpdateBeneficiariesWithAuthorizedAccess"/>
+                    <include name="checkDeleteBeneficiariesWithAuthorizedAccess"/>
+                    <include name="checkBeneficiariesByTranTypeWithCorrectTranType"/>
+                </methods>
+            </class>
             <class name="api.test.api_CategoriesTest">
                 <methods>
                     <include name="checkCategoriesWithUnauthorizedAccess"/>
@@ -114,30 +127,6 @@
                     <include name="checkCreditCardDetailsApiAuthorizedAccess"/>
                 </methods>
             </class>
-            <class name="api.test.api_addBeneficiariesTest">
-                <methods>
-                    <include name="checkAddBeneficiariesUnauthorizedAccess"/>
-                    <include name="checkAddBeneficiariesWithIncorrectAccountType"/>
-                    <include name="checkAddBeneficiariesWithEmptyAccountName"/>
-                    <include name="checkAddBeneficiariesWithIncorrectAccountNumber"/>
-                    <include name="checkAddBeneficiariesWithEmptyBankCode"/>
-                    <include name="checkAddBeneficiariesWithAuthorizedAccess"/>
-                </methods>
-            </class>
-            <class name="api.test.api_beneficiariesByTranTypeTest">
-                <methods>
-                    <include name="checkBeneficiariesByTranTypeWithUnauthorizedAccess"/>
-                    <include name="checkBeneficiariesByTranTypeWithEmptyTranType"/>
-                    <include name="checkBeneficiariesByTranTypeWithCorrectTranType"/>
-                </methods>
-            </class>
-            <class name="api.test.api_deleteBeneficiariesTest">
-                <methods>
-                    <include name="checkDeleteBeneficiariesWithUnauthorizedAccess"/>
-                    <include name="checkDeleteBeneficiariesWithAuthorizedAccess"/>
-                    <include name="checkGetTransferPayeeListWithAuthorizedAccess"/>
-                </methods>
-            </class>
             <class name="api.test.api_doTransferForVishwaTest">
                 <methods>
                     <include name="checkDoTransferForVishwaWithUnauthorizedAccess"/>
@@ -175,12 +164,6 @@
                     <include name="checkFDAccountApiAuthorizedAccess"/>
                 </methods>
             </class>
-            <class name="api.test.api_getTransferPayeeListTest">
-                <methods>
-                    <include name="checkGetTransferPayeeListWithUnauthorizedAccess"/>
-                    <include name="checkGetTransferPayeeListWithAuthorizedAccess"/>
-                </methods>
-            </class>
             <class name="api.test.api_getUnutilizedMobileCashTest">
                 <methods>
                     <include name="checkUnutilizedMobileCashWithUnauthorizedAccess"/>
@@ -202,14 +185,6 @@
                     <include name="checkReverseMobileCashWithInvalidNic"/>
                     <include name="checkReverseMobileCashWithInvalidPin"/>
                     <include name="checkReverseMobileCashWithAuthorizedAccess"/>
-                </methods>
-            </class>
-            <class name="api.test.api_updateBeneficiariesTest">
-                <methods>
-                    <include name="checkUpdateBeneficiariesWithUnauthorizedAccess"/>
-                    <include name="checkAddBeneficiariesWithAuthorizedAccess"/>
-                    <include name="checkGetTransferPayeeListWithAuthorizedAccess"/>
-                    <include name="checkUpdateBeneficiariesWithAuthorizedAccess"/>
                 </methods>
             </class>
             <class name="api.test.api_updateFavouritePayeeTest">
