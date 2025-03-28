@@ -18,7 +18,9 @@ public class LoginConstants {
 
     //--------------Button content-------------------
     public static final String LOGOUT_BUTTON_TEXT = "Logout";
+    public static final String RESET_BUTTON_TEXT = "Reset";
     public static final String CONFIRM_AND_LOGOUT_BUTTON_TEXT = "Confirm & Logout";
+    public static final String LOGIN_BUTTON_TEXT = "Login";
 
     //-----------------One time data ----------------------
     public static final String OTP = "111111";

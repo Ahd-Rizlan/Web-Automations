@@ -24,6 +24,7 @@ public class Drivers{
     public static String url = property.getProperty("gui-config", "URL");
     public static String userName = property.getProperty("gui-config", "USERNAME");
     public static String password = property.getProperty("gui-config", "PASSWORD");
+    public static String dowloadLocation = System.getProperty("user.home") +"/"+property.getProperty("gui-config", "DOWNLOAD");
 
     String projectRoot = System.getProperty("user.dir");
     String webDriverRoot = projectRoot + "/" + property.getProperty("gui-config","WEBDRIVERS");

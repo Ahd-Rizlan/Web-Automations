@@ -1,9 +1,13 @@
 package pages;
 
 import com.aventstack.extentreports.Status;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.Screenshot;
@@ -17,6 +21,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class BasePage extends helpers {
@@ -41,9 +46,9 @@ public abstract class BasePage extends helpers {
             WebDriverWait wait = new WebDriverWait(driver, 10);
             WebElement webElement = wait.until(ExpectedConditions.elementToBeClickable(byLocator));
             webElement.clear();
-            addToReport("Clear the input textbox.", Status.PASS,false);
+            addToReport("Clear the input textbox.", Status.PASS, false);
             webElement.sendKeys(inputText);
-            addToReport("Type '" + inputText + "' on textbox.", Status.PASS,false);
+            addToReport("Type '" + inputText + "' on textbox.", Status.PASS, false);
             waitFor(2000);
         } catch (Exception e) {
             addToReport("Unable to type on '" + inputText + "'  textbox.", Status.FAIL);
@@ -148,7 +153,29 @@ public abstract class BasePage extends helpers {
             WebDriverWait wait = new WebDriverWait(driver, 10);
             wait.until(ExpectedConditions.elementToBeClickable(locator));
             driver.findElement(locator).click();
-            addToReport("Successfully clicked on the '" + locator + "' element.", Status.PASS,false);
+            addToReport("Successfully clicked on the '" + locator + "' element.", Status.PASS, false);
+        } catch (Exception e) {
+            addToReport("Error occur when clicking on the '" + locator + "' element.", Status.FAIL);
+            System.err.println("Error occur when clicking on the element: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Clicks on an element identified by a locator using js after waiting for it to become clickable.
+     * <p>
+     * This method waits for the element identified by the provided By locator to become clickable
+     *
+     * @param locator the locator used to find the element to be clicked
+     */
+    public void clickOnElementUsingJS(By locator) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, 10);
+            wait.until(ExpectedConditions.elementToBeClickable(locator));
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            WebElement element = driver.findElement(locator);
+            js.executeScript("arguments[0].click();", element);
+
+            addToReport("Successfully clicked on the '" + locator + "' element.", Status.PASS, false);
         } catch (Exception e) {
             addToReport("Error occur when clicking on the '" + locator + "' element.", Status.FAIL);
             System.err.println("Error occur when clicking on the element: " + e.getMessage());
@@ -215,13 +242,13 @@ public abstract class BasePage extends helpers {
      * <p>
      * This method waits for the element identified by the provided locator to be present in the DOM.
      *
-     * @param locator the locator used to find the element
+     * @param locator  the locator used to find the element
      * @param waitTime dynamic wait time based on element
      * @return true if the element is present, false if an error occurs or the element is not found
      * @true -If the element is found
      * @false -If the element is not found
      */
-    public boolean waitForElementPresence(By locator,int waitTime) {
+    public boolean waitForElementPresence(By locator, int waitTime) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, waitTime);
             wait.until(ExpectedConditions.presenceOfElementLocated(locator));
@@ -260,17 +287,15 @@ public abstract class BasePage extends helpers {
      *
      * @param locator the locator used to find the element
      * @return size if the elements are present, 0 if the element is not found or an error occurs
-     *
      */
     public int isElementsPresentBy(By locator) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, 20);
             wait.until(ExpectedConditions.presenceOfElementLocated(locator));
-            List<WebElement> records =  driver.findElements(locator);
-            if (!records.isEmpty())
-            {
+            List<WebElement> records = driver.findElements(locator);
+            if (!records.isEmpty()) {
                 return records.size();
-            }else {
+            } else {
                 return 0;
             }
         } catch (Exception e) {
@@ -406,18 +431,17 @@ public abstract class BasePage extends helpers {
      * <p>
      * This method waits for the loading indicator, identified by a specific XPath, to become invisible
      *
-     *  @param Locator the Locator to become invisible
-     *  @param Timeout the wait time in seconds
-     *
+     * @param Locator the Locator to become invisible
+     * @param Timeout the wait time in seconds
      */
     public void waitForElementToBeInvisible(By Locator, long Timeout) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Timeout);
             wait.until(ExpectedConditions.invisibilityOfElementLocated(Locator));
-            addToReport("Element "+Locator +" is not visible", Status.PASS,false);
+            addToReport("Element " + Locator + " is not visible", Status.PASS, false);
 
         } catch (Exception e) {
-            addToReport("Element "+Locator +" is still visible after "+Timeout +" seconds", Status.FAIL);
+            addToReport("Element " + Locator + " is still visible after " + Timeout + " seconds", Status.FAIL);
             System.err.println("Loading indicator is still visible: " + e.getMessage());
         }
     }
@@ -427,18 +451,17 @@ public abstract class BasePage extends helpers {
      * <p>
      * This method waits for the loading locator, identified by a specific XPath, to become clickable
      *
-     *  @param Locator the Locator to become invisible
-     *  @param Timeout the wait time in seconds
-     *
+     * @param Locator the Locator to become invisible
+     * @param Timeout the wait time in seconds
      */
     public void waitForElementToBeClickable(By Locator, long Timeout) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Timeout);
             wait.until(ExpectedConditions.elementToBeClickable(Locator));
-            addToReport("Element "+Locator +" is clickable", Status.PASS,false);
+            addToReport("Element " + Locator + " is clickable", Status.PASS, false);
 
         } catch (Exception e) {
-            addToReport("Element "+Locator +" is not clickable after "+Timeout +" seconds", Status.FAIL);
+            addToReport("Element " + Locator + " is not clickable after " + Timeout + " seconds", Status.FAIL);
             System.err.println("Loading indicator is still visible: " + e.getMessage());
         }
     }
@@ -550,12 +573,13 @@ public abstract class BasePage extends helpers {
             WebElement element = driver.findElement(locator);
             Actions actions = new Actions(driver);
             actions.moveToElement(element).click().perform();
-            addToReport("Successfully clicked on the '" + locator + "' element using mouse actions.", Status.PASS);
+            addToReport("Successfully clicked on the '" + locator + "' element using mouse actions.", Status.PASS, false);
         } catch (Exception e) {
             addToReport("Error occurred when clicking on the '" + locator + "' element.", Status.FAIL);
             System.err.println("Error occurred when clicking on the element: " + e.getMessage());
         }
     }
+
     /**
      * Types the specified text into an input field without clearing the written text .
      * <p>
@@ -578,9 +602,7 @@ public abstract class BasePage extends helpers {
     }
 
     /**
-     *
      * This method is used to navigate back on browser
-     *
      */
     public void browserNavigateBack() {
 
@@ -589,9 +611,7 @@ public abstract class BasePage extends helpers {
     }
 
     /**
-     *
      * This method is used to navigate forward on browser
-     *
      */
     public void browserNavigateForward() {
         driver.navigate().forward();
@@ -614,12 +634,12 @@ public abstract class BasePage extends helpers {
      * <p>
      * This method also takes in threshold value as argument
      *
-     * @param byLocator the By locator used to identify the input element
+     * @param byLocator           the By locator used to identify the input element
      * @param pathOfExpectedImage the path of the expected image
-     * @param threshold threshold value to compare provided in pixels
+     * @param threshold           threshold value to compare provided in pixels
      * @return true if the images are same or differences between the images is within provided threshold, false if the images are different
      */
-    public boolean compareImage(By byLocator, String pathOfExpectedImage,int threshold) throws IOException {
+    public boolean compareImage(By byLocator, String pathOfExpectedImage, int threshold) throws IOException {
 
         System.out.println("Start of image verification");
 
@@ -671,13 +691,111 @@ public abstract class BasePage extends helpers {
     }
 
     /**
-     *
      * This method is used to get the current URL of the page
-     *
      */
     public String getCurrentURL() {
         return driver.getCurrentUrl();
     }
+
+    /**
+     * Method to extract text from PDF using Apache PDFBox
+     *
+     * @param filePath file path
+     * @return extracted text from the pdf
+     */
+    public static String extractTextFromPDF(String filePath) {
+        try (PDDocument document = PDDocument.load(new File(filePath))) {
+            PDFTextStripper pdfStripper = new PDFTextStripper();
+            return pdfStripper.getText(document).trim();
+        } catch (IOException e) {
+            System.err.println("Error reading pdf : " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Method to get the latest downloaded pdf file
+     *
+     * @param dirPath file path
+     * @return latest modified file
+     */
+    public static File getLatestDownloadedFile(String dirPath) {
+//        waitForDownload(dirPath,20);
+        //Adding sleep due to network latency
+        try {
+            Thread.sleep(10000);
+        } catch (Exception e) {
+            System.err.println("Error on wait : " + e.getMessage());
+        }
+        File dir = new File(dirPath);
+        File[] files = dir.listFiles((d, name) -> name.endsWith(".pdf"));
+        //Adding sleep due to network latency
+        try {
+            Thread.sleep(15000);
+        } catch (Exception e) {
+            System.err.println("Error on wait : " + e.getMessage());
+        }
+        if (files != null && files.length > 0) {
+            return Arrays.stream(files)
+                    .max((f1, f2) -> Long.compare(f1.lastModified(), f2.lastModified()))
+                    .orElse(null);
+        }
+        return null;
+    }
+
+    /**
+     * Method to wait for .crdownload to disappear
+     *
+     * @param downloadDir    file path
+     * @param timeoutSeconds wait time
+     * @return latest modified file
+     */
+    public static void waitForDownload(String downloadDir, int timeoutSeconds) {
+        long endTime = System.currentTimeMillis() + (timeoutSeconds * 1000);
+        File dir = new File(downloadDir);
+
+        //Wait for crdownload to disappear
+        while (System.currentTimeMillis() < endTime) {
+            File[] crdownloadFiles = dir.listFiles((d, name) -> name.endsWith(".crdownload"));
+            if (crdownloadFiles == null || crdownloadFiles.length == 0) {
+                return; // Download complete
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                return;
+            }
+        }
+    }
+
+    /**
+     * Method to select from dropdown
+     *
+     * @param locator the By locator used to identify the input element
+     * @param value   value to be selected from dropdown
+     * @param type    type either (index,value,visible text)
+     */
+    public void selectFromDropdown(By locator, String value, String type) {
+        WebElement dropdownElement = driver.findElement(locator);
+        Select select = new Select(dropdownElement);
+
+        switch (type.toLowerCase()) {
+            case "index":
+                select.selectByIndex(Integer.parseInt(value));
+                break;
+            case "value":
+                select.selectByValue(value);
+                break;
+            case "visibletext":
+                select.selectByVisibleText(value);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid dropdown selection type: " + type);
+        }
+    }
+
 
 }
 

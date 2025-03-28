@@ -35,12 +35,33 @@ public class DataProviders {
             String[] columnNames = {"userName", "password" ,"incorrectPassword", "errorMessage"};
             return XlsReader.getDataFromSheet(filePath, "InvalidLoginCredentials", columnNames).iterator();
         }
+        @DataProvider(name = "InvalidUserId")
+        public static Iterator<Object[]> getIncorrectUserData() {
+            String[] columnNames = {"incorrectUser", "errorMessage"};
+            return XlsReader.getDataFromSheet(filePath, "InvalidResetUser", columnNames).iterator();
+        }
+        @DataProvider(name = "InvalidAnswers")
+        public static Iterator<Object[]> getIncorrectSecurityData() {
+            String[] columnNames = {"userName", "errorMessage"};
+            return XlsReader.getDataFromSheet(filePath, "InvalidSecurityAnswer", columnNames).iterator();
+        }
 
         @DataProvider(name = "LogoutData")
         public static Iterator<Object[]> getLogoutData() {
             String[] columnNames = {"userName", "password","emailSentSuccessMsg", "popupText"};
             return XlsReader.getDataFromSheet(filePath, "LogoutData", columnNames).iterator();
         }
+        @DataProvider(name = "LockedUser")
+        public static Iterator<Object[]> getLockedUserData() {
+            String[] columnNames = {"userName", "password","errorMessage"};
+            return XlsReader.getDataFromSheet(filePath, "LockedCredential", columnNames).iterator();
+        }
+        @DataProvider(name = "LockedUserReset")
+        public static Iterator<Object[]> getLockedUserResetData() {
+            String[] columnNames = {"userName", "errorMessage"};
+            return XlsReader.getDataFromSheet(filePath, "LockedUserReset", columnNames).iterator();
+        }
+
     }
     public static class DashboardDataProvider {
         private static final String filePath;
