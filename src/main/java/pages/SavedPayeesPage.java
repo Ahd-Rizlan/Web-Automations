@@ -5,12 +5,14 @@ package pages;
 
 import com.aventstack.extentreports.Status;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import utils.CommonUtils;
 
 public class SavedPayeesPage extends BasePage {
 
-    CommonUtils cu = new CommonUtils();
+    CommonUtils commonutils = new CommonUtils();
 
     public SavedPayeesPage(WebDriver driver) {
         super(driver);
@@ -42,11 +44,12 @@ public class SavedPayeesPage extends BasePage {
     private static final By tfFBMobilePhoneNumber = By.xpath("//input[contains(@name,'fieldData.0')]");
     private static final By lblFBBillerName = By.xpath("//div[contains(@class,'flex flex-col w-full')]//span[contains(@class,'font-semibold')]");
     private static final By tfFBMobilePhoneNumberReEnter = By.xpath("//input[contains(@name,'fieldData2.0')]");
+    private static final By loadingBranchName = By.xpath("(//div[contains(@class,'animate-pulse bg-gray')])[4]");
+
 
     private static By lblQFTSavingsAccountName() {
         return By.xpath("//span[text()='Savings Account']/ancestor::div[contains(@class,'flex relative justify-between')]//span[contains(text(),'Available Balance')]");
     }
-
     private static By lblFBSBAName() {
         return By.xpath("//span[text()='SBA']/ancestor::div[contains(@class,'flex relative justify-between')]//span[contains(text(),'Available Balance')]");
     }
@@ -89,11 +92,14 @@ public class SavedPayeesPage extends BasePage {
      * @param QFTData - Quick fund transfer data
      */
     public void validateQFTPopup(String[] QFTData) {
+
         try {
             String AccNickName = QFTData[0];
             String BankName = QFTData[1];
             String AccountNumber = QFTData[2];
-            waitForElementPresence(tfQFTBranchName);
+            waitForElementPresence(lblQFTSavingsAccountName(),20);
+            waitForElementToBeInvisible(loadingBranchName,30);
+            waitForElementPresence(tfQFTBranchName,20);
 
             //validate account name presence
             boolean boolSavingsAccount = isElementPresentBy(lblQFTSavingsAccountName());
@@ -183,13 +189,11 @@ public class SavedPayeesPage extends BasePage {
                 addToReport("Failed to validate presence of submit button in  QFT ", Status.FAIL, true);
             }
 
-            //Close the QFT
-            clickOnElement(btnQFTBack);
-
         } catch (Exception e) {
             addToReport("Error verifying quick fund transfer popup", Status.FAIL);
             throw new RuntimeException("Error - verifying quick fund transfer popup " + e.getMessage(), e);
         }
+        clickOnElementUsingJS(btnQFTBack);
     }
 
     /**

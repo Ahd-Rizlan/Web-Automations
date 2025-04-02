@@ -5,6 +5,7 @@ package pages;
 
 import com.aventstack.extentreports.Status;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import utils.CommonUtils;
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class LoginPage extends BasePage {
 
-    CommonUtils cu = new CommonUtils();
+    CommonUtils commonutils = new CommonUtils();
 
     public LoginPage(WebDriver driver) {
 
@@ -43,6 +44,12 @@ public class LoginPage extends BasePage {
     private static final By btnLoginDisabled = By.xpath("//button[@type='submit' and @disabled]/div");
     private static final By msgError = By.xpath("//div[@role='alert']/div[contains(text(),'LOGIN FAILED')]");
     private static final By btnBack = By.xpath("//button[text()='Back']");
+    private static final By tfVishwaID = By.xpath("//input[@id='username']");
+    private static final By tfSecurityAnsOne = By.xpath("//input[@id='answer']");
+    private static final By popUpIncorrectUserId = By.xpath("//div[@role='alert']/div[2]");
+    private static final By popUpMsg = By.xpath("//div[@role='alert']");
+    private static final By icnCustomLoader = By.xpath("//div[contains(@class,'LoginComponent_customloader')]");
+
 
     private static By getElementByTypeAndText(ElementType type, String text) {
         return By.xpath("//" + type.name() + "[contains(normalize-space(text()), \"" + text + "\")]");
@@ -100,7 +107,7 @@ public class LoginPage extends BasePage {
             boolean isTitleVisible = waitForElementPresence(getPageTitle(expectedTitle));
             boolean isTileVisible = waitForElementPresence(loginTile(loginTileName));
             if (isTitleVisible && isTileVisible) {
-                addToReport("Login page tile heading '" + loginTileName + "' and title '" + expectedTitle + "' is visible.", Status.PASS,false);
+                addToReport("Login page tile heading '" + loginTileName + "' and title '" + expectedTitle + "' is visible.", Status.PASS, false);
             } else {
                 addToReport("Title or login tile is not visible as expected", Status.FAIL);
                 throw new RuntimeException("Title or login tile is not visible as expected");
@@ -127,7 +134,7 @@ public class LoginPage extends BasePage {
             sendKeysToElement(txtUserName, name);
             sendKeysToElement(txtPassword, password);
             clickOnElement(btnLogin);
-
+            waitForElementToBeInvisible(icnCustomLoader,20);
             //Validate the success message
             if (isElementPresentBy(getSuccessfulMsg(successMsg))) {
                 addToReport("'" + successMsg + "' success message is present.", Status.PASS,true);
@@ -143,7 +150,7 @@ public class LoginPage extends BasePage {
 
             //validate the page header
             if (isElementPresentBy(getPageHeader(expectedHeader))) {
-                addToReport("'" + expectedHeader + "'  page header is present.", Status.PASS,false);
+                addToReport("'" + expectedHeader + "'  page header is present.", Status.PASS, false);
             } else {
                 addToReport("'" + expectedHeader + "' page header is not present.", Status.FAIL);
                 throw new RuntimeException("Login is unsuccessful");
@@ -269,7 +276,6 @@ public class LoginPage extends BasePage {
             } else {
                 clearTheElement(txtUserName);
                 sendKeysToElement(txtPassword, inputValue);
-
             }
 
             boolean disableButton = waitForElementPresence(disabledLoginButton(buttonName));
@@ -514,6 +520,144 @@ public class LoginPage extends BasePage {
         } catch (Exception e) {
             addToReport("Unable to verify the forgot password heading.", Status.FAIL);
             throw new RuntimeException("Unable to verify the forgot password heading", e);
+        }
+    }
+
+    /***
+     * Validate the forgot password - Enter incorrect user
+     * @param buttonName - button name reset
+     * @param userName   - invalid user name
+     * @param invalidMsg - invalid message
+     */
+    public void ValidateForgotPasswordIncorrectUser(String buttonName, String userName, String invalidMsg) {
+        try {
+            //Click reset button
+            ClickOnRestOrSignupButton(buttonName);
+            waitForElementPresence(tfVishwaID, 10);
+
+            //Enter invalid user
+            sendKeysToElement(tfVishwaID, userName);
+            clickOnElement(btnLogin);
+
+            waitForElementPresence(popUpMsg,10);
+            //Validate invalid user message
+            waitForElementPresence(popUpIncorrectUserId, 10);
+
+            String actualMessage = getTextFromElement(popUpIncorrectUserId);
+            if (actualMessage.equals(invalidMsg)) {
+                addToReport("Received correct invalid message  : '" + invalidMsg + "'.", Status.PASS);
+            } else {
+                addToReport("Didn't receive correct invalid message  : '" + invalidMsg + "'.", Status.FAIL);
+                throw new RuntimeException("Didn't receive correct invalid message  : '" + invalidMsg + "'..");
+            }
+        } catch (Exception e) {
+            addToReport("Unable to verify invalid message", Status.FAIL);
+            throw new RuntimeException("Unable to verify invalid message", e);
+        }
+    }
+    /***
+     * Validate the forgot password - Enter locked user
+     * @param buttonName - button name reset
+     * @param userName   - locked user name
+     * @param errorMsg - invalid message
+     */
+    public void ValidateForgotPasswordLockedUser(String buttonName, String userName, String errorMsg) {
+        try {
+            //Click reset button
+            ClickOnRestOrSignupButton(buttonName);
+            waitForElementPresence(tfVishwaID, 10);
+
+            //Enter invalid user
+            sendKeysToElement(tfVishwaID, userName);
+            clickOnElement(btnLogin);
+
+            waitForElementPresence(popUpMsg,10);
+            //Validate invalid user message
+            waitForElementPresence(popUpIncorrectUserId, 10);
+
+            String actualMessage = getTextFromElement(popUpIncorrectUserId);
+            if (actualMessage.equals(errorMsg)) {
+                addToReport("Received correct invalid message  : '" + errorMsg + "'.", Status.PASS);
+            } else {
+                addToReport("Didn't receive correct invalid message  : '" + errorMsg + "'.", Status.FAIL);
+                throw new RuntimeException("Didn't receive correct invalid message  : '" + errorMsg + "'..");
+            }
+        } catch (Exception e) {
+            addToReport("Unable to verify invalid message", Status.FAIL);
+            throw new RuntimeException("Unable to verify invalid message", e);
+        }
+    }
+
+    /***
+     * Validate the security questions - Enter incorrect security answers
+     * @param buttonName - button name reset
+     * @param userName   - valid user name
+     * @param password - valid pass
+     * @param errorMessage - Relevant error message
+     * @param mouseClick - if login using mouse click or enter
+     */
+    public void ValidateSuccessfulLoginAttemptWithLockedUserID(String buttonName,String userName,String password, String errorMessage,Boolean mouseClick) {
+        try {
+            //Enter correct username and pw
+            sendKeysToElement(txtUserName, userName);
+            sendKeysToElement(txtPassword, password);
+            if (mouseClick) {
+                mouseClick(getElementByTypeAndText(ElementType.button, buttonName));
+                addToReport("Login attempted using mouse click on the '" + buttonName + "' button.", Status.PASS,false);
+            } else {
+                sendEnterKeyToElement(getElementByTypeAndText(ElementType.button, buttonName));
+                addToReport("Login attempted using Enter key on the '" + buttonName + "' button.", Status.PASS,false);
+            }
+            waitForElementPresence(popUpMsg,10);
+
+            //Validate error message
+            waitForElementPresence(popUpIncorrectUserId, 10);
+            String actualMessage = getTextFromElement(popUpIncorrectUserId);
+            if (actualMessage.equals(errorMessage)) {
+                addToReport("Received correct message  : '" + errorMessage + "'.", Status.PASS);
+            } else {
+                addToReport("Didn't receive invalid message  : '" + errorMessage + "'.", Status.FAIL);
+            }
+        } catch (Exception e) {
+            addToReport("Unable to verify invalid message", Status.FAIL);
+            throw new RuntimeException("Unable to verify invalid message", e);
+        }
+    }
+
+    /***
+     * Validate the forgot password - Enter incorrect user
+     * @param buttonName - button name reset
+     * @param userName   - invalid user name
+     * @param invalidMsg - invalid message
+     */
+    public void ValidateForgotPasswordIncorrectSecurityAnswers(String buttonName,String randomText,String userName, String invalidMsg) {
+        try {
+            //Click reset button
+            ClickOnRestOrSignupButton(buttonName);
+            waitForElementPresence(tfVishwaID, 10);
+
+            //Enter valid user
+            sendKeysToElement(tfVishwaID, userName);
+            clickOnElement(btnLogin);
+
+            //Enter invalid answers
+            waitForElementPresence(tfSecurityAnsOne,10);
+            sendKeysToElement(tfSecurityAnsOne,randomText);
+            clickOnElement(btnLogin);
+
+            waitForElementPresence(popUpMsg,10);
+            //Validate error message
+            waitForElementPresence(popUpIncorrectUserId, 10);
+            String actualMessage = getTextFromElement(popUpIncorrectUserId);
+            if (actualMessage.equals(invalidMsg)) {
+                addToReport("Received correct invalid message  : '" + invalidMsg + "'.", Status.PASS);
+            } else {
+                addToReport("Didn't receive correct invalid message  : '" + invalidMsg + "'.", Status.FAIL);
+                throw new RuntimeException("Didn't receive correct invalid message  : '" + invalidMsg + "'..");
+            }
+        } catch (Exception e) {
+            addToReport("Unable to verify invalid message", Status.FAIL);
+            throw new RuntimeException("Unable to verify invalid message", e);
         }
     }
 

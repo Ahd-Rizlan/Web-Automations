@@ -203,6 +203,15 @@ public class CommonUtils extends Drivers {
     public static boolean containsNumericCharacters(String text) {
         return text.matches("^[\\d.,]+$");
     }
+    /**
+     * Function to check if the text contains numeric characters with backslash
+     *
+     * @param text - text content to validate the characters
+     * @return boolean - text content availability
+     */
+    public static boolean containsValuesOnDate(String text) {
+        return text.matches("^\\d{2}/\\d{2}/\\d{4}$");
+    }
 
     /**
      * Function to check if the text contains numeric characters including negative values
@@ -233,6 +242,19 @@ public class CommonUtils extends Drivers {
     public static boolean containsAlphNumAndSpecialCharacters(String text) {
         return text.matches("^[a-zA-Z0-9!@#$%^&*()_+{}\\[\\]:;<>,.?/~\\\\-]+$");
     }
+    /**
+     * Function to check if the text contains alphabetic spaces and hyphen characters
+     *
+     * @param text - text content to validate the characters
+     * @return boolean - text content availability
+     */
+    public static boolean containsAlphaHypenAndSpaceCharacters(String text) {
+        return text.matches("^[a-zA-Z0-9\\s-]+$");
+
+//        return text.matches("[a-zA-Z0-9]+(?:[\\s-][a-zA-Z0-9]+)*");
+    }
+
+
     /**
      * Function to remove space from string
      *
@@ -273,6 +295,37 @@ public class CommonUtils extends Drivers {
         }
 
     }
+
+    /**
+     * Function to return last specified amount of text from the original text
+     *
+     * @param originalText - Original text
+     * @param numberOfLastCharacters - Number of text to trim from last of original text
+     * @return - a suffix is returned as text
+     */
+    public static String suffix(String originalText,int numberOfLastCharacters) {
+        return originalText.length() >= numberOfLastCharacters ? originalText.substring(originalText.length() - numberOfLastCharacters) : originalText;
+    }
+
+    /**
+     * Function convert date time of [ MMM dd, yyyy 'at' hh:mma ] format to [dd/MM/yyyy hh:mm a]
+     *
+     * @param inputDateTime - Input date
+     * @return - converted date and time
+     */
+    public static String convertDateTime(String inputDateTime) throws ParseException, java.text.ParseException {
+
+        // Define the input and output date formats
+        SimpleDateFormat inputFormat = new SimpleDateFormat("MMM dd, yyyy 'at' hh:mma");
+        SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+
+        // Parse the input date-time string
+        Date date = inputFormat.parse(inputDateTime);
+
+        // Format the date to the desired output format
+        return outputFormat.format(date);
+    }
+
 
 
     public enum sortType {DATE, NUMBER, STRING, SELECT}

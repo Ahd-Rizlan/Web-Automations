@@ -6,15 +6,16 @@ package pages;
 import com.aventstack.extentreports.Status;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import utils.CommonUtils;
 
+import java.io.File;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
-
-import static java.lang.Math.signum;
 
 public class DashboardPage extends BasePage {
 
@@ -24,25 +25,31 @@ public class DashboardPage extends BasePage {
 
     private static final By alertPopup = By.xpath("//span[text()='X']");
     private static final By iconUser = By.xpath("//div[contains(@class,'NavBar_userContainer')]/img");
-    private static final By optionSettings = By.xpath("//div[contains(@class,'UserMenu_subMenuItem') and contains(text(),'Settings')]");
     private static final By title = By.xpath("//title[text()='Sampath Vishwa | Dashboard']");
     private static final By btn_freeTrial = By.xpath("//input[@id='linkadd']");
     private static final By btn_BookAFreeDemo = By.xpath("//li/a[text()='Book a Free Demo']");
-    private static final By lbl_header = By.xpath("//h3[text()='See OrangeHRM in Action']");
     private static final By lbl_freeTrial = By.xpath("//h1[text()='Your free trial']");
     private static final By lblAccountsOrCards = By.xpath("//h1[contains(text(),'Accounts / Cards')]");
     private static final By icnMessage = By.xpath("//a[@href='/SVRClientWebV4/dashboard/inbox']");
     private static final By icnNotification = By.xpath("//div[contains(@class,'flex items-center')]/img[contains(@srcset,'notification')]");
-    private static final By lblSavingsAccount = By.xpath("//span[text()='Savings Account']");
     private static final By lblMessage = By.xpath("//span[contains(text(),'Message')]");
     private static final By lblVishwaAccountSettings = By.xpath("//div[contains(text(),'Vishwa Account Settings')]");
     private static final By lblSavingsACNumber = By.xpath("//span[text()='Savings Account']/ancestor::div[contains(@class,'flex justify-between')]/following::span[contains(@class,'flex flex-col')]");
+    private static final By lblACNumber = By.xpath("//span/ancestor::div[contains(@class,'flex justify-between')]/following::span[contains(@class,'flex flex-col')]");
     private static final By lblSavingsPrimaryStatus = By.xpath("//span[text()='Savings Account']/ancestor::div[contains(@class,'flex flex-col')]/following::div[contains(@class,'text-white font-bold')][1]");
+    private static final By lblCurrentPrimaryStatus = By.xpath("//span[text()='Current Account']/ancestor::div[contains(@class,'flex flex-col')]/following::div[contains(@class,'text-white font-bold')][1]");
     private static final By lblSavingsAccountStatus = By.xpath("//span[text()='Savings Account']/ancestor::div[contains(@class,'flex flex-col')]/following::div[contains(@class,'text-white font-bold')][2]");
+    private static final By lblAccountStatus = By.xpath("//span/ancestor::div[contains(@class,'flex flex-col')]/following::div[contains(@class,'text-white font-bold')][1]");
+    private static final By lblAccountStat = By.xpath("//span/ancestor::div[contains(@class,'flex flex-col')]/following::div[contains(@class,'text-white font-bold')][2]");
     private static final By lblSavingsAccountProductName = By.xpath("//span[text()='Savings Account']/ancestor::div[contains(@class,'flex flex-col')]/following::span[contains(@class,'self-end')]");
+    private static final By lblAccountProductName = By.xpath("//span/ancestor::div[contains(@class,'flex flex-col')]/following::span[contains(@class,'self-end')]");
+    private static final By icnAccounts = By.xpath("//div[contains(@class,'flex gap-1 items-center justify-center')]/div");
+    private static final By lblCurrentAccount = By.xpath("//span[text()='Current Account']");
+    private static final By btnNextArrow = By.xpath("//div[contains(@class,'flex gap-2')]/div[2]");
     private static final By lblCurrencyAndAvailableBalance = By.xpath("//div[contains(text(),'Available')]/following-sibling::div/span[@class='text-black']");
     private static final By btnDeposits = By.xpath("//div[contains(@class,'Container_body')]//div[contains(text(),'Deposits')]");
     private static final By btnLoans = By.xpath("//div[contains(@class,'Container_body')]//div[contains(text(),'Loans')]");
+    private static final By btnAccounts = By.xpath("//div[text()='Accounts']");
     private static final By lblLoadingIcon = By.xpath("//div[contains(@class,'AccountsCards_loader')]");
     private static final By lblFDMaturityValue = By.xpath("//span[contains(text(),'Maturity Value')]/parent::div/span[1]");
     private static final By lblFDMaturityDate = By.xpath("//span[contains(text(),'Maturity Date')]/parent::div/span[1]");
@@ -67,26 +74,22 @@ public class DashboardPage extends BasePage {
     private static final By btnPayment = By.xpath("//div[contains(@class,'RecentVishwaTransactions')]//div[contains(text(),'Payment')]");
     private static final By btnMobileCash = By.xpath("//div[contains(@class,'RecentVishwaTransactions')]//div[contains(text(),'Mobile Cash')]");
     private static final By lblRVTTransferRecord = By.xpath("//div[contains(@class,'RecentVishwaTransactions_scrollContainer')]//div[contains(@class,'RecentVishwaTransactions_transactionCard')]");
-    private static final By lblRVTAmtAndCurrency = By.xpath("//div[contains(@class,'RecentVishwaTransactions_transactionCard')][1]//div[contains(@class,'amountDebit')]/span");
     private static final By lblRVTPaymentAccountName = By.xpath("//div[contains(@class,'RecentVishwaTransactions_transactionCard')][1]//div[contains(@class,'transactionDetails')]/span[1]");
-    private static final By lblRVTPaymentReference = By.xpath("//div[contains(@class,'RecentVishwaTransactions_transactionCard')][1]//div[contains(@class,'transactionDetails')]/span[contains(@class,'RecentVishwaTransactions')][1]");
-    private static final By lblRVTPaymentDate = By.xpath("//div[contains(@class,'RecentVishwaTransactions_transactionCard')][1]//div[contains(@class,'transactionDetails')]/span[contains(@class,'RecentVishwaTransactions')][2]");
     private static final By lblSendMoneyHeader = By.xpath("//div[text()='Make Transactions']/ancestor::div[contains(@class,'rounded-lg')]/following-sibling::div//span[contains(text(),'Send Money')]");
     private static final By lblMobileCashHeader = By.xpath(" //div[text()='Make Transactions']/ancestor::div[contains(@class,'rounded-lg')]/following-sibling::div//span[contains(text(),'Mobile Cash')]");
     private static final By lblBillPaymentHeader = By.xpath("//span[text()='Bill Payments']/ancestor::div[contains(@class,'rounded-lg')]/following-sibling::div//span[contains(text(),'Bill Payments')]");
     private static final By imgAccountPortfolio = By.xpath("//canvas[@role='img']");
     private static final By imgAdvertisement = By.xpath("//span[contains(text(),'Maintenance & Updates')]/parent::div//img[contains(@src,'/SVRClientWebV4/_next/image')]");
-    private static final By lblOpenFDPopupHeader = By.xpath("//span[text()='Open Fixed Deposit']");
-    private static final By lblFavouritePayeeWidgets = By.xpath("//span[contains(text(),'Favorite Payees')]/following::div[contains(@class,'flex flex-col tex')]/span[1]");
-    private static final By lblFDHeader = By.xpath("//span[text()='Fixed Deposits']");
+    private static final By lblOpenFDPopupHeader = By.xpath("//span[text()='Fixed Deposits']");
     private static final By lblOpenSavingsAccountHeader = By.xpath("//div[contains(text(),'Are you a resident of Sri Lanka?')]");
     private static final By btnClosePopup = By.xpath("//button[contains(text(),'Close')]");
+    private static final By btnDownload = By.xpath("//span[text()='Download']");
+    private static final By popUpPDFDownload = By.xpath("//div[text()='PDF downloaded successfully!']");
     private static final By btnAddBiller = By.xpath("//span[contains(text(),'Favorite Billers')]/parent::div//span[contains(text(),'Add to favorites')]");
     private static final By btnAddPayee = By.xpath("//span[contains(text(),'Favorite Payees')]/following::div[contains(@class,'grid grid-cols')]/div/span[contains(text(),'Add to favorites')]");
     private static final By lblFavouritePayeeWidgetRow = By.xpath("//span[contains(text(),'Favorite Payee')]/parent::div//div[contains(@class,'flex items')]//span[3]");
     private static final By btnDashboard = By.xpath("//button/a[contains(normalize-space(text()), 'Dashboard')]");
     private static final By lblFavouriteBillerWidgetRow = By.xpath("//span[contains(text(),'Favorite Billers')]/parent::div//div[contains(@class,'grid grid-cols')]/div");
-    private static final By btnFavouriteBillerWidgetAddToFav = By.xpath("//span[contains(text(),'Favorite Billers')]/parent::div//div[contains(@class,'grid grid-cols')]/div/span[contains(text(),'Add to favorites')]");
     private static final By btnConfirm = By.xpath("//button[contains(normalize-space(text()),'Confirm')]");
     private static final By lblRVTTransferTransactionDetailsPopup = By.xpath("//div[contains(text(),'Transaction Details')]");
     private static final By lblRVTPaymentDetailsPopup = By.xpath("//div[contains(text(),'Payment Details')]");
@@ -101,10 +104,6 @@ public class DashboardPage extends BasePage {
 
     private static By tfOTP(int Index) {
         return By.xpath("//input[@type='password'][" + Index + "]");
-    }
-
-    private static By lblAccountNumber(String accountNumber) {
-        return By.xpath("//div[contains(@class,' justify-center flex')]//div[contains(normalize-space(text()), '" + accountNumber + "')]");
     }
 
     private static By txtlogoutPopup(String popupText) {
@@ -129,10 +128,6 @@ public class DashboardPage extends BasePage {
 
     private static By lblRVTAccountName(int index) {
         return By.xpath("//div[contains(@class,'RecentVishwaTransactions_transactionCard')][" + index + "]//div[contains(@class,'transactionDetails')]/span[1]");
-    }
-
-    private static By lblRVTAccountNameOA(int index) {
-        return By.xpath("//div[contains(@class,'RecentVishwaTransactions_transactionCard')][" + index + "]//div[contains(@class,'transactionDetails')]/span[contains(text(),'Own Account')]");
     }
 
     private static By lblRVTAmtAndCurrency(int index) {
@@ -165,10 +160,6 @@ public class DashboardPage extends BasePage {
 
     private static By lblRVTPaymentDate(int index) {
         return By.xpath("//div[contains(@class,'RecentVishwaTransactions_transactionCard')][" + index + "]//div[contains(@class,'transactionDetails')]/span[contains(@class,'RecentVishwaTransactions')][2]");
-    }
-
-    private static By lblFavouritePayeeWidgetRow(int index) {
-        return By.xpath("//span[contains(text(),'Favorite Payees')]/following::div[contains(@class,'grid grid-cols')]/div");
     }
 
     private static By lblFavouritePayeeNickName(int index) {
@@ -237,10 +228,6 @@ public class DashboardPage extends BasePage {
 
     private static By lblRVTTransferRecordOAAmt(int index) {
         return By.xpath("(//span[contains(text(),'Own Account')]/ancestor::div[contains(@class,'cursor-pointer')]//div[contains(@class,'_amountDebit')])[" + index + "]");
-    }
-
-    private static By lblRVTTransferRecordOtherAcc(String otherAccount, int index) {
-        return By.xpath("(//span[contains(text(),'" + otherAccount + "')]/ancestor::div[contains(@class,'cursor-pointer')]//div[contains(@class,'transactionDetails')]])[" + index + "]");
     }
 
     private static By lblRVTTransferPopupRecords(int col, int row) {
@@ -439,6 +426,312 @@ public class DashboardPage extends BasePage {
             addToReport("Validate Savings Account At Dashboard failed", Status.FAIL);
             throw new RuntimeException("Error  - Validate Savings Account At Dashboard", e);
         }
+
+    }
+
+    /**
+     * Validate all account details in dashboard
+     *
+     * @param currencyType - currency type
+     * @param accountStat  - account status
+     */
+    public void validateAllAccountsAtDashboard(String[] currencyType, String[] accountStat) {
+
+        //Obtain the accounts record count
+        int recordCount = isElementsPresentBy(icnAccounts);
+        if (recordCount != 0) {
+
+            for (int inc = 0; inc < recordCount; inc++) {
+                //Navigate to next account
+                clickOnElement(btnNextArrow);
+
+                //waitForElementPresence(lblLoadingIcon);
+                waitForElementToBeInvisible(lblLoadingIcon, 15);
+
+                //Validate savings account details
+                String AccountNo = CommonUtils.removeSpaceCharacters(getTextFromElement(lblACNumber));
+                if (CommonUtils.containsNumericCharacters(AccountNo)) {
+                    addToReport("Successfully validated account number : '" + AccountNo + "'", Status.PASS, false);
+                } else {
+                    addToReport("Account number is not validated", Status.FAIL);
+                }
+
+                //Validate currency and balance
+                String[] CurrencyAndAmt = getTextFromElement(lblCurrencyAndAvailableBalance).split(" ");
+                if (CurrencyAndAmt[0].equals("0.00")) {
+                    addToReport("Successfully validated currency and amount as 0.00", Status.PASS, false);
+                } else if (Arrays.asList(currencyType).contains(CurrencyAndAmt[0]) &&
+                        CommonUtils.containsNumericCharacters(CurrencyAndAmt[1])) {
+                    addToReport("Successfully validated currency and amount " + CurrencyAndAmt[0] + CurrencyAndAmt[1], Status.PASS, false);
+                } else {
+                    addToReport("Currency and amount is not validated", Status.FAIL);
+                }
+
+                //Validate account status
+                String AccountStatus = getTextFromElement(lblAccountStatus);
+                if (Arrays.asList(accountStat).contains(AccountStatus)) {
+                    addToReport("Successfully validated account status : '" + AccountStatus + "'", Status.PASS, false);
+                } else {
+                    addToReport("Account status is not validated", Status.FAIL);
+                }
+                //Validate product name
+                String ProductName = getTextFromElement(lblAccountProductName);
+                if (!ProductName.isEmpty() &&
+                        CommonUtils.containsAlphaHypenAndSpaceCharacters(ProductName)) {
+                    addToReport("Successfully validated product name : '" + ProductName + "'", Status.PASS);
+                } else {
+                    addToReport("Product Name is not validated", Status.FAIL);
+                    throw new RuntimeException("Error - Product Name validation failed");
+                }
+
+            }
+
+        }
+
+    }
+
+    /**
+     * Validate all current account details in dashboard
+     *
+     * @param currencyType - currency type
+     * @param accountStat  - account status
+     */
+    public void validateAllCurrentAccountsAtDashboard(String[] currencyType, String[] accountStat) {
+
+        //click button accounts
+        if (isElementClickable(btnAccounts)) {
+            clickOnElement(btnAccounts);
+        } else {
+            addToReport("Unable to find accounts button", Status.FAIL);
+            throw new RuntimeException("Error - accounts button is not found");
+        }
+
+        //Obtain the accounts record count
+        int recordCount = isElementsPresentBy(icnAccounts);
+        if (recordCount != 0) {
+
+            for (int inc = 0; inc < recordCount; inc++) {
+
+                if (isElementPresentBy(lblCurrentAccount)) {
+                    if (isElementPresentBy(lblCurrentPrimaryStatus)) {
+                        addToReport("Successfully validated primary status", Status.PASS, false);
+
+                        //Validate account status
+                        String AccountStatus = getTextFromElement(lblAccountStat);
+                        if (Arrays.asList(accountStat).contains(AccountStatus)) {
+                            addToReport("Successfully validated account status : '" + AccountStatus + "' for record :" + inc, Status.PASS, false);
+                        } else {
+                            addToReport("Account status is not validated", Status.FAIL);
+                        }
+                    } else {
+
+                        //Validate account status
+                        String AccountStatus = getTextFromElement(lblAccountStatus);
+                        if (Arrays.asList(accountStat).contains(AccountStatus)) {
+                            addToReport("Successfully validated account status : '" + AccountStatus + "' for record :" + inc, Status.PASS, false);
+                        } else {
+                            addToReport("Account status is not validated", Status.FAIL);
+                        }
+                    }
+
+                    //Validate current account details
+                    String AccountNo = CommonUtils.removeSpaceCharacters(getTextFromElement(lblACNumber));
+                    if (CommonUtils.containsNumericCharacters(AccountNo)) {
+                        addToReport("Successfully validated account number : '" + AccountNo + "' for record :" + inc, Status.PASS, false);
+                    } else {
+                        addToReport("Account number is not validated", Status.FAIL);
+                    }
+
+                    //Validate currency and balance
+                    String[] CurrencyAndAmt = getTextFromElement(lblCurrencyAndAvailableBalance).split(" ");
+                    if (CurrencyAndAmt[0].equals("0.00")) {
+                        addToReport("Successfully validated currency and amount as 0.00", Status.PASS, false);
+                    } else if (Arrays.asList(currencyType).contains(CurrencyAndAmt[0]) &&
+                            CommonUtils.containsNumericCharacters(CurrencyAndAmt[1])) {
+                        addToReport("Successfully validated currency and amount " + CurrencyAndAmt[0] + CurrencyAndAmt[1] + " for record :" + inc, Status.PASS, false);
+                    } else {
+                        addToReport("Currency and amount is not validated", Status.FAIL);
+                    }
+
+                    //Validate product name
+                    String ProductName = getTextFromElement(lblAccountProductName);
+                    if (!ProductName.isEmpty() &&
+                            CommonUtils.containsAlphaHypenAndSpaceCharacters(ProductName)) {
+                        addToReport("Successfully validated product name : '" + ProductName + "' for record :" + inc, Status.PASS, true);
+                    } else {
+                        addToReport("Product Name is not validated", Status.FAIL);
+                    }
+                }
+                //Navigate to next account
+                clickOnElement(btnNextArrow);
+
+                //waitForElementPresence(lblLoadingIcon);
+                waitForElementToBeInvisible(lblLoadingIcon, 15);
+            }
+        }
+    }
+
+
+    /**
+     * Validate all fd account details in dashboard
+     *
+     * @param currencyType - currency type
+     */
+    public void validateAllFDAccountsAtDashboard(String[] currencyType) {
+
+        clickOnElement(btnDeposits);
+
+        //Obtain the accounts record count
+        int recordCount = isElementsPresentBy(icnAccounts);
+        if (recordCount != 0) {
+            boolean flag = true;
+
+            for (int inc = 0; inc < recordCount; inc++) {
+
+                //Validate deposit account details
+                String AccountNo = CommonUtils.removeSpaceCharacters(getTextFromElement(lblACNumber));
+                if (CommonUtils.containsNumericCharacters(AccountNo)) {
+                    addToReport("Successfully validated deposit account number : '" + AccountNo + "'", Status.PASS, false);
+                } else {
+                    addToReport("Deposit account number is not validated", Status.FAIL);
+                    flag = false;
+                }
+
+                //Validate currency and balance
+                String[] CurrencyAndAmt = getTextFromElement(lblCurrencyAndAvailableBalance).split(" ");
+                if (CurrencyAndAmt[0].equals("0.00")) {
+                    addToReport("Successfully validated currency and amount as 0.00", Status.PASS, false);
+                } else if (Arrays.asList(currencyType).contains(CurrencyAndAmt[0]) &&
+                        CommonUtils.containsNumericCharacters(CurrencyAndAmt[1])) {
+                    addToReport("Successfully validated currency and amount " + CurrencyAndAmt[0] + CurrencyAndAmt[1], Status.PASS, false);
+                } else {
+                    addToReport("Currency and amount is not validated", Status.FAIL);
+                    flag = false;
+                }
+
+                //Validate Maturity Amount
+                String FDMaturityValue = getTextFromElement(lblFDMaturityValue);
+                if (CommonUtils.containsNumericCharacters(FDMaturityValue)) {
+                    addToReport("Successfully validated maturity amount : '" + FDMaturityValue + "'", Status.PASS, false);
+                } else {
+                    addToReport("Maturity amount : '" + FDMaturityValue + "' is not validated", Status.FAIL);
+                    flag = false;
+                }
+
+                //Validate Maturity Date
+                String FDMaturityDate = getTextFromElement(lblFDMaturityDate);
+                if (CommonUtils.containsValuesOnDate(FDMaturityDate)) {
+                    addToReport("Successfully validated maturity date : '" + FDMaturityDate, Status.PASS, false);
+                } else {
+                    addToReport("Maturity date : '" + FDMaturityDate + "' is not validated", Status.FAIL);
+                    flag = false;
+                }
+
+                //Validate Interest Rate
+                String InterestRate = getTextFromElement(lblFDInterestRate);
+                if (CommonUtils.containsAlphNumAndSpecialCharacters(InterestRate)) {
+                    addToReport("Successfully validated interest rate : '" + InterestRate + "'", Status.PASS, false);
+                } else {
+                    addToReport("Interest rate : '" + InterestRate + "' is not validated", Status.FAIL);
+                    flag = false;
+                }
+                if (flag) {
+                    addToReport("Successfully validated fixed deposit : '" + AccountNo, Status.PASS, true);
+                } else {
+                    flag = true;
+                }
+
+                //Navigate to next account
+                clickOnElement(btnNextArrow);
+
+                //waitForElementPresence(lblLoadingIcon);
+                waitForElementToBeInvisible(lblLoadingIcon, 15);
+
+            }
+
+        }
+
+    }
+
+    /**
+     * Validate all loan account details in dashboard
+     *
+     * @param currencyType - currency type
+     */
+    public void validateAllLoanAccountsAtDashboard(String[] currencyType) {
+
+        //click button Loans
+        if (isElementClickable(btnLoans)) {
+            clickOnElement(btnLoans);
+        } else {
+            addToReport("Unable to find loans button", Status.FAIL);
+            throw new RuntimeException("Error - Loans button is not found");
+        }
+
+        try {
+            //Obtain the accounts record count
+            int recordCount = isElementsPresentBy(icnAccounts);
+            if (recordCount != 0) {
+
+                for (int inc = 0; inc < recordCount; inc++) {
+                    //Navigate to next account
+                    clickOnElement(btnNextArrow);
+
+                    //wait for the loading icon to diminish
+                    waitForLoadingToBeInvisible();
+                    //waitForElementPresence(lblLoadingIcon);
+                    waitForElementToBeInvisible(lblLoadingIcon, 15);
+
+                    //Validate loan account number
+                    String[] LoanAccountNo = CommonUtils.splitText(getTextFromElement(lblLoanACNumber), "\n");
+                    if (CommonUtils.containsNumericCharacters(LoanAccountNo[0])) {
+                        addToReport("Successfully validated loan account number : '" + LoanAccountNo[0] + "'", Status.PASS, false);
+                    } else {
+                        addToReport("Loan Account number : '" + LoanAccountNo[0] + "' is not validated", Status.FAIL);
+                    }
+
+                    //Validate loan grant
+                    String[] Grant = CommonUtils.splitText(getTextFromElement(lblLoanGrantAmt), " ");
+                    if (Arrays.asList(currencyType).contains(Grant[0]) &&
+                            CommonUtils.containsNumericCharacters(Grant[1])) {
+                        addToReport("Successfully validated grant : '" + Grant[0] + Grant[1] + "'", Status.PASS, false);
+                    } else {
+                        addToReport("Grant amt : '" + Grant[1] + "' is not validated", Status.FAIL);
+                    }
+
+                    //Validate Outstanding Amount
+                    String[] CurrOutstanding = CommonUtils.splitText(getTextFromElement(lblLoanCurrOutstanding), " ");
+                    if (Arrays.asList(currencyType).contains(CurrOutstanding[0]) &&
+                            CommonUtils.containsNumericCharacters(CurrOutstanding[1])) {
+                        addToReport("Successfully validated outstanding amount : '" + CurrOutstanding[0] + CurrOutstanding[1] + "'", Status.PASS, false);
+                    } else {
+                        addToReport("Outstanding amount : '" + CurrOutstanding[1] + "' is not validated", Status.FAIL);
+                    }
+
+                    //Validate Loan period
+                    String[] LoanPeriod = CommonUtils.splitText(getTextFromElement(lblLoanPeriod), " ");
+                    if (CommonUtils.containsNumericCharacters(LoanPeriod[0])) {
+                        addToReport("Successfully validated loan period : '" + LoanPeriod[0] + "'", Status.PASS, false);
+                    } else {
+                        addToReport("Loan period : '" + LoanPeriod[0] + "' is not validated", Status.FAIL);
+                    }
+
+                    //Validate Interest Rate
+                    String InterestRate = getTextFromElement(lblLoanInterestRate);
+                    if (CommonUtils.containsAlphNumAndSpecialCharacters(InterestRate)) {
+                        addToReport("Successfully validated interest rate : '" + InterestRate + "'", Status.PASS, false);
+                    } else {
+                        addToReport("Interest rate : '" + InterestRate + "' is not validated", Status.FAIL);
+                    }
+                    addToReport("Loan account validations complete for account " + inc, Status.PASS, true);
+                }
+
+            }
+        } catch (Exception e) {
+            addToReport("Loan accounts key points validation failed", Status.FAIL);
+            throw new RuntimeException("Failed - Loan accounts key points validation failed", e);
+        }
+
     }
 
     /**
@@ -470,7 +763,6 @@ public class DashboardPage extends BasePage {
                 addToReport("Successfully validated fd account number : '" + FDAccountNo + "'", Status.PASS, false);
             } else {
                 addToReport("FD Account number : '" + FDAccountNo + "' is not validated", Status.FAIL);
-                throw new RuntimeException("Error - FD Account number validation failed");
             }
             //Validate currency and balance
             String CurrencyAndAvailableBalance = getTextFromElement(lblCurrencyAndAvailableBalance);
@@ -478,7 +770,6 @@ public class DashboardPage extends BasePage {
                 addToReport("Successfully validated currency and amount : '" + CurrencyAndAvailableBalance + "'", Status.PASS, false);
             } else {
                 addToReport("Currency and amount : '" + CurrencyAndAvailableBalance + "' is not validated", Status.FAIL);
-                throw new RuntimeException("Error - Currency and amount validation failed");
             }
             //Validate Maturity Amount
             String FDMaturityValue = getTextFromElement(lblFDMaturityValue);
@@ -486,7 +777,6 @@ public class DashboardPage extends BasePage {
                 addToReport("Successfully validated maturity amount : '" + FDMaturityValue + "'", Status.PASS, false);
             } else {
                 addToReport("Maturity amount : '" + FDMaturityValue + "' is not validated", Status.FAIL);
-                throw new RuntimeException("Error - Maturity amount validation failed");
             }
             //Validate Maturity Date
             String[] FDMaturityDate = CommonUtils.splitText(getTextFromElement(lblFDMaturityDate), " ");
@@ -494,15 +784,13 @@ public class DashboardPage extends BasePage {
                 addToReport("Successfully validated maturity date : '" + FDMaturityDate[0] + "'", Status.PASS, false);
             } else {
                 addToReport("Maturity date : '" + FDMaturityDate[0] + "' is not validated", Status.FAIL);
-                throw new RuntimeException("Error - Maturity date validation failed");
             }
             //Validate Interest Rate
             String InterestRate = getTextFromElement(lblFDInterestRate);
             if (InterestRate.equalsIgnoreCase(interestRate)) {
-                addToReport("Successfully validated interest rate : '" + InterestRate + "'", Status.PASS);
+                addToReport("Successfully validated interest rate : '" + InterestRate + "'", Status.PASS, true);
             } else {
                 addToReport("Interest rate : '" + InterestRate + "' is not validated", Status.FAIL);
-                throw new RuntimeException("Error - Interest rate validation failed");
             }
 
         } catch (Exception e) {
@@ -712,8 +1000,7 @@ public class DashboardPage extends BasePage {
                 addToReport("Open new fixed deposit page header is not visible.", Status.FAIL);
                 throw new RuntimeException("Error - Open new fixed deposit page header is not visible.");
             }
-            clickOnElement(btnClosePopup);
-            waitForElementToBeInvisible(btnClosePopup, 5);
+
             clickOnElement(btnMenuOptions(btnDashboard));
             waitForElementToBeInvisible(lblLoadingIcon, 5);
 
@@ -1065,6 +1352,33 @@ public class DashboardPage extends BasePage {
     }
 
     /**
+     * Select quick actions
+     *
+     * @param quickActionButton - quick action button name
+     */
+    public void selectQuickActions(String quickActionButton) {
+
+        switch (quickActionButton.toLowerCase()) {
+            case "bill payment":
+                clickOnElement(btnQActionsBillPayment);
+                waitForElementToBeInvisible(btnQActionsBillPayment, 10);
+                break;
+            case "send money":
+                clickOnElement(btnQActionsSendMoney);
+                waitForElementToBeInvisible(btnQActionsSendMoney, 10);
+                break;
+            case "mobile cash":
+                clickOnElement(btnQActionsMobileCash);
+                waitForElementToBeInvisible(btnQActionsMobileCash, 10);
+                break;
+            default:
+                throw new IllegalArgumentException("Unable to click on quick action button :" + quickActionButton);
+        }
+
+
+    }
+
+    /**
      * Navigate back to favourite payee
      */
     public void navigateToAddFavouritePayee() {
@@ -1335,7 +1649,7 @@ public class DashboardPage extends BasePage {
      */
     public void validateFunctionalityOfTopBarIconsInDashboard(String btnNameSettings, String btnNameLogout, String otp, String popupText, String btnBack) {
         try {
-//            Wait for advertisement image to appear
+            //Wait for advertisement image to appear
             waitForElementPresence(imgAdvertisement, 30);
 
             /*Add financial calandar once it's deployed*/
@@ -2088,11 +2402,12 @@ public class DashboardPage extends BasePage {
 
     /**
      * Validate top bar functions in dashboard
-     * @param urlDashboard - URL prefix of dashboard
-     * @param urlMyAccount - URL prefix of my account
-     * @param urlManageSchedule - URL prefix of manage schedule
-     * @param btnNameMyAccounts - button name my accounts
-     * @param btnNameManageSchedule - button name manage schedules
+     *
+     * @param urlDashboard              - URL prefix of dashboard
+     * @param urlMyAccount              - URL prefix of my account
+     * @param urlManageSchedule         - URL prefix of manage schedule
+     * @param btnNameMyAccounts         - button name my accounts
+     * @param btnNameManageSchedule     - button name manage schedules
      * @param lblNameScheduleManagement - label name schedule management
      */
     public void validateTopBarFunctions(String urlDashboard, String urlMyAccount, String urlManageSchedule, String btnNameMyAccounts, String btnNameManageSchedule, String lblNameScheduleManagement) {
@@ -2166,12 +2481,13 @@ public class DashboardPage extends BasePage {
 
     /**
      * Validate account portfolio in dashboard
-     * @param imgLocation - location of the image for validation
-     * @param userName - specific user
+     *
+     * @param imgLocation    - location of the image for validation
+     * @param userName       - specific user
      * @param thresholdValue - threshold value for image comparison
-     * @param currencyType - currency type
+     * @param currencyType   - currency type
      */
-    public void validateAccountPortfolio(String imgLocation, String userName,String thresholdValue,String[] currencyType) {
+    public void validateAccountPortfolio(String imgLocation, String userName, String thresholdValue, String[] currencyType) {
         try {
 
             //Wait for loading icon to be invisible
@@ -2186,10 +2502,10 @@ public class DashboardPage extends BasePage {
                 throw new RuntimeException("Error - Dashboard element account portfolio validation failed");
             }
 
-            if (userName.equals("settlement")){
-                if (compareImage(imgAccountPortfolio, imgLocation, Integer.parseInt(thresholdValue))){
+            if (userName.equals("settlement")) {
+                if (compareImage(imgAccountPortfolio, imgLocation, Integer.parseInt(thresholdValue))) {
                     addToReport("Dashboard page account portfolio pie chart validated successfully", Status.PASS, true);
-                }else {
+                } else {
                     addToReport("Unable to find dashboard page element account portfolio pie chart " + lblAccountsOrCards, Status.FAIL);
                     throw new RuntimeException("Error - Dashboard element element element account portfolio pie chart validation failed");
                 }
@@ -2200,7 +2516,7 @@ public class DashboardPage extends BasePage {
                 addToReport(" Recent vishwa transactions displayed no records", Status.FAIL);
                 throw new RuntimeException("Error - Incorrect number of Recent vishwa transactions displayed");
             }
-            for (int row=1;row<=recordCount;row++) {
+            for (int row = 1; row <= recordCount; row++) {
                 String currencyValue = getTextFromElement(lblAccountPortfolioValues(row));
                 //Validate currency and amount
                 String[] CurrencyAndAmt = currencyValue.split(" ");
@@ -2210,20 +2526,20 @@ public class DashboardPage extends BasePage {
                 Number number = format.parse(CurrencyAndAmt[1]);
                 double value = number.doubleValue();
 
-                if (value < 0){
-                if (!currencyValue.isEmpty() &&
-                        Arrays.asList(currencyType).contains(CurrencyAndAmt[0]) &&
-                        CommonUtils.containsNumericCharactersWithNegativeValues(CurrencyAndAmt[1])) {
-                    addToReport(" Account portfolio record number : " + row + " where account value : '" + currencyValue , Status.PASS, false);
+                if (value < 0) {
+                    if (!currencyValue.isEmpty() &&
+                            Arrays.asList(currencyType).contains(CurrencyAndAmt[0]) &&
+                            CommonUtils.containsNumericCharactersWithNegativeValues(CurrencyAndAmt[1])) {
+                        addToReport(" Account portfolio record number : " + row + " where account value : '" + currencyValue, Status.PASS, false);
+                    } else {
+                        addToReport(" Failed to validate account portfolio record", Status.FAIL);
+                        throw new RuntimeException("Error - Failed to validate account portfolio record");
+                    }
                 } else {
-                    addToReport(" Failed to validate account portfolio record", Status.FAIL);
-                    throw new RuntimeException("Error - Failed to validate account portfolio record");
-                }
-                }else {
                     if (!currencyValue.isEmpty() &&
                             Arrays.asList(currencyType).contains(CurrencyAndAmt[0]) &&
                             CommonUtils.containsNumericCharacters(CurrencyAndAmt[1])) {
-                        addToReport(" Account portfolio record number : " + row + " where account value : '" + currencyValue , Status.PASS, false);
+                        addToReport(" Account portfolio record number : " + row + " where account value : '" + currencyValue, Status.PASS, false);
                     } else {
                         addToReport(" Failed to validate account portfolio record", Status.FAIL);
                         throw new RuntimeException("Error - Failed to validate account portfolio record");
@@ -2237,5 +2553,367 @@ public class DashboardPage extends BasePage {
 
     }
 
+    /**
+     * Download transfer details and validate the downloaded file vs record
+     * @param downloadDirectory - Directory path of downloads
+     *
+     */
+    public void validateRVTDownloadedRecordTransfer(String downloadDirectory) {
+        //Transfer record
+
+        //wait for the loading icon to diminish
+        waitForLoadingToBeInvisible();
+        waitForElementPresence(lblLoadingIcon);
+        waitForElementToBeInvisible(lblLoadingIcon, 10);
+
+        //select transfer tab
+        clickOnElement(btnTransfer);
+
+        //Obtain the record count
+        int recCount = isElementsPresentBy(lblRVTTransferRecord);
+        if (recCount != 10) {
+            addToReport(" Recent vishwa transactions displayed is not 10", Status.INFO);
+        }
+        //Select the record for validation
+        clickOnElement(lblRVTTransferRecordOtherAccName(getTextFromElement(lblRVTAccountName(1)), 1));
+
+        //validate popup
+        boolean popup = isElementPresentBy(lblRVTTransferTransactionDetailsPopup);
+        if (popup) {
+            addToReport("Transfer transaction details popup is visible", Status.PASS);
+        } else {
+            addToReport("Transfer transaction details popup is not visible", Status.FAIL);
+            throw new RuntimeException("Error - Transfer transaction details popup is not visible");
+        }
+
+        //Store field values to local variables for validation
+        String Refer = getTextFromElement(lblRVTTransferPopupRecords(1, 1));
+        String FromAccount = getTextFromElement(lblRVTTransferPopupRecords(2, 1));
+        String ToAccount = getTextFromElement(lblRVTTransferPopupRecords(2, 2));
+        String TransactionCategory = getTextFromElement(lblRVTTransferPopupRecords(2, 3));
+        String status = getTextFromElement(lblRVTTransferPopupRecords(2, 4));
+        String TransactionTime = getTextFromElement(lblRVTTransferPopupRecords(2, 5));
+        String Remarks = getTextFromElement(lblRVTTransferPopupRecords(2, 6));
+        String Amount = getTextFromElement(lblRVTTransferPopupRecords(2, 8));
+        String Bank = getTextFromElement(lblRVTTransferPopupRecords(2, 7));
+        String[] ref = Refer.split(" ");
+
+        // Validate the content based on the extracted values from dashboard vs downloaded pdf
+        clickOnElement(btnDownload);
+        waitForElementToBeInvisible(popUpPDFDownload, 20);
+        waitFor(5);
+        // Get the latest downloaded file
+        File latestFile = getLatestDownloadedFile(downloadDirectory);
+
+        try {
+            if (latestFile != null) {
+                System.out.println("Latest Downloaded PDF name: " + latestFile.getName());
+
+                // Extract text from the PDF
+                String extractedText = extractTextFromPDF(latestFile.getAbsolutePath()).replace("/n", "");
+
+                addToReport(" Recent vishwa transactions transfers downloaded record : '" + extractedText, Status.INFO, false);
+                System.out.println("Latest Downloaded PDF: " + extractedText);
+
+                //validate status
+                String[] stat = status.split(" ");
+                if (extractedText.contains(stat[1])) {
+                    addToReport(" Validated recent vishwa transactions status : '" + status + "' is validated from downloaded record", Status.PASS, false);
+                } else {
+                    addToReport(" Failed to validate recent vishwa transactions status : '" + status + "' is validated from downloaded record", Status.FAIL, false);
+                }
+
+                //Validate currency and amount
+                String[] CurrencyAndAmt = Amount.split(" ");
+                if (extractedText.contains(CurrencyAndAmt[0]) &&
+                        extractedText.contains(CurrencyAndAmt[1])) {
+                    addToReport(" Validated recent vishwa transactions currency and amount : '" + Amount + "' is validated from downloaded record", Status.PASS, false);
+                } else {
+                    addToReport(" Failed to validate Recent vishwa transactions currency and amount : '" + Amount + " from downloaded record", Status.FAIL);
+                }
+
+                //Validate reference
+                if (extractedText.contains(ref[2])) {
+                    addToReport(" Validated recent vishwa transactions reference : '" + ref[2] + "' is validated from downloaded record", Status.PASS, false);
+                } else {
+                    addToReport(" Failed to validate recent vishwa transactions reference : '" + ref[2] + "' is validated from downloaded record", Status.FAIL, false);
+                }
+
+                //Validate date and time
+                String transDateTime = CommonUtils.convertDateTime(TransactionTime);
+                if (extractedText.contains(transDateTime)) {
+                    addToReport(" Validated recent vishwa transactions date : '" + transDateTime + "' is validated from downloaded record", Status.PASS, false);
+                } else {
+                    addToReport(" Failed to validate recent vishwa transactions date : '" + transDateTime + "' is validated from downloaded record", Status.FAIL, false);
+                }
+
+                //Validate the from account number
+                if (extractedText.contains(CommonUtils.suffix(FromAccount, 4))) {
+                    addToReport(" Recent vishwa transactions transfers from account : '" + FromAccount + "' is validated from downloaded record as " + CommonUtils.suffix(FromAccount, 4), Status.PASS, false);
+                } else {
+                    addToReport(" Failed to validate Recent vishwa transactions from account : '" + FromAccount + " from downloaded record as " + CommonUtils.suffix(FromAccount, 4), Status.FAIL);
+                }
+
+                //validate to account
+                if (extractedText.contains(ToAccount)) {
+                    addToReport(" Validated recent vishwa transactions to account : '" + ToAccount + "' is validated from downloaded record ", Status.PASS, false);
+                } else {
+                    addToReport(" Failed to validate recent vishwa transactions to account : '" + ToAccount + "' is validated from downloaded record ", Status.FAIL, false);
+                }
+
+                //validate remark
+                if (extractedText.contains(Remarks)) {
+                    addToReport(" Validated recent vishwa transactions remark : '" + Remarks + "' is validated from downloaded record", Status.PASS, false);
+                } else {
+                    addToReport(" Failed to validate recent vishwa transactions remark : '" + Remarks + " from downloaded record", Status.FAIL, false);
+                }
+
+                //validate bank
+                String[] Bnk = Bank.split("-");
+                if (extractedText.contains(Bnk[0])) {
+                    addToReport(" Validated recent vishwa transactions bank : '" + Bank + "' is validated from downloaded record", Status.PASS, false);
+                } else {
+                    addToReport(" Failed to validate recent vishwa transactions bank : " + Bank + " from downloaded record", Status.FAIL, false);
+                }
+            } else {
+                addToReport("Recent vishawa transfer failed to download PDF", Status.FAIL);
+            }
+
+            clickOnElement(btnClosePopup);
+
+        } catch (Exception e) {
+            addToReport("Recent vishawa transfer downloaded PDF validation of transaction failed", Status.FAIL);
+            throw new RuntimeException("Error - Validation of transfer under recent vishawa transactions failed", e);
+        }
+    }
+
+    /**
+     * Download payment details and validate the downloaded file vs record
+     * @param downloadDirectory - Directory path of downloads
+     */
+    public void validateRVTDownloadedRecordPayment(String downloadDirectory) {
+        //Payment record
+
+        //wait for the loading icon to diminish
+        waitForLoadingToBeInvisible();
+        waitForElementPresence(lblLoadingIcon);
+        waitForElementToBeInvisible(lblLoadingIcon, 10);
+
+        //select transfer tab
+        clickOnElement(btnPayment);
+
+        //Obtain the record count
+        int recCount = isElementsPresentBy(lblRVTPaymentsRecords);
+        if (recCount != 10) {
+            addToReport(" Recent vishwa transactions displayed is not 10", Status.INFO);
+        }
+        //Select the record for validation
+        clickOnElement(lblRVTPaymentAccountName(1));
+
+        //validate popup
+        boolean popup = isElementPresentBy(lblRVTPaymentDetailsPopup);
+        if (popup) {
+            addToReport("Transfer transaction details popup is visible", Status.PASS);
+        } else {
+            addToReport("Transfer transaction details popup is not visible", Status.FAIL);
+            throw new RuntimeException("Error - Transfer transaction details popup is not visible");
+        }
+
+        //Store field values to local variables for validation
+        String Refer = getTextFromElement(lblRVTTransferPopupRecords(1, 1));
+        String FromAccount = getTextFromElement(lblRVTTransferPopupRecords(2, 1));
+        String ToAccount = getTextFromElement(lblRVTTransferPopupRecords(2, 2));
+        String status = getTextFromElement(lblRVTTransferPopupRecords(2, 3));
+        String TransactionTime = getTextFromElement(lblRVTTransferPopupRecords(2, 4));
+        String Amount = getTextFromElement(lblRVTTransferPopupRecords(2, 5));
+        String[] ref = Refer.split(" ");
+
+        // Validate the content based on the extracted values from dashboard vs downloaded pdf
+        clickOnElement(btnDownload);
+        waitForElementToBeInvisible(popUpPDFDownload, 20);
+        waitFor(10);
+        try {
+            // Get the latest downloaded file
+            File latestFile = getLatestDownloadedFile(downloadDirectory);
+
+            if (latestFile != null) {
+                System.out.println("Latest Downloaded PDF name: " + latestFile.getName());
+
+                // Extract text from the PDF
+                String extractedText = extractTextFromPDF(latestFile.getAbsolutePath());
+                waitFor(5);
+                addToReport(" Recent vishwa transactions payments downloaded record : '" + extractedText, Status.INFO, false);
+                System.out.println("Latest Downloaded PDF: " + extractedText);
+
+                // Validate the content based on the extracted values from dashboard
+                //validate status
+                String[] stat = status.split(" ");
+                if (extractedText.contains(stat[1])) {
+                    addToReport(" Validated recent vishwa payment status : '" + status + "' from downloaded record", Status.PASS, false);
+                } else {
+                    addToReport(" Failed to validate recent vishwa payment status : '" + status + "' from downloaded record", Status.FAIL, false);
+                }
+
+                //Validate currency and amount
+                String[] CurrencyAndAmt = Amount.split(" ");
+                if (extractedText.contains(CurrencyAndAmt[0]) &&
+                        extractedText.contains(CurrencyAndAmt[1])) {
+                    addToReport(" Validated recent vishwa payment currency and amount : '" + Amount + "' from downloaded record", Status.PASS, false);
+                } else {
+                    addToReport(" Failed to validate Recent vishwa payment currency and amount : '" + Amount + "' from downloaded record", Status.FAIL);
+                }
+
+                //Validate reference
+                if (extractedText.contains(ref[2])) {
+                    addToReport(" Validated recent vishwa payment reference : '" + ref[2] + "' from downloaded record", Status.PASS, false);
+                } else {
+                    addToReport(" Failed to validate recent vishwa payment reference : '" + ref[2] + "' from downloaded record", Status.FAIL, false);
+                }
+
+                //Validate date and time
+                String transDateTime = CommonUtils.convertDateTime(TransactionTime);
+                if (extractedText.contains(transDateTime)) {
+                    addToReport(" Validated recent vishwa payment date : '" + transDateTime + "' from downloaded record", Status.PASS, false);
+                } else {
+                    addToReport(" Failed to validate recent vishwa payment date : '" + transDateTime + "' from downloaded record", Status.FAIL, false);
+                }
+
+                //Validate the from account number
+                if (extractedText.contains(CommonUtils.suffix(FromAccount, 4))) {
+                    addToReport(" Recent vishwa transactions payment from account  : '" + FromAccount + "' is validated from downloaded record", Status.PASS, false);
+                } else {
+                    addToReport(" Failed to validate Recent vishwa transactions from account from downloaded record '" + FromAccount, Status.FAIL);
+                }
+
+                //validate to account
+                if (extractedText.contains(ToAccount)) {
+                    addToReport(" Validated recent vishwa payment to account : '" + ToAccount + "' from downloaded record", Status.PASS, false);
+                } else {
+                    addToReport(" Failed to validate recent vishwa payment to account : '" + ToAccount + "' from downloaded record", Status.FAIL, false);
+                }
+            } else {
+                addToReport("Recent vishawa transfer failed to download PDF", Status.FAIL);
+            }
+            clickOnElement(btnClosePopup);
+
+        } catch (Exception e) {
+            addToReport("Recent vishawa transactions downloaded PDF validation of payment failed", Status.FAIL);
+            throw new RuntimeException("Error - Validation of transfer under recent vishawa payment failed", e);
+        }
+    }
+
+    /**
+     * Download payment details and validate the downloaded file vs record
+     * @param downloadDirectory - Directory path of downloads
+     *
+     */
+    public void validateRVTDownloadedRecordMobileCash(String downloadDirectory) {
+        //mobile cash record
+
+        //wait for the loading icon to diminish
+        waitForLoadingToBeInvisible();
+        waitForElementPresence(lblLoadingIcon);
+        waitForElementToBeInvisible(lblLoadingIcon, 10);
+
+        //select transfer tab
+        clickOnElement(btnMobileCash);
+
+        //Obtain the record count
+        int recCount = isElementsPresentBy(lblRVTPaymentsRecords);
+        if (recCount != 10) {
+            addToReport(" Recent vishwa transactions displayed is not 10", Status.INFO);
+        }
+        //Select the first record for validation
+        clickOnElement(lblRVTMobileCAccountName(1));
+
+        //validate popup
+        boolean popup = isElementPresentBy(lblRVTTransferTransactionDetailsPopup);
+        if (popup) {
+            addToReport("Mobile cash transaction details popup is visible", Status.PASS);
+        } else {
+            addToReport("Mobile cash details popup is not visible", Status.FAIL);
+            throw new RuntimeException("Error - Mobile cash details popup is not visible");
+        }
+
+        //Store field values to local variables for validation
+        String Refer = getTextFromElement(lblRVTTransferPopupRecords(1, 1));
+        String FromAccount = getTextFromElement(lblRVTTransferPopupRecords(2, 1));
+        String ToAccount = getTextFromElement(lblRVTTransferPopupRecords(2, 2));
+        String status = getTextFromElement(lblRVTTransferPopupRecords(2, 3));
+        String TransactionTime = getTextFromElement(lblRVTTransferPopupRecords(2, 4));
+        String Amount = getTextFromElement(lblRVTTransferPopupRecords(2, 5));
+        String[] ref = Refer.split(" ");
+
+        // Validate the content based on the extracted values from dashboard vs downloaded pdf
+        clickOnElement(btnDownload);
+        waitForElementToBeInvisible(popUpPDFDownload, 20);
+        waitFor(10);
+        try {
+            // Get the latest downloaded file
+            File latestFile = getLatestDownloadedFile(downloadDirectory);
+
+            if (latestFile != null) {
+                System.out.println("Latest Downloaded PDF name: " + latestFile.getName());
+
+                // Extract text from the PDF
+                String extractedText = extractTextFromPDF(latestFile.getAbsolutePath());
+                waitFor(5);
+                addToReport(" Recent vishwa transactions mobile cash downloaded record : '" + extractedText, Status.INFO, false);
+                System.out.println("Latest Downloaded PDF: " + extractedText);
+
+                // Validate the content based on the extracted values from dashboard
+                //Validate reference
+                if (extractedText.contains(ref[2])) {
+                    addToReport(" Validated recent vishwa mobile cash reference : '" + ref[2] + " for downloaded record ", Status.PASS, false);
+                } else {
+                    addToReport(" Failed to validate recent vishwa mobile cash reference : '" + ref[2] + " for downloaded record ", Status.FAIL, false);
+                }
+
+                //Validate the from account
+                if (extractedText.contains(CommonUtils.suffix(FromAccount, 4))) {
+                    addToReport(" Recent vishwa transactions mobile cash from account : '" + FromAccount + " for downloaded record ", Status.PASS, false);
+                } else {
+                    addToReport(" Failed to validate Recent vishwa transactions mobile cash from account : '" + FromAccount + " for downloaded record ", Status.FAIL);
+                }
+
+                //Validate to account
+                if (extractedText.contains(ToAccount)) {
+                    addToReport(" Validated recent vishwa transactions to account : '" + ToAccount + " for downloaded record ", Status.PASS, false);
+                } else {
+                    addToReport(" Failed to validate recent vishwa transactions to account : '" + ToAccount + " for downloaded record ", Status.FAIL, false);
+                }
+
+                //Validate status
+                String[] stat = status.split(" ");
+                if (extractedText.contains(stat[1])) {
+                    addToReport(" Validated recent vishwa transactions status : '" + status + " for downloaded record ", Status.PASS, false);
+                } else {
+                    addToReport(" Failed to validate recent vishwa transactions status : '" + status + " for downloaded record ", Status.FAIL, false);
+                }
+
+                //Validate date and time
+                String transDateTime = CommonUtils.convertDateTime(TransactionTime);
+                if (extractedText.contains(transDateTime)) {
+                    addToReport(" Validated recent vishwa transactions date : '" + TransactionTime + " for downloaded record ", Status.PASS, false);
+                } else {
+                    addToReport(" Failed to validate recent vishwa transactions date : '" + TransactionTime + " for downloaded record ", Status.FAIL, false);
+                }
+
+                //Validate currency and amount
+                String[] CurrencyAndAmt = Amount.split(" ");
+                if (extractedText.contains(CurrencyAndAmt[0]) && extractedText.contains(CurrencyAndAmt[1])) {
+                    addToReport(" Validated recent vishwa transactions currency and amount : '" + Amount + " for downloaded record ", Status.PASS, false);
+                } else {
+                    addToReport(" Failed to validate Recent vishwa transactions currency and amount : '" + Amount + " for downloaded record ", Status.FAIL);
+                }
+                clickOnElement(btnClosePopup);
+            } else {
+                addToReport("Recent vishawa transfer failed to download PDF", Status.FAIL);
+            }
+        } catch (Exception e) {
+            addToReport("Recent vishawa transactions downloaded PDF validation of mobile cash failed", Status.FAIL);
+            throw new RuntimeException("Error - Validation of transfer under recent vishawa mobile cash failed", e);
+        }
+    }
 
 }

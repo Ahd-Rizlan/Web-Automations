@@ -34,6 +34,7 @@ public class DashboardConstants {
 
     //---------------CURRENCY_ABBREVIATIONS_VALUES-------------------
     public static final String[] CURRENCY_VALUES = {"LKR", "USD", "INR"};
+    public static final String[] STATUS_VALUES = {"Active", "Dormant"};
 
     //--------------COF_MSG------------------
     public static final String CONFIRM_LOGOUT_MSG = "Are you sure you want to logout?";
@@ -50,6 +51,7 @@ public class DashboardConstants {
     public static final String MY_ACCOUNT = "myaccount";
     public static final String MANAGE_SCHEDULE = "manage-schedule";
     public static final String SCHEDULE_MANAGEMENT = "Schedule Management";
+    public static final String DOWNLOADS = "Downloads";
 
 
 }
