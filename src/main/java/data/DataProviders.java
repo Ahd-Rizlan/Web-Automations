@@ -29,6 +29,16 @@ public class DataProviders {
             String[] columnNames = {"userName", "password" ,"emailSentSuccessMsg"};
             return XlsReader.getDataFromSheet(filePath, "LoginDataAlternateOne", columnNames).iterator();
         }
+        @DataProvider(name = "LoginDataAlternateTwo")
+        public static Iterator<Object[]> getLoginDataAlternateTwo() {
+            String[] columnNames = {"userName", "password" ,"emailSentSuccessMsg"};
+            return XlsReader.getDataFromSheet(filePath, "LoginDataAlternateTwo", columnNames).iterator();
+        }
+        @DataProvider(name = "LoginDataAlternateThree")
+        public static Iterator<Object[]> getLoginDataAlternateThree() {
+            String[] columnNames = {"userName", "password" ,"emailSentSuccessMsg"};
+            return XlsReader.getDataFromSheet(filePath, "LoginDataAlternateThree", columnNames).iterator();
+        }
 
         @DataProvider(name = "InvalidPassword")
         public static Iterator<Object[]> getIncorrectPasswordData() {
@@ -103,6 +113,23 @@ public class DataProviders {
             String[] columnNames = {"imgLocation","userName","threshold"};
             return XlsReader.getDataFromSheet(filePath, "DashboardAccountPortfolio", columnNames).iterator();
         }
+
+    }
+    public static class BillersDataProvider {
+        private static final String filePath;
+
+
+        static {
+            String projectRoot = System.getProperty("user.dir");
+            filePath = projectRoot + "/" + property.getProperty("gui-config", "TESTDATA_PATH");
+        }
+
+        @DataProvider(name = "BillPaymentsData")
+        public static Iterator<Object[]> getBillPaymentsData() {
+            String[] columnNames = {"category","billerName", "paymentUsing", "transferMode","fromAccount","amount","mobileNo","accountNumber","errorMsgOne","errorMsgTwo","errorMsgThree","errorMsgFour","errorMsgFive","errorMsgSix","nicNo","name","policyNumber","admissionNumber","classID","purpose","date","code","referenceOrReservationNo","employeeID","branch","email"};
+            return XlsReader.getDataFromSheet(filePath, "BillPayments", columnNames).iterator();
+        }
+
 
     }
 }

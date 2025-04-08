@@ -101,6 +101,8 @@ public class DashboardPage extends BasePage {
     private static final By imgSavedPayeeFavRecords = By.xpath("//table//img[contains(@srcset,'.c7bd4030') and @alt='']");
     private static final By lblQFTSavingsAccountName = By.xpath("//span[text()='Savings Account']/ancestor::div[contains(@class,'flex relative justify-between')]//span[contains(text(),'Available Balance')]");
     private static final By lblAccountPortfolioRows = By.xpath("//h1[contains(text(),'Account Portfolio')]/ancestor::div[contains(@class,'ContainerMd_container')]//div[contains(@class,'flex rounded-lg justify-between')]");
+    private static final By lblAccountNumber = By.xpath("//div[contains(@class,'full justify-center flex')]//div[contains(@class,'text-base')]/span");
+    private static final By btnCloseBillerPopup = By.xpath("//img[contains(@alt,'Close')]");
 
     private static By tfOTP(int Index) {
         return By.xpath("//input[@type='password'][" + Index + "]");
@@ -235,7 +237,7 @@ public class DashboardPage extends BasePage {
     }
 
     private static By lblSavedBillerTemplateName(int row) {
-        return By.xpath("(//img[contains(@srcset,'.c7bd4030') and @alt='']/ancestor::tr/td[4])[" + row + "]");
+        return By.xpath("(//img[contains(@srcset,'.c7bd4030') and @alt='']/ancestor::tr/td[3])[" + row + "]");
     }
 
     private static By lblSavedPayeeTemplateName(int row) {
@@ -243,6 +245,9 @@ public class DashboardPage extends BasePage {
     }
     private static By lblAccountPortfolioValues(int row) {
         return By.xpath("//h1[contains(text(),'Account Portfolio')]/ancestor::div[contains(@class,'ContainerMd_container')]//div[contains(@class,'flex rounded-lg justify-between')][" + row + "]/div[2]/span");
+    }
+    private static By btnMainMenu(String menuName) {
+        return By.xpath("//button/a[contains(normalize-space(text()), '"+menuName+"')]");
     }
 
     public DashboardPage(WebDriver driver) {
@@ -379,6 +384,7 @@ public class DashboardPage extends BasePage {
         try {
 
             waitForElementToBeInvisible(lblLoadingIcon, 10);
+
             isElementClickable(btnDeposits);
 
             //Validate savings account details
@@ -579,6 +585,7 @@ public class DashboardPage extends BasePage {
      */
     public void validateAllFDAccountsAtDashboard(String[] currencyType) {
 
+        waitForElementPresence(btnDeposits,20);
         clickOnElement(btnDeposits);
 
         //Obtain the accounts record count
@@ -660,6 +667,7 @@ public class DashboardPage extends BasePage {
      */
     public void validateAllLoanAccountsAtDashboard(String[] currencyType) {
 
+        waitForElementPresence(btnLoans,20);
         //click button Loans
         if (isElementClickable(btnLoans)) {
             clickOnElement(btnLoans);
@@ -996,6 +1004,7 @@ public class DashboardPage extends BasePage {
             boolean openFD = isElementPresentBy(lblOpenFDPopupHeader);
             if (openFD) {
                 addToReport("Successfully validated the open new fixed deposit page header", Status.PASS);
+                clickOnElement(btnClosePopup);
             } else {
                 addToReport("Open new fixed deposit page header is not visible.", Status.FAIL);
                 throw new RuntimeException("Error - Open new fixed deposit page header is not visible.");
@@ -1346,6 +1355,12 @@ public class DashboardPage extends BasePage {
      * Navigate back to dashboard
      */
     public void navigateBackToDashboard() {
+        //Close biller popups
+        if (waitForElementPresence(btnCloseBillerPopup,3)){
+            clickOnElement(btnCloseBillerPopup);
+            waitForElementToBeInvisible(btnCloseBillerPopup,10);
+        }
+
         waitForElementPresence(btnDashboard);
         clickOnElement(btnDashboard);
         waitForElementToBeInvisible(lblLoadingIcon, 20);
@@ -2274,6 +2289,7 @@ public class DashboardPage extends BasePage {
                     addToReport("Obtained 9 records from favourite billers under saved billers", Status.PASS, true);
                 }
             }
+            addToReport("Completion of addition of biller template names ", Status.PASS, true);
 
             //Navigate Back to dashboard
             navigateBackToDashboard();
@@ -2293,7 +2309,7 @@ public class DashboardPage extends BasePage {
             } else if (recordCount == 10) {
                 addToReport("Maximum of nine favourite biller records displayed as required", Status.PASS, true);
             } else {
-                addToReport("Favourite biller records displayed as required", Status.PASS, true);
+                addToReport(recordCount+ " Favourite biller records displayed as required", Status.PASS, true);
             }
 
             //Extract the latest records from the list
@@ -2915,5 +2931,61 @@ public class DashboardPage extends BasePage {
             throw new RuntimeException("Error - Validation of transfer under recent vishawa mobile cash failed", e);
         }
     }
+
+    /**
+     * Obtain all available accounts with the first being primary
+     * @param primaryStatus               - Primary status
+     */
+    public void obtainAllAccountTypes(String primaryStatus)
+    {
+        //WaitForElementPresence(lblLoadingIcon);
+        waitForElementToBeInvisible(lblLoadingIcon, 15);
+
+        waitFor(10);
+        //Obtain the accounts record count
+        int recordCount = isElementsPresentBy(icnAccounts);
+        if (recordCount != 0) {
+
+            //Validate primary status
+            String PrimaryStatus = getTextFromElement(lblSavingsPrimaryStatus);
+            if (PrimaryStatus.equalsIgnoreCase(primaryStatus)) {
+                addToReport("Successfully validated primary status : '" + PrimaryStatus + "'", Status.PASS, false);
+            } else {
+                addToReport("Primary status is not validated", Status.FAIL);
+                throw new RuntimeException("Error - Primary status validation failed");
+            }
+
+            for (int inc = 0; inc < recordCount; inc++) {
+
+                //Store the account number
+                addValue(inc,getTextFromElement(lblAccountNumber));
+                addToReport("Successfully added account number : '" + getTextFromElement(lblAccountNumber) + "'", Status.PASS, true);
+                //Navigate to next account
+                clickOnElement(btnNextArrow);
+
+                //WaitForElementPresence(lblLoadingIcon);
+                waitForElementToBeInvisible(lblLoadingIcon, 15);
+
+            }
+        }else {
+            addToReport("No accounts found", Status.FAIL);
+            throw new RuntimeException("Error - No accounts found");
+        }
+
+    }
+
+    /**
+     * Navigate to main Menu
+     *
+     * @param menuName - currency type
+     */
+    public void navigateToMainMenu(String menuName) {
+
+        waitForElementPresence(btnMainMenu(menuName));
+        clickOnElement(btnMainMenu(menuName));
+        waitForElementToBeInvisible(lblLoadingIcon, 20);
+        addToReport("Clicked menu tab "+menuName, Status.PASS);
+    }
+
 
 }

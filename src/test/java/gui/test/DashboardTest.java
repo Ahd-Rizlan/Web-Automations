@@ -188,7 +188,7 @@ public class DashboardTest extends Drivers {
         otpPage.validateTheOTPPage(LoginConstants.EXPECTED_TITLE, LoginConstants.OTP_PAGE_HEADER);
         otpPage.enterOTPAndContinue(LoginConstants.OTP);
 //        Uncomment below once popup feature is deployed
-        dashboardPage.closeAlertPopup();
+//        dashboardPage.closeAlertPopup();
         dashboardPage.validateTheTitle();
     }
 
