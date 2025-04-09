@@ -20,18 +20,24 @@ public class MakeTransactionsPage extends BasePage {
         button, label, span, div;
     }
 
-    private static final By availableBalance = By.xpath("//span[contains(text(),'Available Balance')]/parent::div/span[2]");
-    private static final By pageHeader = By.xpath("//div[contains(text(),'Make Transactions')]");
+    private static final By lblAvailableBalance = By.xpath("//span[contains(text(),'Available Balance')]/parent::div/span[2]");
+    private static final By lblPageHeader = By.xpath("//div[contains(text(),'Make Transactions')]");
     private static final By ddFromAccount = By.xpath("//select[@id='accountfrom']");
     private static final By ddToAccount = By.xpath("//select[@id='accountto']");
     private static final By tfEnterAmount = By.xpath("//input[@placeholder='Enter Amount']");
     private static final By tfEnterSenderRemark = By.xpath("//input[@name='senderRemark']");
     private static final By tfEnterBeneficiaryRemark = By.xpath("//input[@name='beneficiaryRemark']");
     private static final By btnSubmit = By.xpath("//button[@type='submit']");
+    private static final By rdoOneTimeTransaction = By.xpath("//input[@value='ONLINE']");
+    private static final By rdoSchedule = By.xpath("//input[@value='SCHEDULE']");
+    private static final By lblRecentTransactionList = By.xpath("//div[contains(@class,'RecentTransactions')]/div");
 
 
     private static By tabHeader(String tabName) {
         return By.xpath("//div[contains(@class,'flex')]/div[text()=" + tabName + "]");
+    }
+    private static By lblAccountNumber(String accountType) {
+        return By.xpath("//span[text()='"+accountType+"']/parent::div/span[2]");
     }
     private static By lblAccount(String accountType) {
         return By.xpath("//span[contains(text()," + accountType + ")]/parent::div/span[2]");
@@ -86,7 +92,7 @@ public class MakeTransactionsPage extends BasePage {
     public void checkFromAccountAndToAccount(String headerTab,String subTab) {
 
             //Validate page title
-            waitForElementPresence(pageHeader,10);
+            waitForElementPresence(lblPageHeader,10);
 
             //Select appropriate tab
             selectHeaderTab(headerTab);

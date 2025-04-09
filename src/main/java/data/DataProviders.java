@@ -29,6 +29,16 @@ public class DataProviders {
             String[] columnNames = {"userName", "password" ,"emailSentSuccessMsg"};
             return XlsReader.getDataFromSheet(filePath, "LoginDataAlternateOne", columnNames).iterator();
         }
+        @DataProvider(name = "LoginDataAlternateTwo")
+        public static Iterator<Object[]> getLoginDataAlternateTwo() {
+            String[] columnNames = {"userName", "password" ,"emailSentSuccessMsg"};
+            return XlsReader.getDataFromSheet(filePath, "LoginDataAlternateTwo", columnNames).iterator();
+        }
+        @DataProvider(name = "LoginDataAlternateThree")
+        public static Iterator<Object[]> getLoginDataAlternateThree() {
+            String[] columnNames = {"userName", "password" ,"emailSentSuccessMsg"};
+            return XlsReader.getDataFromSheet(filePath, "LoginDataAlternateThree", columnNames).iterator();
+        }
 
         @DataProvider(name = "InvalidPassword")
         public static Iterator<Object[]> getIncorrectPasswordData() {
@@ -105,4 +115,66 @@ public class DataProviders {
         }
 
     }
+    public static class BillersDataProvider {
+        private static final String filePath;
+
+        static {
+            String projectRoot = System.getProperty("user.dir");
+            filePath = projectRoot + "/" + property.getProperty("gui-config", "TESTDATA_PATH");
+        }
+
+        @DataProvider(name = "BillPaymentsData")
+        public static Iterator<Object[]> getBillPaymentsData() {
+            String[] columnNames = {"category","billerName", "paymentUsing", "transferMode","fromAccount","amount","mobileNo","accountNumber","errorMsgOne","errorMsgTwo","errorMsgThree","errorMsgFour","errorMsgFive","errorMsgSix","nicNo","name","policyNumber","admissionNumber","classID","purpose","date","code","referenceOrReservationNo","employeeID","branch","email"};
+            return XlsReader.getDataFromSheet(filePath, "BillPayments", columnNames).iterator();
+        }
+
+
+    }
+    public static class SettingsPageDataProvider {
+
+        private static final String filePath;
+
+        static {
+            String projectRoot = System.getProperty("user.dir");
+            filePath = projectRoot + "/" + property.getProperty("gui-config", "TESTDATA_PATH");
+        }
+
+        @DataProvider(name = "SettingsPanelUserData")
+        public static Iterator<Object[]> getSettingsPanelUserData() {
+            String[] columnNames = {"settingsUserDetails"};
+            return XlsReader.getDataFromSheet(filePath, "SettingsPanelUserData", columnNames).iterator();
+        }
+
+        @DataProvider(name = "LoginDataSettings")
+        public static Iterator<Object[]> getLoginDataSettings() {
+            String[] columnNames = {"userName", "password", "emailSentSuccessMsg"};
+            return XlsReader.getDataFromSheet(filePath, "LoginDataSettings", columnNames).iterator();
+        }
+
+        @DataProvider(name = "PasswordChangeDataSettings")
+        public static Iterator<Object[]> getpasswordChange() {
+            String[] columnNames = {"password", "newPassword"};
+            return XlsReader.getDataFromSheet(filePath, "PasswordChangeDataSettings", columnNames).iterator();
+        }
+
+        @DataProvider(name = "AccountSuccessMessageSettings")
+        public static Iterator<Object[]> getOTPMessage() {
+            String[] columnNames = {"primaryAccountSentSuccessMsg"};
+            return XlsReader.getDataFromSheet(filePath, "AccountSuccessMessageSettings", columnNames).iterator();
+        }
+
+        @DataProvider(name = "LoginAfteThePasswordChange")
+        public static Iterator<Object[]> getLoginDataAfterthePasswordChagne() {
+            String[] columnNames = {"userName", "password", "newPassword", "LoginErrorMessage", "emailSentSuccessMsg"};
+            return XlsReader.getDataFromSheet(filePath, "LoginAfteThePasswordChange", columnNames).iterator();
+        }
+
+        @DataProvider(name = "SuccessMessageSettings")
+        public static Iterator<Object[]> getSuccessmessage() {
+            String[] columnNames = {"emailSentSuccessMsg"};
+            return XlsReader.getDataFromSheet(filePath, "SuccessMessageSettings", columnNames).iterator();
+        }
+    }
+
 }

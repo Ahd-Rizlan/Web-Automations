@@ -131,10 +131,13 @@ public class LoginPage extends BasePage {
     public void loginToSampathVishwaWeb(String name, String password, String successMsg, String expectedHeader, boolean isRevertBack) {
         try {
             //Enter credentials and click login
+            waitForElementToBeClickable(txtUserName,10);
             sendKeysToElement(txtUserName, name);
             sendKeysToElement(txtPassword, password);
             clickOnElement(btnLogin);
-            waitForElementToBeInvisible(icnCustomLoader,20);
+
+            waitForElementToBeInvisible(btnLogin,20);
+            waitForElementPresence(getSuccessfulMsg(successMsg),20);
             //Validate the success message
             if (isElementPresentBy(getSuccessfulMsg(successMsg))) {
                 addToReport("'" + successMsg + "' success message is present.", Status.PASS,true);
