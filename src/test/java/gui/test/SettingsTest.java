@@ -39,8 +39,6 @@ public class SettingsTest extends Drivers {
         loginPage.loginToSampathVishwaWeb(userName, password, emailSentSuccessMsg, LoginConstants.OTP_PAGE_HEADER, LoginConstants.FALASE);
         otpPage.validateTheOTPPage(LoginConstants.EXPECTED_TITLE, LoginConstants.OTP_PAGE_HEADER);
         otpPage.enterOTPAndContinue(LoginConstants.OTP);
-//        Uncomment below once popup feature is deployed
-//        dashboardPage.closeAlertPopup();
         dashboardPage.validateTheTitle();
     }
 
