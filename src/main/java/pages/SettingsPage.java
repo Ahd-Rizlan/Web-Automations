@@ -146,104 +146,6 @@ public class SettingsPage extends BasePage {
         }
     }
 
-//    public void validateUserSettingsData (String settingsUserDetails) {
-//
-//
-//        try {
-//
-//            String[] settingArray=    settingsUserDetails.split("|");
-//            // Obtain the settings record count
-//            int recordCount = isElementsPresentBy(lblUserSettingsRows);
-//            if (recordCount == 0) {
-//                addToReport("User settings section displayed no records", Status.FAIL);
-//            }
-//
-//            // Loop through the rows and validate the settings values
-//            for (int row = 1; row <= recordCount; row++) {
-//                String settingValue = getTextFromElement(lblUserSettingsValues(row)).trim();
-//                String expectedValue = expectedSettingValues[row - 1]; //array from 0
-//
-//                if (!settingValue.isEmpty() && settingValue.equalsIgnoreCase(expectedValue)) {
-//                    addToReport("User setting record number " + row + " validated successfully with value: " + settingValue, Status.PASS, false);
-//                } else {
-//                    addToReport("Failed to validate user setting record for row: " + row + ". Expected: " + expectedValue + ", Actual: " + settingValue, Status.FAIL);
-//                    throw new RuntimeException("Error - Failed to validate user setting record for row " + row);
-//                }
-//            }
-//
-//        } catch (Exception e) {
-//            addToReport("Exception during user settings validation: " + e.getMessage(), Status.FAIL);
-//            throw new RuntimeException("Error during user settings validation", e);
-//        }
-//    }
-
-
-
-//
-//    /**
-//     * This method is to validate the settings panel
-//     *
-//     * @param accountName - Users name
-//     * @param addressLine1 -Users address line 1
-//     * @param addressLine2 - Users address line 2
-//     * @param accountCity - Users City
-//     * @param accountCountry - Users Country
-//     * @param accountNIC - Users NIC
-//
-//     */
-//
-//    public void validateUserSettingsData (String accountName, String addressLine1, String addressLine2, String accountCity, String accountCountry, String accountNIC) {
-//
-//        //Validate the profile name
-//        String AccountName = getTextFromElement(nameConfirm);
-//        if (AccountName.equalsIgnoreCase(AccountName)){
-//            addToReport("Successfully validated the name :" + AccountName + "'" , Status.PASS , false);
-//        } else {
-//            addToReport("Name is not available ", Status.FAIL);
-//            throw new RuntimeException("Error - Profile name validation failed");
-//        }
-//        //validate the address Line1
-//        String AddressLine1 = getTextFromElement(addressLine1Confirm);
-//        if (AddressLine1.equalsIgnoreCase(AddressLine1)){
-//            addToReport("Successfully validated the address Line1 :" + AddressLine1 + "'" , Status.PASS , false);
-//        } else {
-//            addToReport("address Line1 is not available" , Status.FAIL);
-//            throw new RuntimeException("Error - address Line1 validation failed");
-//        }
-//        //validate the address Line2
-//        String AddressLine2 = getTextFromElement(addressLine2Confirm);
-//        if (AddressLine2.equalsIgnoreCase(AddressLine2)){
-//            addToReport("Successfully validated the address Line2 :" + AddressLine1 + "'" , Status.PASS , false);
-//        } else {
-//            addToReport("address Line2 is not available" , Status.FAIL);
-//            throw new RuntimeException("Error - address Line2 validation failed");
-//        }
-//        //validate the city
-//        String AccountCity = getTextFromElement(cityConfirm);
-//        if (AccountCity.equalsIgnoreCase(AccountCity)){
-//            addToReport("Successfully validated the city :" + AddressLine1 + "'" , Status.PASS , false);
-//        } else {
-//            addToReport("city is not available" , Status.FAIL);
-//            throw new RuntimeException("Error - city validation failed");
-//        }
-//        //validate the country
-//        String AccountCountry = getTextFromElement(countryConfirm);
-//        if (AccountCountry.equalsIgnoreCase(AccountCountry)){
-//            addToReport("Successfully validated the country :" + AddressLine1 + "'" , Status.PASS , false);
-//        } else {
-//            addToReport("country is not available" , Status.FAIL);
-//            throw new RuntimeException("Error - country validation failed");
-//        }
-//        //validate the NIC
-//        String AccountNIC = getTextFromElement(nicConfirm);
-//        if (AccountNIC.equalsIgnoreCase(AccountNIC)){
-//            addToReport("Successfully validated the NIC :" + AddressLine1 + "'" , Status.PASS , false);
-//        } else {
-//            addToReport("NIC is not available" , Status.FAIL);
-//            throw new RuntimeException("Error - NIC validation failed");
-//        }
-//
-//    }
 
     /**
      * This method use to navigate to the OTP verification mode
@@ -369,8 +271,6 @@ public void NavigatetoToOTPVerificationMode (){
             sendKeysToElement(tfconfirmPassword,newPassword);
 
             clickOnElement(btnConfirmSave);
-     //      waitForElementToBeInvisible(icnCustomLoader,20);
-            //Validate the change password
             boolean loginPageTitle = waitForElementPresence(pageTitle, 10);
             if (loginPageTitle) {
                 addToReport("successfully change the password." , Status.PASS,true);
