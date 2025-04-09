@@ -193,7 +193,7 @@ public class DashboardTest extends Drivers {
     }
 
     @Test(priority = 29, description = "Validate the visibility of total values LKR  | 31", dataProvider = "DashboardAccountPortfolio", dataProviderClass = DataProviders.DashboardDataProvider.class)
-    public void validatePortfolioFunctions(String imgLocation, String userName, String threshold) {
+    public void validatePortfolioioFunctions(String imgLocation, String userName, String threshold) {
         dashboardPage.validateAccountPortfolio(imgLocation, userName, threshold, DashboardConstants.CURRENCY_VALUES);
     }
 
@@ -204,10 +204,10 @@ public class DashboardTest extends Drivers {
 
 
 //    -------- WIP
-//    @Test(priority = 10, description = "Validate that settings option is available on the user info dropdown menu at dashboard")
-//    public void validateSettingsOption() {
-//        dashboardPage.validateSettingsOption(DashboardConstants.OPTION_SETTINGS);
-//    }
+    @Test(priority = 10, description = "Validate that settings option is available on the user info dropdown menu at dashboard")
+    public void validateSettingsOption() {
+        dashboardPage.validateSettingsOption(DashboardConstants.OPTION_SETTINGS);
+    }
 
 
     @AfterMethod(description = "Rollback to dashboard")
