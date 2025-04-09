@@ -176,5 +176,4 @@ public class DataProviders {
             return XlsReader.getDataFromSheet(filePath, "SuccessMessageSettings", columnNames).iterator();
         }
     }
-
 }
