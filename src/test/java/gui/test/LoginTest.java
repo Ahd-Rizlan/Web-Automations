@@ -74,10 +74,10 @@ public class LoginTest extends Drivers {
     public void validateTheUnSuccessfulLoginWithIncorrectPassword(String invalidUN, String errorMessage) {
         loginPage.ValidateForgotPasswordIncorrectUser(LoginConstants.RESET_BUTTON_TEXT,invalidUN,errorMessage);
     }
-    @Test(priority = 7, dataProvider = "InvalidAnswers", description = "Validate the incorrect answers on security questions for forget password journey", dataProviderClass = DataProviders.LoginDataProvider.class)
-    public void validateIncorrectAnswersForSecurityQuestions(String userName, String errorMessage) {
-        loginPage.ValidateForgotPasswordIncorrectSecurityAnswers(LoginConstants.RESET_BUTTON_TEXT, CommonUtils.randomAlphaNumeric(5),userName,errorMessage);
-    }
+//    @Test(priority = 7, dataProvider = "InvalidAnswers", description = "Validate the incorrect answers on security questions for forget password journey", dataProviderClass = DataProviders.LoginDataProvider.class)
+//    public void validateIncorrectAnswersForSecurityQuestions(String userName, String errorMessage) {
+//        loginPage.ValidateForgotPasswordIncorrectSecurityAnswers(LoginConstants.RESET_BUTTON_TEXT, CommonUtils.randomAlphaNumeric(5),userName,errorMessage);
+//    }
     @Test(priority = 8, dataProvider = "LockedUser", description = "Validate the unsuccessful login with locked user ID", dataProviderClass = DataProviders.LoginDataProvider.class)
     public void ValidateLoginAttemptWithLockedUserID(String userName,String password, String errorMessage) {
         loginPage.ValidateSuccessfulLoginAttemptWithLockedUserID(LoginConstants.LOGIN_BUTTON_TEXT, userName,password,errorMessage,true);

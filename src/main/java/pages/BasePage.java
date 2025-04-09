@@ -5,10 +5,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.*;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.Screenshot;
 import ru.yandex.qatools.ashot.comparison.ImageDiff;
@@ -21,13 +18,16 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class BasePage extends helpers {
 
     protected WebDriver driver;
-
+    protected static List<String> sharedValues = new ArrayList<>();
     public BasePage(WebDriver driver) {
         this.driver = driver;
     }
@@ -226,7 +226,7 @@ public abstract class BasePage extends helpers {
      * @true -If the element is found
      * @false -If the element is not found
      */
-    public boolean waitForElementPresence(By locator) {
+        public boolean waitForElementPresence(By locator) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, 10);
             wait.until(ExpectedConditions.presenceOfElementLocated(locator));
@@ -793,6 +793,223 @@ public abstract class BasePage extends helpers {
                 break;
             default:
                 throw new IllegalArgumentException("Invalid dropdown selection type: " + type);
+        }
+    }
+
+    /**
+     * Method to get values from dropdown
+     *
+     * @param locator the By locator used to identify the input element
+     * @return all available option under dropdown
+     */
+    public  List<String> getDropdownValues(By locator) {
+        ArrayList<String> values = new ArrayList<>();
+        try {
+            WebElement dropdownElement = driver.findElement(locator);
+            Select dropdown = new Select(dropdownElement);
+
+            // Loop through all options and get their "value" attributes
+            for (WebElement option : dropdown.getOptions()) {
+                // Get the value attribute
+                values.add(option.getAttribute("value"));
+            }
+        } catch (NoSuchElementException e) {
+            System.out.println("Dropdown not found: " + e.getMessage());
+        }
+
+        return values;
+    }
+
+    /**
+     * Method to add values to be used across multiple classes
+     *
+     * @param index index of the arraylist
+     * @param value value of the arraylist
+     */
+    public void addValue(int index,String value) {
+        sharedValues.add(index,value);
+    }
+
+    /**
+     * Method to get values to be used across multiple classes
+     */
+    public List<String> getValues() {
+        return sharedValues;
+    }
+
+    /**
+     * Retrieves the text content of a dropdown element identified by the provided locator.
+     * <p>
+     * This method waits for the element to be present in the DOM, then retrieves and returns its text content.
+     *
+     * @param locator the locator used to find the element
+     * @param action returns dropdown options based on action key words such as FIRST_SELECTED,ALL_OPTIONS,ALL_SELECTED_OPTIONS
+     * @return the text content of the selected element, or null if the element is not found or an error occurs
+     */
+    public List<String> getSelectedOptionText(By locator,String action) {
+        try {
+            //start of temp work around as data loading issue in dropdown
+            clickOnElement(locator);
+            waitFor(1);
+            clickOnElement(locator);
+            //End of temp work around
+            waitFor(5);
+            WebElement dropdownElement = driver.findElement(locator); // Replace with actual dropdown ID
+            Select dropdown = new Select(dropdownElement);
+            switch (action) {
+                case "FIRST_SELECTED":
+                    return List.of(dropdown.getFirstSelectedOption().getText());
+
+                case "FIRST_SELECTED_VALUE":
+                    return List.of(dropdown.getFirstSelectedOption().getAttribute("value"));
+
+                case "ALL_OPTIONS":
+                    return dropdown.getOptions().stream()
+                            .map(WebElement::getText)
+                            .collect(Collectors.toList());
+
+                case "ALL_OPTIONS_VALUE":
+                    return dropdown.getOptions().stream()
+                            .map(option -> option.getAttribute("value"))
+                            .collect(Collectors.toList());
+
+                case "ALL_SELECTED_OPTIONS":
+                    return dropdown.getAllSelectedOptions().stream()
+                            .map(WebElement::getText)
+                            .collect(Collectors.toList());
+
+                case "ALL_SELECTED_OPTIONS_VALUE":
+                    return dropdown.getAllSelectedOptions().stream()
+                            .map(option -> option.getAttribute("value"))
+                            .collect(Collectors.toList());
+
+                default:
+                    throw new IllegalArgumentException("Invalid dropdown action");
+            }
+        } catch (Exception e) {
+            System.err.println("Error getting text from dropdownelement: " + e.getMessage());
+            return null;
+        }
+
+    }
+
+    /**
+     * Get attribute value or text of a WebElement.
+     *
+     * @param locator - By locator of the element
+     * @param attribute - Attribute name (pass "text" to get element text)
+     * @return String value of the attribute or text
+     */
+    public String getAttributeOrText(By locator, String attribute) {
+        try {
+            WebElement element = driver.findElement(locator);
+
+            if ("text".equalsIgnoreCase(attribute)) {
+                // Get text if "text" is passed
+                return element.getText();
+            } else {
+                // Get specific attribute value
+                return element.getAttribute(attribute);
+            }
+        } catch (Exception e) {
+            System.out.println("Error retrieving attribute/text: " + e.getMessage());
+            return null;  // Return null or handle accordingly
+        }
+    }
+
+    /**
+     * Scrolls the page to the top.
+     * <p>
+     * This method use to scroll the page to the top.
+     */
+    public void scrollPageToTop() {
+        try {
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            js.executeScript("window.scrollTo({ top: 0, behavior: 'smooth' });");
+            addToReport("Error scrolling to the top of the page.", Status.PASS);
+        } catch (Exception e) {
+            addToReport("Successfully scrolled to the top of the page", Status.FAIL);
+            System.err.println("Error scrolling to the top of the page: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Waits until the page has fully loaded (document.readyState is 'complete').
+     */
+    public void waitForPageLoadCompleteJS() {
+        new WebDriverWait(driver, 20).until(
+                webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+    }
+
+    /**
+     * Waits until the given number of elements are present for the specified locator.
+     *
+     * @param locator           the element locator
+     * @param number            expected number of elements
+     * @param timeoutInSeconds  max time to wait in seconds
+     * @return true if expected number found, false otherwise
+     */
+    public boolean isExpectedNumberOfElementsPresent(By locator, int number, int timeoutInSeconds) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+            List<WebElement> elements = wait.until(ExpectedConditions.numberOfElementsToBe(locator, number));
+            return elements.size() == number;
+        } catch (Exception e) {
+            System.err.println("Expected number of elements not found: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Uses FluentWait to locate an element with custom timeout and polling interval.
+     *
+     * @param locator   the element locator
+     * @param timeout   max timeout in seconds
+     * @param polling   polling interval in milliseconds
+     * @return the WebElement found, or throws exception if not found
+     */
+    public WebElement fluentWait(By locator, int timeout, int polling) {
+        Wait<WebDriver> wait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(timeout))
+                .pollingEvery(Duration.ofMillis(polling))
+                .ignoring(NoSuchElementException.class);
+        return wait.until(driver -> driver.findElement(locator));
+    }
+
+    /**
+     * Waits until the specified attribute contains the expected value.
+     *
+     * @param locator           the element locator
+     * @param attribute         the attribute to check (e.g., "class", "value")
+     * @param value             the value to wait for
+     * @param timeoutInSeconds  maximum wait time in seconds
+     * @return true if attribute contains the value, false otherwise
+     */
+    public boolean waitForAttributeValue(By locator, String attribute, String value, int timeoutInSeconds) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+            return wait.until(ExpectedConditions.attributeContains(locator, attribute, value));
+        } catch (Exception e) {
+            System.err.println("Attribute value not found: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Waits until the given text is present in the specified element.
+     *
+     * @param locator           the element locator
+     * @param text              the expected text to be present
+     * @param timeoutInSeconds  time to wait before throwing TimeoutException
+     * @return true if text is found within the timeout, false otherwise
+     */
+    public boolean waitForTextToBePresent(By locator, String text, int timeoutInSeconds) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+            return wait.until(ExpectedConditions.textToBePresentInElementLocated(locator, text));
+        } catch (Exception e) {
+            System.err.println("Text not found in element: " + e.getMessage());
+            return false;
         }
     }
 
