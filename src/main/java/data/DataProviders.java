@@ -176,4 +176,86 @@ public class DataProviders {
             return XlsReader.getDataFromSheet(filePath, "SuccessMessageSettings", columnNames).iterator();
         }
     }
+
+    public static class SavingsandFDDataProvider {
+        private static final String filePath;
+
+        static {
+            String projectRoot = System.getProperty("user.dir");
+            filePath = projectRoot + "/" + property.getProperty("gui-config", "TESTDATA_PATH");
+        }
+
+        @DataProvider(name = "LoginDataSavingsFD")
+        public static Iterator<Object[]> getLoginDataSavingFD() {
+            String[] columnNames = {"userName", "password", "emailSentSuccessMsg"};
+            return XlsReader.getDataFromSheet(filePath, "LoginDataSavingsFD", columnNames).iterator();
+        }
+        @DataProvider(name = "AccountNumberSavingsFD")
+        public static Iterator<Object[]> getAccountNumberSavingFD() {
+            String[] columnNames = {"accountNumber"};
+            return XlsReader.getDataFromSheet(filePath, "AccountNumberSavingsFD", columnNames).iterator();
+        }
+        @DataProvider(name = "AmountSavingsFD")
+        public static Iterator<Object[]> getAccountDataSavingFD() {
+            String[] columnNames = {"amount", "nickName"};
+            return XlsReader.getDataFromSheet(filePath, "AmountSavingsFD", columnNames).iterator();
+        }
+        @DataProvider(name = "AccountPreviewDetailsSavingsFD")
+        public static Iterator<Object[]> getSettingsPanelUserData() {
+            String[] columnNames = {"DetailsSavingsFD"};
+            return XlsReader.getDataFromSheet(filePath, "AccountPreviewDetailsSavingsFD", columnNames).iterator();
+        }
+    }
+
+    public static class TransfersPageDataProvider {
+
+        private static final String filePath;
+
+        static {
+            String projectRoot = System.getProperty("user.dir");
+            filePath = projectRoot + "/" + property.getProperty("gui-config", "TESTDATA_PATH");
+        }
+
+        @DataProvider(name = "OwnAccountTransferData")
+        public static Iterator<Object[]> getOwnAccountTransferData() {
+            String[] columnNames = {
+                    "errorMsg1", "errorMsg2", "minAmount", "maxAmount", "minAmountMsg",
+                    "maxAmountMsg", "toAccount", "amount", "transferMode","noAmount","errMinimumTransferAmount"
+            };
+            return XlsReader.getDataFromSheet(filePath, "OwnAccountTransferData", columnNames).iterator();
+        }
+
+
+        @DataProvider(name = "OtherAccountTransfersData")
+        public static Iterator<Object[]> getOtherAccountTransfersData() {
+            String[] columnNames = {
+                    "errorMsgInsufficientFunds", "minAmountEntry", "maxAmountEntry",
+                    "minAmountMsg", "maxAmountMsg", "toAccount", "amount",
+                    "transferMode", "receiverName", "purpose",
+                    "bankName", "actualTransactionAmount"
+            };
+            return XlsReader.getDataFromSheet(filePath, "OtherAccountTransfersData", columnNames).iterator();
+        }
+
+
+        @DataProvider(name = "OtherCCardTransferData")
+        public static Iterator<Object[]> getOtherCreditCardTransferData() {
+            String projectRoot = System.getProperty("user.dir");
+            String filePath = projectRoot + "/" + property.getProperty("gui-config", "TESTDATA_PATH");
+            String[] columnNames = {
+                    "errCreditCardNumberRequired", "errReEnterCreditCardNumberRequired",
+                    "errNameOnCardRequired", "errBankRequired", "errAmountRequired",
+                    "errPurposeRequired", "errBeneficiaryRemarkRequired",
+                    "creditCardNumber", "reEnterCardNumber", "nameOnCard",
+                    "bankName", "branchName", "mdtAmount", "purpose", "transferMode", "errorMessageMaxTransactionLimit",
+                    "amount", "minAmount",
+                    "errInsufficientfunds", "errMinimumTransferAmount"
+            };
+            return XlsReader.getDataFromSheet(filePath, "OtherCreditCardTransferData", columnNames).iterator();
+        }
+
+    }
+
+
+
 }

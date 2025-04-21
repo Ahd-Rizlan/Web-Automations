@@ -1013,6 +1013,31 @@ public abstract class BasePage extends helpers {
         }
     }
 
+    /**
+     * Sends a single special key (like BACK_SPACE, ENTER, etc.) to an element located by the given locator.
+     *
+     * @param locator By locator to find the element
+     * @param key     Special key to send (e.g., Keys.BACK_SPACE)
+     */
+    public void sendKeysToElement(By locator, Keys key) {
+        WebElement element = driver.findElement(locator);
+        element.sendKeys(key);
+    }
+
+    /**
+     * Sends a special key multiple times to the element (useful for clearing character-by-character).
+     *
+     * @param locator By locator to find the element
+     * @param key     Special key to send (e.g., Keys.BACK_SPACE)
+     * @param count   Number of times the key should be sent
+     */
+    public void sendKeysToElement(By locator, Keys key, int count) {
+        WebElement element = driver.findElement(locator);
+        for (int i = 0; i < count; i++) {
+            element.sendKeys(key);
+        }
+    }
+
 
 }
 
