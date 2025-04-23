@@ -4,6 +4,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import org.apache.logging.log4j.LogManager;
@@ -326,8 +328,27 @@ public class CommonUtils extends Drivers {
         return outputFormat.format(date);
     }
 
-
-
     public enum sortType {DATE, NUMBER, STRING, SELECT}
+
+    /**
+     * Returns the character count of a given input string.
+     *
+     * @param inputText the text to count characters from
+     * @return the length of the string, or 0 if null
+     */
+    public static int getCharacterCount(String inputText) {
+        return inputText != null ? inputText.length() : 0;
+    }
+
+    /**
+     * Returns today's date formatted as per the user's input pattern.
+     *
+     * @param formatPattern Date format pattern, e.g., "yyyy-MM-dd", "dd/MM/yyyy"
+     * @return Formatted current date as a String
+     */
+    public static String getTodayDateFormatted(String formatPattern) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(formatPattern);
+        return LocalDate.now().format(formatter);
+    }
 
 }
