@@ -3,7 +3,7 @@ package gui.test;
 import pages.SettingsPage;
 import utils.Drivers;
 import data.DataProviders;
-import gui.utils.constants.LoginConstants;
+import utils.constants.LoginConstants;
 import org.testng.annotations.*;
 import pages.DashboardPage;
 import pages.LoginPage;

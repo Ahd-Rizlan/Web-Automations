@@ -1,8 +1,8 @@
 package gui.test;
 
 import data.DataProviders;
-import gui.utils.constants.LoginConstants;
-import gui.utils.constants.DashboardConstants;
+import utils.constants.LoginConstants;
+import utils.constants.DashboardConstants;
 import org.testng.annotations.*;
 import pages.DashboardPage;
 import pages.LoginPage;

@@ -1,4 +1,4 @@
-package gui.utils.constants;
+package utils.constants;
 
 /**
  * This Class is used to store all the test constant variables.

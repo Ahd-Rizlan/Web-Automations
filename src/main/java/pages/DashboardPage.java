@@ -43,7 +43,7 @@ public class DashboardPage extends BasePage {
     private static final By lblAccountStat = By.xpath("//span/ancestor::div[contains(@class,'flex flex-col')]/following::div[contains(@class,'text-white font-bold')][2]");
     private static final By lblSavingsAccountProductName = By.xpath("//span[text()='Savings Account']/ancestor::div[contains(@class,'flex flex-col')]/following::span[contains(@class,'self-end')]");
     private static final By lblAccountProductName = By.xpath("//span/ancestor::div[contains(@class,'flex flex-col')]/following::span[contains(@class,'self-end')]");
-    private static final By icnAccounts = By.xpath("//div[contains(@class,'flex gap-1 items-center justify-center')]/div");
+    private static final By icnAccounts = By.xpath("//div[contains(@class,'flex flex-col')]/div[3]/div[1]");
     private static final By lblCurrentAccount = By.xpath("//span[text()='Current Account']");
     private static final By btnNextArrow = By.xpath("//div[contains(@class,'flex gap-2')]/div[2]");
     private static final By lblCurrencyAndAvailableBalance = By.xpath("//div[contains(text(),'Available')]/following-sibling::div/span[@class='text-black']");
@@ -443,8 +443,12 @@ public class DashboardPage extends BasePage {
      */
     public void validateAllAccountsAtDashboard(String[] currencyType, String[] accountStat) {
 
+        waitForElementToBeInvisible(icnAccounts, 15);
+        //Obtain pagination value
+        String[] cardCount=CommonUtils.splitText(getAttributeOrText(icnAccounts,"text"),"/");
+
         //Obtain the accounts record count
-        int recordCount = isElementsPresentBy(icnAccounts);
+        int recordCount = Integer.parseInt(cardCount[1]);
         if (recordCount != 0) {
 
             for (int inc = 0; inc < recordCount; inc++) {
@@ -512,8 +516,12 @@ public class DashboardPage extends BasePage {
             throw new RuntimeException("Error - accounts button is not found");
         }
 
+        waitForElementToBeInvisible(icnAccounts, 15);
+        //Obtain pagination value
+        String[] cardCount=CommonUtils.splitText(getAttributeOrText(icnAccounts,"text"),"/");
+
         //Obtain the accounts record count
-        int recordCount = isElementsPresentBy(icnAccounts);
+        int recordCount = Integer.parseInt(cardCount[1]);
         if (recordCount != 0) {
 
             for (int inc = 0; inc < recordCount; inc++) {
@@ -588,8 +596,12 @@ public class DashboardPage extends BasePage {
         waitForElementPresence(btnDeposits,20);
         clickOnElement(btnDeposits);
 
+        waitForElementToBeInvisible(icnAccounts, 15);
+        //Obtain pagination value
+        String[] cardCount=CommonUtils.splitText(getAttributeOrText(icnAccounts,"text"),"/");
+
         //Obtain the accounts record count
-        int recordCount = isElementsPresentBy(icnAccounts);
+        int recordCount = Integer.parseInt(cardCount[1]);
         if (recordCount != 0) {
             boolean flag = true;
 
@@ -677,8 +689,12 @@ public class DashboardPage extends BasePage {
         }
 
         try {
+            waitForElementToBeInvisible(icnAccounts, 15);
+            //Obtain pagination value
+            String[] cardCount=CommonUtils.splitText(getAttributeOrText(icnAccounts,"text"),"/");
+
             //Obtain the accounts record count
-            int recordCount = isElementsPresentBy(icnAccounts);
+            int recordCount = Integer.parseInt(cardCount[1]);
             if (recordCount != 0) {
 
                 for (int inc = 0; inc < recordCount; inc++) {
@@ -2940,10 +2956,15 @@ public class DashboardPage extends BasePage {
     {
         //WaitForElementPresence(lblLoadingIcon);
         waitForElementToBeInvisible(lblLoadingIcon, 15);
+        waitForElementToBeInvisible(icnAccounts, 15);
 
-        waitFor(10);
+        waitFor(5);
+
+        //Obtain pagination value
+        String[] cardCount=CommonUtils.splitText(getAttributeOrText(icnAccounts,"text"),"/");
+
         //Obtain the accounts record count
-        int recordCount = isElementsPresentBy(icnAccounts);
+        int recordCount = Integer.parseInt(cardCount[1]);
         if (recordCount != 0) {
 
             //Validate primary status
@@ -2985,6 +3006,27 @@ public class DashboardPage extends BasePage {
         clickOnElement(btnMainMenu(menuName));
         waitForElementToBeInvisible(lblLoadingIcon, 20);
         addToReport("Clicked menu tab "+menuName, Status.PASS);
+    }
+
+    /**
+     * Navigate to the messages page
+     */
+    public void navigateToMessages() {
+        boolean icnMessages = isElementPresentBy(icnMessage);
+        if (icnMessages) {
+            addToReport("Successfully validated message icon", Status.PASS, false);
+            clickOnElement(icnMessage);
+            boolean messagelbl = isElementPresentBy(lblMessage);
+            if (messagelbl) {
+                addToReport("Successfully validated messages page", Status.PASS, true);
+            } else {
+                addToReport("Messages page is not visible.", Status.FAIL, true);
+                throw new RuntimeException("Error - Messages page is not visible.");
+            }
+        } else {
+            addToReport("Dashboard page is not visible.", Status.FAIL, true);
+            throw new RuntimeException("Error - Dashboard page is not visible.");
+        }
     }
 
 

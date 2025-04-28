@@ -351,4 +351,20 @@ public class CommonUtils extends Drivers {
         return LocalDate.now().format(formatter);
     }
 
+    /**
+     * Removes leading occurrences of a specified character from a string.
+     *
+     * @param input the input string (e.g., "xxx709")
+     * @param ch    the character to remove (e.g., 'x')
+     * @return the string without leading occurrences of that character (e.g., "709")
+     */
+    public static String removeLeadingCharacters(String input, char ch) {
+        if (input == null || input.isEmpty()) {
+            return input;
+        }
+        return input.replaceFirst("^" + Character.toString(ch) + "+(?!$)", "");
+    }
+
+
+
 }

@@ -9,6 +9,8 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import utils.CommonUtils;
+import utils.constants.BillerConstants;
+
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +29,6 @@ public class LoginPage extends BasePage {
     public enum ElementType {
         button, label, span, div;
     }
-
     private static final By txtUserName = By.xpath("//input[contains(@name,'username')]");
     private static final By txtPassword = By.xpath("//input[contains(@name,'password')]");
     private static final By imgUserIcon = By.xpath("//img[contains(@class,'NavBar_user__Ena5m')]");
@@ -136,7 +137,6 @@ public class LoginPage extends BasePage {
             sendKeysToElement(txtPassword, password);
             clickOnElement(btnLogin);
 
-            waitForElementToBeInvisible(btnLogin,20);
             waitForElementPresence(getSuccessfulMsg(successMsg),20);
             //Validate the success message
             if (isElementPresentBy(getSuccessfulMsg(successMsg))) {

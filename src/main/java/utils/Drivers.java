@@ -22,6 +22,7 @@ public class Drivers{
     public static propertyFileReader property = new propertyFileReader();
     public static String browser = property.getProperty("gui-config", "BROWSER");
     public static String url = property.getProperty("gui-config", "URL");
+    public static String retailAdminURL = property.getProperty("gui-config", "RETAIL_ADMIN_URL");
     public static String userName = property.getProperty("gui-config", "USERNAME");
     public static String password = property.getProperty("gui-config", "PASSWORD");
     public static String dowloadLocation = System.getProperty("user.home") +"/"+property.getProperty("gui-config", "DOWNLOAD");
@@ -63,8 +64,8 @@ public class Drivers{
                     break;
 
                 case "Headless":
-                    ChromeDriverManager.chromedriver().setup();
-                    //System.setProperty("webdriver.chrome.driver", chromeDriverPath);
+//                    ChromeDriverManager.chromedriver().setup();
+                    System.setProperty("webdriver.chrome.driver", chromeDriverPath);
                     ChromeOptions chromeOptions = new ChromeOptions();
                     chromeOptions.addArguments("--headless");
                     driver = new ChromeDriver(chromeOptions);
