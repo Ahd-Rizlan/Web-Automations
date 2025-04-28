@@ -2,12 +2,11 @@ package gui.test;
 
 import com.aventstack.extentreports.ExtentTest;
 import data.DataProviders;
-import gui.utils.constants.BillerConstants;
-import gui.utils.constants.DashboardConstants;
-import gui.utils.constants.LoginConstants;
-import gui.utils.constants.TransactionConstants;
+import utils.constants.BillerConstants;
+import utils.constants.DashboardConstants;
+import utils.constants.LoginConstants;
+import utils.constants.TransactionConstants;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.DashboardPage;

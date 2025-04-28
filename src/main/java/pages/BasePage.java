@@ -4,6 +4,7 @@ import com.aventstack.extentreports.Status;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.openqa.selenium.*;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.*;
 import ru.yandex.qatools.ashot.AShot;
@@ -18,9 +19,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -156,6 +157,26 @@ public abstract class BasePage extends helpers {
             addToReport("Successfully clicked on the '" + locator + "' element.", Status.PASS, false);
         } catch (Exception e) {
             addToReport("Error occur when clicking on the '" + locator + "' element.", Status.FAIL);
+            System.err.println("Error occur when clicking on the element: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Clicks on an element identified by a locator after waiting for it to become clickable.
+     * <p>
+     * This method waits for the element identified by the provided By locator to become clickable
+     *
+     * @param element the web element used to find the element to be clicked
+     */
+
+    public void clickOnElement(WebElement element) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, 10);
+            wait.until(ExpectedConditions.elementToBeClickable(element));
+            element.click();
+            addToReport("Successfully clicked on the '" + element + "' element.", Status.PASS, false);
+        } catch (Exception e) {
+            addToReport("Error occur when clicking on the '" + element + "' element.", Status.FAIL);
             System.err.println("Error occur when clicking on the element: " + e.getMessage());
         }
     }
@@ -1036,6 +1057,35 @@ public abstract class BasePage extends helpers {
         for (int i = 0; i < count; i++) {
             element.sendKeys(key);
         }
+    }
+
+    /**
+     * Get the latest element based on date Eg : used at instances on message list to get the latest
+     * @param elements      - element
+     * @param dateLocator   - date locator
+     * @param datePrefix    - date prefix
+     * @return
+     */
+    public WebElement getLatestElementByDate(List<WebElement> elements, By dateLocator, String datePrefix) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Map<WebElement, Date> elementDateMap = new HashMap<>();
+
+        for (WebElement element : elements) {
+            try {
+                WebElement dateElement = element.findElement(dateLocator);
+                String dateText = dateElement.getText().replace(datePrefix, "").trim();
+                Date parsedDate = sdf.parse(dateText);
+                elementDateMap.put(element, parsedDate);
+            } catch (Exception e) {
+                addToReport("Skipping element due to error: " + e.getMessage(), Status.INFO);
+            }
+        }
+
+        if (elementDateMap.isEmpty()) {
+            throw new RuntimeException("No elements with valid dates found.");
+        }
+
+        return Collections.max(elementDateMap.entrySet(), Map.Entry.comparingByValue()).getKey();
     }
 
 

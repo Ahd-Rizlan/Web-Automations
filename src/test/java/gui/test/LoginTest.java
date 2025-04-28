@@ -1,12 +1,11 @@
 package gui.test;
 
 import data.DataProviders;
-import gui.utils.constants.LoginConstants;
+import utils.constants.LoginConstants;
 import org.testng.annotations.*;
 import pages.DashboardPage;
 import pages.LoginPage;
 import pages.OTPPage;
-import utils.CommonUtils;
 import utils.Drivers;
 import com.aventstack.extentreports.ExtentTest;
 import utils.report.TestContext;

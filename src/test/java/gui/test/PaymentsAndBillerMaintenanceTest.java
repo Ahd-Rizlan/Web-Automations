@@ -2,9 +2,9 @@ package gui.test;
 
 import com.aventstack.extentreports.ExtentTest;
 import data.DataProviders;
-import gui.utils.constants.BillerConstants;
-import gui.utils.constants.DashboardConstants;
-import gui.utils.constants.LoginConstants;
+import utils.constants.BillerConstants;
+import utils.constants.DashboardConstants;
+import utils.constants.LoginConstants;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -80,7 +80,7 @@ public class PaymentsAndBillerMaintenanceTest extends Drivers {
     }
 
     @Test(priority = 6, dataProvider = "BillPaymentsData", description = "Bill payments trough accounts | 41,42,44,46,47,48,49,51", dataProviderClass = DataProviders.BillersDataProvider.class)
-    public void validateBillPaymentsThroughAccounts(String category, String billerName, String paymentUsing, String transferMode, String	amount, String	mobileNo, String	accountNumber, String errorMsgOne, String errorMsgTwo, String errorMsgThree, String errorMsgFour, String errorMsgFive, String errorMsgSix, String nicNo, String name, String policyNumber, String admissionNumber, String classID, String purpose, String date, String code, String referenceOrReservationNo, String branch, String email) {
+    public void validateBillPaymentsThroughAccounts(String category, String billerName, String paymentUsing, String transferMode, String fromAccount, String amount, String mobileNo, String accountNumber, String errorMsgOne, String errorMsgTwo, String errorMsgThree, String errorMsgFour, String errorMsgFive, String errorMsgSix, String nicNo, String name, String policyNumber, String admissionNumber, String classID, String purpose, String date, String code, String referenceOrReservationNo, String employeeID, String branch, String email) {
 
         dashboardPage.obtainAllAccountTypes(DashboardConstants.STATUS_PRIMARY);
         dashboardPage.selectQuickActions(BillerConstants.BUTTON_BILL_PAYMENT);

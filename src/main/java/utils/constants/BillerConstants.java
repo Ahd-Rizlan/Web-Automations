@@ -1,4 +1,4 @@
-package gui.utils.constants;
+package utils.constants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,22 +6,48 @@ import java.util.Map;
 /**
  * This Class is used to store all the test constant variables.
  */
-public class TransactionConstants {
+public class BillerConstants {
 
+    //--------------Widget content-------------------
+    public static final String STATUS_PRIMARY = "Primary";
+    public static final String STATUS_ACTIVE = "Active";
 
-    //-----------------TAB NAMES ----------------------
-    public static final String TAB_NAME_SEND_MONEY = "Send Money";
-    public static final String TAB_NAME_SAVED_PAYEE = "Saved Payees";
-    public static final String TAB_NAME_OWN_ACCOUNT = "Own Account";
-    public static final String TAB_NAME_OTHER_ACCOUNT = "Other Accounts";
-    public static final String TAB_NAME_OTHER_CREDIT_CARDS = "Other Credit Cards";
+    //---------------Menu Options-------------------
+    public static final String OPTION_MANAGE_SCHEDULES = "Manage Schedules";
+    public static final String OPTION_MY_ACCOUNTS = "My Accounts";
 
+    //---------------OPTIONS-------------------
+    public static final String OPTION_SETTINGS = "Settings";
+
+    //---------------Account Types-------------------
+    public static final String OWN_ACCOUNT = "Own Account";
+
+    //---------------BUTTONS-------------------
+    public static final String BUTTON_TEXT_SAVED_BILLERS = "Saved Billers";
+    public static final String BUTTON_TEXT_BILL_PAYMENT_HISTORY = "Bill Payment History";
+    public static final String BUTTON_MY_ACCOUNTS = "My Accounts";
+    public static final String BUTTON_ACCOUNTS = "Accounts";
+    public static final String BUTTON_NEXT = "Next";
+    public static final String BUTTON_BILL_PAYMENT = "Bill Payment";
+    public static final String BUTTON_NEW_PAYMENT = "New Payment";
+    public static final String BUTTON_SEND_MONEY = "Send Money";
+
+    //-----------------One time data ----------------------
+    public static final String OTP = "111111";
 
     //---------------CURRENCY_ABBREVIATIONS_VALUES-------------------
     public static final String[] CURRENCY_VALUES = {"LKR", "USD", "INR"};
+    public static final String[] STATUS_VALUES = {"Active", "Dormant"};
+
+    //--------------STATUS------------------
+    public static final String STATUS_PAYMENT_SUCCESS = "Payment Success";
 
     //--------------KEY WORDS------------------
-    public static final String AUTO = "Auto_";
+    public static final String KW_DIALOG_MOBILE = "Dialog Mobile";
+    public static final String MY_ACCOUNT = "myaccount";
+    public static final String MANAGE_SCHEDULE = "manage-schedule";
+    public static final String SCHEDULE_MANAGEMENT = "Schedule Management";
+    public static final String DOWNLOADS = "Downloads";
 
     public static final Map<String, String> CONSTANTS_MAP = new HashMap<>();
 
@@ -33,7 +59,6 @@ public class TransactionConstants {
         CONSTANTS_MAP.put("KW_NWSDB", "NWSDB");
         CONSTANTS_MAP.put("KW_NATIONAL_WATER_SUPPLY_AND_DRAINAGE_BOARD", "National Water Supply And Drainage Board");
         CONSTANTS_MAP.put("KW_PAY_FROM", "Pay From");
-        CONSTANTS_MAP.put("KW_Transfer_FROM", "Transfer From");
         CONSTANTS_MAP.put("KW_AMOUNT", "Amount");
         CONSTANTS_MAP.put("KW_PAYMENT_MODE", "Payment Mode");
         CONSTANTS_MAP.put("KW_TELEPHONE", "Telephone");
@@ -102,13 +127,8 @@ public class TransactionConstants {
         CONSTANTS_MAP.put("KW_SETUP_STANDING_ORDER_SCHEDULE", "Setup Standing Order/Schedule");
         CONSTANTS_MAP.put("KW_MOBILE_NUMBER_WITHOUT", "Mobile Number (Without");
         CONSTANTS_MAP.put("KW_SAVED_BILLERS", "Saved Billers");
-        CONSTANTS_MAP.put("KW_SENDER", "Sender");
-        CONSTANTS_MAP.put("KW_BENEFICIARY_REMARKS", "Beneficiary Remarks");
-        CONSTANTS_MAP.put("KW_BENEFICIARY_ACCOUNT_NUMBER", "Beneficiary Account Number");
-        CONSTANTS_MAP.put("KW_TRANSFER_MODE", "Transfer Mode");
-        CONSTANTS_MAP.put("KW_BANK", "Bank");
-        CONSTANTS_MAP.put("KW_TRANSFER_DATE", "Transfer Date");
-        CONSTANTS_MAP.put("KW_BENEFICIARY_CARD_NUMBER", "Beneficiary Card Number");
     }
+
+
 
 }
