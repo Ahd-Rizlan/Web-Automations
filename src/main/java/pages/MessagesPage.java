@@ -4,13 +4,14 @@
 package pages;
 
 import com.aventstack.extentreports.Status;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.CommonUtils;
 import utils.constants.MessagingConstants;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class MessagesPage extends BasePage {
@@ -24,6 +25,7 @@ public class MessagesPage extends BasePage {
     private static final By tfMessage = By.xpath("//div[@class='relative']/textarea");
     private static final By ddSubCategory = By.xpath("//select[@id='subjectSubCategory']");
     private static final By ddFromAccount = By.xpath("//select[@id='fromAccount']");
+    private static final By ddAccountNumber = By.xpath("//select[@id='accountNo']");
     private static final By ddBranchList = By.xpath("//select[@id='branchList']");
     private static final By ddPurpose = By.xpath("//select[@id='purpose']");
     private static final By lnkUploadAttachement = By.xpath("//input[@type='file']");
@@ -32,6 +34,16 @@ public class MessagesPage extends BasePage {
     private static final By lblMsgID = By.xpath("//span[text()='Fixed Deposit Inquiry']/parent::div/span[2]");
     private static final By btnClosePopup = By.xpath("//button[contains(@aria-label,'close')]");
     private static final By ddBank = By.xpath("//select[@id='bank']");
+    private static final By inputHiddenFile = By.xpath("//input[@type='file' and contains(@accept, '.pdf')]");
+    private static final By inputFileText = By.xpath("//input[@placeholder='Select Attachments']");
+    private static final By lblMessageList = By.xpath("//div[contains(@class,'flex justify-between items-center rounded')]");
+    private static final By lblLastModifiedDate = By.xpath("//div[contains(@class,'flex justify-between items-center rounded')]/div[2]/div[3]");
+    private static final By icnRecivedMail = By.xpath("//*[name()='svg' and contains(@class, 'lucide-mail-plus')]");
+    private static final By lblMessageContent = By.xpath("//div[contains(@class,'flex flex')]//p");
+    private static final By lblDraftMsgDate = By.xpath("//div[text()='"+MessagingConstants.DRAFT+"']/ancestor::div[4]//span[contains(text(), '-') and contains(text(), ':')]");
+    private static final By lblDraftMsg = By.xpath("//div[text()='"+MessagingConstants.DRAFT+"']/ancestor::div[1]/div[1]");
+    private static final By lblUploadedDoc = By.xpath("//span[contains(@class, 'text-sm')]");
+
 
     public enum ElementType {
         button, label, span, div, textarea, input;
@@ -40,14 +52,36 @@ public class MessagesPage extends BasePage {
     private static By getMsg(String title) {
         return By.xpath("//div[contains(text(),'" + title + "')]");
     }
+    private static By lblLastModifiedDate(int index) {
+        return By.xpath("(//div[contains(@class,'flex justify-between items-center rounded')])[" +index +"]/div[2]/div[3]");
+    }
+
+    private static By icnReadMailRecord(int index) {
+        return By.xpath("(//*[name()='svg' and contains(@class, 'lucide-mail-open')])["+index+"]");
+    }
+    private static By btnDeleteMessage(int index) {
+        return By.xpath("(//img[contains(@src, 'media/Bin')])["+index+"]");
+    }
+    private static By btnRecoverMessage(int index) {
+        return By.xpath("(//img[contains(@src, 'FRecoverIcon')])["+index+"]");
+    }
+
+    private static By lblDeletedMessage(int index) {
+        return By.xpath("(//*[name()='svg' and contains(@class, 'lucide lucide-mail-x')])["+index+"]");
+    }
 
     private static By tfOTP(int Index) {
         return By.xpath("//input[@type='password'][" + Index + "]");
     }
-    //    private static By tfInputPlaceHolder(String placeHolderText) {
-//        return By.xpath("//input[@placeholder=\"" + placeHolderText + "\"]");
-//    }
-    private static By rdoBenificiaryAccountType(String value) {
+
+    private static By lblMsgID(String subject) {
+        return By.xpath("//span[text()='" + subject + "']/parent::div/span[2]");
+    }
+    private static By lblResponseDate(String responseMessage) {
+        return By.xpath("//p[text()='"+responseMessage+"']/ancestor::div[4]//span[contains(text(), '-') and contains(text(), ':')]");
+    }
+
+    private static By rdoDate(String value) {
         return By.xpath("//input[@value=\"" + value + "\"]");
     }
 
@@ -61,6 +95,9 @@ public class MessagesPage extends BasePage {
 
     private static By getElementByPlaceholder(ElementType type, String text) {
         return By.xpath("//" + type.name() + "[@placeholder= \"" + text + "\"]");
+    }
+    private static By getElementByValue(ElementType type, String text) {
+        return By.xpath("//" + type.name() + "[@value= \"" + text + "\"]");
     }
 
     public List<WebElement> findElements(By locator) {
@@ -87,14 +124,17 @@ public class MessagesPage extends BasePage {
     }
 
     /**
+     * Initiates a fixed deposit inquiry by selecting the appropriate subject and branch,
+     * sending a message, handling OTP validation, and confirming the success message
+     * upon message creation
      *
-     * @param subject
-     * @param branch
-     * @param msg
-     * @param successMsg
-     * @param OTP
-     * @param messageCreationSuccessMsg
-     * @return
+     * @param subject                   The subject category to be selected for the inquiry (e.g., "Fixed Deposit Inquiry")
+     * @param branch                    The name or identifier of the branch associated with the inquiry
+     * @param msg                       The message content to be sent along with the inquiry
+     * @param successMsg               The expected success message after selecting branch and submitting the form
+     * @param OTP                      The One-Time Password required for validating the inquiry
+     * @param messageCreationSuccessMsg The expected confirmation message after the inquiry message is successfully created
+     * @return                         A string indicating the result of the inquiry process (reference number)
      */
     public String fixedDepositInquiry(String subject, String branch, String msg, String successMsg, String OTP, String messageCreationSuccessMsg) {
         addToReport("----------Start of Checking whether after selecting the Fixed deposit inquiry subject , branch list is displayed ----------", Status.PASS, false);
@@ -136,8 +176,6 @@ public class MessagesPage extends BasePage {
 
         sendKeysToElement(getElementByPlaceholder(ElementType.textarea,MessagingConstants.ENTER_MESSAGE),msg);
 
-//        sendKeysToElement(lnkUploadAttachement,"C:\\Projects\\sampath\\svr4-api-automations\\svr4-api-automations\\screenshot1.png");
-
         clickOnElement(getElementByTypeAndText(ElementType.button,MessagingConstants.SEND));
 
         validatePopUpMsg(successMsg);
@@ -155,24 +193,27 @@ public class MessagesPage extends BasePage {
 
         List<WebElement> messages = findElements(allMessages);
         WebElement latestMessage = getLatestElementByDate(messages, getElementByTypeAndText(ElementType.div,MessagingConstants.LAST_MODIFIED_ON), MessagingConstants.LAST_MODIFIED_ON);
-        clickOnElement(latestMessage);
+//        clickOnElement(latestMessage);
 
         scrollPageToTop();
-        waitForElementPresence(getElementByTypeAndText(ElementType.span,subject));
+        waitForElementPresence(lblMsgID(subject));
 
         addToReport("----------End of Checking whether a mail upon selecting a branch user can send a mail to a selected branch ----------", Status.PASS, false);
-        return getTextFromElement(getElementByTypeAndText(ElementType.span,subject)).replaceAll("[^0-9]", "");
+        return getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "");
 
     }
 
     /**
-     * Card center message validation
-     * @param subject
-     * @param msg
-     * @param successMsg
-     * @param OTP
-     * @param messageCreationSuccessMsg
-     * @return
+     * Validates the message flow for the Card Center subject, including subcategory selection,
+     * message sending, OTP handling, and confirmation of successful message creation
+     *
+     * @param subject                   The main subject under which the message is categorized (e.g., "Card Center")
+     * @param subCategory               The specific sub-category related to the selected subject
+     * @param msg                       The message content to be submitted
+     * @param successMsg               The expected message indicating successful creation
+     * @param OTP                       The One-Time Password used for verification during the message flow
+     * @param messageCreationSuccessMsg The message expected after the successful creation of the message
+     * @return                          A string indicating the result or confirmation of the message submission process
      */
     public String cardCenterValidations(String subject, String subCategory, String msg, String successMsg, String OTP, String messageCreationSuccessMsg) {
         addToReport("----------Start of Checking whether after selecting the Fixed deposit inquiry subject , branch list is displayed ----------", Status.PASS, false);
@@ -209,8 +250,6 @@ public class MessagesPage extends BasePage {
 
             sendKeysToElement(getElementByPlaceholder(ElementType.textarea,MessagingConstants.ENTER_MESSAGE),msg);
 
-            //sendKeysToElement(lnkUploadAttachement,"C:\\Projects\\sampath\\svr4-api-automations\\svr4-api-automations\\screenshot1.png");
-
             clickOnElement(getElementByTypeAndText(ElementType.button,MessagingConstants.SEND));
 
             validatePopUpMsg(successMsg);
@@ -226,21 +265,27 @@ public class MessagesPage extends BasePage {
             waitForElementPresence(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES));
             sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES),subCategory);
 
+            //Fix this once stabilized
             List<WebElement> messages = findElements(allMessages);
             WebElement latestMessage = getLatestElementByDate(messages, getElementByTypeAndText(ElementType.div,MessagingConstants.LAST_MODIFIED_ON), MessagingConstants.LAST_MODIFIED_ON);
-            clickOnElement(latestMessage);
+//            clickOnElement(latestMessage);
 
             scrollPageToTop();
-            waitForElementPresence(getElementByTypeAndText(ElementType.span,subCategory));
 
-            // Do admin validation
+            waitForElementPresence(lblMsgID(subCategory));
+            if(getTextFromElement(lblMsgID(subCategory)).replaceAll("[^0-9]", "").isEmpty()){
+                addToReport("Error fetching message id", Status.FAIL);
+                throw new RuntimeException("Failed to fetch message id after sending message");
+            }else {
+                addToReport("Generated message id : "+getTextFromElement(lblMsgID(subCategory)).replaceAll("[^0-9]", ""), Status.PASS,false);
+            }
 
 
         } catch (Exception e) {
             addToReport("Error logging into retail admin", Status.FAIL);
             throw new RuntimeException("Failed log into retail admin" + e.getMessage(), e);
         }
-        return getTextFromElement(getElementByTypeAndText(ElementType.span,subCategory)).replaceAll("[^0-9]", "");
+        return getTextFromElement(lblMsgID(subCategory)).replaceAll("[^0-9]", "");
     }
     /**
      * fund transfer request message validation
@@ -251,7 +296,7 @@ public class MessagesPage extends BasePage {
      * @param messageCreationSuccessMsg  - Message creation success message
      * @return
      */
-    public String fundTransferRequestValidations(String subject, int amount, String msg, String successMsg, String OTP, String messageCreationSuccessMsg) {
+    public String fundTransferRequestValidations(String subject, int amount, String msg, String successMsg, String OTP, String messageCreationSuccessMsg,String accountNo,String remark) {
         addToReport("----------Start of Checking whether Selecting ‘Fund Transfer Request’ displays fields ----------", Status.PASS, false);
         try {
 
@@ -259,22 +304,22 @@ public class MessagesPage extends BasePage {
             clickOnElement(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
             waitForElementToBeInvisible(imgGreyLoader, 20);
 
+            waitForElementToBeClickable(ddSubject,20);
             selectFromDropdown(ddSubject, subject, MessagingConstants.VISIBLE_TEXT);
             waitForElementToBeInvisible(imgGreyLoader, 20);
 
             //Validate the loaded fields
-
             if (isElementPresentBy(getElementByPlaceholder(ElementType.input,MessagingConstants.ENTER_AMOUNT))) {
                 addToReport("Amount field is present", Status.PASS,false);
             } else {
                 addToReport("Amount field is not present", Status.FAIL);
             }
-            if (isElementPresentBy(getElementByPlaceholder(ElementType.input,MessagingConstants.SAMPATH))) {
+            if (isElementPresentBy(getElementByValue(ElementType.input,MessagingConstants.SAMPATH))) {
                 addToReport("Radio sampath field is present", Status.PASS,false);
             } else {
                 addToReport("Radio sampath field is not present", Status.FAIL);
             }
-            if (isElementPresentBy(getElementByPlaceholder(ElementType.input,MessagingConstants.OTHER))) {
+            if (isElementPresentBy(getElementByValue(ElementType.input,MessagingConstants.OTHER))) {
                 addToReport("Radio other field is present", Status.PASS,false);
             } else {
                 addToReport("Radio other field is not present", Status.FAIL);
@@ -294,7 +339,7 @@ public class MessagesPage extends BasePage {
             } else {
                 addToReport("Remarks field is not present", Status.FAIL);
             }
-            clickOnElement(getElementByPlaceholder(ElementType.input,MessagingConstants.OTHER));
+            clickOnElement(getElementByValue(ElementType.input,MessagingConstants.OTHER));
             if (isElementPresentBy(ddBank)) {
                 addToReport("Dropdown bank field is present", Status.PASS,false);
             } else {
@@ -304,19 +349,19 @@ public class MessagesPage extends BasePage {
             addToReport("----------End of Checking whether Selecting ‘Fund Transfer Request’ displays fields ----------", Status.PASS, false);
             addToReport("----------Start of Checking entering the amount ----------", Status.PASS, false);
 
-            clickOnElement(getElementByPlaceholder(ElementType.input,MessagingConstants.SAMPATH));
+            clickOnElement(getElementByValue(ElementType.input,MessagingConstants.SAMPATH));
 
-            selectFromDropdown(ddFromAccount,"3","index");
+            selectFromDropdown(ddFromAccount,MessagingConstants.NUMERICAL_THREE,MessagingConstants.INDEX);
 
             sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.ENTER_AMOUNT), String.valueOf(amount));
 
             // Obtain the selected value from the dropdown
             List<String> fromAccDropdownValue = getSelectedOptionText(ddFromAccount, "FIRST_SELECTED");
 
-            String[] amt = fromAccDropdownValue.get(0).split("LKR ");
+            String[] amt = fromAccDropdownValue.get(0).split(MessagingConstants.KW_LKR);
 
             // Convert to double
-            double amountDouble = Double.parseDouble(amt[1]);
+            double amountDouble = Double.parseDouble(amt[1].replace(",", ""));
 
             // Convert to whole number (round or cast)
             int wholeAmount = (int) Math.round(amountDouble);
@@ -328,19 +373,54 @@ public class MessagesPage extends BasePage {
                 throw new RuntimeException("Not sufficient funds in the account");
             }
 
-//            sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.ENTER_AMOUNT),amount);
-//            Do admin validation
+            sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.ENTER_ACCOUNT_NUMBER),accountNo);
+
+            sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.ENTER_REMARKS),remark);
+
+            clickOnElement(getElementByTypeAndText(ElementType.button,MessagingConstants.SEND));
+
+            validatePopUpMsg(successMsg);
+
+            waitForElementPresence(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM),20);
+
+            //Enter OTP values and continue
+            sendKeysToElement(tfOTP(1), String.valueOf(OTP));
+
+            clickOnElement(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM));
+            validatePopUpMsg(messageCreationSuccessMsg);
+
+            waitForElementPresence(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES));
+            sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES),subject);
+
+            List<WebElement> messages = findElements(allMessages);
+            WebElement latestMessage = getLatestElementByDate(messages, getElementByTypeAndText(ElementType.div,MessagingConstants.LAST_MODIFIED_ON), MessagingConstants.LAST_MODIFIED_ON);
+//        clickOnElement(latestMessage);
+
+            scrollPageToTop();
+            waitForElementPresence(lblMsgID(subject));
+
+            if(getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "").isEmpty()){
+                addToReport("Error fetching message id", Status.FAIL);
+                throw new RuntimeException("Failed to fetch message id after sending message");
+            }else {
+                addToReport("Generated message id : "+getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", ""), Status.PASS,false);
+            }
 
             addToReport("----------End of Checking entering the amount ----------", Status.PASS, false);
 
         } catch (Exception e) {
-            addToReport("Error logging into retail admin", Status.FAIL);
-            throw new RuntimeException("Failed log into retail admin" + e.getMessage(), e);
+            addToReport("Error sending message under fund transfer", Status.FAIL);
+            throw new RuntimeException("Failed initiate fund transfer" + e.getMessage(), e);
         }
-        return getTextFromElement(getElementByTypeAndText(ElementType.span,"")).replaceAll("[^0-9]", "");
+        return getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "");
     }
 
 
+    /**
+     * Validates whether the expected popup message is displayed on the screen
+     *
+     * @param msg The expected text content of the popup message to validate
+     */
     public void validatePopUpMsg(String msg) {
         //waitForElementToBeInvisible(btnLogin,20);
         waitForElementPresence(getMsg(msg),20);
@@ -351,6 +431,733 @@ public class MessagesPage extends BasePage {
             addToReport("'" + msg + "'  message is not present.", Status.FAIL);
         }
         clickOnElement(btnClosePopup);
+    }
+
+
+    /**
+     * Performs validations for the Balance Confirmation message workflow
+     * This includes verifying the successful submission of a message, OTP confirmation,
+     * and ensuring the confirmation text is correctly reflected in the response
+     *
+     * @param subject                     The subject under which the message is submitted
+     * @param successMsg                 The expected success message after sending the request
+     * @param OTP                        The One Time Password required for confirmation
+     * @param messageCreationSuccessMsg  The expected confirmation message after the message is created
+     * @param sampleText                 The expected sample text that should appear in the confirmation
+     * @return                           A string result indicating the outcome of the validation (Message ID)
+     */
+    public String BalanceConfirmationValidations(String subject,String successMsg, String OTP, String messageCreationSuccessMsg,String sampleText) {
+        addToReport("----------Start of checking whether Selecting ‘Balance Confirmation Request’ displays fields ----------", Status.PASS, false);
+
+
+            waitForElementPresence(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
+            clickOnElement(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
+            waitForElementToBeInvisible(imgGreyLoader, 20);
+
+            waitForElementToBeClickable(ddSubject,20);
+            selectFromDropdown(ddSubject, subject, MessagingConstants.VISIBLE_TEXT);
+            waitForElementToBeInvisible(imgGreyLoader, 20);
+        try {
+            //Validate the loaded fields
+            if (isElementPresentBy(ddAccountNumber)) {
+                addToReport("Dropdown from account field is present", Status.PASS,false);
+            } else {
+                addToReport("Dropdown from account is not present", Status.FAIL);
+            }
+            if (isElementPresentBy(ddPurpose)) {
+                addToReport("Dropdown purpose is present", Status.PASS,false);
+            } else {
+                addToReport("Dropdown purpose is not present", Status.FAIL);
+            }
+            //  Get the expected branch texts from purpose dropdown
+            List<String> expectedPurposeDDValues = new ArrayList<>(MessagingConstants.PURPOSE_DROPDOWN.values());
+            //  Get the actual dropdown visible texts
+            List<String> actualPurposeTexts = getSelectedOptionText(ddPurpose, MessagingConstants.ALL_OPTIONS);
+            actualPurposeTexts.remove(0);
+            //  Compare
+            boolean isMatching = CommonUtils.compareTwoArraylist(expectedPurposeDDValues, actualPurposeTexts, true); // true -> ignore order
+            if (isMatching) {
+                addToReport("All values in purpose are loaded",Status.PASS,true);
+            } else {
+                List<String> missingDDValues = findMissingElements(actualPurposeTexts,expectedPurposeDDValues);
+                addToReport("All values in purpose are not loaded, missing values: "+missingDDValues,Status.PASS,true);
+            }
+
+            //Validate other option
+            selectFromDropdown(ddPurpose,MessagingConstants.PURPOSE_DROPDOWN.get("KW_OTHER"),"value");
+            if (isElementPresentBy(getElementByPlaceholder(ElementType.input,MessagingConstants.OTHER_PURPOSE))) {
+                addToReport("Other purpose field is present", Status.PASS,false);
+            } else {
+                addToReport("Other purpose field is not present", Status.FAIL);
+            }
+
+            //Validate manual data entry to others field
+            sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.OTHER_PURPOSE),sampleText);
+
+            if (getAttributeOrText(getElementByPlaceholder(ElementType.input,MessagingConstants.OTHER_PURPOSE),"value").equals(sampleText)) {
+                addToReport("Other purpose text field is enabled", Status.PASS,false);
+            } else {
+                addToReport("Other purpose text field is not enabled", Status.FAIL);
+            }
+            if (isElementPresentBy(getElementByValue(ElementType.input,MessagingConstants.PERIOD))) {
+                addToReport("Radio period field is present", Status.PASS,false);
+            } else {
+                addToReport("Radio period field is not present", Status.FAIL);
+            }
+            clickOnElement(getElementByValue(ElementType.input,MessagingConstants.PERIOD));
+            if (isElementPresentBy(getElementByValue(ElementType.input,MessagingConstants.PERIOD))) {
+                addToReport("Radio period field is present", Status.PASS,false);
+            } else {
+                addToReport("Radio period field is not present", Status.FAIL);
+            }
+            //Validate date pickers
+            if (isElementPresentBy(dpPickDate(MessagingConstants.FROM_DATE))) {
+                addToReport("Date picker "+MessagingConstants.FROM_DATE+" field is present", Status.PASS,false);
+            } else {
+                addToReport("Date picker "+MessagingConstants.FROM_DATE+" is not present", Status.FAIL);
+            }
+            if (isElementPresentBy(dpPickDate(MessagingConstants.TO_DATE))) {
+                addToReport("Date picker "+MessagingConstants.TO_DATE+" field is present", Status.PASS,false);
+            } else {
+                addToReport("Date picker "+MessagingConstants.TO_DATE+" is not present", Status.FAIL);
+            }
+            //Validate as at date options
+            clickOnElement(getElementByValue(ElementType.input,MessagingConstants.AS_AT_DATE_LC));
+            if (isElementPresentBy(dpPickDate(MessagingConstants.AS_AT_DATE))) {
+                addToReport("Date picker "+MessagingConstants.AS_AT_DATE+" field is present", Status.PASS,false);
+            } else {
+                addToReport("Date picker "+MessagingConstants.AS_AT_DATE+" is not present", Status.FAIL);
+            }
+
+            if (isElementPresentBy(getElementByPlaceholder(ElementType.textarea,MessagingConstants.ENTER_TO_WHOM_IT_SHOULD_BE_ADDRESSED))) {
+                addToReport(MessagingConstants.ENTER_TO_WHOM_IT_SHOULD_BE_ADDRESSED+" field is present", Status.PASS,true);
+            } else {
+                addToReport(MessagingConstants.ENTER_TO_WHOM_IT_SHOULD_BE_ADDRESSED+" field is not present", Status.FAIL);
+            }
+
+            addToReport("----------End of checking whether Selecting ‘Balance Confirmation Request’ displays fields ----------", Status.PASS, false);
+
+            addToReport("----------Start of entering values and send message ----------", Status.PASS, false);
+
+            clickOnElement(rdoDate(MessagingConstants.AS_AT_DATE_LC));
+
+            //Update below to select a date use system date
+            //sendKeysToElement(getElementByValue(ElementType.input,MessagingConstants.AS_AT_DATE),"04/28/2025");
+
+            selectFromDropdown(ddAccountNumber,"2",MessagingConstants.INDEX);
+            sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.OTHER_PURPOSE),sampleText);
+            sendKeysToElement(getElementByPlaceholder(ElementType.textarea,MessagingConstants.ENTER_TO_WHOM_IT_SHOULD_BE_ADDRESSED),sampleText);
+
+            clickOnElement(getElementByTypeAndText(ElementType.button,MessagingConstants.SEND));
+
+            validatePopUpMsg(successMsg);
+
+            waitForElementPresence(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM),20);
+
+            //Enter OTP values and continue
+            sendKeysToElement(tfOTP(1), String.valueOf(OTP));
+
+            clickOnElement(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM));
+            validatePopUpMsg(messageCreationSuccessMsg);
+
+            waitForElementPresence(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES));
+            sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES),subject);
+
+            List<WebElement> messages = findElements(allMessages);
+            WebElement latestMessage = getLatestElementByDate(messages, getElementByTypeAndText(ElementType.div,MessagingConstants.LAST_MODIFIED_ON), MessagingConstants.LAST_MODIFIED_ON);
+//        clickOnElement(latestMessage);
+
+            scrollPageToTop();
+            waitForElementPresence(lblMsgID(subject));
+
+            if(getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "").isEmpty()){
+                addToReport("Error fetching message id", Status.FAIL);
+                throw new RuntimeException("Failed to fetch message id after sending message");
+            }else {
+                addToReport("Generated message id : "+getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", ""), Status.PASS,false);
+            }
+
+            addToReport("----------End of of entering values and send message ----------", Status.PASS, true);
+
+        } catch (Exception e) {
+            addToReport("Error sending message under fund balance confirmation", Status.FAIL);
+            throw new RuntimeException("Failed initiate balance confirmation" + e.getMessage(), e);
+        }
+        return getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "");
+    }
+
+    /**
+     * Performs validations for the Fund Transfer Dispute message workflow.
+     * This includes verifying the proper display of success messages, OTP handling,
+     * and confirming that the message creation process completes successfully with the given input.
+     *
+     * @param subject                    The subject line or category selected for the message
+     * @param successMsg                The expected success message after the initial action
+     * @param OTP                       The One Time Password required to complete the operation
+     * @param messageCreationSuccessMsg The expected confirmation message after message creation
+     * @param message                   The actual message content submitted for the dispute
+     * @return                          A string result indicating the outcome of the validation (MessageID)
+     */
+    public String FundTransferDisputeValidations(String subject,String successMsg, String OTP, String messageCreationSuccessMsg,String message,String filePath) {
+        addToReport("----------Start of checking whether Selecting ‘Fund Transfer Dispute’ displays fields ----------", Status.PASS, false);
+        try {
+
+            waitForElementPresence(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
+            clickOnElement(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
+            waitForElementToBeInvisible(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE),20);
+            waitForElementToBeInvisible(imgGreyLoader, 20);
+
+            waitFor(5);
+            selectFromDropdown(ddSubject, subject, MessagingConstants.VISIBLE_TEXT);
+            waitForElementToBeInvisible(imgGreyLoader, 20);
+
+            //Validate the loaded fields
+            if (isElementPresentBy(getElementByPlaceholder(ElementType.textarea,MessagingConstants.ENTER_MESSAGE))) {
+                addToReport(MessagingConstants.ENTER_MESSAGE+" field is present", Status.PASS,false);
+            } else {
+                addToReport(MessagingConstants.ENTER_MESSAGE+" field is not present", Status.FAIL);
+            }
+
+            addToReport("----------End of checking whether Selecting ‘Fund Transfer Dispute’ displays fields ----------", Status.PASS, false);
+
+            addToReport("----------Start of entering values and send message ----------", Status.PASS, false);
+
+            //Enter message
+            sendKeysToElement(getElementByPlaceholder(ElementType.textarea,MessagingConstants.ENTER_MESSAGE),message);
+
+            //Upload attachment
+            uploadAndValidateAttachment(getFileFromResources(filePath));
+
+            clickOnElement(getElementByTypeAndText(ElementType.button,MessagingConstants.SEND));
+
+            validatePopUpMsg(successMsg);
+
+            waitForElementPresence(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM),20);
+
+            //Enter OTP values and continue
+            sendKeysToElement(tfOTP(1), String.valueOf(OTP));
+
+            clickOnElement(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM));
+            validatePopUpMsg(messageCreationSuccessMsg);
+
+            waitForElementPresence(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES));
+            sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES),subject);
+
+            List<WebElement> messages = findElements(allMessages);
+            WebElement latestMessage = getLatestElementByDate(messages, getElementByTypeAndText(ElementType.div,MessagingConstants.LAST_MODIFIED_ON), MessagingConstants.LAST_MODIFIED_ON);
+//        clickOnElement(latestMessage);
+
+            scrollPageToTop();
+            waitForElementPresence(lblMsgID(subject));
+
+            if(getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "").isEmpty()){
+                addToReport("Error fetching message id", Status.FAIL);
+                throw new RuntimeException("Failed to fetch message id after sending message");
+            }else {
+                addToReport("Generated message id : "+getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", ""), Status.PASS,false);
+            }
+
+            addToReport("----------End of of entering values and send message ----------", Status.PASS, true);
+
+        } catch (Exception e) {
+            addToReport("Error sending message under fund balance confirmation", Status.FAIL);
+            throw new RuntimeException("Failed initiate balance confirmation" + e.getMessage(), e);
+        }
+        return getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "");
+    }
+
+
+    /**
+     * Performs validation for the Bill Payment Dispute process
+     * This includes filling in the subject, uploading any required attachments, entering the OTP,
+     * and verifying success and confirmation messages after submission
+     *
+     * @param subject                      The subject selected for the bill payment dispute
+     * @param successMsg                  The success message expected after the form submission
+     * @param OTP                         The One-Time Password required for validation
+     * @param messageCreationSuccessMsg   The message expected confirming the creation of the dispute message
+     * @param message                     The actual message content or description of the dispute
+     * @param filePath                    The full or relative path of the file to be attached with the dispute
+     * @return                            The confirmation string or message from the system upon successful operation
+     */
+    public String BillPaymentDisputeValidations(String subject,String successMsg, String OTP, String messageCreationSuccessMsg,String message,String filePath) {
+        addToReport("----------Start of checking whether Selecting ‘Fund Transfer Dispute’ displays fields ----------", Status.PASS, false);
+        try {
+
+            waitForElementPresence(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
+            clickOnElement(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
+            waitForElementToBeInvisible(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE),20);
+            waitForElementToBeInvisible(imgGreyLoader, 20);
+
+            waitFor(5);
+            selectFromDropdown(ddSubject, subject, MessagingConstants.VISIBLE_TEXT);
+            waitForElementToBeInvisible(imgGreyLoader, 20);
+
+            //Validate the loaded fields
+            if (isElementPresentBy(getElementByPlaceholder(ElementType.textarea,MessagingConstants.ENTER_MESSAGE))) {
+                addToReport(MessagingConstants.ENTER_MESSAGE+" field is present", Status.PASS,false);
+            } else {
+                addToReport(MessagingConstants.ENTER_MESSAGE+" field is not present", Status.FAIL);
+            }
+
+            addToReport("----------End of checking whether Selecting ‘Fund Transfer Dispute’ displays fields ----------", Status.PASS, false);
+
+            addToReport("----------Start of entering values and send message ----------", Status.PASS, false);
+
+            //Enter message
+            sendKeysToElement(getElementByPlaceholder(ElementType.textarea,MessagingConstants.ENTER_MESSAGE),message);
+
+            //Upload attachment
+            uploadAndValidateAttachment(getFileFromResources(filePath));
+
+            clickOnElement(getElementByTypeAndText(ElementType.button,MessagingConstants.SEND));
+
+            validatePopUpMsg(successMsg);
+
+            waitForElementPresence(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM),20);
+
+            //Enter OTP values and continue
+            sendKeysToElement(tfOTP(1), String.valueOf(OTP));
+
+            clickOnElement(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM));
+            validatePopUpMsg(messageCreationSuccessMsg);
+
+            waitForElementPresence(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES));
+            sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES),subject);
+
+            List<WebElement> messages = findElements(allMessages);
+            WebElement latestMessage = getLatestElementByDate(messages, getElementByTypeAndText(ElementType.div,MessagingConstants.LAST_MODIFIED_ON), MessagingConstants.LAST_MODIFIED_ON);
+//        clickOnElement(latestMessage);
+
+            scrollPageToTop();
+            waitForElementPresence(lblMsgID(subject));
+
+            if(getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "").isEmpty()){
+                addToReport("Error fetching message id", Status.FAIL);
+                throw new RuntimeException("Failed to fetch message id after sending message");
+            }else {
+                addToReport("Generated message id : "+getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", ""), Status.PASS,false);
+            }
+
+            addToReport("----------End of of entering values and send message ----------", Status.PASS, true);
+
+        } catch (Exception e) {
+            addToReport("Error sending message under fund balance confirmation", Status.FAIL);
+            throw new RuntimeException("Failed initiate balance confirmation" + e.getMessage(), e);
+        }
+        return getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "");
+    }
+
+
+    /**
+     * Performs validations for Bill Payment Dispute message flow
+     * This includes entering message details, verifying success messages,
+     * and uploading a file attachment
+     *
+     * @param subject                   The subject selected for the message
+     * @param successMsg               The success message expected after message submission
+     * @param OTP                      The one-time password used for authentication
+     * @param messageCreationSuccessMsg The message shown on successful message creation
+     * @param message                  The actual message content to be entered
+     * @param branch                   The branch name involved in the dispute
+     * @param filePath                 The path of the attachment file to be uploaded
+     * @return                         The generated message ID after successful submission
+     */
+    public String OtherSubjectValidations(String subject,String successMsg, String OTP, String messageCreationSuccessMsg,String message,String branch,String filePath) {
+        addToReport("----------Start of checking whether Selecting ‘Other subject’ displays fields ----------", Status.PASS, false);
+
+
+            waitForElementPresence(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
+            clickOnElement(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
+            waitForElementToBeInvisible(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE),20);
+            waitForElementToBeInvisible(imgGreyLoader, 20);
+        try {
+            waitForElementToBeClickable(ddSubject,20);
+            waitFor(2);
+
+            selectFromDropdown(ddSubject, subject, MessagingConstants.VISIBLE_TEXT);
+            waitForElementToBeInvisible(imgGreyLoader, 20);
+
+            //Validate the loaded fields
+            if (isElementPresentBy(getElementByPlaceholder(ElementType.textarea,MessagingConstants.ENTER_MESSAGE))) {
+                addToReport(MessagingConstants.ENTER_MESSAGE+" field is present", Status.PASS,false);
+            } else {
+                addToReport(MessagingConstants.ENTER_MESSAGE+" field is not present", Status.FAIL);
+            }
+            if (isElementPresentBy(getElementByPlaceholder(ElementType.input,MessagingConstants.ENTER_MESSAGE_SUBJECT))) {
+                addToReport(MessagingConstants.ENTER_MESSAGE_SUBJECT+" field is present", Status.PASS,false);
+            } else {
+                addToReport(MessagingConstants.ENTER_MESSAGE_SUBJECT+" field is not present", Status.FAIL);
+            }
+            if (isElementPresentBy(ddBranchList)) {
+                addToReport("Dropdown branch field is present", Status.PASS,false);
+            } else {
+                addToReport("Dropdown branch field is present", Status.FAIL);
+            }
+
+            addToReport("----------End of checking whether Selecting ‘Other subject’ displays fields ----------", Status.PASS, false);
+
+            addToReport("----------Start of entering values and send message ----------", Status.PASS, false);
+
+            //Select branch
+            selectFromDropdown(ddBranchList,branch, MessagingConstants.VISIBLE_TEXT);
+
+            //Enter message
+            sendKeysToElement(getElementByPlaceholder(ElementType.textarea,MessagingConstants.ENTER_MESSAGE),message);
+
+            //Upload attachment
+            uploadAndValidateAttachment(getFileFromResources(filePath));
+
+            //Enter subject
+            sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.ENTER_MESSAGE_SUBJECT),subject);
+
+            clickOnElement(getElementByTypeAndText(ElementType.button,MessagingConstants.SEND));
+
+            validatePopUpMsg(successMsg);
+
+            waitForElementPresence(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM),20);
+
+            //Enter OTP values and continue
+            sendKeysToElement(tfOTP(1), String.valueOf(OTP));
+
+            clickOnElement(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM));
+            validatePopUpMsg(messageCreationSuccessMsg);
+
+            waitForElementPresence(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES));
+            sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES),subject);
+
+            List<WebElement> messages = findElements(allMessages);
+            WebElement latestMessage = getLatestElementByDate(messages, getElementByTypeAndText(ElementType.div,MessagingConstants.LAST_MODIFIED_ON), MessagingConstants.LAST_MODIFIED_ON);
+            //clickOnElement(latestMessage);
+
+            scrollPageToTop();
+            waitForElementPresence(lblMsgID(subject));
+
+            if(getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "").isEmpty()){
+                addToReport("Error fetching message id", Status.FAIL);
+                throw new RuntimeException("Failed to fetch message id after sending message");
+            }else {
+                addToReport("Generated message id : "+getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", ""), Status.PASS,false);
+            }
+
+            addToReport("----------End of of entering values and send message ----------", Status.PASS, true);
+
+        } catch (Exception e) {
+            addToReport("Error sending message under fund balance confirmation", Status.FAIL);
+            throw new RuntimeException("Failed initiate balance confirmation" + e.getMessage(), e);
+        }
+        return getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "");
+    }
+
+    /**
+     * Validates inbox message functionalities including delete and recovery actions
+     * This method performs checks on a message based on its ID, validates its content,
+     * verifies deletion confirmation, and confirms successful recovery
+     *
+     * @param subject              The subject under which the message is categorized
+     * @param messageID            The unique identifier of the message to validate
+     * @param message              The expected content of the message for verification
+     * @param deletionSuccessMsg   The confirmation message expected after deletion
+     * @param recoverySuccessMsg   The confirmation message expected after recovery
+     */
+    public void inboxMessagesValidation(String subject,String messageID,String message,String deletionSuccessMsg,String recoverySuccessMsg) {
+
+        try {
+
+            addToReport("----------Start of validation of received messages are in reverse order----------", Status.PASS, false);
+            clickOnElement(getElementByTypeAndText(ElementType.div,MessagingConstants.TRASH));
+            waitForElementToBeInvisible(imgGreyLoader,20);
+            clickOnElement(getElementByTypeAndText(ElementType.div,MessagingConstants.ALL));
+            waitForElementToBeInvisible(imgGreyLoader,20);
+
+            //Validate the order of messages
+            verifyMessagesInReverseChronologicalOrder();
+            addToReport("----------End of validation of received messages are in reverse order----------", Status.PASS, false);
+            addToReport("----------Start of validation of received mail----------", Status.PASS, false);
+
+            waitForElementPresence(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES));
+            sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES),subject);
+
+            //Validate the loaded fields
+            if (isElementPresentBy(icnRecivedMail)) {
+                addToReport("Received message is present", Status.PASS,true);
+            } else {
+                addToReport("Received message is not present", Status.FAIL);
+            }
+
+            clickOnElement(icnRecivedMail);
+
+            //Validate the message id
+            if (messageID.equals(getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", ""))) {
+                addToReport("Received message id is :"+messageID, Status.PASS,true);
+            } else {
+                addToReport("Received message id is not loaded", Status.FAIL);
+            }
+
+            scrollPageToTop();
+            waitForElementToBeClickable(lblMessageContent,20);
+            //Validate Message date
+                WebElement msgElement = driver.findElement(lblMessageContent);
+                WebElement dateElement = driver.findElement(lblResponseDate(message));
+
+                String actualMessage = msgElement.getText().trim();
+                String actualDate = dateElement.getText().trim();
+
+                // Validate content
+                if (!actualMessage.equals(message)) {
+                    throw new AssertionError("Expected message: " + message + " but found: " + actualMessage);
+                }
+                // Validate date
+                String today = LocalDate.now().toString(); // yyyy-MM-dd format
+                if (!actualDate.startsWith(today)) {
+                    throw new RuntimeException("Expected message date to be today (" + today + ") but was: "+actualDate);
+                }
+                addToReport("Message and date validated successfully", Status.PASS,true);
+
+            addToReport("----------End of validation of received mail----------", Status.PASS, false);
+            addToReport("----------Start of delete mail----------", Status.PASS, false);
+
+            scrollPageToTop();
+            //Delete the last open record
+            clickOnElement(btnDeleteMessage(1));
+            waitForElementToBeClickable(getElementByTypeAndText(ElementType.button, MessagingConstants.CONFIRM),20);
+            clickOnElement(getElementByTypeAndText(ElementType.button, MessagingConstants.CONFIRM));
+            validatePopUpMsg(deletionSuccessMsg);
+
+            scrollPageToTop();
+
+            addToReport("----------End of delete mail----------", Status.PASS, false);
+            addToReport("----------Start of recovery of deleted mail----------", Status.PASS, false);
+            clickOnElement(getElementByTypeAndText(ElementType.div,MessagingConstants.TRASH));
+            waitForElementToBeInvisible(imgGreyLoader,20);
+
+            waitForElementPresence(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES));
+            sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES),subject);
+
+            clickOnElement(lblDeletedMessage(1));
+
+            if (messageID.equals(getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", ""))) {
+                addToReport("Deleted message id is validated"+messageID, Status.PASS,true);
+            } else {
+                addToReport("Deleted message id is not loaded instead loaded ID :"+messageID, Status.FAIL);
+            }
+            //Recover the message
+            clickOnElement(btnRecoverMessage(1));
+            waitForElementToBeClickable(getElementByTypeAndText(ElementType.button, MessagingConstants.CONFIRM),20);
+            clickOnElement(getElementByTypeAndText(ElementType.button, MessagingConstants.CONFIRM));
+
+            validatePopUpMsg(recoverySuccessMsg);
+            scrollPageToTop();
+            waitForElementPresence(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES));
+            sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES),subject);
+
+            clickOnElement(icnReadMailRecord(1));
+
+            if (messageID.equals(getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", ""))) {
+                addToReport("Restored message id is validated"+messageID, Status.PASS,true);
+            } else {
+                addToReport("Restored message id is not loaded instead loaded ID :"+messageID, Status.FAIL);
+            }
+
+            addToReport("----------End of recovery of deleted mail----------", Status.PASS, false);
+
+        } catch (Exception e) {
+            addToReport("Error validating inbox", Status.FAIL);
+            throw new RuntimeException("Failed to validate inbox" + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Performs validations on the draft message workflow including creation, update, and deletion.
+     * This method verifies if a draft can be successfully created with the given message and file attachment,
+     * updated with new content, and deleted with proper confirmation messages.
+     *
+     * @param subject                The subject category under which the draft is created
+     * @param successMsg            The message shown after successful draft save
+     * @param OTP                   The One-Time Password used for draft creation
+     * @param messageCreationSuccessMsg The confirmation message expected after draft creation
+     * @param message               The initial content of the draft message
+     * @param updatedMsg            The content to update the draft message with
+     * @param deletionSuccessMsg    The message expected after successfully deleting the draft
+     * @param filePath              The path to the file to be attached with the draft message
+     */
+    public void draftMessageValidations(String subject,String successMsg, String OTP, String messageCreationSuccessMsg,String message,String updatedMsg, String deletionSuccessMsg,String filePath) {
+
+
+
+            waitForElementPresence(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
+            clickOnElement(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
+            waitForElementToBeInvisible(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE),20);
+            waitForElementToBeInvisible(imgGreyLoader, 20);
+
+            waitForElementToBeClickable(ddSubject,20);
+            waitFor(3);
+            selectFromDropdown(ddSubject, subject, MessagingConstants.VISIBLE_TEXT);
+            waitForElementToBeInvisible(imgGreyLoader, 20);
+
+            addToReport("----------Start of draft message ----------", Status.PASS, false);
+
+//            Commented due to a bug
+//            uploadAndValidateAttachment(getFileFromResources(filePath));
+        try {
+            //Enter message
+            sendKeysToElement(getElementByPlaceholder(ElementType.textarea,MessagingConstants.ENTER_MESSAGE),message);
+
+            clickOnElement(getElementByTypeAndText(ElementType.button,MessagingConstants.SAVE_AS_DRAFT));
+
+            validatePopUpMsg(successMsg);
+
+            waitForElementPresence(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM),20);
+
+            //Enter OTP values and continue
+            sendKeysToElement(tfOTP(1), String.valueOf(OTP));
+
+            clickOnElement(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM));
+            validatePopUpMsg(messageCreationSuccessMsg);
+
+            waitFor(2);
+            waitForElementToBeInvisible(imgGreyLoader,20);
+            waitForElementPresence(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES));
+
+            List<WebElement> messages = findElements(allMessages);
+            WebElement latestMessage = getLatestElementByDate(messages, getElementByTypeAndText(ElementType.div,MessagingConstants.LAST_MODIFIED_ON), MessagingConstants.LAST_MODIFIED_ON);
+//        clickOnElement(latestMessage);
+
+            scrollPageToTop();
+            waitForElementPresence(lblMsgID(subject));
+
+            if(getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "").isEmpty()){
+                addToReport("Error fetching message id", Status.FAIL);
+                throw new RuntimeException("Failed to fetch message id after sending message");
+            }else {
+                addToReport("Generated message id : "+getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", ""), Status.PASS,false);
+            }
+
+            //Validate draft message date and time
+            WebElement dateElement = driver.findElement(lblDraftMsgDate);
+
+            String actualDate = dateElement.getText().trim();
+
+            // Validate date
+            String today = LocalDate.now().toString(); // yyyy-MM-dd format
+            if (!actualDate.startsWith(today)) {
+                throw new RuntimeException("Expected message date to be today (" + today + ") but was: "+actualDate);
+            }else {
+                addToReport("Draft Date is reflected as : "+actualDate, Status.PASS,false);
+            }
+            addToReport("----------End of draft message ----------", Status.PASS, true);
+            addToReport("----------Start of draft edit ----------", Status.PASS, true);
+
+            if(!getAttributeOrText(getElementByPlaceholder(ElementType.textarea,MessagingConstants.START_TYPING),"value").equals(message)){
+                addToReport("Error fetching draft message", Status.FAIL);
+            }else {
+                addToReport("Fetched draft message : "+message, Status.PASS,false);
+            }
+
+            //Commented due to a bug
+//            if(!getTextFromElement(lblUploadedDoc).equals("12752-transaction.pdf")){
+//                addToReport("Error fetching uploaded document", Status.FAIL);
+//            }else {
+//                addToReport("Fetched uploaded document with name : "+"12752-transaction.pdf", Status.PASS,false);
+//            }
+
+
+            //Update draft message
+            sendKeysToElement(getElementByPlaceholder(ElementType.textarea,MessagingConstants.START_TYPING),updatedMsg);
+
+            //Commented due to a bug
+            //uploadAndValidateAttachment(getFileFromResources(filePath));
+
+            clickOnElement(getElementByTypeAndText(ElementType.span,MessagingConstants.SAVE_AS_DRAFT));
+
+            waitForElementPresence(lblDraftMsg,20);
+
+            //Validate the draft update
+            if(!getTextFromElement(lblDraftMsg).equals(updatedMsg)){
+                addToReport("Error validating updated draft message, found : "+getTextFromElement(lblDraftMsg), Status.FAIL);
+            }else {
+                addToReport("Validated updated draft message : "+updatedMsg, Status.PASS,false);
+            }
+
+            addToReport("----------End of draft edit ----------", Status.PASS, true);
+            addToReport("----------Start of draft Delete ----------", Status.PASS, true);
+
+            clickOnElement(btnDeleteMessage(1));
+            waitForElementToBeClickable(getElementByTypeAndText(ElementType.button, MessagingConstants.CONFIRM),20);
+            clickOnElement(getElementByTypeAndText(ElementType.button, MessagingConstants.CONFIRM));
+            validatePopUpMsg(deletionSuccessMsg);
+
+            scrollPageToTop();
+
+            addToReport("----------End of draft Delete ----------", Status.PASS, true);
+
+        } catch (Exception e) {
+            addToReport("Error draft messages validation", Status.FAIL);
+            throw new RuntimeException("Failed draft messages validation" + e.getMessage(), e);
+        }
+
+    }
+
+    /**
+     * Verify if the messages are in reverse chronological order
+     */
+    public void verifyMessagesInReverseChronologicalOrder() {
+        List<WebElement> messageRows = driver.findElements(lblMessageList);
+        List<LocalDateTime> dateList = new ArrayList<>();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        for (int inc = 1; inc <= messageRows.size(); inc++) {
+            // Dynamically build XPath for each row's date
+            String dateText = driver.findElement(lblLastModifiedDate(inc)).getText();
+
+            // Extract date part from the text (format: Last modified on yyyy-MM-dd HH:mm:ss)
+            String dateStr = dateText.replace("Last modified on", "").trim();
+            LocalDateTime dateTime = LocalDateTime.parse(dateStr, formatter);
+            dateList.add(dateTime);
+        }
+
+        // Check if list is in reverse chronological order
+        for (int i = 0; i < dateList.size() - 1; i++) {
+            if (dateList.get(i).isBefore(dateList.get(i + 1))) {
+                addToReport("Messages are not in reverse chronological order", Status.FAIL);
+                throw new RuntimeException("Error messages are not in reverse chronological order");
+            }
+        }
+        addToReport("Messages are in reverse chronological order", Status.PASS, true);
+    }
+
+    /**
+     * Upload an attachment
+     * @param filePath  file path of the attachment
+     */
+    public void uploadAndValidateAttachment(String filePath) {
+        WebElement fileInput = driver.findElement(inputHiddenFile);
+
+        // Unhide the file input using JS
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].style.display='block';", fileInput);
+
+        // Upload file
+        fileInput.sendKeys(filePath);
+
+        // Wait for the file name to appear in the visible text input
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(driver -> {
+            String value = driver.findElement(inputFileText).getAttribute("value");
+            return value != null && !value.trim().isEmpty();
+        });
+
+        // Confirm the message or indicator element appears
+        boolean isUploaded = driver.findElement(inputFileText).getAttribute("value").contains(".pdf")
+                && driver.findElement(lblMsg).isDisplayed();
+
+        if (isUploaded) {
+            addToReport(" Attachment uploaded successfully: " + filePath,Status.PASS);
+        } else {
+            addToReport(" Attachment did not upload successfully: " + filePath,Status.FAIL);
+            throw new RuntimeException(" Attachment upload failed.");
+        }
     }
 
 }

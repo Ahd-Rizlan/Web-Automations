@@ -184,26 +184,26 @@ public class DataProviders {
             String projectRoot = System.getProperty("user.dir");
             filePath = projectRoot + "/" + property.getProperty("gui-config", "TESTDATA_PATH");
         }
-
         @DataProvider(name = "LoginDataSavingsFD")
         public static Iterator<Object[]> getLoginDataSavingFD() {
             String[] columnNames = {"userName", "password", "emailSentSuccessMsg"};
-            return XlsReader.getDataFromSheet(filePath, "LoginDataSavingsFD", columnNames).iterator();
+            return XlsReader.getDataFromSheet(filePath, "LoginDataAlternateFour", columnNames).iterator();
         }
-        @DataProvider(name = "AccountNumberSavingsFD")
+        @DataProvider(name = "SavingsAccountNumber")
         public static Iterator<Object[]> getAccountNumberSavingFD() {
             String[] columnNames = {"accountNumber"};
-            return XlsReader.getDataFromSheet(filePath, "AccountNumberSavingsFD", columnNames).iterator();
+            return XlsReader.getDataFromSheet(filePath, "SavingsAccountNumber", columnNames).iterator();
         }
         @DataProvider(name = "AmountSavingsFD")
         public static Iterator<Object[]> getAccountDataSavingFD() {
             String[] columnNames = {"amount", "nickName"};
             return XlsReader.getDataFromSheet(filePath, "AmountSavingsFD", columnNames).iterator();
         }
-        @DataProvider(name = "AccountPreviewDetailsSavingsFD")
-        public static Iterator<Object[]> getSettingsPanelUserData() {
-            String[] columnNames = {"DetailsSavingsFD"};
-            return XlsReader.getDataFromSheet(filePath, "AccountPreviewDetailsSavingsFD", columnNames).iterator();
+
+        @DataProvider(name = "FDCompleteFlowData")
+        public static Iterator<Object[]> getCompleteFlowData() {
+            String[] columnNames = {"userName","password" ,"emailSentSuccessMsg","product","accountNumber","month","rate","amount","interest","totalAmount","nickName"};
+            return XlsReader.getDataFromSheet(filePath, "FDCompleteFlowData", columnNames).iterator();
         }
     }
 
@@ -255,6 +255,77 @@ public class DataProviders {
         }
 
     }
+    public static class MessagesPageDataProvider {
+
+        private static final String filePath;
+
+        static {
+            String projectRoot = System.getProperty("user.dir");
+            filePath = projectRoot + "/" + property.getProperty("gui-config", "TESTDATA_PATH");
+        }
+
+        @DataProvider(name = "DraftMessageValidationData")
+        public static Iterator<Object[]> getDraftMessageValidationData() {
+            String[] columnNames = { "subject", "successMsg", "otp", "messageCreationSuccessMsg", "message", "updatedMsg", "deletionSuccessMsg", "filePath"
+            };
+            return XlsReader.getDataFromSheet(filePath, "MDraftMessageData", columnNames).iterator();
+        }
+        @DataProvider(name = "BillPaymentDisputeValidationData")
+        public static Iterator<Object[]> getBillPaymentDisputeValidationData() {
+            String[] columnNames = { "subject", "successMsg", "otp", "messageCreationSuccessMsg", "message", "filePath", "headerTile", "userName", "password"
+            };
+            return XlsReader.getDataFromSheet(filePath, "MBillPaymentDisputeData", columnNames).iterator();
+        }
+        @DataProvider(name = "InboxAndRestoreMessagesValidationData")
+        public static Iterator<Object[]> getInboxAndRestoreMessagesValidationData() {
+            String[] columnNames = { "subject", "successMsg", "otp", "messageCreationSuccessMsg", "message", "responseMsg", "messageDeletionSuccessMsg", "messageRecoverySuccessMsg", "headerTile", "userName", "password","filePath"
+            };
+            return XlsReader.getDataFromSheet(filePath, "MInboxAndRestoreData", columnNames).iterator();
+        }
+
+        @DataProvider(name = "OtherSubjectValidationData")
+        public static Iterator<Object[]> getOtherSubjectValidationData() {
+            String[] columnNames = { "subject", "successMsg", "otp", "messageCreationSuccessMsg", "message", "branch", "filePath", "headerTile", "userName", "password"
+            };
+            return XlsReader.getDataFromSheet(filePath, "MOtherSubjectValidationData", columnNames).iterator();
+        }
+
+        @DataProvider(name = "FundTransferDisputeValidationData")
+        public static Iterator<Object[]> getFundTransferDisputeValidationData() {
+            String[] columnNames = { "subject", "successMsg", "otp", "messageCreationSuccessMsg", "message", "headerTile", "userName", "password","filePath"
+            };
+            return XlsReader.getDataFromSheet(filePath, "MFundTransferDisputeData", columnNames).iterator();
+        }
+        @DataProvider(name = "BalanceConfirmationRequestValidationData")
+        public static Iterator<Object[]> getBalanceConfirmationRequestValidationData() {
+            String[] columnNames = { "subject", "successMsg", "otp", "messageCreationSuccessMsg", "message", "headerTile", "userName", "password"
+            };
+            return XlsReader.getDataFromSheet(filePath, "MBalanceConfirmationData", columnNames).iterator();
+        }
+
+        @DataProvider(name = "FundTransferRequestValidationData")
+        public static Iterator<Object[]> getFundTransferRequestValidationData() {
+            String[] columnNames = { "subject", "amount", "successMsg", "otp", "messageCreationSuccessMsg", "message", "accountNo", "remark", "headerTile", "userName", "password"
+            };
+            return XlsReader.getDataFromSheet(filePath, "MFundTransferRequestData", columnNames).iterator();
+        }
+
+        @DataProvider(name = "CardCenterMessageValidationData")
+        public static Iterator<Object[]> getCardCenterMessageValidationData() {
+            String[] columnNames = { "subject", "subCategory", "successMsg", "otp", "messageCreationSuccessMsg", "message", "headerTile", "userName", "password"
+            };
+            return XlsReader.getDataFromSheet(filePath, "MCardCenterValidationData", columnNames).iterator();
+        }
+
+        @DataProvider(name = "FdInquiryAndSendMailValidationData")
+        public static Iterator<Object[]> getFdInquiryAndSendMailValidationData() {
+            String[] columnNames = {"subject", "branch", "successMsg", "otp", "messageCreationSuccessMsg", "message", "forwardMessage", "headerTile", "branchUserName", "branchPassword", "CBOUUserName", "CBOUPassword", "userName"
+            };
+            return XlsReader.getDataFromSheet(filePath, "MFdInquiryAndSendMailData", columnNames).iterator();
+        }
+
+    }
+
 
 
 

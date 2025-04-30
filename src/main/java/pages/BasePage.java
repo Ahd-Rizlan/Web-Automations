@@ -19,6 +19,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.*;
@@ -29,6 +30,7 @@ public abstract class BasePage extends helpers {
 
     protected WebDriver driver;
     protected static List<String> sharedValues = new ArrayList<>();
+    private String baseWindowHandle;
     public BasePage(WebDriver driver) {
         this.driver = driver;
     }
@@ -1087,6 +1089,48 @@ public abstract class BasePage extends helpers {
 
         return Collections.max(elementDateMap.entrySet(), Map.Entry.comparingByValue()).getKey();
     }
+
+    /**
+     * Retrieves the absolute file path of a file located in the test resources directory (src/test/resources)
+     *
+     * @param fileName Name of the file (including extension) located under src/test/resources
+     * @return The absolute file path as a String, which can be used for file upload operations
+     * @throws IllegalArgumentException if the file is not found in the resources folder
+     */
+    public String getFileFromResources(String fileName) {
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL resource = classLoader.getResource(fileName);
+        if (resource == null) {
+            addToReport("File not found ", Status.FAIL);
+            throw new IllegalArgumentException("File not found in test resources folder: " + fileName);
+        } else {
+            return new File(resource.getFile()).getAbsolutePath();
+        }
+    }
+
+    /**
+     * Close all the windows except parent windows
+     * */
+    public void closeAllExceptParentWindow() {
+        Set<String> allWindows = driver.getWindowHandles();
+
+        for (String windowHandle : allWindows) {
+            if (!windowHandle.equals(baseWindowHandle)) {
+                driver.switchTo().window(windowHandle);
+                driver.close();
+            }
+        }
+
+        driver.switchTo().window(baseWindowHandle);
+    }
+
+    /**
+     * capture the current window handle to identify parent window
+     */
+    public void captureBaseWindowHandle() {
+        baseWindowHandle = driver.getWindowHandle();
+    }
+
 
 
 }

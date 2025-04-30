@@ -20,11 +20,12 @@ public class AdminTaskConstants {
     public static final String DATE = "Date";
     public static final String FROM_DATE = "From Date";
     public static final String TO_DATE = "To Date";
-
-
-    // -------------- KEY WORDS ------------------
     public static final String INBOX = "Inbox";
     public static final String FORWARD = "Forward";
+    public static final String REPLY = "Reply";
+    public static final String SEND = "Send";
+    public static final String ATTEND = "Attend";
+    public static final String CBOU = "CBOU";
 
 
 }

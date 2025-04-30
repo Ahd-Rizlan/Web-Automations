@@ -7,12 +7,9 @@ import com.aventstack.extentreports.Status;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import utils.constants.AdminTaskConstants;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class VishwaRetailAdminLoginPage extends BasePage {
 
@@ -27,9 +24,6 @@ public class VishwaRetailAdminLoginPage extends BasePage {
         return By.xpath("//p[contains(text(),\"" + tileText + "\")]");
     }
 
-    private static By getElementByTypeAndText(LoginPage.ElementType type, String text) {
-        return By.xpath("//" + type.name() + "[contains(normalize-space(text()), \"" + text + "\")]");
-    }
 
     /**
      * Login to Admin module
@@ -69,7 +63,7 @@ public class VishwaRetailAdminLoginPage extends BasePage {
 
 
     /**
-     * Opens a new browser tab, navigates to a URL based on tab index, and validates mail list availability.
+     * Opens a new browser tab, navigates to a URL based on tab index, and validates mail list availability
      *
      * @param tabIndex A string representing the tab identifier or URL target
      */
@@ -79,10 +73,6 @@ public class VishwaRetailAdminLoginPage extends BasePage {
 
         // Convert tabIndex to an integer
         int index = tabIndex;
-
-//            // Wait briefly for the new tab to appear (optional but recommended)
-//            new WebDriverWait(driver, Duration.ofSeconds(5))
-//                    .until(d -> driver.getWindowHandles().size() > index);
 
         // Convert the set of window handles to a list
         List<String> windowHandles = new ArrayList<>(driver.getWindowHandles());
