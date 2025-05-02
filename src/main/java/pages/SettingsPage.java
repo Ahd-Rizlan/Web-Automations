@@ -127,8 +127,9 @@ public class SettingsPage extends BasePage {
                 return;
             }
 
-            // Loop through and validate each setting
-            for (int row = 1; row <= recordCount; row++) {
+            int loopCount = Math.min(recordCount, expectedSettingValues.length);
+
+            for (int row = 1; row <= loopCount; row++) {
                 String settingValue = getTextFromElement(lblUserSettingsValues(row)).trim();
                 String expectedValue = expectedSettingValues[row - 1].trim();
 
