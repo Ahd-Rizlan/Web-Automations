@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.List;
 
 public class MessagesPage extends BasePage {
 
@@ -22,7 +23,6 @@ public class MessagesPage extends BasePage {
 
     private static final By imgGreyLoader = By.xpath("//div[contains(@class,'bg-gray')]");
     private static final By ddSubject = By.xpath("//select[@id='subject']");
-    private static final By tfMessage = By.xpath("//div[@class='relative']/textarea");
     private static final By ddSubCategory = By.xpath("//select[@id='subjectSubCategory']");
     private static final By ddFromAccount = By.xpath("//select[@id='fromAccount']");
     private static final By ddAccountNumber = By.xpath("//select[@id='accountNo']");
@@ -43,6 +43,7 @@ public class MessagesPage extends BasePage {
     private static final By lblDraftMsgDate = By.xpath("//div[text()='"+MessagingConstants.DRAFT+"']/ancestor::div[4]//span[contains(text(), '-') and contains(text(), ':')]");
     private static final By lblDraftMsg = By.xpath("//div[text()='"+MessagingConstants.DRAFT+"']/ancestor::div[1]/div[1]");
     private static final By lblUploadedDoc = By.xpath("//span[contains(@class, 'text-sm')]");
+    private static final By btnDeleteUpload = By.xpath("//img[contains(@src, '2Fclose-icon')]");
 
 
     public enum ElementType {
@@ -424,6 +425,7 @@ public class MessagesPage extends BasePage {
     public void validatePopUpMsg(String msg) {
         //waitForElementToBeInvisible(btnLogin,20);
         waitForElementPresence(getMsg(msg),20);
+        waitForElementToBeClickable(getMsg(msg),20);
         //Validate the success message
         if (isElementPresentBy(getMsg(msg))) {
             addToReport("'" + msg + "'  message is present.", Status.PASS,true);
@@ -591,7 +593,7 @@ public class MessagesPage extends BasePage {
      * This includes verifying the proper display of success messages, OTP handling,
      * and confirming that the message creation process completes successfully with the given input.
      *
-     * @param subject                    The subject line or category selected for the message
+     * @param subject                   The subject line or category selected for the message
      * @param successMsg                The expected success message after the initial action
      * @param OTP                       The One Time Password required to complete the operation
      * @param messageCreationSuccessMsg The expected confirmation message after message creation
@@ -1128,8 +1130,8 @@ public class MessagesPage extends BasePage {
     }
 
     /**
-     * Upload an attachment
-     * @param filePath  file path of the attachment
+     * Upload an attachment and validate based on file extension and success message
+     * @param filePath file path of the attachment
      */
     public void uploadAndValidateAttachment(String filePath) {
         WebElement fileInput = driver.findElement(inputHiddenFile);
@@ -1148,17 +1150,184 @@ public class MessagesPage extends BasePage {
             return value != null && !value.trim().isEmpty();
         });
 
+        // Get the uploaded file name
+        String uploadedFile = driver.findElement(inputFileText).getAttribute("value").toLowerCase();
+
+        // Validate allowed extensions
+        boolean isValidFileType = uploadedFile.endsWith(".pdf")
+                || uploadedFile.endsWith(".jpeg")
+                || uploadedFile.endsWith(".jpg")
+                || uploadedFile.endsWith(".png");
+
         // Confirm the message or indicator element appears
-        boolean isUploaded = driver.findElement(inputFileText).getAttribute("value").contains(".pdf")
-                && driver.findElement(lblMsg).isDisplayed();
+        boolean isUploaded = isValidFileType && driver.findElement(lblMsg).isDisplayed();
 
         if (isUploaded) {
-            addToReport(" Attachment uploaded successfully: " + filePath,Status.PASS);
+            addToReport("Attachment uploaded successfully: " + filePath, Status.PASS);
         } else {
-            addToReport(" Attachment did not upload successfully: " + filePath,Status.FAIL);
-            throw new RuntimeException(" Attachment upload failed.");
+            addToReport("Attachment did not upload successfully: " + filePath, Status.FAIL);
+            throw new RuntimeException("Attachment upload failed");
         }
     }
+
+    /**
+     * Upload an attachment and validate based on file extension and success message
+     * @param filePath file path of the attachment
+     */
+    public void uploadAttachmentWithoutValidation(String filePath) {
+        WebElement fileInput = driver.findElement(inputHiddenFile);
+
+        // Unhide the file input using JS
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].style.display='block';", fileInput);
+
+        // Upload file
+        fileInput.sendKeys(filePath);
+
+    }
+
+
+
+    /**
+     * Performs validations for the compose message
+     * This includes verifying the proper display of success messages, OTP handling,
+     * and confirming that the message creation process completes successfully with the given input.
+     *
+     * @param subject                      The subject line to be used in the message form (e.g., "Fund Transfer Dispute")
+     * @param uploadErrorMsg               The expected error message when invalid file upload conditions are met (e.g., size or type restrictions)
+     * @param fileNameOne                  Name of the first file to be uploaded
+     * @param fileNameTwo                  Name of the second file to be uploaded.
+     * @param fileNameThree                Name of the third file to be uploaded.
+     * @param fileNameFour                 Name of the fourth file to be uploaded.
+     * @param fileNameFive                 Name of the fifth file to be uploaded.
+     * @param pastedText                   Text to paste into the message body
+     * @param sanitizedExpected            The expected text after sanitization (e.g., after removing or escaping special characters).
+     * @param testInputWithSpecialCharacters  The raw input string containing special characters to test the sanitization logic.
+
+     * @return A string result indicating the outcome of the validation (MessageID)
+     */
+    public void validateComposeMessageFields(String subject, String uploadErrorMsg,String fileNameOne,String fileNameTwo,String fileNameThree,String fileNameFour,String fileNameFive,String pastedText,String sanitizedExpected,String testInputWithSpecialCharacters) {
+        addToReport("----------Start of checking whether compose message opens relevant fields and options  ----------", Status.PASS, false);
+        try {
+
+            waitForElementPresence(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
+            clickOnElement(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
+            waitForElementToBeInvisible(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE),20);
+            waitForElementToBeInvisible(imgGreyLoader, 20);
+
+            //  Get the actual dropdown visible texts
+            List<String> actualSubjectsTexts = getSelectedOptionText(ddSubject, MessagingConstants.ALL_OPTIONS);
+
+            //  Get the expected branch texts from your BRANCH_MAP
+            List<String> expectedSubjectsTexts = new ArrayList<>(MessagingConstants.SUBJECT_DROPDOWN.values());
+
+            //  Compare
+            boolean isMatching = CommonUtils.compareTwoArraylist(expectedSubjectsTexts, actualSubjectsTexts, true);
+
+            List<String> missingBSubjects = findMissingElements(actualSubjectsTexts,expectedSubjectsTexts);
+
+            if (isMatching) {
+                addToReport("All subjects are loaded :" + actualSubjectsTexts ,Status.PASS,true);
+            } else {
+                addToReport("All subjects did not load missing subjects from list : "+missingBSubjects,Status.PASS,true);
+            }
+
+            selectFromDropdown(ddSubject, subject, MessagingConstants.VISIBLE_TEXT);
+            waitForElementToBeInvisible(imgGreyLoader, 20);
+
+            //Validate the loaded fields
+            if (isElementPresentBy(getElementByPlaceholder(ElementType.textarea,MessagingConstants.ENTER_MESSAGE))) {
+                addToReport(MessagingConstants.ENTER_MESSAGE+" field is present", Status.PASS,false);
+            } else {
+                addToReport(MessagingConstants.ENTER_MESSAGE+" field is not present", Status.FAIL);
+            }
+
+            //Validate the file upload option
+            //Upload attachment Allowed types JPEG
+            uploadAndValidateAttachment(getFileFromResources(MessagingConstants.MESSAGES_UPLOAD+"/"+fileNameOne));
+            waitForElementPresence(btnDeleteUpload,20);
+            clickOnElement(btnDeleteUpload);
+
+            //Upload attachment Allowed types JPG
+            uploadAndValidateAttachment(getFileFromResources(MessagingConstants.MESSAGES_UPLOAD+"/"+fileNameTwo));
+            waitForElementPresence(btnDeleteUpload,20);
+            clickOnElement(btnDeleteUpload);
+
+            //Upload attachment Allowed types PNG
+            uploadAndValidateAttachment(getFileFromResources(MessagingConstants.MESSAGES_UPLOAD+"/"+fileNameThree));
+            waitForElementPresence(btnDeleteUpload,20);
+            clickOnElement(btnDeleteUpload);
+
+            //Upload attachment Allowed types PDF
+            uploadAndValidateAttachment(getFileFromResources(MessagingConstants.MESSAGES_UPLOAD+"/"+fileNameFour));
+            waitForElementPresence(btnDeleteUpload,20);
+            clickOnElement(btnDeleteUpload);
+
+            //Upload attachment Allowed types PDF above 512KB
+            uploadAttachmentWithoutValidation(getFileFromResources(MessagingConstants.MESSAGES_UPLOAD+"/"+fileNameFive));
+            validatePopUpMsg(uploadErrorMsg);
+
+            addToReport("----------End of checking whether compose message opens relevant fields and options ----------", Status.PASS, false);
+
+            addToReport("----------Start of validation of message body ----------", Status.PASS, false);
+
+
+//            String pastedText = " This is   a \n\n test    message  with   spacing\tand alignment.  ";
+            CommonUtils.copyToClipboard(pastedText);
+            pasteIntoElement(getElementByPlaceholder(ElementType.textarea, MessagingConstants.ENTER_MESSAGE));
+
+
+//            String sanitizedExpected = "This is a test message with spacing and alignment.";
+            String actualSanitized = getAttributeOrText(getElementByPlaceholder(ElementType.textarea, MessagingConstants.ENTER_MESSAGE), "value");
+
+            if (actualSanitized.trim().equals(sanitizedExpected)) {
+            addToReport("Pasted content is sanitized properly", Status.PASS, true);
+            } else {
+            addToReport("Pasted content is not sanitized properly", Status.FAIL);
+            }
+
+            sendKeysToElementUsingJS(getElementByPlaceholder(ElementType.textarea, MessagingConstants.ENTER_MESSAGE), "");
+
+//            String testInputWithSpecialCharacters = "123ABCabc!@#$%^&*()_+-=[]{}|;':\",.<>?/ ";
+            sendKeysToElement(getElementByPlaceholder(ElementType.textarea, MessagingConstants.ENTER_MESSAGE), testInputWithSpecialCharacters);
+
+            // Get the actual field value
+            String actualValue = getAttributeOrText(getElementByPlaceholder(ElementType.textarea, MessagingConstants.ENTER_MESSAGE), "value");
+
+            // Define representative substrings to check
+            String[] substringsToCheck = {
+                    testInputWithSpecialCharacters.substring(0, 3),   // "123"
+                    testInputWithSpecialCharacters.substring(3, 6),   // "ABC"
+                    testInputWithSpecialCharacters.substring(6, 9),   // "abc"
+                    testInputWithSpecialCharacters.substring(9, 12),  // "!@#"
+                    testInputWithSpecialCharacters.substring(12, 15)  // "$%^"
+            };
+
+            // Check that each substring exists in the actual value
+            boolean allPresent = true;
+            for (String sub : substringsToCheck) {
+                if (!actualValue.contains(sub)) {
+                    allPresent = false;
+                    break;
+                }
+            }
+
+            if (allPresent) {
+                addToReport("All substrings from test input are present in the message body", Status.PASS, true);
+            }else {
+                addToReport("All substrings from test input are not present in the message body", Status.FAIL, true);
+            }
+
+            addToReport("----------End of validation of message body ----------", Status.PASS, true);
+
+        } catch (Exception e) {
+            addToReport("Error validation of compose message", Status.FAIL);
+            throw new RuntimeException("Failed to validate compose message" + e.getMessage(), e);
+        }
+    }
+
+
+
 
 }
 

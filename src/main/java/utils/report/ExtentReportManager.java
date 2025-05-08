@@ -6,24 +6,38 @@ import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
-
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class ExtentReportManager {
+
+
+    static String os = System.getProperty("os.name");
+    static String user = System.getProperty("user.name");
+    static String hostName = "Unknown";
+
+
 
     public static ExtentReports createExtentReport(String filePath,String reportName,String documentTitle,String Author) {
         ExtentSparkReporter sparkReports = new ExtentSparkReporter(filePath);
         sparkReports.config().setReportName(reportName);
         sparkReports.config().setDocumentTitle(documentTitle);
-        sparkReports.config().setTheme(Theme.DARK);
+        sparkReports.config().setTheme(Theme.STANDARD);
 
+
+        try {
+            InetAddress inetAddress = InetAddress.getLocalHost();
+            hostName = inetAddress.getHostName();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
         ExtentReports reports = new ExtentReports();
         reports.attachReporter(sparkReports);
-        reports.setSystemInfo("Machine:", "Mithra_ThilinaJ");
-        reports.setSystemInfo("OS", "WIN 11");
-        reports.setSystemInfo("Author", Author);
+        // Set system info in the report
+        reports.setSystemInfo("Machine", hostName);
+        reports.setSystemInfo("OS", os);
+        reports.setSystemInfo("User", user);
+
 
 
         return reports;

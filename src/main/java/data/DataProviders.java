@@ -324,6 +324,13 @@ public class DataProviders {
             return XlsReader.getDataFromSheet(filePath, "MFdInquiryAndSendMailData", columnNames).iterator();
         }
 
+        @DataProvider(name = "ComposeNewMessageValidationData")
+        public static Iterator<Object[]> getComposeNewMessageValidationData() {
+            String[] columnNames = {"subject", "uploadErrorMsg", "fileNameOne", "fileNameTwo", "fileNameThree", "fileNameFour", "fileNameFive", "pastedText", "sanitizedExpected", "testInputWithSpecialCharacters"};
+            return XlsReader.getDataFromSheet(filePath, "MComposeNewMessageData", columnNames).iterator();
+        }
+
+
     }
 
 

@@ -14,24 +14,7 @@ import utils.report.TestContext;
 
 import java.lang.reflect.Method;
 
-public class DashboardTest extends Drivers {
-
-    LoginPage loginPage;
-    OTPPage otpPage;
-    ExtentTest exTest;
-    DashboardPage dashboardPage;
-    SavedPayeesPage savedPayeesPage;
-
-    @BeforeMethod
-    private void OpenURL(Method method) {
-        String methodName = method.getName();
-        exTest = extent.createTest(methodName);
-        TestContext.setExtentTest(exTest);
-        dashboardPage = new DashboardPage(driver);
-        loginPage = new LoginPage(driver);
-        otpPage = new OTPPage(driver);
-        savedPayeesPage = new SavedPayeesPage(driver);
-    }
+public class DashboardTest extends BaseTest {
 
     @Test(priority = 1, dataProvider = "LoginData", description = "Pre-Requisite :: Login to the Sampath vishwa application", dataProviderClass = DataProviders.LoginDataProvider.class)
     public void logIntoDahsboard(String userName, String password, String emailSentSuccessMsg) throws InterruptedException {

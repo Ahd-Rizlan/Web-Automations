@@ -1,41 +1,14 @@
 package gui.test;
 
-import com.aventstack.extentreports.ExtentTest;
 import data.DataProviders;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.*;
-import utils.Drivers;
 import utils.constants.AdminTaskConstants;
 import utils.constants.LoginConstants;
-import utils.report.TestContext;
 
-import java.lang.reflect.Method;
+public class MessagingTest extends BaseTest {
 
-public class MessagingTest extends Drivers {
-
-    DashboardPage dashboardPage;
-    LoginPage loginPage;
-    OTPPage otpPage;
-    VishwaRetailAdminLoginPage vishwaRetailAdminLoginPage;
-    VishwaRetailAdminTaskPage vishwaRetailAdminTaskPage;
-    MessagesPage messagesPage;
-    ExtentTest exTest;
     String messageID = "";
-
-    @BeforeMethod
-    private void OpenURL(Method method) {
-        String methodName = method.getName();
-        exTest = extent.createTest(methodName);
-        TestContext.setExtentTest(exTest);
-        dashboardPage = new DashboardPage(driver);
-        loginPage = new LoginPage(driver);
-        otpPage = new OTPPage(driver);
-        vishwaRetailAdminLoginPage = new VishwaRetailAdminLoginPage(driver);
-        vishwaRetailAdminTaskPage = new VishwaRetailAdminTaskPage(driver);
-        messagesPage = new MessagesPage(driver);
-    }
 
     @Test(priority = 1, dataProvider = "LoginDataAlternateTwo", description = "Pre-Requisite :: Login to the Sampath vishwa application as alternate user two", dataProviderClass = DataProviders.LoginDataProvider.class)
     public void logIntoDahsboardAlternateUserOne(String userName, String password, String emailSentSuccessMsg) throws InterruptedException {
@@ -190,6 +163,17 @@ public class MessagingTest extends Drivers {
         vishwaRetailAdminTaskPage.validateFundTransferRequest(messageID);
 
     }
+    @Test(priority = 11, description = "Compose new message | 41, 42",dataProvider = "ComposeNewMessageValidationData", dataProviderClass = DataProviders.MessagesPageDataProvider.class)
+    public void validateComposeNewMessage(String subject, String uploadErrorMsg,String fileNameOne,String fileNameTwo,String fileNameThree,String fileNameFour,String fileNameFive,String pastedText,String sanitizedExpected,String testInputWithSpecialCharacters) throws InterruptedException {
+
+        dashboardPage.navigateToMessages();
+        //compose message validations
+        messagesPage.validateComposeMessageFields(subject, uploadErrorMsg, fileNameOne, fileNameTwo, fileNameThree, fileNameFour, fileNameFive, pastedText, sanitizedExpected, testInputWithSpecialCharacters
+        );
+    }
+
+
+
 
 
     @AfterMethod(description = "Rollback to dashboard")

@@ -15,8 +15,7 @@ public class MessagingConstants {
     public static final String INDEX = "index";
     public static final String NUMERICAL_THREE = "3";
     public static final String KW_LKR = "LKR ";
-
-
+    public static final String MESSAGES_UPLOAD = "MESSAGES_UPLOAD";
 
     //--------------KEY WORDS TF ------------------
     public static final String COMPOSE_NEW_MESSAGE = "Compose New Message";
@@ -52,6 +51,19 @@ public class MessagingConstants {
     public static final String CONFIRM = "Confirm";
     public static final String TRASH = "Trash";
     public static final String ALL = "All";
+
+    // -------------- SUBJECT DROPDOWN LIST ------------------
+
+    public static final Map<String, String> SUBJECT_DROPDOWN = new HashMap<>();
+    static {
+        SUBJECT_DROPDOWN.put("KW_FUND_TRANSFER_DISPUTE", "Fund Transfer Dispute");
+        SUBJECT_DROPDOWN.put("KW_BILL_PAYMENT_DISPUTE", "Bill Payment Dispute");
+        SUBJECT_DROPDOWN.put("KW_CARD_CENTER", "Card Center");
+        SUBJECT_DROPDOWN.put("KW_FUND_TRANSFER_REQUEST", "Fund Transfer Request");
+        SUBJECT_DROPDOWN.put("KW_FIXED_DEPOSIT_INQUIRY", "Fixed Deposit Inquiry");
+        SUBJECT_DROPDOWN.put("KW_BALANCE_CONFIRMATION_REQUEST", "Balance Confirmation Request");
+        SUBJECT_DROPDOWN.put("KW_OTHER", "Other");
+    }
 
     // -------------- PURPOSE DROPDOWN LIST ------------------
     public static final Map<String, String> PURPOSE_DROPDOWN = new HashMap<>();
