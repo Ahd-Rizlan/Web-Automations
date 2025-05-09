@@ -38,7 +38,7 @@ public class MessagesPage extends BasePage {
     private static final By inputFileText = By.xpath("//input[@placeholder='Select Attachments']");
     private static final By lblMessageList = By.xpath("//div[contains(@class,'flex justify-between items-center rounded')]");
     private static final By lblLastModifiedDate = By.xpath("//div[contains(@class,'flex justify-between items-center rounded')]/div[2]/div[3]");
-    private static final By icnRecivedMail = By.xpath("//*[name()='svg' and contains(@class, 'lucide-mail-plus')]");
+    private static final By icnRecivedMessage = By.xpath("//*[name()='svg' and contains(@class, 'lucide-mail-plus')]");
     private static final By lblMessageContent = By.xpath("//div[contains(@class,'flex flex')]//p");
     private static final By lblDraftMsgDate = By.xpath("//div[text()='"+MessagingConstants.DRAFT+"']/ancestor::div[4]//span[contains(text(), '-') and contains(text(), ':')]");
     private static final By lblDraftMsg = By.xpath("//div[text()='"+MessagingConstants.DRAFT+"']/ancestor::div[1]/div[1]");
@@ -57,7 +57,7 @@ public class MessagesPage extends BasePage {
         return By.xpath("(//div[contains(@class,'flex justify-between items-center rounded')])[" +index +"]/div[2]/div[3]");
     }
 
-    private static By icnReadMailRecord(int index) {
+    private static By icnReadMessageRecord(int index) {
         return By.xpath("(//*[name()='svg' and contains(@class, 'lucide-mail-open')])["+index+"]");
     }
     private static By btnDeleteMessage(int index) {
@@ -172,7 +172,7 @@ public class MessagesPage extends BasePage {
         }
 
         addToReport("----------End of Checking whether after selecting the Fixed deposit inquiry subject , branch list is displayed ----------", Status.PASS, false);
-        addToReport("----------Start of Checking whether a mail upon selecting a branch user can send a mail to a selected branch ----------", Status.PASS, false);
+        addToReport("----------Start of Checking whether a message upon selecting a branch user can send a message to a selected branch ----------", Status.PASS, false);
         selectFromDropdown(ddBranchList,branch, MessagingConstants.VISIBLE_TEXT);
 
         sendKeysToElement(getElementByPlaceholder(ElementType.textarea,MessagingConstants.ENTER_MESSAGE),msg);
@@ -199,7 +199,7 @@ public class MessagesPage extends BasePage {
         scrollPageToTop();
         waitForElementPresence(lblMsgID(subject));
 
-        addToReport("----------End of Checking whether a mail upon selecting a branch user can send a mail to a selected branch ----------", Status.PASS, false);
+        addToReport("----------End of Checking whether a message upon selecting a branch user can send a message to a selected branch ----------", Status.PASS, false);
         return getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "");
 
     }
@@ -875,19 +875,19 @@ public class MessagesPage extends BasePage {
             //Validate the order of messages
             verifyMessagesInReverseChronologicalOrder();
             addToReport("----------End of validation of received messages are in reverse order----------", Status.PASS, false);
-            addToReport("----------Start of validation of received mail----------", Status.PASS, false);
+            addToReport("----------Start of validation of received message----------", Status.PASS, false);
 
             waitForElementPresence(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES));
             sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES),subject);
 
             //Validate the loaded fields
-            if (isElementPresentBy(icnRecivedMail)) {
+            if (isElementPresentBy(icnRecivedMessage)) {
                 addToReport("Received message is present", Status.PASS,true);
             } else {
                 addToReport("Received message is not present", Status.FAIL);
             }
 
-            clickOnElement(icnRecivedMail);
+            clickOnElement(icnRecivedMessage);
 
             //Validate the message id
             if (messageID.equals(getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", ""))) {
@@ -916,8 +916,8 @@ public class MessagesPage extends BasePage {
                 }
                 addToReport("Message and date validated successfully", Status.PASS,true);
 
-            addToReport("----------End of validation of received mail----------", Status.PASS, false);
-            addToReport("----------Start of delete mail----------", Status.PASS, false);
+            addToReport("----------End of validation of received message----------", Status.PASS, false);
+            addToReport("----------Start of delete message----------", Status.PASS, false);
 
             scrollPageToTop();
             //Delete the last open record
@@ -928,8 +928,8 @@ public class MessagesPage extends BasePage {
 
             scrollPageToTop();
 
-            addToReport("----------End of delete mail----------", Status.PASS, false);
-            addToReport("----------Start of recovery of deleted mail----------", Status.PASS, false);
+            addToReport("----------End of delete message----------", Status.PASS, false);
+            addToReport("----------Start of recovery of deleted message----------", Status.PASS, false);
             clickOnElement(getElementByTypeAndText(ElementType.div,MessagingConstants.TRASH));
             waitForElementToBeInvisible(imgGreyLoader,20);
 
@@ -953,7 +953,7 @@ public class MessagesPage extends BasePage {
             waitForElementPresence(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES));
             sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES),subject);
 
-            clickOnElement(icnReadMailRecord(1));
+            clickOnElement(icnReadMessageRecord(1));
 
             if (messageID.equals(getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", ""))) {
                 addToReport("Restored message id is validated"+messageID, Status.PASS,true);
@@ -961,7 +961,7 @@ public class MessagesPage extends BasePage {
                 addToReport("Restored message id is not loaded instead loaded ID :"+messageID, Status.FAIL);
             }
 
-            addToReport("----------End of recovery of deleted mail----------", Status.PASS, false);
+            addToReport("----------End of recovery of deleted message----------", Status.PASS, false);
 
         } catch (Exception e) {
             addToReport("Error validating inbox", Status.FAIL);
@@ -1271,13 +1271,9 @@ public class MessagesPage extends BasePage {
 
             addToReport("----------Start of validation of message body ----------", Status.PASS, false);
 
-
-//            String pastedText = " This is   a \n\n test    message  with   spacing\tand alignment.  ";
             CommonUtils.copyToClipboard(pastedText);
             pasteIntoElement(getElementByPlaceholder(ElementType.textarea, MessagingConstants.ENTER_MESSAGE));
 
-
-//            String sanitizedExpected = "This is a test message with spacing and alignment.";
             String actualSanitized = getAttributeOrText(getElementByPlaceholder(ElementType.textarea, MessagingConstants.ENTER_MESSAGE), "value");
 
             if (actualSanitized.trim().equals(sanitizedExpected)) {
@@ -1288,7 +1284,6 @@ public class MessagesPage extends BasePage {
 
             sendKeysToElementUsingJS(getElementByPlaceholder(ElementType.textarea, MessagingConstants.ENTER_MESSAGE), "");
 
-//            String testInputWithSpecialCharacters = "123ABCabc!@#$%^&*()_+-=[]{}|;':\",.<>?/ ";
             sendKeysToElement(getElementByPlaceholder(ElementType.textarea, MessagingConstants.ENTER_MESSAGE), testInputWithSpecialCharacters);
 
             // Get the actual field value

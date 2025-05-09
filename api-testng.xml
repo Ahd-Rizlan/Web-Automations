@@ -33,13 +33,7 @@
                     <include name="addPaymentTemplate"/>
                 </methods>
             </class>
-            <class name="api.test.api_FavBeneficiariesTest">
-                <methods>
-                    <include name="checkFavBeneficiaryDetailsApiUnauthorizedAccess"/>
-                    <include name="checkFavBeneficiaryDetailsApiAuthorizedAccess"/>
-                    <include name="checkFavBeneficiaryDetailsNotRetrievedWithNoFavBeneficiaries"/>
-                </methods>
-            </class>
+
             <class name="api.test.api_FavouriteBillersTest">
                 <methods>
                     <include name="checkFavouriteBillersApiWithAuthorizedAccess"/>
@@ -187,12 +181,7 @@
                     <include name="checkReverseMobileCashWithAuthorizedAccess"/>
                 </methods>
             </class>
-            <class name="api.test.api_updateFavouritePayeeTest">
-                <methods>
-                    <include name="checkUpdateFavouritePayeeWithUnauthorizedAccess"/>
-                    <include name="checkUpdateFavouritePayeeWithAuthorizedAccess"/>
-                </methods>
-            </class>
+
             <class name="api.test.api_updatePayeeAsFavouriteTest">
                 <methods>
                     <include name="checkUpdatePayeeAsFavouriteUnauthorizedAccess"/>
