@@ -40,7 +40,7 @@ public class DashboardPage extends BasePage {
     private static final By lblAccountStat = By.xpath("//span/ancestor::div[contains(@class,'flex flex-col')]/following::div[contains(@class,'text-white font-bold')][2]");
     private static final By lblSavingsAccountProductName = By.xpath("//span[text()='Savings Account']/ancestor::div[contains(@class,'flex flex-col')]/following::span[contains(@class,'self-end')]");
     private static final By lblAccountProductName = By.xpath("//span/ancestor::div[contains(@class,'flex flex-col')]/following::span[contains(@class,'self-end')]");
-    private static final By icnAccounts = By.xpath("//div[contains(@class,'flex flex-col')]/div[3]/div[1]");
+    private static final By icnAccounts = By.xpath("//div[contains(@class,'flex flex-col items-center')]/div[3]/div[1]");
     private static final By lblCurrentAccount = By.xpath("//span[text()='Current Account']");
     private static final By btnNextArrow = By.xpath("//div[contains(@class,'flex gap-2')]/div[2]");
     private static final By lblCurrencyAndAvailableBalance = By.xpath("//div[contains(text(),'Available')]/following-sibling::div/span[@class='text-black']");
@@ -66,6 +66,7 @@ public class DashboardPage extends BasePage {
     private static final By btnQActionsStopCard = By.xpath("//h1[text()='Quick Actions']/ancestor::div[contains(@class,'Container_container')]//span[contains(text(),'Stop Card')]");
     private static final By btnQActionsStopCheque = By.xpath("//h1[text()='Quick Actions']/ancestor::div[contains(@class,'Container_container')]//span[contains(text(),'Stop Cheque')]");
     private static final By btnQActionsMobileCash = By.xpath("//h1[text()='Quick Actions']/ancestor::div[contains(@class,'Container_container')]//span[contains(text(),'Mobile Cash')]");
+    private static final By btnQActionsSavingsAccount = By.xpath("//h1[text()='Quick Actions']/ancestor::div[contains(@class,'Container_container')]//span[contains(text(),'Open Saving')]");
     private static final By btnQActionsObtainNewLoan = By.xpath("//h1[text()='Quick Actions']/ancestor::div[contains(@class,'Container_container')]//span[contains(text(),'Obtain')]/parent::div/span[contains(text(),'New Loan')]");
     private static final By btnTransfer = By.xpath("//div[contains(@class,'RecentVishwaTransactions')]//div[contains(text(),'Transfer')]");
     private static final By btnPayment = By.xpath("//div[contains(@class,'RecentVishwaTransactions')]//div[contains(text(),'Payment')]");
@@ -1415,6 +1416,10 @@ public class DashboardPage extends BasePage {
             case "mobile cash":
                 clickOnElement(btnQActionsMobileCash);
                 waitForElementToBeInvisible(btnQActionsMobileCash, 10);
+                break;
+            case "open saving":
+                clickOnElement(btnQActionsSavingsAccount);
+                waitForElementToBeInvisible(btnQActionsSavingsAccount, 10);
                 break;
             default:
                 throw new IllegalArgumentException("Unable to click on quick action button :" + quickActionButton);
@@ -2970,7 +2975,7 @@ public class DashboardPage extends BasePage {
     {
         //WaitForElementPresence(lblLoadingIcon);
         waitForElementToBeInvisible(lblLoadingIcon, 15);
-        waitForElementToBeInvisible(icnAccounts, 15);
+         waitForElementToBeInvisible(icnAccounts, 15);
 
         waitFor(5);
 
@@ -2996,17 +3001,18 @@ public class DashboardPage extends BasePage {
                 if (!AccountStatus.equals(DashboardConstants.STATUS_VALUES[1])){
 
                 }
+
                 //Store the account number
                 addValue(inc,getTextFromElement(lblAccountNumber));
                 addToReport("Successfully added account number : '" + getTextFromElement(lblAccountNumber) + "'", Status.PASS, true);
-                //Navigate to next account
+      }               //Navigate to next account
                 clickOnElement(btnNextArrow);
 
                 //WaitForElementPresence(lblLoadingIcon);
                 waitForElementToBeInvisible(lblLoadingIcon, 15);
 
             }
-        }else {
+        else {
             addToReport("No accounts found", Status.FAIL);
             throw new RuntimeException("Error - No accounts found");
         }

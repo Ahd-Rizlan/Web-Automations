@@ -26,35 +26,35 @@ public class SettingsTest extends BaseTest {
         dashboardPage.validateTheTitle();
     }
 
-    @Test(priority = 2,dataProvider = "SuccessMessageSettings",description = "Validate the settings panel navigation", dataProviderClass = DataProviders.SettingsPageDataProvider.class)
+    @Test(priority = 2,dataProvider = "SuccessMessageSettings",description = "Validate the settings panel navigation 24 25 ", dataProviderClass = DataProviders.SettingsPageDataProvider.class)
     public void navigateToSettings (String successMsg){
         settingsPage.navigateToSettings(successMsg);
         settingsPage.enterOTPAndContinueSettingsPage(LoginConstants.OTP);
     }
 
-    @Test(priority = 3,dataProvider = "SettingsPanelUserData" , description = "Validate the settings panel data", dataProviderClass = DataProviders.SettingsPageDataProvider.class)
+    @Test(priority = 3,dataProvider = "SettingsPanelUserData" , description = "Validate the settings panel data 26", dataProviderClass = DataProviders.SettingsPageDataProvider.class)
     public void validateUserSettingsData (String settingsUserDetails) {
     settingsPage.validateUserSettingsData( settingsUserDetails);
     }
 
-    @Test(priority = 6, description = "Navigate to the OTP Mode Verfication")
+    @Test(priority = 6, description = "Navigate to the OTP Mode Verfication 27 28")
     public void NavigatetoToOTPVerificationMode (){
         settingsPage.NavigatetoToOTPVerificationMode();
         settingsPage.validateTheSettingsOTPPage();
 
 
     }
-    @Test(priority = 7, description = "Navigate to the Password section")
+    @Test(priority = 7, description = "Navigate to the Password section 30")
     public void navigateToPasswordSection (){
         settingsPage.navigateToPasswordSection();
 
     }
-    @Test(priority = 8,dataProvider = "PasswordChangeDataSettings", description = "Changing the user's Password", dataProviderClass = DataProviders.SettingsPageDataProvider.class)
+    @Test(priority = 8,dataProvider = "PasswordChangeDataSettings", description = "Changing the user's Password 31", dataProviderClass = DataProviders.SettingsPageDataProvider.class)
     public void passwordChange ( String password, String newPassword){
         settingsPage.passwordChange(password, newPassword);
     }
 
-    @Test(priority = 4, description = "Validating the primary account")
+    @Test(priority = 4, description = "Validating the primary account  33 34")
     public void validatePrimaryAccount (){
         settingsPage.validatePrimaryAccount();
     }
