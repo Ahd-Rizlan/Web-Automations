@@ -24,7 +24,7 @@ public class helpers {
     public static void addToReport(String actionName, Status status) {
         actionName = sanitizeActionName(actionName);
         try {
-            String dateName = new SimpleDateFormat("yyyy-MM-dd_HH.mm").format(new Date());
+            String dateName = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss.SSS").format(new Date());
             File source = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
             String destination = file_path + "/screenshots/" + actionName + "_" + dateName + ".png";
             FileUtils.copyFile(source, new File(destination));
@@ -58,7 +58,7 @@ public class helpers {
         actionName = sanitizeActionName(actionName);
         if(enableScreenshot){
             try {
-                String dateName = new SimpleDateFormat("yyyy-MM-dd_HH.mm").format(new Date());
+                String dateName = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss.SSS").format(new Date());
                 File source = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
                 String destination = file_path + "/screenshots/" + actionName + "_" + dateName + ".png";
                 FileUtils.copyFile(source, new File(destination));

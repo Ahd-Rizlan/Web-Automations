@@ -19,24 +19,8 @@ import utils.report.TestContext;
 
 import java.lang.reflect.Method;
 
-public class MakeTransactionsTest extends Drivers {
+public class MakeTransactionsTest extends BaseTest {
 
-    DashboardPage dashboardPage;
-    LoginPage loginPage;
-    OTPPage otpPage;
-    ExtentTest exTest;
-    MakeTransactionsPage makeTransactionsPage;
-
-    @BeforeMethod
-    private void OpenURL(Method method) {
-        String methodName = method.getName();
-        exTest = extent.createTest(methodName);
-        TestContext.setExtentTest(exTest);
-        dashboardPage = new DashboardPage(driver);
-        loginPage = new LoginPage(driver);
-        otpPage = new OTPPage(driver);
-        makeTransactionsPage = new MakeTransactionsPage(driver);
-    }
 
     @Test(priority = 1, dataProvider = "LoginDataAlternateTwo", description = "Pre-Requisite :: Login to the Sampath vishwa application as alternate user two", dataProviderClass = DataProviders.LoginDataProvider.class)
     public void logIntoDahsboardAlternateUserOne(String userName, String password, String emailSentSuccessMsg) throws InterruptedException {

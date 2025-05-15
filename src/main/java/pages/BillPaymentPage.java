@@ -901,9 +901,11 @@ public class BillPaymentPage extends BasePage {
         addToReport("----------Start of validation of OTP confirmation page----------", Status.PASS, false);
 
         //Validate confirmation header
-        if (isElementPresentBy(lblPopUpHeaderPaymentConfirmation)) {
-            addToReport("OTP confirmation appeared", Status.PASS, false);
+        if (isElementPresentBy(lblPopUpHeaderPaymentConfirmation,3)) {
+            waitForElementToBeClickable(lblPopUpHeaderPaymentConfirmation,20);
+            addToReport("OTP confirmation appeared", Status.PASS, true);
         } else {
+            waitFor(3);
             addToReport("OTP confirmation did not appear", Status.FAIL);
         }
 

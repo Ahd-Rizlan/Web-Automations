@@ -6,17 +6,13 @@ package pages;
 import com.aventstack.extentreports.Status;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import utils.CommonUtils;
 import utils.constants.DashboardConstants;
 
 import java.io.File;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Locale;
+import java.util.*;
 
 public class DashboardPage extends BasePage {
 
@@ -1373,16 +1369,33 @@ public class DashboardPage extends BasePage {
      * Navigate back to dashboard
      */
     public void navigateBackToDashboard() {
-        //Close biller popups
-        if (waitForElementPresence(btnCloseBillerPopup,3)){
+        if (waitForElementPresence(btnCloseBillerPopup, 3)) {
             clickOnElement(btnCloseBillerPopup);
-            waitForElementToBeInvisible(btnCloseBillerPopup,10);
+            waitForElementToBeInvisible(btnCloseBillerPopup, 10);
         }
 
         waitForElementPresence(btnDashboard);
         clickOnElement(btnDashboard);
         waitForElementToBeInvisible(lblLoadingIcon, 20);
     }
+
+    /**
+     * Navigate back to dashboard while closing other windows
+     */
+    public void navigateBackToDashboardCloseOtherWindows() {
+            closeAllExceptParentWindow();
+
+        if (waitForElementPresence(btnCloseBillerPopup, 3)) {
+            clickOnElement(btnCloseBillerPopup);
+            waitForElementToBeInvisible(btnCloseBillerPopup, 10);
+        }
+
+        waitForElementPresence(btnDashboard);
+        clickOnElement(btnDashboard);
+        waitForElementToBeInvisible(lblLoadingIcon, 20);
+    }
+
+
 
     /**
      * Select quick actions
@@ -2987,17 +3000,19 @@ public class DashboardPage extends BasePage {
                 String AccountStatus = getTextFromElement(lblAccountStatus);
                 if (!AccountStatus.equals(DashboardConstants.STATUS_VALUES[1])){
 
+                }
+
                 //Store the account number
                 addValue(inc,getTextFromElement(lblAccountNumber));
                 addToReport("Successfully added account number : '" + getTextFromElement(lblAccountNumber) + "'", Status.PASS, true);
-}               //Navigate to next account
+      }               //Navigate to next account
                 clickOnElement(btnNextArrow);
 
                 //WaitForElementPresence(lblLoadingIcon);
                 waitForElementToBeInvisible(lblLoadingIcon, 15);
 
             }
-        }else {
+        else {
             addToReport("No accounts found", Status.FAIL);
             throw new RuntimeException("Error - No accounts found");
         }

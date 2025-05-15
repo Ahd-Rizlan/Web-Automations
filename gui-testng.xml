@@ -86,6 +86,21 @@
                     <include name="validateOtherCreditCardTransfers"/>
                 </methods>
             </class>
+            <class name="gui.test.MessagingTest">
+                <methods>
+                    <include name="logIntoDahsboardAlternateUserOne"/>
+                    <include name="fdInquiryAndSendMail"/>
+                    <include name="validateCardCenterMessages"/>
+                    <include name="validateFundTranferRequest"/>
+                    <include name="validateBalanceConfirmationRequest"/>
+                    <include name="validateFundTransferDispute"/>
+                    <include name="validateOtherMessages"/>
+                    <include name="validateInboxAndRestoreMessages"/>
+                    <include name="validateDraftMessages"/>
+                    <include name="validateBillPaymentDispute"/>
+                    <include name="validateComposeNewMessage"/>
+                </methods>
+            </class>
         </classes>
     </test>
 </suite>

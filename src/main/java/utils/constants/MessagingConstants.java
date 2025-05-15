@@ -11,21 +11,29 @@ public class MessagingConstants {
     // -------------- KEY WORDS OTHER VALUES ------------------
     public static final String OTP = "111111";
     public static final String LAST_MODIFIED_ON = "Last modified on";
+    public static final String DRAFT = "Draft";
+    public static final String INDEX = "index";
+    public static final String NUMERICAL_THREE = "3";
+    public static final String KW_LKR = "LKR ";
+    public static final String MESSAGES_UPLOAD = "MESSAGES_UPLOAD";
 
     //--------------KEY WORDS TF ------------------
     public static final String COMPOSE_NEW_MESSAGE = "Compose New Message";
     public static final String ENTER_TO_WHOM_IT_SHOULD_BE_ADDRESSED = "Enter To whom it should be addressed";
     public static final String ENTER_MESSAGE = "Enter Message";
+    public static final String ENTER_MESSAGE_SUBJECT = "Enter Message Subject";
     public static final String SELECT_ATTACHMENTS = "Select Attachments";
     public static final String ENTER_AMOUNT = "Enter Amount";
     public static final String ENTER_ACCOUNT_NUMBER = "Enter Account Number";
     public static final String ENTER_REMARKS = "Enter Remarks";
     public static final String SEARCH_MESSAGES = "Search Messages";
-
+    public static final String OTHER_PURPOSE = "Other Purpose";
+    public static final String START_TYPING = "Start typing...";
 
     // -------------- KEY WORDS RDO ------------------
     public static final String PERIOD = "period";
-    public static final String AS_AT_DATE = "as at date";
+    public static final String AS_AT_DATE = "As at Date";
+    public static final String AS_AT_DATE_LC = "as at date";
     public static final String SAMPATH = "Sampath";
     public static final String OTHER = "Other";
 
@@ -41,7 +49,35 @@ public class MessagingConstants {
     public static final String SEND = "Send";
     public static final String SAVE_AS_DRAFT = "Save as Draft";
     public static final String CONFIRM = "Confirm";
+    public static final String TRASH = "Trash";
+    public static final String ALL = "All";
 
+    // -------------- SUBJECT DROPDOWN LIST ------------------
+
+    public static final Map<String, String> SUBJECT_DROPDOWN = new HashMap<>();
+    static {
+        SUBJECT_DROPDOWN.put("KW_FUND_TRANSFER_DISPUTE", "Fund Transfer Dispute");
+        SUBJECT_DROPDOWN.put("KW_BILL_PAYMENT_DISPUTE", "Bill Payment Dispute");
+        SUBJECT_DROPDOWN.put("KW_CARD_CENTER", "Card Center");
+        SUBJECT_DROPDOWN.put("KW_FUND_TRANSFER_REQUEST", "Fund Transfer Request");
+        SUBJECT_DROPDOWN.put("KW_FIXED_DEPOSIT_INQUIRY", "Fixed Deposit Inquiry");
+        SUBJECT_DROPDOWN.put("KW_BALANCE_CONFIRMATION_REQUEST", "Balance Confirmation Request");
+        SUBJECT_DROPDOWN.put("KW_OTHER", "Other");
+    }
+
+    // -------------- PURPOSE DROPDOWN LIST ------------------
+    public static final Map<String, String> PURPOSE_DROPDOWN = new HashMap<>();
+    static {
+        PURPOSE_DROPDOWN.put("KW_VISA", "Visa");
+        PURPOSE_DROPDOWN.put("KW_TAX", "Tax");
+        PURPOSE_DROPDOWN.put("KW_AUDIT", "Audit");
+        PURPOSE_DROPDOWN.put("KW_OTHER", "Other");
+    }
+    public static final String[] PURPOSE_VALUES = {"Active", "Dormant"};
+
+// -------------- KEY WORDS DATE PICKER ------------------
+
+    public static final String TRANSACTION_DATE = "Transaction date";
 
     // -------------- BRANCH LIST ------------------
     public static final Map<String, String> BRANCHES = new HashMap<>();

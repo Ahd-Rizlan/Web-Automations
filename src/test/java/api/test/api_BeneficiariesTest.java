@@ -63,15 +63,15 @@ public class api_BeneficiariesTest extends baseMethod {
         Beneficiaries.validateResponsePayloadForEmptyAccountName();
     }
 
-//    @Test(priority = 4, testName = "Verify that Adding Beneficiaries cannot be with Incorrect Account Number")
-//    public void checkAddBeneficiariesWithIncorrectAccountNumber() throws IOException, ParseException {
-//        Beneficiaries.authorisedWithValidToken();
-//        Beneficiaries.setPayloadWithIncorrectAccountNumber();
-//        Beneficiaries.updateBasePathForAddBeneficiaries();
-//        Beneficiaries.invokeBeneficiariesPOSTApi();
-//        Beneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
-//        Beneficiaries.validateResponsePayloadForIncorrectAccountNumber();
-//    }
+    @Test(priority = 4, testName = "Verify that Adding Beneficiaries cannot be with Incorrect Account Number")
+    public void checkAddBeneficiariesWithIncorrectAccountNumber() throws IOException, ParseException {
+        Beneficiaries.authorisedWithValidToken();
+        Beneficiaries.setPayloadWithIncorrectAccountNumber();
+        Beneficiaries.updateBasePathForAddBeneficiaries();
+        Beneficiaries.invokeBeneficiariesPOSTApi();
+        Beneficiaries.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
+        Beneficiaries.validateResponsePayloadForIncorrectAccountNumber();
+    }
 
     //Ticket Raised
 

@@ -11,23 +11,7 @@ import com.aventstack.extentreports.ExtentTest;
 import utils.report.TestContext;
 import java.lang.reflect.Method;
 
-public class LoginTest extends Drivers {
-
-    DashboardPage dashboardPage;
-    LoginPage loginPage;
-    OTPPage otpPage;
-    ExtentTest exTest;
-
-    @BeforeMethod
-    private void OpenURL(Method method) {
-        String methodName = method.getName();
-        exTest = extent.createTest(methodName);
-        TestContext.setExtentTest(exTest);
-        dashboardPage = new DashboardPage(driver);
-        loginPage = new LoginPage(driver);
-        otpPage = new OTPPage(driver);
-        driver.get(url);
-    }
+public class LoginTest extends BaseTest {
 
     @Test(priority = 1, description = "Validate the loading of logging page")
     public void validateTheLoginPage() {

@@ -12,25 +12,9 @@ import com.aventstack.extentreports.ExtentTest;
 import utils.report.TestContext;
 import java.lang.reflect.Method;
 
-public class SettingsTest extends Drivers {
+public class SettingsTest extends BaseTest {
 
 
-    DashboardPage dashboardPage;
-    LoginPage loginPage;
-    OTPPage otpPage;
-    ExtentTest exTest;
-    SettingsPage settingsPage;
-
-    @BeforeMethod
-    private void OpenURL(Method method) {
-        String methodName = method.getName();
-        exTest = extent.createTest(methodName);
-        TestContext.setExtentTest(exTest);
-        dashboardPage = new DashboardPage(driver);
-        loginPage = new LoginPage(driver);
-        otpPage = new OTPPage(driver);
-        settingsPage = new SettingsPage(driver);
-    }
 
     @Test(priority = 1, dataProvider = "LoginDataSettings", description = "Pre-Requisite :: Login to the Sampath vishwa application", dataProviderClass = DataProviders.SettingsPageDataProvider.class)
     public void logIntoDahsboard(String userName, String password, String emailSentSuccessMsg) throws InterruptedException {

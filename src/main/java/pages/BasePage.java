@@ -16,9 +16,11 @@ import utils.report.helpers;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.*;
@@ -29,6 +31,7 @@ public abstract class BasePage extends helpers {
 
     protected WebDriver driver;
     protected static List<String> sharedValues = new ArrayList<>();
+    private String baseWindowHandle;
     public BasePage(WebDriver driver) {
         this.driver = driver;
     }
@@ -56,6 +59,35 @@ public abstract class BasePage extends helpers {
             System.err.println("Error sending keys to WebElement: " + e.getMessage());
         }
     }
+    /**
+     * Types the specified text into an input field using JavaScript
+     * This method sets the value directly and dispatches input and change events
+     *
+     * @param byLocator the By locator used to identify the input element
+     * @param inputText the text to be typed into the input field
+     */
+    public void sendKeysToElementUsingJS(By byLocator, String inputText) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebElement element = wait.until(ExpectedConditions.elementToBeClickable(byLocator));
+
+            // Use JavaScript to set the value
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            js.executeScript(
+                    "arguments[0].value = arguments[1];" +
+                            "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));" +
+                            "arguments[0].dispatchEvent(new Event('change', { bubbles: true }));",
+                    element, inputText
+            );
+
+            addToReport("Typed '" + inputText + "' into the textbox using JavaScript.", Status.PASS, false);
+            waitFor(2000);
+        } catch (Exception e) {
+            addToReport("Unable to type '" + inputText + "' into textbox using JavaScript.", Status.FAIL);
+            System.err.println("Error sending keys via JS: " + e.getMessage());
+        }
+    }
+
 
     /**
      * Sends keys to a specified WebElement.
@@ -100,7 +132,6 @@ public abstract class BasePage extends helpers {
             System.err.println("Error sending Enter key to element: " + e.getMessage());
         }
     }
-
     /**
      * Sends the Tab key to an element identified by a locator.
      * <p>
@@ -293,6 +324,28 @@ public abstract class BasePage extends helpers {
     public boolean isElementPresentBy(By locator) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, 20);
+            wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+            return true;
+        } catch (Exception e) {
+            System.err.println("Element not present: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Checks if an element is present in the DOM, identified by the provided locator.
+     * <p>
+     * This method waits for the element to be present in the DOM for up to 20 seconds.
+     *
+     * @param locator the locator used to find the element
+     * @param waitInSeconds  wait time in seconds
+     * @return true if the element is present, false if the element is not found or an error occurs
+     * @true -If the element is found
+     * @false -If the element is not found
+     */
+    public boolean isElementPresentBy(By locator,int waitInSeconds) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, waitInSeconds);
             wait.until(ExpectedConditions.presenceOfElementLocated(locator));
             return true;
         } catch (Exception e) {
@@ -1086,6 +1139,66 @@ public abstract class BasePage extends helpers {
         }
 
         return Collections.max(elementDateMap.entrySet(), Map.Entry.comparingByValue()).getKey();
+    }
+
+    /**
+     * Retrieves the absolute file path of a file located in the test resources directory (src/test/resources)
+     *
+     * @param fileName Name of the file (including extension) located under src/test/resources
+     * @return The absolute file path as a String, which can be used for file upload operations
+     * @throws IllegalArgumentException if the file is not found in the resources folder
+     */
+    public String getFileFromResources(String fileName) {
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL resource = classLoader.getResource(fileName);
+        if (resource == null) {
+            addToReport("File not found ", Status.FAIL);
+            throw new IllegalArgumentException("File not found in test resources folder: " + fileName);
+        } else {
+            return new File(resource.getFile()).getAbsolutePath();
+        }
+    }
+
+    /**
+     * Close all the windows except parent windows
+     * */
+    public void closeAllExceptParentWindow() {
+        Set<String> allWindows = driver.getWindowHandles();
+
+        for (String windowHandle : allWindows) {
+            if (!windowHandle.equals(baseWindowHandle)) {
+                driver.switchTo().window(windowHandle);
+                driver.close();
+            }
+        }
+
+        driver.switchTo().window(baseWindowHandle);
+    }
+
+    /**
+     * capture the current window handle to identify parent window
+     */
+    public void captureBaseWindowHandle() {
+        baseWindowHandle = driver.getWindowHandle();
+    }
+
+
+    /**
+     * Keyboard commands to simulate paste
+     * @param locator locator where content should be pasted
+     */
+    public void pasteIntoElement(By locator) {
+        clickOnElement(locator);
+        try {
+            Robot robot = new Robot();
+            robot.keyPress(KeyEvent.VK_CONTROL);
+            robot.keyPress(KeyEvent.VK_V);
+            robot.keyRelease(KeyEvent.VK_V);
+            robot.keyRelease(KeyEvent.VK_CONTROL);
+            Thread.sleep(1000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

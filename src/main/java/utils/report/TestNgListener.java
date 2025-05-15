@@ -6,48 +6,57 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class TestNgListener implements ITestListener {
 
 
     ExtentReports reports;
-    //  ExtentTest test;
 
     public static ThreadLocal<ExtentTest> extentTest = new ThreadLocal<>();
 
+
     @Override
     public void onTestStart(ITestResult result) {
-        ExtentTest test = reports.createTest("Test Name " + result.getTestClass().getName() + " -- " + result.getMethod().getMethodName());
-        extentTest.set(test);
+
+        String className = result.getTestClass().getRealClass().getSimpleName();
+        String methodName = result.getMethod().getMethodName();
+        String description = result.getMethod().getDescription();
+
+        // Final test name: methodName + description
+        String testDisplayName = methodName + (description != null && !description.isEmpty() ? " - " + description : "");
+
+        // Create top-level test
+        ExtentTest test = reports.createTest(testDisplayName);
+
+        // Assign category for grouping
+        test.assignCategory(className);
+        TestContext.setExtentTest(test);
+
+
     }
 
-
-  /*  @Override
-    public void onTestSuccess(ITestResult result) {
-        test = reports.createTest(result.getName());
-        test.log(Status.PASS, MarkupHelper.createLabel("PASS TEST CASE IS : " + result.getName(), ExtentColor.GREEN));
-        // ITestListener.super.onTestSuccess(result);
-    }*/
 
     @Override
     public void onTestFailure(ITestResult result) {
-        ExtentReportManager.logFailureDetails(result.getThrowable().getMessage());
-      /*  test.log(Status.FAIL, MarkupHelper.createLabel("FAILED TEST CASE IS : " + result.getName(), ExtentColor.RED));
-        test.log(Status.FAIL, "Failure Reason: " + result.getThrowable().getMessage());
-        //ITestListener.super.onTestFailure(result);*/
+        TestContext.getExtentTest().fail(result.getThrowable());
+        // Flushing after failure
+        if (reports != null) {
+            reports.flush();
+        }
     }
-
-   /* @Override
-    public void onTestSkipped(ITestResult result) {
-        test = reports.createTest(result.getName());
-        test.log(Status.SKIP, MarkupHelper.createLabel("SKIPPED TEST CASE IS : " + result.getName(), ExtentColor.YELLOW));
-        //ITestListener.super.onTestSkipped(result);
-    }*/
 
     @Override
     public void onStart(ITestContext context) {
-        String fullReportPath = System.getProperty("user.dir") + "\\extent-reports\\" + "TestReport-API-Test-Report.html";
-        reports = ExtentReportManager.createExtentReport(fullReportPath, "BOOK STORE API REPORT", "REST ASSURED FRAMEWORK", "Thilina Jayasinghe ");
-
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd_HH.mm").format(new Date());
+        String reportPath = System.getProperty("user.dir") + "/extent-reports/Execution_Report_"+ timestamp +".html";
+        reports = ExtentReportManager.createExtentReport(
+                reportPath,
+                "Automation Report",
+                "Regression Tests",
+                "Automation Team"
+        );
     }
 
     @Override

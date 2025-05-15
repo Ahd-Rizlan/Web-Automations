@@ -4,14 +4,11 @@
 package pages;
 
 import com.aventstack.extentreports.Status;
-import groovyjarjarantlr4.v4.runtime.atn.LexerPopModeAction;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import utils.CommonUtils;
 import utils.constants.AdminTaskConstants;
-
-import java.util.Set;
+import utils.constants.MessagingConstants;
 
 public class VishwaRetailAdminTaskPage extends BasePage {
 
@@ -20,26 +17,41 @@ public class VishwaRetailAdminTaskPage extends BasePage {
     }
 
     public enum ElementType {
-        button, label, span, div;
+        button, label, span, div, textarea, input
     }
     private static final By pnlFilter = By.xpath("//div[@data-side='bottom']");
     private static final By tfKeyWord = By.xpath("//input[@id='keyword']");
     private static final By icnButtonSpinner = By.xpath("//div[contains(@class,'animate-spin')]");
     private static final By btnSearch = By.xpath("//div[contains(@class,'flex justify')]/button[contains(@class,'solid-base')]");
     private static final By lnkMailRowCount = By.xpath("//div[contains(@class,'flex flex-row py')]");
-    private static final By ddAppearance = By.xpath("//select[contains(@class,'appearance-none')]");
+    private static final By ddBranch = By.xpath("//select[contains(@class,'appearance-none')]");
     private static final By tfAddMessage = By.xpath("//div[@role='textbox']");
     private static final By lblRepliedMessages = By.xpath("//div[@class='inline']/p");
+    private static final By btnForward = By.xpath("//select[contains(@class,'appearance-none')]");
+    private static final By lblMessageThread = By.xpath("//div[@class='inline']");
+    private static final By lblRepliedUser = By.xpath("//div[contains(@class,'flex flex-col items-end')]/p[1]");
+    private static final By lblUsersInThread = By.xpath("//div[contains(@class,'flex flex-col items')]/p[1]");
+    private static final By lblMessagesInThread = By.xpath("//div[@class='inline']");
+
+    private static final By btnForwardPopup = By.xpath("//div[@role='tablist']//button[text()=\"Forward\"]");
 
 
-    private static By lblPageTile(String tileText) {
-        return By.xpath("//p[contains(text(),\"" + tileText + "\")]");
+
+
+    private static By btnUsingWildCard(String name) {
+        return By.xpath("(//button[contains(., '" + name + "')])[2]");
     }
     private static By dpDate(String kwHeader) {
         return By.xpath("//span[text()='" + kwHeader + "']/parent::div/div/span");
     }
     private static By lnkRow(int index) {
         return By.xpath("(//div[contains(@class,'flex flex-row py')])[" + index + "]");
+    }
+    private static By lblUserList(int index) {
+        return By.xpath("(//div[contains(@class,'flex flex-col items')]/p[1])[" + index + "]");
+    }
+    private static By lblMsgList(int index) {
+        return By.xpath("(//div[@class='inline'])[" + index + "]");
     }
     private static By lnkRowSubject(int index) {
         return By.xpath("(//div[contains(@class,'flex flex-row py')]/div[2]/div/p[1])[" + index + "]");
@@ -50,13 +62,15 @@ public class VishwaRetailAdminTaskPage extends BasePage {
     private static By lblMailReference(String mailSubject) {
         return By.xpath("//p[contains(normalize-space(text()), '" + mailSubject + "')]/ancestor::div[contains(@class,'border-b-gray')]//div[2]/p");
     }
-    private static By getElementByTypeAndText(LoginPage.ElementType type, String text) {
+    private static By getElementByTypeAndText(ElementType type, String text) {
         return By.xpath("//" + type.name() + "[contains(normalize-space(text()), \"" + text + "\")]");
+    }
+    private static By getElementByTypeAndExactText(ElementType type, String text) {
+        return By.xpath("//" + type.name() + "[text()= \"" + text + "\"]");
     }
     private static By btnTaskTab(String taskTabHeader) {
         return By.xpath("//div[@role='tablist']/button[contains(normalize-space(text()), '" + taskTabHeader + "')]");
     }
-
 
 
 
@@ -69,8 +83,11 @@ public class VishwaRetailAdminTaskPage extends BasePage {
      */
     public void filterMails(String type, String keyWordText, String fromDate, String toDate) {
 
+        waitForElementPresence(getElementByTypeAndExactText(ElementType.span, AdminTaskConstants.FILTER),20);
+        waitForElementToBeClickable(getElementByTypeAndExactText(ElementType.span, AdminTaskConstants.FILTER),20);
+
         // Click the filter button based on the keyword filter text
-        clickOnElement(getElementByTypeAndText(LoginPage.ElementType.button, AdminTaskConstants.FILTER));
+        clickOnElement(getElementByTypeAndExactText(ElementType.span, AdminTaskConstants.FILTER));
 
         // Wait for the filter panel to be visible (timeout: 10 seconds)
         waitForElementPresence(pnlFilter, 10);
@@ -99,10 +116,8 @@ public class VishwaRetailAdminTaskPage extends BasePage {
         waitForElementToBeInvisible(icnButtonSpinner, 20);
 
         // Re-click the keyword filter button (To close the filter panel)
-        clickOnElement(getElementByTypeAndText(LoginPage.ElementType.button, AdminTaskConstants.FILTER));
+        clickOnElement(getElementByTypeAndExactText(ElementType.span, AdminTaskConstants.FILTER));
     }
-
-
 
     /**
      * Select appropriate mail
@@ -153,10 +168,11 @@ public class VishwaRetailAdminTaskPage extends BasePage {
      * Selects mail action
      *
      * @param buttonName - button name
+     * @param isClicked  - clicks on  the button if true
      */
-    public void performMailAction(String buttonName) {
+    public void performMailAction(String buttonName,boolean isClicked) {
         try {
-            boolean isButtonVisible = waitForElementPresence(getElementByTypeAndText(LoginPage.ElementType.button, buttonName));
+            boolean isButtonVisible = waitForElementPresence(btnUsingWildCard(buttonName));
 
             if (isButtonVisible) {
                 addToReport("Button name '" + buttonName + "' is visible", Status.PASS, false);
@@ -165,10 +181,11 @@ public class VishwaRetailAdminTaskPage extends BasePage {
                 throw new RuntimeException("Error validating button");
             }
 
-            waitForElementToBeClickable(getElementByTypeAndText(LoginPage.ElementType.button, buttonName),20);
-
-            clickOnElement(getElementByTypeAndText(LoginPage.ElementType.button, buttonName));
-            addToReport("Successfully selected the '" + buttonName + "' button ", Status.PASS,true);
+            if(isClicked) {
+                waitForElementToBeClickable(btnUsingWildCard(buttonName), 20);
+                clickOnElement(btnUsingWildCard(buttonName));
+                addToReport("Successfully selected the '" + buttonName + "' button ", Status.PASS, true);
+            }
         } catch (Exception e) {
             addToReport("Failed to select the '" + buttonName + "' button", Status.FAIL);
             throw new RuntimeException("Failed to select tab" + e.getMessage(), e);
@@ -179,21 +196,17 @@ public class VishwaRetailAdminTaskPage extends BasePage {
     /**
      * Read received mail and forward the mail
      * @param subject       - Message subject
-     * @param type          - keywords such as using "Keyword" or "Date" based on this the respective parameters has to be filled
-     * @param keyWordText   - Key word to be entered in the text field
+     * @param mailReference   - Key word to be entered in the text field
      */
-    private void readReceivedMailAndForward(String type, String keyWordText,String subject) {
-        addToReport("----------Start of validation of received mail----------", Status.PASS, false);
+    public void readReceivedMailAction(String mailReference, String subject) {
 
         // Wait for the mail list to load
-        waitForElementPresence(getElementByTypeAndText(LoginPage.ElementType.button, AdminTaskConstants.FILTER), 10);
-
-        filterMails(type,keyWordText,"","");
+        waitForElementPresence(getElementByTypeAndExactText(ElementType.span, AdminTaskConstants.FILTER), 10);
 
         //Subject and reference have to come from client
-        selectMail(keyWordText,subject);
+        selectMail(mailReference,subject);
         selectTaskHeader(AdminTaskConstants.INBOX);
-        boolean isButtonVisible = waitForElementPresence(getElementByTypeAndText(LoginPage.ElementType.button, "Reply"));
+        boolean isButtonVisible = waitForElementPresence(getElementByTypeAndText(ElementType.button, AdminTaskConstants.REPLY));
 
         if (isButtonVisible) {
             addToReport("Button name ' Reply ' is visible", Status.PASS, false);
@@ -201,15 +214,204 @@ public class VishwaRetailAdminTaskPage extends BasePage {
             addToReport("Button name is not visible", Status.FAIL);
             throw new RuntimeException("Error validating button");
         }
-        performMailAction(AdminTaskConstants.FORWARD);
 
-        //Validate the mail thread using index from locator where last message is the recent msg
+        performMailAction(AdminTaskConstants.REPLY, false);
+        performMailAction(AdminTaskConstants.FORWARD, true);
 
-        // WIP -------------------------
+    }
 
 
+    /**
+     * Forward the mail and validate
+     * @param subject   The subject or title of the message
+     * @param branch    The branch the message is associated with
+     * @param message   The actual content of the message
+     * @param user      The user who is sending or associated with the message
+     */
+    public void forwardMailAndValidate(String subject,String branch,String message,String user) {
+
+        // Forward from admin branch then validate the mail in thread
+        // Wait for the mail list to load
+        waitForElementPresence(getElementByTypeAndExactText(ElementType.button, AdminTaskConstants.REPLY), 10);
+
+        clickOnElement(btnForwardPopup);
+
+        waitForElementPresence(ddBranch);
+
+        selectFromDropdown(ddBranch, branch, MessagingConstants.VISIBLE_TEXT);
+
+        sendKeysToElement(tfAddMessage,message);
+
+        clickOnElement(getElementByTypeAndExactText(ElementType.button, AdminTaskConstants.SEND));
+        waitForElementToBeInvisible(getElementByTypeAndExactText(ElementType.button, AdminTaskConstants.SEND),20);
+
+        //Validate opened reference
+        if (message.equals(getTextFromElement(lblRepliedMessages))) {
+            addToReport("Message thread is loaded with message:"+message, Status.PASS, false);
+        } else {
+            addToReport("Message thread is not loaded with message:"+message, Status.FAIL);
+        }
+
+        //Obtain the record count
+        int msgCount = isElementsPresentBy(lblMessageThread);
+        if (msgCount == 2) {
+            addToReport(" Message thread is available as expected", Status.PASS,false);
+        }else {
+            addToReport(" Message thread is not available as expected as the number of messages in thread is : "+msgCount, Status.FAIL,true);
+            throw new RuntimeException("Error - Mail thread did not display appropriately");
+        }
+
+        //Validate subject
+        if (isElementPresentBy(lblMailReference(subject))) {
+            addToReport("Validated forwarded message subject :"+subject, Status.PASS, true);
+        } else {
+            addToReport("Didn't validate correct message thread with subject :"+subject, Status.FAIL);
+        }
+
+        //Validate admin user
+        if (user.equals(getTextFromElement(lblRepliedUser))) {
+            addToReport("Replied admin branch user fetched :"+user, Status.PASS, true);
+        } else {
+            addToReport("Replied admin branch user is not fetched ", Status.FAIL);
+        }
+    }
+
+    /**
+     * Validate the FD inquiry request
+     * @param keyWordText - Message id for tracking messages across admin
+     */
+    public void validateFDInquiryRequest(String keyWordText){
+        addToReport("----------Start of validation of customer sent FD inquiry request are available in admin----------", Status.PASS, false);
+        filterMails(AdminTaskConstants.KEYWORD,keyWordText,"","");
+        addToReport("----------End of validation of customer sent FD inquiry request are available in admin----------", Status.PASS, true);
+
+    }
+
+    /**
+     * Validate the sent email
+     * @param messageID  The unique identifier of the message
+     * @param subject    The subject or title of the message
+     * @param message    The content of the message
+     * @param user       The user associated with the message
+     * @param branch     The branch  related to the message
+     */
+    public void validateSentMails(String messageID,String subject,String message,String user, String branch){
+        addToReport("----------Start of validation of received mail----------", Status.PASS, false);
+        readReceivedMailAction(messageID,subject);
         addToReport("----------End of validation of received mail----------", Status.PASS, false);
+        addToReport("----------Start of validation of forwarded mail thread is available is available in mail thread----------", Status.PASS, false);
+        forwardMailAndValidate(subject,branch,message,user);
+        addToReport("----------End of validation of forwarded mail thread is available is available in mail thread----------", Status.PASS, false);
+    }
 
+    /**
+     * validate forwarded mails on branchs
+     * @param messageID  The unique identifier for the message
+     * @param subject    The  title of the message
+     * @param messages   The message contents
+     * @param users      The users associated with the messages
+     * @param branch     The branch related to the messages
+     */
+    public void validateForwardedMailsBranch(String messageID,String subject,String[] messages,String[] users, String branch){
+
+        addToReport("----------Start of validation of forwarded mail thread is available is available in mail thread----------", Status.PASS, false);
+
+        filterMails(AdminTaskConstants.KEYWORD,messageID,"","");
+
+        //Obtain the record count
+        int userCount = isElementsPresentBy(lblUsersInThread);
+        if (userCount == 2) {
+            addToReport(" Message thread user count is available as expected", Status.PASS,false);
+            for (int inc = 1; inc <= userCount; inc++) {
+                String c = getTextFromElement(lblUserList(inc));
+                    if (getTextFromElement(lblUserList(inc)).contains(users[inc-1])){
+                        addToReport(" Message thread user "+getTextFromElement(lblUserList(inc))+" is available as expected", Status.PASS,false);
+                    }else {
+                        addToReport(" Message thread user "+users[inc]+" is not available as expected", Status.FAIL,true);
+                    }
+            }
+        }else {
+            addToReport(" Message thread users is not available as expected as the number of messages in thread is : "+userCount, Status.FAIL,true);
+            throw new RuntimeException("Error - Mail thread did not display replied users appropriately");
+        }
+
+        //Obtain the record count
+        int msgCount = isElementsPresentBy(lblMessagesInThread);
+        if (msgCount == 2) {
+            addToReport(" Message thread is available as expected", Status.PASS,false);
+            for (int inc = 1; inc <= msgCount; inc++) {
+                if (getTextFromElement(lblMsgList(inc)).contains(messages[inc-1])){
+                    addToReport(" Message thread message "+getTextFromElement(lblMsgList(inc))+" is available as expected", Status.PASS,false);
+                }else {
+                    addToReport(" Message thread message "+messages[inc]+" is not available as expected", Status.FAIL,true);
+                }
+
+            }
+        }else {
+            addToReport(" Message thread is not available as expected as the number of messages in thread is : "+msgCount, Status.FAIL,true);
+            throw new RuntimeException("Error - Mail thread did not display appropriately");
+        }
+
+        //Validate subject
+        if (isElementPresentBy(lblMailReference(subject))) {
+            addToReport("Validated forwarded message subject :"+subject, Status.PASS, true);
+        } else {
+            addToReport("Didn't validate correct message thread with subject :"+subject, Status.FAIL);
+        }
+
+        addToReport("----------End of validation of forwarded mail thread is available is available in mail thread----------", Status.PASS, false);
+    }
+
+    /**
+     * Validate the card center request
+     * @param messageID The unique identifier for the message
+     */
+    public void validateCardCenterRequest(String messageID){
+        addToReport("----------Start of validation of card center request are available in admin----------", Status.PASS, false);
+        filterMails(AdminTaskConstants.KEYWORD,messageID,"","");
+        addToReport("----------End of validation of card center request are available in admin----------", Status.PASS, true);
+
+    }
+
+    /**
+     * Validate fund transfer request
+     * @param messageID The unique identifier for the message
+     */
+    public void validateFundTransferRequest(String messageID){
+        addToReport("----------Start of validation of fund transfer request are available in admin----------", Status.PASS, false);
+        filterMails(AdminTaskConstants.KEYWORD,messageID,"","");
+        addToReport("----------End of validation of fund transfer request are available in admin----------", Status.PASS, true);
+
+    }
+
+    /**
+     * Reply to mail
+     * @param messageID The unique identifier for the message
+     * @param message   The message contents
+     */
+    public void replyToMail(String messageID,String message){
+
+        waitForElementPresence(getElementByTypeAndExactText(ElementType.button, AdminTaskConstants.ATTEND));
+        //Attend the mail
+        clickOnElement(getElementByTypeAndExactText(ElementType.button, AdminTaskConstants.ATTEND));
+
+        waitFor(2);
+        filterMails(AdminTaskConstants.KEYWORD,messageID,"","");
+
+        //Attend the mail
+        clickOnElement(getElementByTypeAndExactText(ElementType.button, AdminTaskConstants.REPLY));
+
+        sendKeysToElement(tfAddMessage,message);
+
+        clickOnElement(getElementByTypeAndExactText(ElementType.button, AdminTaskConstants.SEND));
+        waitForElementToBeInvisible(getElementByTypeAndExactText(ElementType.button, AdminTaskConstants.SEND),20);
+
+        //Validate opened reference
+        if (message.equals(getTextFromElement(lblRepliedMessages))) {
+            addToReport("Message thread is loaded with message:"+message, Status.PASS, false);
+        } else {
+            addToReport("Message thread is not loaded with message:"+message, Status.FAIL);
+        }
     }
 
 
