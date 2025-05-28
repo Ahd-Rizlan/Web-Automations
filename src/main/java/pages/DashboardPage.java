@@ -17,7 +17,7 @@ import java.util.*;
 public class DashboardPage extends BasePage {
 
     public enum ElementType {
-        button, label, span, div;
+        button, label, span, div
     }
 
     private static final By alertPopup = By.xpath("//span[text()='X']");
@@ -101,6 +101,7 @@ public class DashboardPage extends BasePage {
     private static final By lblAccountPortfolioRows = By.xpath("//h1[contains(text(),'Account Portfolio')]/ancestor::div[contains(@class,'ContainerMd_container')]//div[contains(@class,'flex rounded-lg justify-between')]");
     private static final By lblAccountNumber = By.xpath("//div[contains(@class,'full justify-center flex')]//div[contains(@class,'text-base')]/span");
     private static final By btnCloseBillerPopup = By.xpath("//img[contains(@alt,'Close')]");
+    private static final By lblAccountListLoading = By.xpath("//div[contains(@class,'dark:bg-gray')]");
 
     private static By tfOTP(int Index) {
         return By.xpath("//input[@type='password'][" + Index + "]");
@@ -247,6 +248,11 @@ public class DashboardPage extends BasePage {
     private static By btnMainMenu(String menuName) {
         return By.xpath("//button/a[contains(normalize-space(text()), '"+menuName+"')]");
     }
+    private static By btnSubMenu(String subMenuName) {
+        return By.xpath("//a/div[text()='"+subMenuName+"']");
+    }
+
+
 
     public DashboardPage(WebDriver driver) {
         super(driver);
@@ -2973,9 +2979,10 @@ public class DashboardPage extends BasePage {
      */
     public void obtainAllAccountTypes(String primaryStatus)
     {
+        waitFor(2);
         //WaitForElementPresence(lblLoadingIcon);
-        waitForElementToBeInvisible(lblLoadingIcon, 15);
-         waitForElementToBeInvisible(icnAccounts, 15);
+        waitForElementToBeInvisible(lblLoadingIcon, 25);
+        waitForElementToBeInvisible(lblAccountListLoading, 25);
 
         waitFor(5);
 
@@ -3051,6 +3058,30 @@ public class DashboardPage extends BasePage {
             addToReport("Dashboard page is not visible.", Status.FAIL, true);
             throw new RuntimeException("Error - Dashboard page is not visible.");
         }
+    }
+
+
+    /**
+     * Hover over menu and validate
+     * @param menuName  Menu name
+     * @param subHeaders  Sub headers to validate
+     */
+    public void hoverOverMenuAndValidate(String menuName,String[] subHeaders) {
+        waitForElementPresence(btnMainMenu(menuName));
+        mouseHover(btnMainMenu(menuName));
+
+        for (String sHeader : subHeaders) {
+            boolean isPresent = isElementPresentBy(btnSubMenu(sHeader));
+
+            addToReport(""+btnSubMenu(sHeader), Status.PASS,false);
+            if (isPresent) {
+                addToReport("Successfully validated sub header: " + sHeader, Status.PASS, false);
+            } else {
+                addToReport("Sub header not found under My Accounts: " + sHeader, Status.FAIL, true);
+            }
+        }
+
+        addToReport("Successfully validated sub headers", Status.PASS, true);
     }
 
 

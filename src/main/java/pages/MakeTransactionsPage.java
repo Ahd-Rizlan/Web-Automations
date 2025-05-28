@@ -635,7 +635,7 @@ public class MakeTransactionsPage extends BasePage {
         // Enter correct values for the transaction
         try {
             if (wholeAmount > 1) {
-                sendKeysToElement(tfEnterAmount, Keys.BACK_SPACE, 6);
+                sendKeysToElement(tfEnterAmount, Keys.BACK_SPACE, 8);
                 sendKeysToElement(tfEnterAmount, actualTransactionAmount);
             } else {
                 addToReport("Amount in the account : '" + wholeAmount + "' is NOT sufficient to perform a transfer", Status.FAIL);
@@ -649,7 +649,7 @@ public class MakeTransactionsPage extends BasePage {
         clickOnElement(btnSubmit);
 
         // OTP confirmation page validation
-        addToReport("----------Start of validation of OTP confirmation page----------", Status.PASS, false);
+        addToReport("----------Start of validation of OTP confirmation page----------", Status.PASS, true);
         validateOtpPageDetails(accountNumbers.get(0), actualTransactionAmount, toAccount, sRemark, bRemark, transferMode, kwTransfersMap, currencyType,
                 bankName, CommonUtils.getTodayDateFormatted("yyyy-MM-dd"), purpose,"");
 

@@ -39,6 +39,11 @@ public class DataProviders {
             String[] columnNames = {"userName", "password" ,"emailSentSuccessMsg"};
             return XlsReader.getDataFromSheet(filePath, "LoginDataAlternateThree", columnNames).iterator();
         }
+        @DataProvider(name = "LoginDataAlternateFive")
+        public static Iterator<Object[]> getLoginDataAlternateFive() {
+            String[] columnNames = {"userName", "password" ,"emailSentSuccessMsg"};
+            return XlsReader.getDataFromSheet(filePath, "LoginDataAlternateFive", columnNames).iterator();
+        }
 
         @DataProvider(name = "InvalidPassword")
         public static Iterator<Object[]> getIncorrectPasswordData() {
@@ -332,6 +337,82 @@ public class DataProviders {
 
 
     }
+    public static class PawningDataProvider {
+
+        private static final String filePath;
+
+        static {
+            String projectRoot = System.getProperty("user.dir");
+            filePath = projectRoot + "/" + property.getProperty("gui-config", "TESTDATA_PATH");
+        }
+
+        @DataProvider(name = "PawningData")
+        public static Iterator<Object[]> getPawningData() {
+            String[] columnNames = {
+                    "maxiumAmount", "expectedMessage", "incorrectAmount", "lowBalanceAccount", "amountHigherBalance", "expectedinsufficientFundMessage", "correctAccount", "correctAmount"};
+            return XlsReader.getDataFromSheet(filePath, "PawningData", columnNames).iterator();
+        }
+
+
+    }
+    public static class ObtainLoanDataProvider {
+        private static final String filePath;
+
+        static {
+            String projectRoot = System.getProperty("user.dir");
+            filePath = projectRoot + "/" + property.getProperty("gui-config", "TESTDATA_PATH");
+        }
+
+        @DataProvider(name = "LoanDetails")
+        public static Iterator<Object[]> getAccountDataSavingFD() {
+            String[] columnNames = {"accountNumber1","minimumAmount", "maximumAmount", "actualAmount", "wrongMonth", "correctMonth", "purpose","accountNumber2"};
+            return XlsReader.getDataFromSheet(filePath, "LoanDetails", columnNames).iterator();
+        }
+
+    }
+    public static class MyAccountPageDataProvider {
+        private static final String filePath;
+
+        static {
+            String projectRoot = System.getProperty("user.dir");
+            filePath = projectRoot + "/" + property.getProperty("gui-config", "TESTDATA_PATH");
+        }
+
+        @DataProvider(name = "SavingsAccountData")
+        public static Iterator<Object[]> getSavingsAccountData() {
+            String[] columnNames = {"accountNumber", "accHolderName",
+                    "systemReserved", "lienAmount", "accOpenedOn", "accountBalance",
+                    "floatBalance", "amountFrom", "amountTo"
+            };
+            return XlsReader.getDataFromSheet(filePath, "SADetailedViewData", columnNames).iterator();
+        }
+
+        @DataProvider(name = "ChequeRequestData")
+        public static Iterator<Object[]> getChequeRequestData() {
+            String[] columnNames = {"accountNumber"};
+            return XlsReader.getDataFromSheet(filePath, "ChequeRequestData", columnNames).iterator();
+        }
+
+        @DataProvider(name = "CurrentAccountData")
+        public static Iterator<Object[]> getCurrAccountData() {
+            String[] columnNames = {
+                     "accountNumber", "odLimit",
+                    "tempOdLimit", "overdueLiability", "reservedAmount",
+                    "accountBalance", "openedOn"
+            };
+            return XlsReader.getDataFromSheet(filePath, "CADetailedViewData", columnNames).iterator();
+        }
+        @DataProvider(name = "AdvancedSearchData")
+        public static Iterator<Object[]> getAdvancedSearchData() {
+            String[] columnNames = {
+                    "accountNumber", "month", "year",
+                        "from", "to", "fullDate", "amountFrom", "amountTo"
+            };
+            return XlsReader.getDataFromSheet(filePath, "AdvancedSearchData", columnNames).iterator();
+        }
+
+
+        }
 
 
 
