@@ -15,6 +15,7 @@ public class DashboardConstants {
     //---------------Menu Options-------------------
     public static final String OPTION_MANAGE_SCHEDULES = "Manage Schedules";
     public static final String OPTION_MY_ACCOUNTS = "My Accounts";
+    public static final String[] MY_ACCOUNT_SUB_HEADERS = {"Savings Accounts","Fixed Deposits","Loans","Pawning","Web Card","Repos","Debit Card","T-Bills"};
 
     //---------------OPTIONS-------------------
     public static final String OPTION_SETTINGS = "Settings";

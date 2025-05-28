@@ -655,6 +655,24 @@ public abstract class BasePage extends helpers {
     }
 
     /**
+     * Perform mouse hover action
+     * @param locator the By locator used to identify the input element
+     */
+    public void mouseHover(By locator) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, 10);
+            wait.until(ExpectedConditions.elementToBeClickable(locator));
+            WebElement element = driver.findElement(locator);
+            Actions actions = new Actions(driver);
+            actions.moveToElement(element).perform();
+            addToReport("Successfully moved to '" + locator + "' element using mouse actions.", Status.PASS, false);
+        } catch (Exception e) {
+            addToReport("Error occurred when hovering on the '" + locator + "' element.", Status.FAIL);
+            System.err.println("Error occurred when hovering on the element: " + e.getMessage());
+        }
+    }
+
+    /**
      * Types the specified text into an input field without clearing the written text .
      * <p>
      * This method waits for the element to be clickable, clears any existing text, and types the provided inputText into the element.

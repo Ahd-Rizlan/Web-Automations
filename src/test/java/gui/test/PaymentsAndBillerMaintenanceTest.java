@@ -1,40 +1,15 @@
 package gui.test;
 
-import com.aventstack.extentreports.ExtentTest;
 import data.DataProviders;
 import utils.constants.BillerConstants;
 import utils.constants.DashboardConstants;
 import utils.constants.LoginConstants;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.*;
 import utils.CommonUtils;
-import utils.Drivers;
-import utils.report.TestContext;
 
-import java.lang.reflect.Method;
 
-public class PaymentsAndBillerMaintenanceTest extends Drivers {
-
-    DashboardPage dashboardPage;
-    LoginPage loginPage;
-    OTPPage otpPage;
-    ExtentTest exTest;
-    BillPaymentPage billPaymentPage;
-    MyAccountsPage myAccountsPage;
-
-    @BeforeMethod
-    private void OpenURL(Method method) {
-        String methodName = method.getName();
-        exTest = extent.createTest(methodName);
-        TestContext.setExtentTest(exTest);
-        dashboardPage = new DashboardPage(driver);
-        loginPage = new LoginPage(driver);
-        otpPage = new OTPPage(driver);
-        billPaymentPage = new BillPaymentPage(driver);
-        myAccountsPage = new MyAccountsPage(driver);
-    }
+public class PaymentsAndBillerMaintenanceTest extends BaseTest {
 
     @Test(priority = 1, dataProvider = "LoginDataAlternateTwo", description = "Pre-Requisite :: Login to the Sampath vishwa application", dataProviderClass = DataProviders.LoginDataProvider.class)
     public void logIntoDahsboard(String userName, String password, String emailSentSuccessMsg) throws InterruptedException {
@@ -79,7 +54,12 @@ public class PaymentsAndBillerMaintenanceTest extends Drivers {
         dashboardPage.validateTheTitle();
     }
 
-    @Test(priority = 6, dataProvider = "BillPaymentsData", description = "Bill payments trough accounts | 41,42,44,46,47,48,49,51", dataProviderClass = DataProviders.BillersDataProvider.class)
+    @Test(priority = 6, description = "Validate search option is available to categories | 2")
+    public void validateBillPaymentSearchCategoriesTemp() {
+        dashboardPage.selectQuickActions("Bill Payment");
+    }
+
+    @Test(priority = 7, dataProvider = "BillPaymentsData", description = "Bill payments trough accounts | 41,42,44,46,47,48,49,51", dataProviderClass = DataProviders.BillersDataProvider.class)
     public void validateBillPaymentsThroughAccounts(String category, String billerName, String paymentUsing, String transferMode, String fromAccount, String amount, String mobileNo, String accountNumber, String errorMsgOne, String errorMsgTwo, String errorMsgThree, String errorMsgFour, String errorMsgFive, String errorMsgSix, String nicNo, String name, String policyNumber, String admissionNumber, String classID, String purpose, String date, String code, String referenceOrReservationNo, String employeeID, String branch, String email) {
 
         dashboardPage.obtainAllAccountTypes(DashboardConstants.STATUS_PRIMARY);
@@ -116,7 +96,7 @@ public class PaymentsAndBillerMaintenanceTest extends Drivers {
     @AfterMethod(description = "Rollback to dashboard")
     public void rollBackToDashboard() {
         dashboardPage.navigateBackToDashboard();
-
+        extent.flush();
     }
 
 }
