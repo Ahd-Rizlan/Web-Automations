@@ -365,7 +365,7 @@ public class DataProviders {
 
         @DataProvider(name = "LoanDetails")
         public static Iterator<Object[]> getAccountDataSavingFD() {
-            String[] columnNames = {"minimumAmount", "maximumAmount", "actualAmount", "wrongMonth", "correctMonth", "purpose"};
+            String[] columnNames = {"accountNumber1","minimumAmount", "maximumAmount", "actualAmount", "wrongMonth", "correctMonth", "purpose","accountNumber2"};
             return XlsReader.getDataFromSheet(filePath, "LoanDetails", columnNames).iterator();
         }
 

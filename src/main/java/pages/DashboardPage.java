@@ -2984,8 +2984,6 @@ public class DashboardPage extends BasePage {
         waitForElementToBeInvisible(lblLoadingIcon, 25);
         waitForElementToBeInvisible(lblAccountListLoading, 25);
 
-//         waitForElementToBeInvisible(icnAccounts, 15);
-
         waitFor(5);
 
         //Obtain pagination value
