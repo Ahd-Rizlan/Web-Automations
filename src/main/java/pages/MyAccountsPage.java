@@ -8,7 +8,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import utils.CommonUtils;
 import utils.constants.MyAccountsConstants;
-
 import java.io.File;
 import java.util.List;
 
@@ -40,7 +39,6 @@ public class MyAccountsPage extends BasePage {
     private static final By icnTileLoading = By.xpath("//div[contains(@class,'animate-pulse')]");
     private static final By lblCurrencyAndAvailableBalance = By.xpath("//div/span[@class='text-black']");
     private static final By tblTransactionRows = By.xpath("//table[contains(@class,'min-w-full')]//tbody//tr");
-    private static final By lblLoanNoDataFound = By.xpath("//div[@class='h-full w-full']//span[contains(text(),'No Data Found')]");
     private static final By btnEditNickName = By.xpath("//tr[contains(@class, 'bg-orange-300')]//img");
     private static final By tfNickName = By.xpath("//input[@name='nickName']");
     private static final By btnClosePopup = By.xpath("//button[@aria-label='close']");
@@ -117,6 +115,9 @@ public class MyAccountsPage extends BasePage {
 
     private static By lblHighlightedListContent(String content) {
         return By.xpath("//tr[contains(@class, 'bg-orange-300')]/td[text()='" + content + "']");
+    }
+    private static By lblLoanNoDataFound(String content) {
+        return By.xpath("//div[@class='h-full w-full']//span[contains(text(),'" + content + "')]");
     }
 
     private static By popUpPDFDownload(String msg) {
@@ -497,7 +498,7 @@ public class MyAccountsPage extends BasePage {
                                 addToReport("Failed to validated loan account number : '" + accountNumber + "' under the account history ", Status.FAIL, true);
                             }
                             //Check if data found
-                            if (isElementPresentBy(lblLoanNoDataFound)) {
+                            if (isElementPresentBy(lblLoanNoDataFound(MyAccountsConstants.NO_DATA_FOUND))) {
                                 addToReport(" No Data found under the  paid installment for account  " + aHAccountNo, Status.INFO, true);
                             } else {
                                 //Validate Table Headers
@@ -518,7 +519,7 @@ public class MyAccountsPage extends BasePage {
                             }
                             waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.PARTIAL_INSTALLMENTS), 30);
                             clickOnElement(getElementByTypeAndText(ElementType.div, MyAccountsConstants.PARTIAL_INSTALLMENTS));
-                            if (isElementPresentBy(lblLoanNoDataFound)) {
+                            if (isElementPresentBy(lblLoanNoDataFound(MyAccountsConstants.NO_DATA_FOUND))) {
                                 addToReport(" No Data found under the  partial installment for account  " + aHAccountNo, Status.INFO, true);
                             } else {
                                 //Validate Table Headers
