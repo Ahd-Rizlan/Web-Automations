@@ -1219,6 +1219,18 @@ public abstract class BasePage extends helpers {
         }
     }
 
+    /**
+     * This method will hover on an element
+     *
+     * @param driver - driver
+     * @param locator - location
+     */
+    public void hoverOverElement(WebDriver driver, By locator) {
+        WebElement element = driver.findElement(locator);
+        Actions actions = new Actions(driver);
+        actions.moveToElement(element).perform();
+    }
+
 
 }
 
