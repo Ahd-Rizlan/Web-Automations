@@ -16,6 +16,8 @@ public class BaseTest extends Drivers {
     protected MakeTransactionsPage makeTransactionsPage;
     VishwaRetailAdminLoginPage vishwaRetailAdminLoginPage;
     VishwaRetailAdminTaskPage vishwaRetailAdminTaskPage;
+    protected MyAccountsPage myAccountsPage;
+    protected BillPaymentPage billPaymentPage;
     PawningTicketPage pawningTicketPage;
     ObtainLoanPage obtainLoanPage;
 
@@ -32,6 +34,8 @@ public class BaseTest extends Drivers {
         vishwaRetailAdminTaskPage = new VishwaRetailAdminTaskPage(driver);
         pawningTicketPage = new PawningTicketPage (driver);
         obtainLoanPage = new ObtainLoanPage(driver);
+        myAccountsPage = new MyAccountsPage(driver);
+        billPaymentPage = new BillPaymentPage(driver);
         driver.get(url);
     }
 

@@ -1,5 +1,7 @@
 package utils;
 
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -7,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -366,6 +369,15 @@ public class CommonUtils extends Drivers {
     }
 
     /**
+     * Copy to clipboard
+     * @param text  text that should be copied to clipboard
+     */
+    public static void copyToClipboard(String text) {
+        StringSelection selection = new StringSelection(text);
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, null);
+    }
+
+    /**
      * Removes leading occurrences of a specified character from a string.
      *
      * @param input the input string (e.g., "xxx709")
@@ -378,6 +390,8 @@ public class CommonUtils extends Drivers {
         }
         return input.replaceFirst("^" + Character.toString(ch) + "+(?!$)", "");
     }
+
+
 
 
 

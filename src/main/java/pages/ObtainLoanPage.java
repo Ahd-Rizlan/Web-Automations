@@ -224,19 +224,28 @@ public class ObtainLoanPage extends BasePage {
     }
 
 
+
     /**
      * This method validates the customer enter details
      *
      */
+
+    // Global variables for loan details
+    private String depositAccount = "";
+    private String expectedLoanAmount = "";
+    private String repaymentAccount = "";
+    private String expectedMonth = "";
+    private String expectedPurpose = "";
+
     public void ValidateObtainLoanConfirmation() {
 
         addToReport("---------- Start of Validating customer entered values----------", Status.INFO, false);
 
-        String depositAccount = "";
-        String expectedLoanAmount = "";
-        String repaymentAccount = "";
-        String expectedMonth = "";
-        String expectedPurpose = "";
+         depositAccount = "";
+         expectedLoanAmount = "";
+         repaymentAccount = "";
+         expectedMonth = "";
+         expectedPurpose = "";
 
         try {
             // Selected Deposit Account
