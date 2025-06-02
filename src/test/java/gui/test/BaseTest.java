@@ -14,12 +14,12 @@ public class BaseTest extends Drivers {
     protected SavedPayeesPage savedPayeesPage;
     protected MessagesPage messagesPage;
     protected MakeTransactionsPage makeTransactionsPage;
-    protected VishwaRetailAdminLoginPage vishwaRetailAdminLoginPage;
-    protected VishwaRetailAdminTaskPage vishwaRetailAdminTaskPage;
+    VishwaRetailAdminLoginPage vishwaRetailAdminLoginPage;
+    VishwaRetailAdminTaskPage vishwaRetailAdminTaskPage;
     protected MyAccountsPage myAccountsPage;
     protected BillPaymentPage billPaymentPage;
-
-
+    PawningTicketPage pawningTicketPage;
+    ObtainLoanPage obtainLoanPage;
 
     @BeforeClass
     public void setup() {
@@ -32,6 +32,8 @@ public class BaseTest extends Drivers {
         messagesPage = new MessagesPage(driver);
         vishwaRetailAdminLoginPage = new VishwaRetailAdminLoginPage(driver);
         vishwaRetailAdminTaskPage = new VishwaRetailAdminTaskPage(driver);
+        pawningTicketPage = new PawningTicketPage (driver);
+        obtainLoanPage = new ObtainLoanPage(driver);
         myAccountsPage = new MyAccountsPage(driver);
         billPaymentPage = new BillPaymentPage(driver);
         driver.get(url);
