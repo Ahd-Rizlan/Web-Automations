@@ -428,7 +428,7 @@ public class LoanAccountDetailedViewPage extends BasePage {
 
                 // Validate Transaction Date - format: DD-MM-YYYY
                 if (CommonUtils.containsValuesOnDate(transactionDate)) {
-                    addToReport("Row " + i + ": Valid Transaction Date: " + transactionDate, Status.PASS, false);
+                    addToReport("Row " + i + ": Valid Transaction Date (Finacle): " + transactionDate, Status.PASS, false);
                 } else {
                     addToReport("Row " + i + ": Invalid Transaction Date: " + transactionDate, Status.FAIL);
                     flag = false;
@@ -459,7 +459,7 @@ public class LoanAccountDetailedViewPage extends BasePage {
 
                 // Due Date validation
                 if (CommonUtils.containsValuesOnDate(dueDate)) {
-                    addToReport("Row " + i + ": Valid Due Date: " + dueDate, Status.PASS, false);
+                    addToReport("Row " + i + ": Valid Due Date (Finacle):: " + dueDate, Status.PASS, false);
                 } else {
                     addToReport("Row " + i + ": Invalid Due Date: " + dueDate, Status.FAIL);
                     flag = false;
@@ -467,7 +467,7 @@ public class LoanAccountDetailedViewPage extends BasePage {
 
                 // Paid Date validation
                 if (paidDate.equals("-") || CommonUtils.containsValuesOnDate(paidDate)) {
-                    addToReport("Row " + i + ": Valid Paid Date: " + paidDate, Status.PASS, false);
+                    addToReport("Row " + i + ": Valid Paid Date (Finacle):: " + paidDate, Status.PASS, false);
                 } else {
                     addToReport("Row " + i + ": Invalid Paid Date: " + paidDate, Status.FAIL);
                     flag = false;
