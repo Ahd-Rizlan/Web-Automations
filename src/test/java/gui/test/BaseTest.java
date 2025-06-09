@@ -20,6 +20,8 @@ public class BaseTest extends Drivers {
     protected BillPaymentPage billPaymentPage;
     PawningTicketPage pawningTicketPage;
     ObtainLoanPage obtainLoanPage;
+    LoanAccountDetailedViewPage loanAccountDetailedViewPage;
+    FDDetailViewPage fdDetailViewPage;
 
     @BeforeClass
     public void setup() {
@@ -36,6 +38,8 @@ public class BaseTest extends Drivers {
         obtainLoanPage = new ObtainLoanPage(driver);
         myAccountsPage = new MyAccountsPage(driver);
         billPaymentPage = new BillPaymentPage(driver);
+        loanAccountDetailedViewPage = new LoanAccountDetailedViewPage(driver);
+        fdDetailViewPage = new FDDetailViewPage(driver);
         driver.get(url);
     }
 
