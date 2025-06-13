@@ -391,6 +391,15 @@ public class CommonUtils extends Drivers {
         return input.replaceFirst("^" + Character.toString(ch) + "+(?!$)", "");
     }
 
+    /**
+     * Function to check if the text matches masked card number format like '5471 65XX XXXX 6154'
+     *
+     * @param text - masked card number string to validate
+     * @return boolean - true if format is valid
+     */
+    public static boolean containsMaskedCardFormat(String text) {
+        return text != null && text.matches("^\\d{4} \\d{2}XX XXXX \\d{4}$");
+    }
 
 
 
