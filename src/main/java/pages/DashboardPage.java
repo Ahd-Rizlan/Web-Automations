@@ -27,7 +27,7 @@ public class DashboardPage extends BasePage {
     private static final By btn_BookAFreeDemo = By.xpath("//li/a[text()='Book a Free Demo']");
     private static final By lbl_freeTrial = By.xpath("//h1[text()='Your free trial']");
     private static final By lblAccountsOrCards = By.xpath("//h1[contains(text(),'Accounts / Cards')]");
-    private static final By icnMessage = By.xpath("//a[@href='/SVRClientWebV4/dashboard/inbox']");
+    private static final By icnMessage = By.xpath("//a[contains(@href,'/dashboard/inbox')]");
     private static final By icnNotification = By.xpath("//div[contains(@class,'flex items-center')]/img[contains(@srcset,'notification')]");
     private static final By lblMessage = By.xpath("//span[contains(text(),'Message')]");
     private static final By lblVishwaAccountSettings = By.xpath("//div[contains(text(),'Vishwa Account Settings')]");
@@ -77,7 +77,7 @@ public class DashboardPage extends BasePage {
     private static final By lblMobileCashHeader = By.xpath(" //div[text()='Make Transactions']/ancestor::div[contains(@class,'rounded-lg')]/following-sibling::div//span[contains(text(),'Mobile Cash')]");
     private static final By lblBillPaymentHeader = By.xpath("//span[text()='Bill Payments']/ancestor::div[contains(@class,'rounded-lg')]/following-sibling::div//span[contains(text(),'Bill Payments')]");
     private static final By imgAccountPortfolio = By.xpath("//canvas[@role='img']");
-    private static final By imgAdvertisement = By.xpath("//span[contains(text(),'Maintenance & Updates')]/parent::div//img[contains(@src,'/SVRClientWebV4/_next/image')]");
+    private static final By imgAdvertisement = By.xpath("//div[contains(@class,'auto relative group')]/img");
     private static final By lblOpenFDPopupHeader = By.xpath("//span[text()='Fixed Deposits']");
     private static final By lblOpenSavingsAccountHeader = By.xpath("//div[contains(text(),'Are you a resident of Sri Lanka?')]");
     private static final By btnClosePopup = By.xpath("//button[contains(text(),'Close')]");
@@ -104,7 +104,7 @@ public class DashboardPage extends BasePage {
     private static final By lblAccountListLoading = By.xpath("//div[contains(@class,'dark:bg-gray')]");
 
     private static By tfOTP(int Index) {
-        return By.xpath("//input[@type='password'][" + Index + "]");
+        return By.xpath("//input[contains(@class,'otp-box')][" + Index + "]");
     }
 
     private static By txtlogoutPopup(String popupText) {
@@ -1764,6 +1764,7 @@ public class DashboardPage extends BasePage {
                 clickOnElement(btnUserIcnDynamic(btnNameSettings));
                 addToReport("Successfully clicked on the settings button.", Status.PASS, false);
 
+                waitForElementToBeClickable(tfOTP(1),20);
                 //Enter OTP values and continue
                 sendKeysToElement(tfOTP(1), String.valueOf(otp));
                 addToReport("Successfully entered OTP", Status.PASS, true);

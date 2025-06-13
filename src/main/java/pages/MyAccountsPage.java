@@ -23,7 +23,7 @@ public class MyAccountsPage extends BasePage {
     }
 
     public enum ElementType {
-        button, label, span, div;
+        button, label, span, div, h2
     }
 
     private static final By lblAccountListLoading = By.xpath("//div[contains(@class,'dark:bg-gray')]");
@@ -48,6 +48,9 @@ public class MyAccountsPage extends BasePage {
     private static final By ddAdvancedSearchMonth = By.xpath("//span[@class='rdrMonthPicker']/select");
     private static final By ddAdvancedSearchYear = By.xpath("//span[@class='rdrYearPicker']/select");
     private static final By ddTransactionType = By.xpath("//select[@id='status']");
+    private static final By imgMasterCardLogo = By.xpath("//img[contains(@srcset,'MasterCardLogo')]");
+    private static final By lblInactiveCardStatus = By.xpath("//div[@class='flex gap-1']/div[1]");
+
 
     public static By lblNoDataFound(String text) {
         return By.xpath("//div[@class='gap-2']//span[contains(text(),'" + text + "')]");
@@ -67,6 +70,10 @@ public class MyAccountsPage extends BasePage {
 
     public static By lblAccountSummaryDetails(String text) {
         return By.xpath("//li[contains(text(),'" + text + "')]/span");
+    }
+
+    public static By lblCreditCardDetails(String text) {
+        return By.xpath("//div[contains(text(),'" + text + "')]/parent::div/div[2]");
     }
 
     public static By lblDatesAndRates(String text) {
@@ -116,8 +123,18 @@ public class MyAccountsPage extends BasePage {
     private static By lblHighlightedListContent(String content) {
         return By.xpath("//tr[contains(@class, 'bg-orange-300')]/td[text()='" + content + "']");
     }
+
     private static By lblLoanNoDataFound(String content) {
         return By.xpath("//div[@class='h-full w-full']//span[contains(text(),'" + content + "')]");
+    }
+    private static By lblCreditCardAvailableBalance(String text) {
+        return By.xpath("//div[contains(text(),'"+text+"')]/following-sibling::div/span[contains(@class,'text-green')]");
+    }
+    private static By lblCreditCardNumber(String text) {
+        return By.xpath("//div[contains(text(),'"+text+"')]/parent::div//span[contains(@class,'flex flex-col')]");
+    }
+    private static By lblCreditCardCustAccNumber(String text) {
+        return By.xpath("//span[contains(text(),'"+text+"')]/parent::div/span[1]");
     }
 
     private static By popUpPDFDownload(String msg) {
@@ -257,7 +274,7 @@ public class MyAccountsPage extends BasePage {
     /**
      * select tab and validate it's relevant tile
      *
-     * @param tabName  Table Name
+     * @param tabName    Table Name
      * @param tileHeader Tile header
      */
     public void navigateToAccountProductTypeAndValidate(String[] tabName, String[] tileHeader) {
@@ -883,15 +900,16 @@ public class MyAccountsPage extends BasePage {
 
     /**
      * Validate the current account details
-     * @param tabName         The name of the tab to navigate
-     * @param tileHeader      The header of the account tile
-     * @param accountNumber   The account number to validate
-     * @param odLimit         Overdraft limit value
-     * @param tempOdLimit     Temporary overdraft limit
+     *
+     * @param tabName          The name of the tab to navigate
+     * @param tileHeader       The header of the account tile
+     * @param accountNumber    The account number to validate
+     * @param odLimit          Overdraft limit value
+     * @param tempOdLimit      Temporary overdraft limit
      * @param overdueLiability Overdue liability amount
-     * @param reservedAmount  Reserved amount in the account
-     * @param accountBalance  Final account balance shown
-     * @param openedOn        Date the account was opened
+     * @param reservedAmount   Reserved amount in the account
+     * @param accountBalance   Final account balance shown
+     * @param openedOn         Date the account was opened
      */
     public void ValidateCurrentAccountDetails(String tabName, String tileHeader, String accountNumber, String odLimit, String tempOdLimit, String overdueLiability, String reservedAmount, String accountBalance, String openedOn) {
         addToReport("----------Start of validation of user should be able to view the Current account details----------", Status.PASS, false);
@@ -1287,7 +1305,6 @@ public class MyAccountsPage extends BasePage {
         }
 
         // Account Opened On
-        String c = getAttributeOrText(lblAccountSummaryDetails(MyAccountsConstants.ACCOUNT_OPENED_ON), "text");
         if (accOpenedOn.equals(getAttributeOrText(lblAccountSummaryDetails(MyAccountsConstants.ACCOUNT_OPENED_ON), "text"))) {
             addToReport("Successfully validated Account Opened On: '" + accOpenedOn + "'", Status.PASS, false);
         } else {
@@ -1391,6 +1408,138 @@ public class MyAccountsPage extends BasePage {
 
     }
 
+    String cardNo,customerAccountNumber,expiryDate,cardStatus,cardType,availableBalance;
+    public void ValidateCreditCardDetails(String tabName, String tileHeader,String accountNumber) {
+        addToReport("----------Start of validation of user should be able to view the Credit card details----------", Status.PASS, false);
+
+        waitForElementToBeInvisible(lblLoadingIcon, 25);
+        waitForElementToBeInvisible(icnTileLoading, 40);
+
+        //Selecet tab and account
+        selectTabAndValidate(tabName, tileHeader);
+
+        if (isElementPresentBy(icnAccounts)){
+
+            waitForElementToBeClickable(icnAccounts, 25);
+        //Obtain pagination value
+        cardCount = CommonUtils.splitText(getAttributeOrText(icnAccounts, "text"), "/");
+        //Obtain the accounts record count
+        recordCount = Integer.parseInt(cardCount[1]);
+        if (recordCount != 0) {
+            for (int incr = 0; incr < recordCount; incr++) {
+
+                String accountNumberRetrived = getAttributeOrText(lblAccountNumber, "text").replace(" ", "");
+
+                if (!accountNumberRetrived.equals(accountNumber)) {
+                    //Navigate to next account
+                    clickOnElement(btnNextArrow);
+                    waitForElementToBeInvisible(lblLoadingIcon, 25);
+                    waitForElementToBeInvisible(lblAccountListLoading, 25);
+
+                } else {
+                    addToReport("Expected account "+accountNumber+" found", Status.FAIL, true);
+                    break;
+                }
+            }
+        } else {
+            addToReport("No accounts", Status.FAIL, true);
+        }
+
+        }
+
+        //Obtain text
+        availableBalance = getAttributeOrText(lblCreditCardAvailableBalance(MyAccountsConstants.AVAILABLE),"text");
+        cardNo = getAttributeOrText(lblCreditCardNumber(MyAccountsConstants.AVAILABLE),"text");
+        customerAccountNumber = getAttributeOrText(lblCreditCardCustAccNumber(MyAccountsConstants.CAN),"text");
+        cardStatus= getAttributeOrText(lblInactiveCardStatus,"text");
+        expiryDate = getAttributeOrText(lblCreditCardCustAccNumber(MyAccountsConstants.EXPIRY_DATE),"text");
+
+        // card type
+        if (isElementPresentBy(imgMasterCardLogo)) {
+            addToReport("Successfully obtained card type ", Status.PASS, false);
+            cardType = MyAccountsConstants.MASTER_INACTIVE;
+        } else {
+            addToReport("Failed to validate card type", Status.FAIL, true);
+        }
+
+
+        // Credit Card Number
+        if (cardNo.equals(getAttributeOrText(lblCreditCardDetails(MyAccountsConstants.CARD_NUMBER), "text"))) {
+            addToReport("Successfully validated " + MyAccountsConstants.CARD_NUMBER + " : '" + cardNo + "'", Status.PASS, false);
+        } else {
+            addToReport("Failed to validate " + MyAccountsConstants.CARD_NUMBER + ". Expected: '" + cardNo + "', but received: '" + getAttributeOrText(lblCreditCardDetails(MyAccountsConstants.CARD_NUMBER), "text") + "'", Status.FAIL, true);
+        }
+
+        // Customer Account Number
+        if (customerAccountNumber.equals(getAttributeOrText(lblCreditCardDetails(MyAccountsConstants.CUSTOMER_ACCOUNT_NUMBER), "text"))) {
+            addToReport("Successfully validated " + MyAccountsConstants.CUSTOMER_ACCOUNT_NUMBER + " : '" + customerAccountNumber + "'", Status.PASS, false);
+        } else {
+            addToReport("Failed to validate " + MyAccountsConstants.CUSTOMER_ACCOUNT_NUMBER + ". Expected: '" + customerAccountNumber + "', but received: '" + getAttributeOrText(lblCreditCardDetails(MyAccountsConstants.CUSTOMER_ACCOUNT_NUMBER), "text") + "'", Status.FAIL, true);
+        }
+
+        // Expiry Date
+        if (expiryDate.equals(getAttributeOrText(lblCreditCardDetails(MyAccountsConstants.EXPIRY_DATE), "text"))) {
+            addToReport("Successfully validated " + MyAccountsConstants.EXPIRY_DATE + " : '" + expiryDate + "'", Status.PASS, false);
+        } else {
+            addToReport("Failed to validate " + MyAccountsConstants.EXPIRY_DATE + ". Expected: '" + expiryDate + "', but received: '" + getAttributeOrText(lblCreditCardDetails(MyAccountsConstants.EXPIRY_DATE), "text") + "'", Status.FAIL, true);
+        }
+
+        // Card Status
+        if (cardStatus.equals(getAttributeOrText(lblCreditCardDetails(MyAccountsConstants.CARD_STATUS), "text"))) {
+            addToReport("Successfully validated " + MyAccountsConstants.CARD_STATUS + " : '" + cardStatus + "'", Status.PASS, false);
+        } else {
+            addToReport("Failed to validate " + MyAccountsConstants.CARD_STATUS + ". Expected: '" + cardStatus + "', but received: '" + getAttributeOrText(lblCreditCardDetails(MyAccountsConstants.CARD_STATUS), "text") + "'", Status.FAIL, true);
+        }
+
+        // Card Type
+        if (cardType.equals(getAttributeOrText(lblCreditCardDetails(MyAccountsConstants.CARD_TYPE), "text"))) {
+            addToReport("Successfully validated " + MyAccountsConstants.CARD_TYPE + " : '" + cardType + "'", Status.PASS, false);
+        } else {
+            addToReport("Failed to validate " + MyAccountsConstants.CARD_TYPE + ". Expected: '" + cardType + "', but received: '" + getAttributeOrText(lblCreditCardDetails(MyAccountsConstants.CARD_TYPE), "text") + "'", Status.FAIL, true);
+        }
+
+        // Available Balance
+        if (availableBalance.equals(getAttributeOrText(lblCreditCardDetails(MyAccountsConstants.AVAILABLE_BALANCE), "text"))) {
+            addToReport("Successfully validated " + MyAccountsConstants.AVAILABLE_BALANCE + " : '" + availableBalance + "'", Status.PASS, false);
+        } else {
+            addToReport("Failed to validate " + MyAccountsConstants.AVAILABLE_BALANCE + ". Expected: '" + availableBalance + "', but received: '" + getAttributeOrText(lblCreditCardDetails(MyAccountsConstants.AVAILABLE_BALANCE), "text") + "'", Status.FAIL, true);
+        }
+
+        //Validate supplementary card
+        if (isElementPresentBy(getElementByTypeAndText(ElementType.h2,MyAccountsConstants.SUPPLEMENTARY_CARDS))) {
+            addToReport("Successfully validated header " + MyAccountsConstants.SUPPLEMENTARY_CARDS, Status.PASS, false);
+        } else {
+            addToReport("Failed to validate header " + MyAccountsConstants.SUPPLEMENTARY_CARDS , Status.FAIL, true);
+        }
+
+        recordCount = isElementsPresentBy(tblTransactionRows);
+        if (recordCount != 0) {
+            for (int incr = 1; incr <= recordCount; incr++) {
+
+                //Validate supplementary card table headers
+                for (String header : MyAccountsConstants.SUPPLEMENTARY_CARD_TABLE_HEADERS) {
+
+                    if (isElementPresentBy(getHeaderByName(header))) {
+                        addToReport("Table header '" + header + "' is present under account " + accountNumber, Status.PASS, false);
+                    }  else {
+                        addToReport("Missing table header '" + header + "'  under account number " + accountNumber, Status.FAIL, true);
+                    }
+
+                }
+                if (getAttributeOrText(tblCellRecord(1,incr),"text").equals(null) || getAttributeOrText(tblCellRecord(2,incr),"text").equals(null)){
+                    addToReport("Invalid content under supplementary cards under account :" + accountNumber, Status.FAIL, true);
+                }else {
+                    addToReport("Successfully obtained card Number  " + getAttributeOrText(tblCellRecord(1, incr), "text"), Status.PASS, false);
+                    addToReport("Successfully obtained card Name " + getAttributeOrText(tblCellRecord(2, incr), "text"), Status.PASS, false);
+                }
+
+
+            }
+            } else {
+            addToReport("No supplementary cards were found ", Status.FAIL, true);
+        }
+
+        addToReport("----------End of validation of user should be able to view the Credit card details----------", Status.PASS, false);
+    }
+
 }
-
-

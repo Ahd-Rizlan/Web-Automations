@@ -83,7 +83,7 @@ public class MakeTransactionsPage extends BasePage {
         return By.xpath("//span[contains(normalize-space(),'" + type +"' )]/parent::div/input[@disabled]");
     }
     private static By tfOTP(int Index) {
-        return By.xpath("//input[@type='password'][" + Index + "]");
+        return By.xpath("//input[contains(@class,'otp-box')][" + Index + "]");
     }
 
     /**

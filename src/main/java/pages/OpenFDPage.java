@@ -53,7 +53,7 @@ public class OpenFDPage extends BasePage {
 
     private static By tfOTP(int Index) {
 
-        return By.xpath("//input[@type='password'][" + Index + "]");
+        return By.xpath("//input[contains(@class,'otp-box')][" + Index + "]");
     }
     private static By lblMaturity(int index) {
         return By.xpath("(//div[contains(@class, 'w-auto h-28 rounded-lg')])[" + index + "]");

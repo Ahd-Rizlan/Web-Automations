@@ -72,11 +72,11 @@ public class MessagesPage extends BasePage {
     }
 
     private static By tfOTP(int Index) {
-        return By.xpath("//input[@type='password'][" + Index + "]");
+        return By.xpath("//input[contains(@class,'otp-box')][" + Index + "]");
     }
 
     private static By lblMsgID(String subject) {
-        return By.xpath("//span[text()='" + subject + "']/parent::div/span[2]");
+        return By.xpath("//span[text()='" + subject + "']/parent::div/span[1]");
     }
     private static By lblResponseDate(String responseMessage) {
         return By.xpath("//p[text()='"+responseMessage+"']/ancestor::div[4]//span[contains(text(), '-') and contains(text(), ':')]");

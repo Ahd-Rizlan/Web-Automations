@@ -68,8 +68,6 @@ public class VishwaRetailAdminLoginPage extends BasePage {
      * @param tabIndex A string representing the tab identifier or URL target
      */
     public void navigateToTab(int tabIndex) {
-        // Open a new tab using JavaScript
-        ((JavascriptExecutor) driver).executeScript("window.open();");
 
         // Convert tabIndex to an integer
         int index = tabIndex;

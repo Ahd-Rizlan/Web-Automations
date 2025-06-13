@@ -18,8 +18,7 @@ public class BaseTest extends Drivers {
     protected VishwaRetailAdminTaskPage vishwaRetailAdminTaskPage;
     protected MyAccountsPage myAccountsPage;
     protected BillPaymentPage billPaymentPage;
-
-
+    protected OldVishwaPage OldVishwaPage;
 
     @BeforeClass
     public void setup() {
@@ -34,6 +33,7 @@ public class BaseTest extends Drivers {
         vishwaRetailAdminTaskPage = new VishwaRetailAdminTaskPage(driver);
         myAccountsPage = new MyAccountsPage(driver);
         billPaymentPage = new BillPaymentPage(driver);
+        OldVishwaPage = new  OldVishwaPage(driver);
         driver.get(url);
     }
 

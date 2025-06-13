@@ -41,7 +41,7 @@ public class SettingsPage extends BasePage {
 
     private static By tfOTP(int Index) {
 
-        return By.xpath("//input[@type='password'][" + Index + "]");
+        return By.xpath("//input[contains(@class,'otp-box')][" + Index + "]");
     }
 
     private static By getSuccessfulMsg(String title) {

@@ -1219,6 +1219,44 @@ public abstract class BasePage extends helpers {
         }
     }
 
+    /**
+     * Returns the cutoff date that is X months before the current date
+     *
+     * @param monthsBack number of months to go back
+     * @return Date object representing the cutoff date
+     */
+    public static Date getCutoffDate(int monthsBack) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.MONTH, -monthsBack);
+        return cal.getTime();
+    }
+
+    /**
+     * Validates whether the current browser URL contains a specific expected substring.
+     *
+     * @param expectedUrlPart The expected part of the URL
+     */
+    public void validateURL(String expectedUrlPart) {
+        String currentUrl = driver.getCurrentUrl();
+        if (currentUrl.contains(expectedUrlPart)) {
+            // Log success if current URL contains the expected part
+            addToReport("URL contains expected part: " + expectedUrlPart, Status.PASS, true);
+        } else {
+            // Log failure with the actual URL if it does not contain the expected part
+            addToReport("URL does not contain expected part. Actual URL: " + currentUrl, Status.FAIL, true);
+        }
+    }
+
+    /**
+     * Closes the current browser window.
+     * This will close only the active tab or window, not all open tabs.
+     */
+    public void closeBrowser() {
+        driver.close(); // Closes the current browser tab
+    }
+
+
 
 }
 
