@@ -215,9 +215,18 @@ public class CommonUtils extends Drivers {
      * @return boolean - text content availability
      */
     public static boolean containsValuesOnDate(String text) {
-        return text.matches("^\\d{2}/\\d{2}/\\d{4}$");
+        return text.matches("^\\d{2}[-/]\\d{2}[-/]\\d{4}$");
     }
 
+    /**
+     * Function to check if the text contains numeric characters with backslash
+     *
+     * @param text - text content to validate the characters
+     * @return boolean - text content availability
+     */
+    public static boolean containsValuesOnDateYearFirst(String text) {
+        return text.matches("^\\d{4}[-/]\\d{2}[-/]\\d{2}$");
+    }
     /**
      * Function to check if the text contains numeric characters including negative values
      *
@@ -247,6 +256,11 @@ public class CommonUtils extends Drivers {
     public static boolean containsAlphNumAndSpecialCharacters(String text) {
         return text.matches("^[a-zA-Z0-9!@#$%^&*()_+{}\\[\\]:;<>,.?/~\\\\-]+$");
     }
+
+    public static boolean containsAlphNumAndSpecialCharacters1(String text) {
+        return text.matches("^[a-zA-Z0-9!@#$%^&*()_+{}\\[\\]:;<>,.?/~\\\\\\s-]+$");
+    }
+
     /**
      * Function to check if the text contains alphabetic spaces and hyphen characters
      *
@@ -355,6 +369,15 @@ public class CommonUtils extends Drivers {
     }
 
     /**
+     * Copy to clipboard
+     * @param text  text that should be copied to clipboard
+     */
+    public static void copyToClipboard(String text) {
+        StringSelection selection = new StringSelection(text);
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, null);
+    }
+
+    /**
      * Removes leading occurrences of a specified character from a string.
      *
      * @param input the input string (e.g., "xxx709")
@@ -368,14 +391,8 @@ public class CommonUtils extends Drivers {
         return input.replaceFirst("^" + Character.toString(ch) + "+(?!$)", "");
     }
 
-    /**
-     * Copy to clipboard
-     * @param text  text that should be copied to clipboard
-     */
-    public static void copyToClipboard(String text) {
-        StringSelection selection = new StringSelection(text);
-        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, null);
-    }
+
+
 
 
 }
