@@ -12,6 +12,7 @@ import utils.CommonUtils;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import static utils.Drivers.*;
 
 import static utils.CommonUtils.getCharacterCount;
 
@@ -143,7 +144,7 @@ public class MakeTransactionsPage extends BasePage {
         List<String> accountNumbers = getValues();
 
         //Validate page title
-        waitForElementPresence(lblPageHeader,10);
+        waitForElementPresence(lblPageHeader,SHORT_WAIT);
         waitForPageLoadCompleteJS();
 
         //Validate the account number
@@ -273,7 +274,7 @@ public class MakeTransactionsPage extends BasePage {
         selectTabUnderSendMoney("Own Account");
 
         waitForPageLoadCompleteJS();
-        waitForElementToBeInvisible(lblToAccountGrayLoader,20);
+        waitForElementToBeInvisible(lblToAccountGrayLoader,LONG_WAIT);
 
         // Repeat the above steps with the maximum amount for limit validation
         selectFromDropdown(ddFromAccount,primaryAccount,"value");
@@ -337,17 +338,17 @@ public class MakeTransactionsPage extends BasePage {
 
         clickOnElement(btnSubmit);
 
-        waitForElementToBeInvisible(lblSubmitLoading,20);
+        waitForElementToBeInvisible(lblSubmitLoading,LONG_WAIT);
 
         addToReport("----------Start of validation of OTP confirmation page----------", Status.PASS, false);
         //Validate the OTP confirmation
         validateOtpPageDetails(primaryAccount,String.valueOf(amount),toAccount,sRemark,bRemark,transferMode, kwTransfersMap,currencyType,"","","","");
 
         //Enter OTP
-        waitForElementPresence(tfOTP(1), 20);
+        waitForElementPresence(tfOTP(1), LONG_WAIT);
         sendKeysToElement(tfOTP(1), String.valueOf(OTPValue));
         clickOnElement(btnConfirm);
-        waitForElementToBeInvisible(btnNextLoading, 20);
+        waitForElementToBeInvisible(btnNextLoading, LONG_WAIT);
 
         addToReport("----------End of validation of OTP confirmation page----------", Status.PASS, true);
         addToReport("----------Start of validation of OTP success page----------", Status.PASS, false);
@@ -377,7 +378,7 @@ public class MakeTransactionsPage extends BasePage {
 
         addToReport("----------End of validation of OTP success page----------", Status.PASS, true);
         //Close the popup
-        waitForElementToBeClickable(btnOTPClosePopup, 10);
+        waitForElementToBeClickable(btnOTPClosePopup, LONG_WAIT);
         clickOnElement(btnOTPClosePopup);
     }
 
@@ -419,7 +420,7 @@ public class MakeTransactionsPage extends BasePage {
             addToReport("Skipping validation for '" + label + "' as expected value is empty or null.", Status.INFO);
             return;
         }
-        waitForElementPresence(tfOtpConfirmation(label),15);
+        waitForElementPresence(tfOtpConfirmation(label),LONG_WAIT);
         String actualValue = getAttributeOrText(tfOtpConfirmation(label), "value").replaceAll("\\s+", "");
         expectedValue = expectedValue.replaceAll("\\s+", "");
         if (expectedValue.equals(actualValue)) {
@@ -470,7 +471,7 @@ public class MakeTransactionsPage extends BasePage {
     public void checkPopupMessage(String popupMessage) {
         try {
             waitForElementPresence(btnClosePopup);
-            waitForElementToBeClickable(btnClosePopup,20);
+            waitForElementToBeClickable(btnClosePopup,LONG_WAIT);
             waitForPageLoadCompleteJS();
             // Check if the popup message is available
             if (isElementPresentBy(getPopUpMsg(popupMessage))) {
@@ -524,7 +525,7 @@ public class MakeTransactionsPage extends BasePage {
         // Scroll to top and wait for page load
         scrollPageToTop();
         waitForPageLoadCompleteJS();
-        waitForElementToBeInvisible(lblToAccountGrayLoader, 20);
+        waitForElementToBeInvisible(lblToAccountGrayLoader, LONG_WAIT);
 
         // Validate the account number
         String pAccountNo = getTextFromElement(lblSavingsAccountNo);
@@ -654,10 +655,10 @@ public class MakeTransactionsPage extends BasePage {
                 bankName, CommonUtils.getTodayDateFormatted("yyyy-MM-dd"), purpose,"");
 
         // Enter OTP and submit
-        waitForElementPresence(tfOTP(1), 20);
+        waitForElementPresence(tfOTP(1), LONG_WAIT);
         sendKeysToElement(tfOTP(1), OTPValue);
         clickOnElement(btnConfirm);
-        waitForElementToBeInvisible(btnNextLoading, 20);
+        waitForElementToBeInvisible(btnNextLoading, LONG_WAIT);
 
         addToReport("----------End of validation of OTP confirmation page----------", Status.PASS, true);
         addToReport("----------Start of validation of OTP success page----------", Status.PASS, false);
@@ -691,7 +692,7 @@ public class MakeTransactionsPage extends BasePage {
         addToReport("----------End of validation of OTP success page----------", Status.PASS, true);
         //Close the popup
         scrollPageToTop();
-        waitForElementToBeClickable(btnOTPClosePopup, 10);
+        waitForElementToBeClickable(btnOTPClosePopup, MODERATE_WAIT);
         clickOnElement(btnOTPClosePopup);
 
         addToReport("----------Start of validation of availability of last 10 records----------", Status.PASS, false);
@@ -717,7 +718,7 @@ public class MakeTransactionsPage extends BasePage {
         // Scroll to top and wait for page load
         scrollPageToTop();
         waitForPageLoadCompleteJS();
-        waitForElementToBeInvisible(lblToAccountGrayLoader, 20);
+        waitForElementToBeInvisible(lblToAccountGrayLoader, LONG_WAIT);
 
         // Validate the account number
         String pAccountNo = getTextFromElement(lblSavingsAccountNo);
@@ -777,7 +778,7 @@ public class MakeTransactionsPage extends BasePage {
         selectFromDropdown(ddBank,bankName, "visibletext");
 
         if (branchName != null && !branchName.trim().isEmpty()){
-            waitForElementToBeInvisible(lblToAccountGrayLoader,15);
+            waitForElementToBeInvisible(lblToAccountGrayLoader,LONG_WAIT);
             waitForElementToBeClickable(ddBranch,15);
             selectFromDropdown(ddBranch,branchName, "visibletext");
         }
@@ -809,7 +810,7 @@ public class MakeTransactionsPage extends BasePage {
             clickOnElement(rdoSchadule); // Select 'Schedule Transaction'
         }
         clickOnElement(chkSavePayee);
-        waitForElementToBeClickable(tfNickName,10);
+        waitForElementToBeClickable(tfNickName,MODERATE_WAIT);
         sendKeysToElement(tfNickName,templateName);
 
         clickOnElement(btnSubmit);
@@ -884,10 +885,10 @@ public class MakeTransactionsPage extends BasePage {
         }
 
         //Enter OTP
-        waitForElementPresence(tfOTP(1), 20);
+        waitForElementPresence(tfOTP(1), LONG_WAIT);
         sendKeysToElement(tfOTP(1), String.valueOf(otpValue));
         clickOnElement(btnConfirm);
-        waitForElementToBeInvisible(btnNextLoading, 20);
+        waitForElementToBeInvisible(btnNextLoading, LONG_WAIT);
 
         addToReport("----------End of validation of OTP confirmation page----------", Status.PASS, true);
         addToReport("----------Start of validation of OTP success page----------", Status.PASS, false);
@@ -920,17 +921,17 @@ public class MakeTransactionsPage extends BasePage {
         addToReport("----------Start of validation of search saved template and delete----------", Status.PASS, false);
 
         //Close the popup
-        waitForElementToBeClickable(btnOTPClosePopup, 10);
+        waitForElementToBeClickable(btnOTPClosePopup, SHORT_WAIT);
         clickOnElement(btnOTPClosePopup);
         scrollPageToTop();
         selectTabUnderSendMoney(savedPayees);
 
-        waitForElementToBeClickable(btnSearchPayee, 20);
+        waitForElementToBeClickable(btnSearchPayee, LONG_WAIT);
         scrollPageToTop();
         sendKeysToElement(tfSearch, templateName);
         clickOnElementUsingJS(btnSearchPayee);
 
-        waitForElementToBeInvisible(icnSavedPayeeGridLoading, 20);
+        waitForElementToBeInvisible(icnSavedPayeeGridLoading, LONG_WAIT);
 
         //Validate the search results
         int recordCount = isElementsPresentBy(tblRows);
@@ -945,19 +946,19 @@ public class MakeTransactionsPage extends BasePage {
             }
 
             //Delete the template
-            waitForElementPresence(tfOTP(1), 20);
+            waitForElementPresence(tfOTP(1), LONG_WAIT);
             sendKeysToElement(tfOTP(1), String.valueOf(otpValue));
             addToReport(" OTP confirmation for template deletion of " + templateName, Status.PASS, true);
             clickOnElement(btnConfirm);
-            waitForElementToBeInvisible(btnNextLoading, 20);
+            waitForElementToBeInvisible(btnNextLoading, LONG_WAIT);
 
             selectTabUnderSendMoney(savedPayees);
-            waitForElementToBeClickable(btnSearchPayee, 20);
+            waitForElementToBeClickable(btnSearchPayee, LONG_WAIT);
 
             sendKeysToElement(tfSearch, templateName);
             clickOnElement(btnSearchPayee);
 
-            waitForElementToBeInvisible(icnSavedPayeeGridLoading, 20);
+            waitForElementToBeInvisible(icnSavedPayeeGridLoading, LONG_WAIT);
 
             //Validate the search results
             recordCount = isElementsPresentBy(tblRows);

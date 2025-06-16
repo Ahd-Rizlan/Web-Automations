@@ -10,6 +10,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import utils.CommonUtils;
 
+import static utils.Drivers.*;
+
 public class SavedPayeesPage extends BasePage {
 
     CommonUtils commonutils = new CommonUtils();
@@ -97,9 +99,9 @@ public class SavedPayeesPage extends BasePage {
             String AccNickName = QFTData[0];
             String BankName = QFTData[1];
             String AccountNumber = QFTData[2];
-            waitForElementPresence(lblQFTSavingsAccountName(),20);
-            waitForElementToBeInvisible(loadingBranchName,30);
-            waitForElementPresence(tfQFTBranchName,20);
+            waitForElementPresence(lblQFTSavingsAccountName(),LONG_WAIT);
+            waitForElementToBeInvisible(loadingBranchName,LONG_WAIT);
+            waitForElementPresence(tfQFTBranchName,LONG_WAIT);
 
             //validate account name presence
             boolean boolSavingsAccount = isElementPresentBy(lblQFTSavingsAccountName());
@@ -310,7 +312,7 @@ public class SavedPayeesPage extends BasePage {
             //validate success msg
             waitForElementPresence(lblPopupMsgFavPayeeAdded);
             addToReport("Successfully favourite payee added message appeared", Status.PASS, true);
-            waitForElementToBeInvisible(lblPopupMsgFavPayeeAdded, 15);
+            waitForElementToBeInvisible(lblPopupMsgFavPayeeAdded, LONG_WAIT);
 
             //validate nickname in your favourite payee list
             boolean boolYFN = isElementPresentBy(tblYFLNickName(nickName));
@@ -327,7 +329,7 @@ public class SavedPayeesPage extends BasePage {
             //validate success msg
             waitForElementPresence(lblPopupMsgFavPayeeRemoved);
             addToReport("Successfully favourite payee removed message appeared", Status.PASS, true);
-            waitForElementToBeInvisible(lblPopupMsgFavPayeeRemoved, 15);
+            waitForElementToBeInvisible(lblPopupMsgFavPayeeRemoved, LONG_WAIT);
 
         } catch (Exception e) {
             addToReport("Error when adding favourite payee", Status.FAIL);

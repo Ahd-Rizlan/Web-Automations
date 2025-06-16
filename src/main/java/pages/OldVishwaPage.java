@@ -13,6 +13,8 @@ import utils.constants.OldVishwaConstants;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static utils.Drivers.*;
+
 public class OldVishwaPage extends BasePage {
 
     String dateText;
@@ -161,7 +163,7 @@ public class OldVishwaPage extends BasePage {
         //Click on old vishwa button
         clickOnElement(getElementByTypeAndText(ElementType.button, OldVishwaConstants.KEYWORD_OLD_VISHWA));
 
-        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, OldVishwaConstants.KEYWORD_OLD_VISHWA_INBOX), 30);
+        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, OldVishwaConstants.KEYWORD_OLD_VISHWA_INBOX), VERY_LONG_WAIT);
         clickOnElement(getElementByTypeAndText(ElementType.div, OldVishwaConstants.KEYWORD_OLD_VISHWA_INBOX));
 
         //Validate table headers for inbox
@@ -434,7 +436,7 @@ public class OldVishwaPage extends BasePage {
         waitForElementToBeClickable(getElementByTypeAndText(ElementType.div,OldVishwaConstants.KEYWORD_LOAD_OLD_V_HISTORY),20);
         clickOnElement(getElementByTypeAndText(ElementType.div,OldVishwaConstants.KEYWORD_LOAD_OLD_V_HISTORY));
 
-        waitForElementToBeInvisible(imgGreyLoader,30);
+        waitForElementToBeInvisible(imgGreyLoader,VERY_LONG_WAIT);
 
         // Validate headers
         for (String header : OldVishwaConstants.OLD_VISHWA_BILLER_HEADER.values()) {
@@ -522,16 +524,16 @@ public class OldVishwaPage extends BasePage {
     public void navigatePayeeAndValidateOldVishwaTransactions() {
         addToReport("----------Start of validation of the content of Old Vishwa payee content----------", Status.PASS, false);
 
-        waitForElementToBeInvisible(imgGreyLoader,50);
-        waitForElementToBeInvisible(lblAccountListLoading,50);
+        waitForElementToBeInvisible(imgGreyLoader,VERY_LONG_WAIT);
+        waitForElementToBeInvisible(lblAccountListLoading,VERY_LONG_WAIT);
 
-        waitForElementToBeClickable(getElementByTypeAndText(ElementType.button,OldVishwaConstants.KEYWORD_FILTER),100);
+        waitForElementToBeClickable(getElementByTypeAndText(ElementType.button,OldVishwaConstants.KEYWORD_FILTER),EXTREME_LONG_WAIT);
         clickOnElement(getElementByTypeAndText(ElementType.button,OldVishwaConstants.KEYWORD_FILTER));
 
-        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div,OldVishwaConstants.KEYWORD_LOAD_OLD_V_HISTORY),20);
+        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div,OldVishwaConstants.KEYWORD_LOAD_OLD_V_HISTORY),LONG_WAIT);
         clickOnElement(getElementByTypeAndText(ElementType.div,OldVishwaConstants.KEYWORD_LOAD_OLD_V_HISTORY));
 
-        waitForElementToBeInvisible(imgGreyLoader,30);
+        waitForElementToBeInvisible(imgGreyLoader,VERY_LONG_WAIT);
 
         //Iterate the tables based on the list of tabs
         for (Map.Entry<String, String> entry : OldVishwaConstants.PAYEE_TYPE_LIST.entrySet()) {
@@ -542,13 +544,13 @@ public class OldVishwaPage extends BasePage {
             {
                 //Select the tab
                 clickOnElement(getElementByTypeAndTextSecondIndex(ElementType.div,entry.getValue()));
-                waitForElementToBeInvisible(imgGreyLoader,30);
+                waitForElementToBeInvisible(imgGreyLoader,VERY_LONG_WAIT);
 
             }else {
 
                 //Select the tab
                 clickOnElement(getElementByTypeAndText(ElementType.div,entry.getValue()));
-                waitForElementToBeInvisible(imgGreyLoader,30);
+                waitForElementToBeInvisible(imgGreyLoader,VERY_LONG_WAIT);
             }
 
 

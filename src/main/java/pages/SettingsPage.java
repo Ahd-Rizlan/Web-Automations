@@ -4,6 +4,8 @@ import com.aventstack.extentreports.Status;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+import static utils.Drivers.*;
+
 public class SettingsPage extends BasePage {
 
 
@@ -109,7 +111,7 @@ public class SettingsPage extends BasePage {
 
         try {
 
-            boolean isTileVisible = waitForElementPresence(lblvishwaAccount,10);
+            boolean isTileVisible = waitForElementPresence(lblvishwaAccount,MODERATE_WAIT);
 
             if (isTileVisible) {
                 addToReport("Settings page title is visible.", Status.PASS,false);
@@ -272,7 +274,7 @@ public void NavigatetoToOTPVerificationMode (){
             sendKeysToElement(tfconfirmPassword,newPassword);
 
             clickOnElement(btnConfirmSave);
-            boolean loginPageTitle = waitForElementPresence(pageTitle, 10);
+            boolean loginPageTitle = waitForElementPresence(pageTitle, MODERATE_WAIT);
             if (loginPageTitle) {
                 addToReport("successfully change the password." , Status.PASS,true);
             } else {
@@ -294,7 +296,7 @@ public void NavigatetoToOTPVerificationMode (){
      */
     public void revertPasswordToOldValue(String newPassword, String password) {
         try {
-            boolean isTileVisible = waitForElementPresence(tfoldPassword,10);
+            boolean isTileVisible = waitForElementPresence(tfoldPassword,MODERATE_WAIT);
 
             if (isTileVisible) {
                 addToReport("Password page title is visible.", Status.PASS,false);
@@ -309,7 +311,7 @@ public void NavigatetoToOTPVerificationMode (){
             clickOnElement(btnConfirmSave);
 
             // validate if the password has been reset successfully
-            boolean loginPageTitle = waitForElementPresence(pageTitle, 10);
+            boolean loginPageTitle = waitForElementPresence(pageTitle, MODERATE_WAIT);
             if (loginPageTitle) {
                 addToReport("successfully change the password." , Status.PASS,true);
             } else {
@@ -375,8 +377,8 @@ public void NavigatetoToOTPVerificationMode (){
 
         try {
             //validate the primary account title
-            boolean primaryTitleVisible = waitForElementPresence(primaryAccountTitle, 10);
-            boolean primaryTitleSpanVisible = waitForElementPresence(primaryAccountSpan, 10);
+            boolean primaryTitleVisible = waitForElementPresence(primaryAccountTitle, MODERATE_WAIT);
+            boolean primaryTitleSpanVisible = waitForElementPresence(primaryAccountSpan, MODERATE_WAIT);
 
             if (primaryTitleVisible && primaryTitleSpanVisible) {
 
@@ -394,7 +396,7 @@ public void NavigatetoToOTPVerificationMode (){
                 addToReport("Arrow Button is not visible", Status.FAIL);
                 throw new RuntimeException("Error - Arrow Button is not visible");
             }
-            boolean setPrimaryAccount = waitForElementPresence(lblsetAsPrimaryAccountSpan, 10);
+            boolean setPrimaryAccount = waitForElementPresence(lblsetAsPrimaryAccountSpan, MODERATE_WAIT);
             if (setPrimaryAccount) {
                 clickOnElement(lblsetAsPrimaryAccountSpan);
                 addToReport("Successfully clicked on the Set primary account button", Status.PASS);
