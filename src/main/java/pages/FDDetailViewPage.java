@@ -55,8 +55,6 @@ public class FDDetailViewPage extends BasePage {
 
     public void NavogatetoFDDetailViewPage () {
 
-// addToReport("----------Starting the Obtain Loan validation from fixed deposits section ----------", Status.INFO, false);
-
         waitForElementPresence(imgmyAccount);
         hoverOverElement(driver, imgmyAccount);
         addToReport("Hover on the My accounts tab ", Status.PASS);

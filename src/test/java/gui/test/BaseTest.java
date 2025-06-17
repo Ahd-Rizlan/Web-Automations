@@ -8,20 +8,22 @@ import utils.report.TestContext;
 public class BaseTest extends Drivers {
 
     protected DashboardPage dashboardPage;
+
     protected LoginPage loginPage;
+
     protected OTPPage otpPage;
     protected SettingsPage settingsPage;
     protected SavedPayeesPage savedPayeesPage;
     protected MessagesPage messagesPage;
     protected MakeTransactionsPage makeTransactionsPage;
-    VishwaRetailAdminLoginPage vishwaRetailAdminLoginPage;
-    VishwaRetailAdminTaskPage vishwaRetailAdminTaskPage;
+    protected VishwaRetailAdminLoginPage vishwaRetailAdminLoginPage;
+    protected VishwaRetailAdminTaskPage vishwaRetailAdminTaskPage;
     protected MyAccountsPage myAccountsPage;
     protected BillPaymentPage billPaymentPage;
-    PawningTicketPage pawningTicketPage;
-    ObtainLoanPage obtainLoanPage;
-    LoanAccountDetailedViewPage loanAccountDetailedViewPage;
-    FDDetailViewPage fdDetailViewPage;
+    protected PawningTicketPage pawningTicketPage;
+    protected ObtainLoanPage obtainLoanPage;
+    protected LoanAccountDetailedViewPage loanAccountDetailedViewPage;
+    protected FDDetailViewPage fdDetailViewPage;
 
     @BeforeClass
     public void setup() {
