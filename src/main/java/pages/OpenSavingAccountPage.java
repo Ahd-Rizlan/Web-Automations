@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
 
+import static utils.Drivers.*;
 
 
 public class OpenSavingAccountPage extends BasePage {
@@ -64,7 +65,7 @@ public class OpenSavingAccountPage extends BasePage {
             addToReport("Quick action  open savings account is not visible", Status.FAIL);
 
         }
-        waitForElementPresence(lblOpenSavingsAccounttext,10);
+        waitForElementPresence(lblOpenSavingsAccounttext,SHORT_WAIT);
         boolean clickOpenSA = isElementPresentBy(lblOpenSavingsAccounttext);
         if (clickOpenSA) {
             addToReport("Successfully validated the open savings account page description", Status.PASS);
@@ -78,7 +79,7 @@ public class OpenSavingAccountPage extends BasePage {
         addToReport("----------End of user navigation to the Residency validation Test case----------", Status.INFO, false);
         addToReport("----------End of user Residency validation Test case----------", Status.INFO, false);
 
-        waitForElementPresence(ddsourceOfFunds, 10);
+        waitForElementPresence(ddsourceOfFunds, SHORT_WAIT);
         boolean headingAccountSection = isElementPresentBy(ddsourceOfFunds);
         if (headingAccountSection) {
             addToReport("Successfully open the savings account page ", Status.PASS);
@@ -278,7 +279,7 @@ public class OpenSavingAccountPage extends BasePage {
         // Step 2: Click Next
         clickOnElement(btnsubmit);
 
-        waitForElementPresence (lblconfirmAccountOptions, 10);
+        waitForElementPresence (lblconfirmAccountOptions, SHORT_WAIT);
         boolean headingAccountOptionsSection = isElementPresentBy(lblconfirmAccountOptions);
         if (headingAccountOptionsSection) {
             addToReport("Successfully open the Confirm Account Options section ", Status.PASS);

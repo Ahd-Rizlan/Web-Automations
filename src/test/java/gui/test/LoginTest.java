@@ -40,6 +40,7 @@ public class LoginTest extends BaseTest {
 
     @Test(priority = 4, dataProvider = "InvalidPassword", description = "Validate the logging with correct user ID & invalid password.", dataProviderClass = DataProviders.LoginDataProvider.class)
     public void validateTheUnSuccessfulLoginWithIncorrectPassword(String userName, String password, String IncorrectPassword, String ErrorMessage) {
+        driver.get(url);
         loginPage.validateTheLoginPage(LoginConstants.EXPECTED_TITLE, LoginConstants.LOGIN_TILE_NAME);
         loginPage.ValidateLoginWithIncorrectPassword(userName, password, IncorrectPassword, ErrorMessage);
     }
@@ -53,7 +54,7 @@ public class LoginTest extends BaseTest {
         dashboardPage.validateTheTitle();
         dashboardPage.logoutFromSampathVishwaWeb(LoginConstants.LOGOUT_BUTTON_TEXT, popupText, LoginConstants.CONFIRM_AND_LOGOUT_BUTTON_TEXT, LoginConstants.LOGIN_TILE_NAME);
     }
-    @Test(priority = 6, dataProvider = "InvalidUserId", description = "Validate the invalid user ID for forget password journey", dataProviderClass = DataProviders.LoginDataProvider.class)
+    @Test(priority = 7, dataProvider = "InvalidUserId", description = "Validate the invalid user ID for forget password journey", dataProviderClass = DataProviders.LoginDataProvider.class)
     public void validateTheUnSuccessfulLoginWithIncorrectPassword(String invalidUN, String errorMessage) {
         loginPage.ValidateForgotPasswordIncorrectUser(LoginConstants.RESET_BUTTON_TEXT,invalidUN,errorMessage);
     }
@@ -61,7 +62,7 @@ public class LoginTest extends BaseTest {
 //    public void validateIncorrectAnswersForSecurityQuestions(String userName, String errorMessage) {
 //        loginPage.ValidateForgotPasswordIncorrectSecurityAnswers(LoginConstants.RESET_BUTTON_TEXT, CommonUtils.randomAlphaNumeric(5),userName,errorMessage);
 //    }
-    @Test(priority = 8, dataProvider = "LockedUser", description = "Validate the unsuccessful login with locked user ID", dataProviderClass = DataProviders.LoginDataProvider.class)
+    @Test(priority = 6, dataProvider = "LockedUser", description = "Validate the unsuccessful login with locked user ID", dataProviderClass = DataProviders.LoginDataProvider.class)
     public void ValidateLoginAttemptWithLockedUserID(String userName,String password, String errorMessage) {
         loginPage.ValidateSuccessfulLoginAttemptWithLockedUserID(LoginConstants.LOGIN_BUTTON_TEXT, userName,password,errorMessage,true);
         loginPage.ValidateSuccessfulLoginAttemptWithLockedUserID(LoginConstants.LOGIN_BUTTON_TEXT, userName,password,errorMessage,false);

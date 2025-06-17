@@ -10,6 +10,8 @@ import utils.CommonUtils;
 import utils.constants.AdminTaskConstants;
 import utils.constants.MessagingConstants;
 
+import static utils.Drivers.*;
+
 public class VishwaRetailAdminTaskPage extends BasePage {
 
     public VishwaRetailAdminTaskPage(WebDriver driver) {
@@ -83,14 +85,14 @@ public class VishwaRetailAdminTaskPage extends BasePage {
      */
     public void filterMails(String type, String keyWordText, String fromDate, String toDate) {
 
-        waitForElementPresence(getElementByTypeAndExactText(ElementType.span, AdminTaskConstants.FILTER),20);
-        waitForElementToBeClickable(getElementByTypeAndExactText(ElementType.span, AdminTaskConstants.FILTER),20);
+        waitForElementPresence(getElementByTypeAndExactText(ElementType.span, AdminTaskConstants.FILTER),LONG_WAIT);
+        waitForElementToBeClickable(getElementByTypeAndExactText(ElementType.span, AdminTaskConstants.FILTER),LONG_WAIT);
 
         // Click the filter button based on the keyword filter text
         clickOnElement(getElementByTypeAndExactText(ElementType.span, AdminTaskConstants.FILTER));
 
         // Wait for the filter panel to be visible (timeout: 10 seconds)
-        waitForElementPresence(pnlFilter, 10);
+        waitForElementPresence(pnlFilter, MODERATE_WAIT);
 
         // Check if the selected type is keyword-based filtering
         if (type.equals(AdminTaskConstants.KEYWORD)) {
@@ -113,7 +115,7 @@ public class VishwaRetailAdminTaskPage extends BasePage {
         clickOnElement(btnSearch);
 
         // Wait for the search spinner icon to disappear (timeout: 20 seconds)
-        waitForElementToBeInvisible(icnButtonSpinner, 20);
+        waitForElementToBeInvisible(icnButtonSpinner, LONG_WAIT);
 
         // Re-click the keyword filter button (To close the filter panel)
         clickOnElement(getElementByTypeAndExactText(ElementType.span, AdminTaskConstants.FILTER));
@@ -182,7 +184,7 @@ public class VishwaRetailAdminTaskPage extends BasePage {
             }
 
             if(isClicked) {
-                waitForElementToBeClickable(btnUsingWildCard(buttonName), 20);
+                waitForElementToBeClickable(btnUsingWildCard(buttonName), LONG_WAIT);
                 clickOnElement(btnUsingWildCard(buttonName));
                 addToReport("Successfully selected the '" + buttonName + "' button ", Status.PASS, true);
             }
@@ -201,7 +203,7 @@ public class VishwaRetailAdminTaskPage extends BasePage {
     public void readReceivedMailAction(String mailReference, String subject) {
 
         // Wait for the mail list to load
-        waitForElementPresence(getElementByTypeAndExactText(ElementType.span, AdminTaskConstants.FILTER), 10);
+        waitForElementPresence(getElementByTypeAndExactText(ElementType.span, AdminTaskConstants.FILTER), MODERATE_WAIT);
 
         //Subject and reference have to come from client
         selectMail(mailReference,subject);
@@ -232,7 +234,7 @@ public class VishwaRetailAdminTaskPage extends BasePage {
 
         // Forward from admin branch then validate the mail in thread
         // Wait for the mail list to load
-        waitForElementPresence(getElementByTypeAndExactText(ElementType.button, AdminTaskConstants.REPLY), 10);
+        waitForElementPresence(getElementByTypeAndExactText(ElementType.button, AdminTaskConstants.REPLY), MODERATE_WAIT);
 
         clickOnElement(btnForwardPopup);
 
@@ -243,7 +245,7 @@ public class VishwaRetailAdminTaskPage extends BasePage {
         sendKeysToElement(tfAddMessage,message);
 
         clickOnElement(getElementByTypeAndExactText(ElementType.button, AdminTaskConstants.SEND));
-        waitForElementToBeInvisible(getElementByTypeAndExactText(ElementType.button, AdminTaskConstants.SEND),20);
+        waitForElementToBeInvisible(getElementByTypeAndExactText(ElementType.button, AdminTaskConstants.SEND),LONG_WAIT);
 
         //Validate opened reference
         if (message.equals(getTextFromElement(lblRepliedMessages))) {
@@ -395,7 +397,7 @@ public class VishwaRetailAdminTaskPage extends BasePage {
         //Attend the mail
         clickOnElement(getElementByTypeAndExactText(ElementType.button, AdminTaskConstants.ATTEND));
 
-        waitFor(2);
+        waitFor(VERY_SHORT_WAIT);
         filterMails(AdminTaskConstants.KEYWORD,messageID,"","");
 
         //Attend the mail
@@ -404,7 +406,7 @@ public class VishwaRetailAdminTaskPage extends BasePage {
         sendKeysToElement(tfAddMessage,message);
 
         clickOnElement(getElementByTypeAndExactText(ElementType.button, AdminTaskConstants.SEND));
-        waitForElementToBeInvisible(getElementByTypeAndExactText(ElementType.button, AdminTaskConstants.SEND),20);
+        waitForElementToBeInvisible(getElementByTypeAndExactText(ElementType.button, AdminTaskConstants.SEND),LONG_WAIT);
 
         //Validate opened reference
         if (message.equals(getTextFromElement(lblRepliedMessages))) {
