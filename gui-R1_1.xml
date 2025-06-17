@@ -46,9 +46,9 @@
                     <include name="validateKeyPointsInDeposits"/>
                     <include name="validateMarkedPayeesAsFavouriteIsVisibleInPayeeWidget"/>
                     <include name="validateKeyPointsInLoans"/>
-                    <!-- <include name="validateDownloadedRecord"/>-->
+                     <include name="validateDownloadedRecord"/>
                     <include name="logIntoDahsboardAlternateUserOne"/>
-                    <!--<include name="validatePortfolioioFunctions"/>-->
+                    <include name="validatePortfolioioFunctions"/>
                     <include name="validateKeyPointsInCurrentAccount"/>
                     <include name="validateSettingsOption"/>
                 </methods>
