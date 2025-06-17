@@ -8,7 +8,9 @@ import utils.report.TestContext;
 public class BaseTest extends Drivers {
 
     protected DashboardPage dashboardPage;
+
     protected LoginPage loginPage;
+
     protected OTPPage otpPage;
     protected SettingsPage settingsPage;
     protected SavedPayeesPage savedPayeesPage;
@@ -18,9 +20,11 @@ public class BaseTest extends Drivers {
     protected VishwaRetailAdminTaskPage vishwaRetailAdminTaskPage;
     protected MyAccountsPage myAccountsPage;
     protected BillPaymentPage billPaymentPage;
+    protected PawningTicketPage pawningTicketPage;
+    protected ObtainLoanPage obtainLoanPage;
+    protected LoanAccountDetailedViewPage loanAccountDetailedViewPage;
+    protected FDDetailViewPage fdDetailViewPage;
     protected OldVishwaPage OldVishwaPage;
-//     protected PawningTicketPage pawningTicketPage;
-//     protected ObtainLoanPage obtainLoanPage;
 
 
     @BeforeClass
@@ -34,10 +38,12 @@ public class BaseTest extends Drivers {
         messagesPage = new MessagesPage(driver);
         vishwaRetailAdminLoginPage = new VishwaRetailAdminLoginPage(driver);
         vishwaRetailAdminTaskPage = new VishwaRetailAdminTaskPage(driver);
-//         pawningTicketPage = new PawningTicketPage (driver);
-//         obtainLoanPage = new ObtainLoanPage(driver);
+        pawningTicketPage = new PawningTicketPage (driver);
+        obtainLoanPage = new ObtainLoanPage(driver);
         myAccountsPage = new MyAccountsPage(driver);
         billPaymentPage = new BillPaymentPage(driver);
+        loanAccountDetailedViewPage = new LoanAccountDetailedViewPage(driver);
+        fdDetailViewPage = new FDDetailViewPage(driver);
         OldVishwaPage = new  OldVishwaPage(driver);
         driver.get(url);
     }

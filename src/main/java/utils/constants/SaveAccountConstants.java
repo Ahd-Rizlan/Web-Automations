@@ -64,6 +64,7 @@ public class SaveAccountConstants {
     public static final String NAME_DR_ACCOUNT_NUMBER = "dr_account_number";
     public static final String NAME_INT_CR_ACCOUNT = "int_cr_account";
     public static final String TEXT_CONFIRM_ACCOUNT_OPTIONS = "Please confirm your Fixed Deposit details listed in below section.";
+    public static final String FIXED_DEPOSIT_WITHDRAW = "Fixed Deposit Withdraw Confirmation";
 
 
 
