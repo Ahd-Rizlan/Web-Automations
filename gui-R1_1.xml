@@ -101,6 +101,16 @@
                     <include name="validateComposeNewMessage"/>
                 </methods>
             </class>
+            <class name="gui.test.OpenFDTest">
+                <methods>
+                    <include name="runFullFDFlow"/>
+                </methods>
+            </class>
+            <class name="gui.test.OpenSavingAccountTest">
+                <methods>
+                    <include name="AccountCreation"/>
+                </methods>
+            </class>
         </classes>
     </test>
 </suite>
