@@ -24,7 +24,7 @@ public class OTPPage extends BasePage {
     private static final By btnDisabledConfirm = By.xpath("//button[contains(normalize-space(text()),'Confirm') and @disabled]");
 
     private static By tfOTP(int Index) {
-        return By.xpath("//input[@type='password'][" + Index + "]");
+        return By.xpath("//input[contains(@class,'otp-box')][" + Index + "]");
     }
 
     private static By lblPageTitle(String title) {

@@ -14,6 +14,12 @@ import java.io.File;
 import java.text.NumberFormat;
 import java.util.*;
 
+import static utils.Drivers.VERY_SHORT_WAIT;
+import static utils.Drivers.SHORT_WAIT;
+import static utils.Drivers.MODERATE_WAIT;
+import static utils.Drivers.LONG_WAIT;
+import static utils.Drivers.VERY_LONG_WAIT;
+
 public class DashboardPage extends BasePage {
 
     public enum ElementType {
@@ -27,7 +33,7 @@ public class DashboardPage extends BasePage {
     private static final By btn_BookAFreeDemo = By.xpath("//li/a[text()='Book a Free Demo']");
     private static final By lbl_freeTrial = By.xpath("//h1[text()='Your free trial']");
     private static final By lblAccountsOrCards = By.xpath("//h1[contains(text(),'Accounts / Cards')]");
-    private static final By icnMessage = By.xpath("//a[@href='/SVRClientWebV4/dashboard/inbox']");
+    private static final By icnMessage = By.xpath("//a[contains(@href,'/dashboard/inbox')]");
     private static final By icnNotification = By.xpath("//div[contains(@class,'flex items-center')]/img[contains(@srcset,'notification')]");
     private static final By lblMessage = By.xpath("//span[contains(text(),'Message')]");
     private static final By lblVishwaAccountSettings = By.xpath("//div[contains(text(),'Vishwa Account Settings')]");
@@ -77,17 +83,17 @@ public class DashboardPage extends BasePage {
     private static final By lblMobileCashHeader = By.xpath(" //div[text()='Make Transactions']/ancestor::div[contains(@class,'rounded-lg')]/following-sibling::div//span[contains(text(),'Mobile Cash')]");
     private static final By lblBillPaymentHeader = By.xpath("//span[text()='Bill Payments']/ancestor::div[contains(@class,'rounded-lg')]/following-sibling::div//span[contains(text(),'Bill Payments')]");
     private static final By imgAccountPortfolio = By.xpath("//canvas[@role='img']");
-    private static final By imgAdvertisement = By.xpath("//span[contains(text(),'Maintenance & Updates')]/parent::div//img[contains(@src,'/SVRClientWebV4/_next/image')]");
+    private static final By imgAdvertisement = By.xpath("//div[contains(@class,'auto relative group')]/img");
     private static final By lblOpenFDPopupHeader = By.xpath("//span[text()='Fixed Deposits']");
     private static final By lblOpenSavingsAccountHeader = By.xpath("//div[contains(text(),'Are you a resident of Sri Lanka?')]");
     private static final By btnClosePopup = By.xpath("//button[contains(text(),'Close')]");
     private static final By btnDownload = By.xpath("//span[text()='Download']");
     private static final By popUpPDFDownload = By.xpath("//div[text()='PDF downloaded successfully!']");
-    private static final By btnAddBiller = By.xpath("//span[contains(text(),'Favorite Billers')]/parent::div//span[contains(text(),'Add to favorites')]");
+    private static final By btnAddBiller = By.xpath("//span[contains(text(),'Favorite Billers')]/parent::div/parent::div//span[contains(text(),'Add to favorites')]");
     private static final By btnAddPayee = By.xpath("//span[contains(text(),'Favorite Payees')]/following::div[contains(@class,'grid grid-cols')]/div/span[contains(text(),'Add to favorites')]");
-    private static final By lblFavouritePayeeWidgetRow = By.xpath("//span[contains(text(),'Favorite Payee')]/parent::div//div[contains(@class,'flex items')]//span[3]");
+    private static final By lblFavouritePayeeWidgetRow = By.xpath("//span[contains(text(),'Favorite Payee')]/ancestor::div[contains(@class,'flex flex-col w')]//span[3]");
     private static final By btnDashboard = By.xpath("//button/a[contains(normalize-space(text()), 'Dashboard')]");
-    private static final By lblFavouriteBillerWidgetRow = By.xpath("//span[contains(text(),'Favorite Billers')]/parent::div//div[contains(@class,'grid grid-cols')]/div");
+    private static final By lblFavouriteBillerWidgetRow = By.xpath("//span[contains(text(),'Favorite Billers')]/parent::div/parent::div//div[contains(@class,'grid grid-cols')]/div");
     private static final By btnConfirm = By.xpath("//button[contains(normalize-space(text()),'Confirm')]");
     private static final By lblRVTTransferTransactionDetailsPopup = By.xpath("//div[contains(text(),'Transaction Details')]");
     private static final By lblRVTPaymentDetailsPopup = By.xpath("//div[contains(text(),'Payment Details')]");
@@ -104,7 +110,7 @@ public class DashboardPage extends BasePage {
     private static final By lblAccountListLoading = By.xpath("//div[contains(@class,'dark:bg-gray')]");
 
     private static By tfOTP(int Index) {
-        return By.xpath("//input[@type='password'][" + Index + "]");
+        return By.xpath("//input[contains(@class,'otp-box')][" + Index + "]");
     }
 
     private static By txtlogoutPopup(String popupText) {
@@ -184,7 +190,7 @@ public class DashboardPage extends BasePage {
     }
 
     private static By lblFavouritePayeeName(int index) {
-        return By.xpath("(//span[contains(text(),'Favorite Payee')]/parent::div//div[contains(@class,'flex-col text')]//span[1])[" + index + "]");
+        return By.xpath("(//span[contains(text(),'Favorite Payee')]/ancestor::div[contains(@class,'flex flex-col w')]//span[contains(@class,'block')][1])[" + index + "]");
     }
 
     private static By lblFavouriteBillerFieldName(int index) {
@@ -332,8 +338,8 @@ public class DashboardPage extends BasePage {
      */
     public void ValidateUserProfileIcon() {
         try {
-            waitForElementToBeInvisible(imgSampathPreLoader, 5);
-            waitForElementToBeInvisible(lblLoadingIcon, 5);
+            waitForElementToBeInvisible(imgSampathPreLoader, VERY_SHORT_WAIT);
+            waitForElementToBeInvisible(lblLoadingIcon, VERY_SHORT_WAIT);
             //validate user profile icon
             boolean userProfileIcon = isElementPresentBy(iconUser);
             if (userProfileIcon) {
@@ -352,7 +358,7 @@ public class DashboardPage extends BasePage {
      * Validate title
      */
     public void validateTheTitle() {
-        waitForElementToBeInvisible(imgSampathPreLoader, 20);
+        waitForElementToBeInvisible(imgSampathPreLoader, LONG_WAIT);
         waitForElementPresence(title);
         addToReport("Successfully validated the title '" + title + "'", Status.PASS);
         waitForElementPresence(imgAdvertisement, 30);
@@ -387,7 +393,8 @@ public class DashboardPage extends BasePage {
 
         try {
 
-            waitForElementToBeInvisible(lblLoadingIcon, 10);
+
+            waitForElementToBeInvisible(lblLoadingIcon, MODERATE_WAIT);
 
             isElementClickable(btnDeposits);
 
@@ -447,7 +454,13 @@ public class DashboardPage extends BasePage {
      */
     public void validateAllAccountsAtDashboard(String[] currencyType, String[] accountStat) {
 
-        waitForElementToBeInvisible(icnAccounts, 15);
+        waitForElementToBeClickable(imgAdvertisement,VERY_LONG_WAIT);
+        //wait for the loading icon to diminish
+        waitForLoadingToBeInvisible();
+        //waitForElementPresence(lblLoadingIcon);
+        waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+        waitForElementToBeClickable(icnAccounts, MODERATE_WAIT);
+
         //Obtain pagination value
         String[] cardCount=CommonUtils.splitText(getAttributeOrText(icnAccounts,"text"),"/");
 
@@ -460,7 +473,7 @@ public class DashboardPage extends BasePage {
                 clickOnElement(btnNextArrow);
 
                 //waitForElementPresence(lblLoadingIcon);
-                waitForElementToBeInvisible(lblLoadingIcon, 15);
+                waitForElementToBeInvisible(lblLoadingIcon, MODERATE_WAIT);
 
                 //Validate savings account details
                 String AccountNo = CommonUtils.removeSpaceCharacters(getTextFromElement(lblACNumber));
@@ -520,7 +533,7 @@ public class DashboardPage extends BasePage {
             throw new RuntimeException("Error - accounts button is not found");
         }
 
-        waitForElementToBeInvisible(icnAccounts, 15);
+        waitForElementToBeInvisible(icnAccounts, MODERATE_WAIT);
         //Obtain pagination value
         String[] cardCount=CommonUtils.splitText(getAttributeOrText(icnAccounts,"text"),"/");
 
@@ -584,7 +597,7 @@ public class DashboardPage extends BasePage {
                 clickOnElement(btnNextArrow);
 
                 //waitForElementPresence(lblLoadingIcon);
-                waitForElementToBeInvisible(lblLoadingIcon, 15);
+                waitForElementToBeInvisible(lblLoadingIcon, MODERATE_WAIT);
             }
         }
     }
@@ -597,10 +610,15 @@ public class DashboardPage extends BasePage {
      */
     public void validateAllFDAccountsAtDashboard(String[] currencyType) {
 
-        waitForElementPresence(btnDeposits,20);
-        clickOnElement(btnDeposits);
-
-        waitForElementToBeInvisible(icnAccounts, 15);
+        waitForPageLoadCompleteJS();
+        clickOnElement(btnLoans);
+        waitForElementToBeInvisible(lblAccountListLoading,VERY_LONG_WAIT);
+        waitForElementToBeClickable(btnDeposits,LONG_WAIT);
+        waitForElementToBeInvisible(lblLoadingIcon,MODERATE_WAIT);
+        clickOnElementUsingJS(btnDeposits);
+        waitForPageLoadCompleteJS();
+        waitForElementToBeInvisible(lblLoadingIcon,VERY_LONG_WAIT);
+        waitForElementToBeClickable(icnAccounts,LONG_WAIT);
         //Obtain pagination value
         String[] cardCount=CommonUtils.splitText(getAttributeOrText(icnAccounts,"text"),"/");
 
@@ -668,7 +686,7 @@ public class DashboardPage extends BasePage {
                 clickOnElement(btnNextArrow);
 
                 //waitForElementPresence(lblLoadingIcon);
-                waitForElementToBeInvisible(lblLoadingIcon, 15);
+                waitForElementToBeInvisible(lblLoadingIcon, MODERATE_WAIT);
 
             }
 
@@ -683,17 +701,20 @@ public class DashboardPage extends BasePage {
      */
     public void validateAllLoanAccountsAtDashboard(String[] currencyType) {
 
-        waitForElementPresence(btnLoans,20);
+        waitForPageLoadCompleteJS();
+        waitForElementPresence(lblAccountListLoading,VERY_LONG_WAIT);
+        waitForElementPresence(btnLoans,LONG_WAIT);
+
         //click button Loans
         if (isElementClickable(btnLoans)) {
-            clickOnElement(btnLoans);
+            clickOnElementUsingJS(btnLoans);
         } else {
             addToReport("Unable to find loans button", Status.FAIL);
             throw new RuntimeException("Error - Loans button is not found");
         }
 
         try {
-            waitForElementToBeInvisible(icnAccounts, 15);
+            waitForElementToBeClickable(icnAccounts, LONG_WAIT);
             //Obtain pagination value
             String[] cardCount=CommonUtils.splitText(getAttributeOrText(icnAccounts,"text"),"/");
 
@@ -708,7 +729,7 @@ public class DashboardPage extends BasePage {
                     //wait for the loading icon to diminish
                     waitForLoadingToBeInvisible();
                     //waitForElementPresence(lblLoadingIcon);
-                    waitForElementToBeInvisible(lblLoadingIcon, 15);
+                    waitForElementToBeInvisible(lblLoadingIcon, MODERATE_WAIT);
 
                     //Validate loan account number
                     String[] LoanAccountNo = CommonUtils.splitText(getTextFromElement(lblLoanACNumber), "\n");
@@ -730,7 +751,7 @@ public class DashboardPage extends BasePage {
                     //Validate Outstanding Amount
                     String[] CurrOutstanding = CommonUtils.splitText(getTextFromElement(lblLoanCurrOutstanding), " ");
                     if (Arrays.asList(currencyType).contains(CurrOutstanding[0]) &&
-                            CommonUtils.containsNumericCharacters(CurrOutstanding[1])) {
+                            CommonUtils.containsNumericCharactersWithNegativeValues(CurrOutstanding[1])) {
                         addToReport("Successfully validated outstanding amount : '" + CurrOutstanding[0] + CurrOutstanding[1] + "'", Status.PASS, false);
                     } else {
                         addToReport("Outstanding amount : '" + CurrOutstanding[1] + "' is not validated", Status.FAIL);
@@ -774,7 +795,7 @@ public class DashboardPage extends BasePage {
         try {
             //wait for the loading icon to diminish
             waitForLoadingToBeInvisible();
-            waitForElementToBeInvisible(lblLoadingIcon, 15);
+            waitForElementToBeInvisible(lblLoadingIcon, MODERATE_WAIT);
 
             //click button deposit
             isElementClickable(btnDeposits);
@@ -783,7 +804,7 @@ public class DashboardPage extends BasePage {
             //wait for the loading icon to diminish
             waitForLoadingToBeInvisible();
             //waitForElementPresence(lblLoadingIcon);
-            waitForElementToBeInvisible(lblLoadingIcon, 15);
+            waitForElementToBeInvisible(lblLoadingIcon, MODERATE_WAIT);
 
             //Validate fd account number
             String FDAccountNo = getTextFromElement(lblFDAccountNumber);
@@ -955,12 +976,12 @@ public class DashboardPage extends BasePage {
      * Validate messages and advertisements
      */
     public void validateMessagesAndAdvertisements() {
-        waitForElementPresence(imgAdvertisement, 30);
+        waitForElementPresence(imgAdvertisement, VERY_LONG_WAIT);
         try {
             //wait for the loading icon to diminish
             waitForLoadingToBeInvisible();
             waitForElementPresence(lblLoadingIcon);
-            waitForElementToBeInvisible(lblLoadingIcon, 10);
+            waitForElementToBeInvisible(lblLoadingIcon, SHORT_WAIT);
 
             scrollDownPage();
             //validate advertisement at dashboard
@@ -1002,9 +1023,9 @@ public class DashboardPage extends BasePage {
                 addToReport("Send money page header is not visible.", Status.FAIL);
                 throw new RuntimeException("Error - Send money page header is not visible.");
             }
-            waitForElementToBeInvisible(btnQActionsSendMoney, 5);
+            waitForElementToBeInvisible(btnQActionsSendMoney, VERY_SHORT_WAIT);
             clickOnElement(btnMenuOptions(btnDashboard));
-            waitForElementToBeInvisible(lblLoadingIcon, 5);
+            waitForElementToBeInvisible(lblLoadingIcon, VERY_SHORT_WAIT);
 
             //validate bill payment header
             clickOnElement(btnQActionsBillPayment);
@@ -1015,9 +1036,9 @@ public class DashboardPage extends BasePage {
                 addToReport("Bill payment page header is not visible.", Status.FAIL);
                 throw new RuntimeException("Error - Bill payment page header is not visible.");
             }
-            waitForElementToBeInvisible(btnQActionsBillPayment, 5);
+            waitForElementToBeInvisible(btnQActionsBillPayment, VERY_SHORT_WAIT);
             clickOnElement(btnMenuOptions(btnDashboard));
-            waitForElementToBeInvisible(lblLoadingIcon, 5);
+            waitForElementToBeInvisible(lblLoadingIcon, VERY_SHORT_WAIT);
 
             //validate open new fixed deposit header
             clickOnElement(btnQActionsOpenNewFD);
@@ -1031,7 +1052,7 @@ public class DashboardPage extends BasePage {
             }
 
             clickOnElement(btnMenuOptions(btnDashboard));
-            waitForElementToBeInvisible(lblLoadingIcon, 5);
+            waitForElementToBeInvisible(lblLoadingIcon, VERY_SHORT_WAIT);
 
             //validate open savings account header
             clickOnElement(btnQActionsOpenSA);
@@ -1042,9 +1063,9 @@ public class DashboardPage extends BasePage {
                 addToReport("Open savings account page header is not visible.", Status.FAIL);
                 throw new RuntimeException("Error - Open savings account page header is not visible.");
             }
-            waitForElementToBeInvisible(btnQActionsOpenSA, 5);
+            waitForElementToBeInvisible(btnQActionsOpenSA, VERY_SHORT_WAIT);
             clickOnElement(btnMenuOptions(btnDashboard));
-            waitForElementToBeInvisible(lblLoadingIcon, 5);
+            waitForElementToBeInvisible(lblLoadingIcon, VERY_SHORT_WAIT);
 
             //validate mobile cash header
             scrollDownPage();
@@ -1088,7 +1109,7 @@ public class DashboardPage extends BasePage {
             //wait for the loading icon to diminish
             waitForLoadingToBeInvisible();
             waitForElementPresence(lblLoadingIcon);
-            waitForElementToBeInvisible(lblLoadingIcon, 10);
+            waitForElementToBeInvisible(lblLoadingIcon, SHORT_WAIT);
 
             //select transfer tab
             clickOnElement(btnTransfer);
@@ -1246,7 +1267,7 @@ public class DashboardPage extends BasePage {
             //wait for the loading icon to diminish
             waitForLoadingToBeInvisible();
             waitForElementPresence(lblLoadingIcon);
-            waitForElementToBeInvisible(lblLoadingIcon, 10);
+            waitForElementToBeInvisible(lblLoadingIcon, SHORT_WAIT);
 
             clickOnElement(btnMobileCash);
 
@@ -1316,7 +1337,7 @@ public class DashboardPage extends BasePage {
         try {
 
             //Wait for loading icon to be invisible
-            waitForElementToBeInvisible(lblLoadingIcon, 5);
+            waitForElementToBeInvisible(lblLoadingIcon, VERY_SHORT_WAIT);
 
             //Declare list to extract from table
             ArrayList<String> AccNickName = new ArrayList<>();
@@ -1364,6 +1385,7 @@ public class DashboardPage extends BasePage {
                     throw new RuntimeException("Error - Favourite payee is not displayed");
                 }
             }
+            scrollDownPage();
             addToReport(" Favourite payee validation successful'", Status.PASS, true);
         } catch (Exception e) {
             addToReport("Recent vishawa transfer validation for favourite payee failed", Status.FAIL);
@@ -1375,30 +1397,30 @@ public class DashboardPage extends BasePage {
      * Navigate back to dashboard
      */
     public void navigateBackToDashboard() {
-        if (waitForElementPresence(btnCloseBillerPopup, 3)) {
+        if (waitForElementPresence(btnCloseBillerPopup, VERY_SHORT_WAIT)) {
             clickOnElement(btnCloseBillerPopup);
-            waitForElementToBeInvisible(btnCloseBillerPopup, 10);
+            waitForElementToBeInvisible(btnCloseBillerPopup, SHORT_WAIT);
         }
 
         waitForElementPresence(btnDashboard);
         clickOnElement(btnDashboard);
-        waitForElementToBeInvisible(lblLoadingIcon, 20);
+        waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
     }
 
     /**
      * Navigate back to dashboard while closing other windows
      */
     public void navigateBackToDashboardCloseOtherWindows() {
-            closeAllExceptParentWindow();
+        closeAllExceptParentWindow();
 
-        if (waitForElementPresence(btnCloseBillerPopup, 3)) {
+        if (waitForElementPresence(btnCloseBillerPopup, VERY_SHORT_WAIT)) {
             clickOnElement(btnCloseBillerPopup);
-            waitForElementToBeInvisible(btnCloseBillerPopup, 10);
+            waitForElementToBeInvisible(btnCloseBillerPopup, MODERATE_WAIT);
         }
 
         waitForElementPresence(btnDashboard);
         clickOnElement(btnDashboard);
-        waitForElementToBeInvisible(lblLoadingIcon, 20);
+        waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
     }
 
 
@@ -1413,19 +1435,19 @@ public class DashboardPage extends BasePage {
         switch (quickActionButton.toLowerCase()) {
             case "bill payment":
                 clickOnElement(btnQActionsBillPayment);
-                waitForElementToBeInvisible(btnQActionsBillPayment, 10);
+                waitForElementToBeInvisible(btnQActionsBillPayment, MODERATE_WAIT);
                 break;
             case "send money":
                 clickOnElement(btnQActionsSendMoney);
-                waitForElementToBeInvisible(btnQActionsSendMoney, 10);
+                waitForElementToBeInvisible(btnQActionsSendMoney, MODERATE_WAIT);
                 break;
             case "mobile cash":
                 clickOnElement(btnQActionsMobileCash);
-                waitForElementToBeInvisible(btnQActionsMobileCash, 10);
+                waitForElementToBeInvisible(btnQActionsMobileCash, MODERATE_WAIT);
                 break;
             case "open saving":
                 clickOnElement(btnQActionsSavingsAccount);
-                waitForElementToBeInvisible(btnQActionsSavingsAccount, 10);
+                waitForElementToBeInvisible(btnQActionsSavingsAccount, MODERATE_WAIT);
                 break;
             default:
                 throw new IllegalArgumentException("Unable to click on quick action button :" + quickActionButton);
@@ -1447,6 +1469,7 @@ public class DashboardPage extends BasePage {
      */
     public String[] getFBWidgetFirstRecordDetails() {
         String[] FRecordData;
+        waitForElementPresence(imgAdvertisement,VERY_LONG_WAIT);
         try {
 
             //Click recent transfer and wait till account name appear
@@ -1544,7 +1567,7 @@ public class DashboardPage extends BasePage {
         //Select the first record
         clickOnElement(lblFavouritePayeeNickName(1));
         waitFor(15);
-        waitForElementPresence(lblQFTSavingsAccountName, 20);
+        waitForElementPresence(lblQFTSavingsAccountName, MODERATE_WAIT);
 
         return FRecordData;
     }
@@ -1563,7 +1586,7 @@ public class DashboardPage extends BasePage {
             //wait for the loading icon to diminish
             waitForLoadingToBeInvisible();
             //waitForElementPresence(lblLoadingIcon);
-            waitForElementToBeInvisible(lblLoadingIcon, 15);
+            waitForElementToBeInvisible(lblLoadingIcon, MODERATE_WAIT);
 
             //click button Loans
             if (isElementClickable(btnLoans)) {
@@ -1576,7 +1599,7 @@ public class DashboardPage extends BasePage {
             //wait for the loading icon to diminish
             waitForLoadingToBeInvisible();
             //waitForElementPresence(lblLoadingIcon);
-            waitForElementToBeInvisible(lblLoadingIcon, 15);
+            waitForElementToBeInvisible(lblLoadingIcon, MODERATE_WAIT);
 
             //Validate loan account number
             String[] LoanAccountNo = CommonUtils.splitText(getTextFromElement(lblLoanACNumber), "\n");
@@ -1636,7 +1659,7 @@ public class DashboardPage extends BasePage {
         try {
 
             //Wait for loading icon to be invisible
-            waitForElementToBeInvisible(lblLoadingIcon, 5);
+            waitForElementToBeInvisible(lblLoadingIcon, MODERATE_WAIT);
 
             //Declare list to extract from table
             ArrayList<String> TemplateName = new ArrayList<>();
@@ -1706,7 +1729,7 @@ public class DashboardPage extends BasePage {
     public void validateFunctionalityOfTopBarIconsInDashboard(String btnNameSettings, String btnNameLogout, String otp, String popupText, String btnBack) {
         try {
             //Wait for advertisement image to appear
-            waitForElementPresence(imgAdvertisement, 30);
+            waitForElementPresence(imgAdvertisement, LONG_WAIT);
 
             /*Add financial calandar once it's deployed*/
 
@@ -1764,6 +1787,7 @@ public class DashboardPage extends BasePage {
                 clickOnElement(btnUserIcnDynamic(btnNameSettings));
                 addToReport("Successfully clicked on the settings button.", Status.PASS, false);
 
+                waitForElementToBeClickable(tfOTP(1),LONG_WAIT);
                 //Enter OTP values and continue
                 sendKeysToElement(tfOTP(1), String.valueOf(otp));
                 addToReport("Successfully entered OTP", Status.PASS, true);
@@ -1825,7 +1849,7 @@ public class DashboardPage extends BasePage {
             addToReport("Recent vishawa top bar functionality failed", Status.FAIL);
             throw new RuntimeException("Error - Top bar functionality failed", e);
         }
-        waitForElementPresence(imgAdvertisement, 30);
+        waitForElementPresence(imgAdvertisement, LONG_WAIT);
     }
 
     /**
@@ -1840,7 +1864,7 @@ public class DashboardPage extends BasePage {
             //wait for the loading icon to diminish
             waitForLoadingToBeInvisible();
             waitForElementPresence(lblLoadingIcon);
-            waitForElementToBeInvisible(lblLoadingIcon, 10);
+            waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
 
             //select transfer tab
             clickOnElement(btnTransfer);
@@ -1869,16 +1893,33 @@ public class DashboardPage extends BasePage {
                     throw new RuntimeException("Error - Transfer transaction details popup is not visible");
                 }
 
-                //Store field values to local variables for validation
+                // Store field values to local variables for validation and log without screenshot
                 String Refer = getTextFromElement(lblRVTTransferPopupRecords(1, 1));
+                addToReport("Extracted Reference: " + Refer, Status.INFO, false);
+
                 String FromAccount = getTextFromElement(lblRVTTransferPopupRecords(2, 1));
+                addToReport("Extracted From Account: " + FromAccount, Status.INFO, false);
+
                 String ToAccount = getTextFromElement(lblRVTTransferPopupRecords(2, 2));
+                addToReport("Extracted To Account: " + ToAccount, Status.INFO, false);
+
                 String TransactionCategory = getTextFromElement(lblRVTTransferPopupRecords(2, 3));
+                addToReport("Extracted Transaction Category: " + TransactionCategory, Status.INFO, false);
+
                 String status = getTextFromElement(lblRVTTransferPopupRecords(2, 4));
+                addToReport("Extracted Status: " + status, Status.INFO, false);
+
                 String TransactionTime = getTextFromElement(lblRVTTransferPopupRecords(2, 5));
+                addToReport("Extracted Transaction Time: " + TransactionTime, Status.INFO, false);
+
                 String Remarks = getTextFromElement(lblRVTTransferPopupRecords(2, 6));
-                String Amount = getTextFromElement(lblRVTTransferPopupRecords(2, 8));
+                addToReport("Extracted Remarks: " + Remarks, Status.INFO, false);
+
+                String Amount = getTextFromElement(lblRVTTransferPopupRecords(2, 9));
+                addToReport("Extracted Amount: " + Amount, Status.INFO, false);
+
                 String[] ref = Refer.split(" ");
+                addToReport("Split Reference into parts: " + Arrays.toString(ref), Status.INFO, false);
 
                 // Validate the content based on the extracted values from dashboard
                 //Validate the account name
@@ -1957,7 +1998,7 @@ public class DashboardPage extends BasePage {
             //wait for the loading icon to diminish
             waitForLoadingToBeInvisible();
             waitForElementPresence(lblLoadingIcon);
-            waitForElementToBeInvisible(lblLoadingIcon, 10);
+            waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
 
             //select transfer tab
             clickOnElement(btnTransfer);
@@ -2017,7 +2058,7 @@ public class DashboardPage extends BasePage {
                 String status = getTextFromElement(lblRVTTransferPopupRecords(2, 4));
                 String TransactionTime = getTextFromElement(lblRVTTransferPopupRecords(2, 5));
                 String Remarks = getTextFromElement(lblRVTTransferPopupRecords(2, 6));
-                String Amount = getTextFromElement(lblRVTTransferPopupRecords(2, 8));
+                String Amount = getTextFromElement(lblRVTTransferPopupRecords(2, 9));
                 String[] ref = Refer.split(" ");
 
                 // Validate the content based on the extracted values from dashboard
@@ -2101,7 +2142,7 @@ public class DashboardPage extends BasePage {
             //wait for the loading icon to diminish
             waitForLoadingToBeInvisible();
             waitForElementPresence(lblLoadingIcon);
-            waitForElementToBeInvisible(lblLoadingIcon, 10);
+            waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
 
             //select transfer tab
             clickOnElement(btnPayment);
@@ -2206,7 +2247,7 @@ public class DashboardPage extends BasePage {
             //wait for the loading icon to diminish
             waitForLoadingToBeInvisible();
             waitForElementPresence(lblLoadingIcon);
-            waitForElementToBeInvisible(lblLoadingIcon, 10);
+            waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
 
             //select transfer tab
             clickOnElement(btnMobileCash);
@@ -2302,16 +2343,18 @@ public class DashboardPage extends BasePage {
      * Validate the maximum limit of fav billers as 9 per page in Dashboard
      */
     public void validateMarkedBillersAsFavouriteIsVisibleInBillerWidget() {
+        scrollDownPage();
         try {
 
             //Wait for loading icon to be invisible
-            waitForElementToBeInvisible(lblBillerGrayLoader, 20);
+            waitForElementToBeInvisible(lblBillerGrayLoader, LONG_WAIT);
+            waitForElementToBeClickable(btnAddBiller,LONG_WAIT);
             waitForElementPresence(btnAddBiller);
 
             //Wait for the element to be clickable
-            waitForElementToBeClickable(btnAddBiller, 10);
+            waitForElementToBeClickable(btnAddBiller, LONG_WAIT);
             clickOnElement(btnAddBiller);
-            waitForElementToBeInvisible(btnAddBiller, 10);
+            waitForElementToBeInvisible(btnAddBiller, LONG_WAIT);
 
             //Declare list to extract from table
             ArrayList<String> TemplateNameSavedBillers = new ArrayList<>();
@@ -2337,7 +2380,7 @@ public class DashboardPage extends BasePage {
             waitForElementPresence(btnAddBiller);
 
             //Wait for the element to be clickable
-            waitForElementToBeClickable(btnAddBiller, 20);
+            waitForElementToBeClickable(btnAddBiller, LONG_WAIT);
 
             //Declare list to extract from fav widget
             ArrayList<String> TemplateName = new ArrayList<>();
@@ -2376,22 +2419,24 @@ public class DashboardPage extends BasePage {
             addToReport("Recent vishawa transfer validation for favourite biller failed", Status.FAIL);
             throw new RuntimeException("Error - Recent vishawa transfer validation of favourite biller failed", e);
         }
+        scrollPageToTop();
     }
 
     /**
      * Validate the maximum limit of fav payees as 9 per page in Dashboard and marked favourite payee is displayed in dashboard
      */
     public void validateMarkedPayeesAsFavouriteIsVisibleInPayeeWidget() {
+        scrollDownPage();
         try {
 
             //Wait for loading icon to be invisible
-            waitForElementToBeInvisible(lblBillerGrayLoader, 10);
+            waitForElementToBeInvisible(lblBillerGrayLoader, LONG_WAIT);
             waitForElementPresence(btnAddPayee);
 
             //Wait for the element to be clickable
-            waitForElementToBeClickable(btnAddPayee, 10);
+            waitForElementToBeClickable(btnAddPayee, LONG_WAIT);
             clickOnElement(btnAddPayee);
-            waitForElementToBeInvisible(btnAddPayee, 10);
+            waitForElementToBeInvisible(btnAddPayee, LONG_WAIT);
 
             //Declare list to extract from table
             ArrayList<String> TemplateNameSavedPayee = new ArrayList<>();
@@ -2416,7 +2461,7 @@ public class DashboardPage extends BasePage {
             waitForElementPresence(btnAddPayee);
 
             //Wait for the element to be clickable
-            waitForElementToBeClickable(btnAddPayee, 20);
+            waitForElementToBeClickable(btnAddPayee, LONG_WAIT);
 
             //Declare list to extract from fav widget
             ArrayList<String> TemplateName = new ArrayList<>();
@@ -2440,6 +2485,7 @@ public class DashboardPage extends BasePage {
                 TemplateName.add(inc, getTextFromElement(lblFavouritePayeeName(inc + 1)));
             }
 
+            scrollDownPage();
             //Compare two list for template names
             if (CommonUtils.compareTwoArraylist(TemplateNameSavedPayee, TemplateName, true)) {
                 addToReport("Favourite payee is validated with the values from saved payees", Status.PASS, true);
@@ -2455,6 +2501,7 @@ public class DashboardPage extends BasePage {
             addToReport("Recent vishawa transfer validation for favourite payee failed", Status.FAIL);
             throw new RuntimeException("Error - Recent vishawa transfer validation of favourite payee failed", e);
         }
+        scrollPageToTop();
     }
 
     /**
@@ -2473,7 +2520,7 @@ public class DashboardPage extends BasePage {
             String url = "";
 
             //Wait for loading icon to be invisible
-            waitForElementToBeInvisible(lblBillerGrayLoader, 20);
+            waitForElementToBeInvisible(lblBillerGrayLoader, LONG_WAIT);
 
             //validate dashboard page by element and url
             boolean dashboardElement = isElementPresentBy(lblAccountsOrCards);
@@ -2548,7 +2595,7 @@ public class DashboardPage extends BasePage {
         try {
 
             //Wait for loading icon to be invisible
-            waitForElementToBeInvisible(lblBillerGrayLoader, 20);
+            waitForElementToBeInvisible(lblBillerGrayLoader, LONG_WAIT);
 
             //validate dashboard page element account portfolio
             boolean dashboardElement = isElementPresentBy(imgAccountPortfolio);
@@ -2617,11 +2664,11 @@ public class DashboardPage extends BasePage {
      */
     public void validateRVTDownloadedRecordTransfer(String downloadDirectory) {
         //Transfer record
-
+        addToReport(" -------------Start of validation of RVT Downloaded Record Transfer-------------", Status.PASS);
         //wait for the loading icon to diminish
         waitForLoadingToBeInvisible();
         waitForElementPresence(lblLoadingIcon);
-        waitForElementToBeInvisible(lblLoadingIcon, 10);
+        waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
 
         //select transfer tab
         clickOnElement(btnTransfer);
@@ -2643,21 +2690,42 @@ public class DashboardPage extends BasePage {
             throw new RuntimeException("Error - Transfer transaction details popup is not visible");
         }
 
-        //Store field values to local variables for validation
+        // Store field values to local variables for validation and log each
         String Refer = getTextFromElement(lblRVTTransferPopupRecords(1, 1));
+        addToReport("Extracted Reference: " + Refer, Status.INFO,false);
+
         String FromAccount = getTextFromElement(lblRVTTransferPopupRecords(2, 1));
+        addToReport("Extracted From Account: " + FromAccount, Status.INFO,false);
+
         String ToAccount = getTextFromElement(lblRVTTransferPopupRecords(2, 2));
+        addToReport("Extracted To Account: " + ToAccount, Status.INFO,false);
+
         String TransactionCategory = getTextFromElement(lblRVTTransferPopupRecords(2, 3));
+        addToReport("Extracted Transaction Category: " + TransactionCategory, Status.INFO,false);
+
         String status = getTextFromElement(lblRVTTransferPopupRecords(2, 4));
+        addToReport("Extracted Status: " + status, Status.INFO,false);
+
         String TransactionTime = getTextFromElement(lblRVTTransferPopupRecords(2, 5));
+        addToReport("Extracted Transaction Time: " + TransactionTime, Status.INFO,false);
+
         String Remarks = getTextFromElement(lblRVTTransferPopupRecords(2, 6));
-        String Amount = getTextFromElement(lblRVTTransferPopupRecords(2, 8));
+        addToReport("Extracted Remarks: " + Remarks, Status.INFO,false);
+
+        String Amount = getTextFromElement(lblRVTTransferPopupRecords(2, 9));
+        addToReport("Extracted Amount: " + Amount, Status.INFO,false);
+
         String Bank = getTextFromElement(lblRVTTransferPopupRecords(2, 7));
+        addToReport("Extracted Bank: " + Bank, Status.INFO,false);
+
+        // Optional split and log each part of the reference
         String[] ref = Refer.split(" ");
+        addToReport("Split Reference into parts: " + Arrays.toString(ref), Status.INFO);
+
 
         // Validate the content based on the extracted values from dashboard vs downloaded pdf
         clickOnElement(btnDownload);
-        waitForElementToBeInvisible(popUpPDFDownload, 20);
+        waitForElementToBeInvisible(popUpPDFDownload, LONG_WAIT);
         waitFor(5);
         // Get the latest downloaded file
         File latestFile = getLatestDownloadedFile(downloadDirectory);
@@ -2730,7 +2798,7 @@ public class DashboardPage extends BasePage {
                 if (extractedText.contains(Bnk[0])) {
                     addToReport(" Validated recent vishwa transactions bank : '" + Bank + "' is validated from downloaded record", Status.PASS, false);
                 } else {
-                    addToReport(" Failed to validate recent vishwa transactions bank : " + Bank + " from downloaded record", Status.FAIL, false);
+                    addToReport(" Failed to validate recent vishwa transactions bank : " + Bnk[0] + " from downloaded record : ", Status.FAIL, false);
                 }
             } else {
                 addToReport("Recent vishawa transfer failed to download PDF", Status.FAIL);
@@ -2742,6 +2810,7 @@ public class DashboardPage extends BasePage {
             addToReport("Recent vishawa transfer downloaded PDF validation of transaction failed", Status.FAIL);
             throw new RuntimeException("Error - Validation of transfer under recent vishawa transactions failed", e);
         }
+        addToReport(" -------------End of validation of RVT Downloaded Record Transfer-------------", Status.PASS);
     }
 
     /**
@@ -2749,12 +2818,13 @@ public class DashboardPage extends BasePage {
      * @param downloadDirectory - Directory path of downloads
      */
     public void validateRVTDownloadedRecordPayment(String downloadDirectory) {
-        //Payment record
+        addToReport(" -------------Start of validation of RVT Downloaded Record Payment-------------", Status.PASS);
 
+        //Payment record
         //wait for the loading icon to diminish
         waitForLoadingToBeInvisible();
         waitForElementPresence(lblLoadingIcon);
-        waitForElementToBeInvisible(lblLoadingIcon, 10);
+        waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
 
         //select transfer tab
         clickOnElement(btnPayment);
@@ -2787,7 +2857,7 @@ public class DashboardPage extends BasePage {
 
         // Validate the content based on the extracted values from dashboard vs downloaded pdf
         clickOnElement(btnDownload);
-        waitForElementToBeInvisible(popUpPDFDownload, 20);
+        waitForElementToBeInvisible(popUpPDFDownload, LONG_WAIT);
         waitFor(10);
         try {
             // Get the latest downloaded file
@@ -2857,6 +2927,7 @@ public class DashboardPage extends BasePage {
             addToReport("Recent vishawa transactions downloaded PDF validation of payment failed", Status.FAIL);
             throw new RuntimeException("Error - Validation of transfer under recent vishawa payment failed", e);
         }
+        addToReport(" -------------End of validation of RVT Downloaded Record Payment-------------", Status.PASS);
     }
 
     /**
@@ -2865,12 +2936,12 @@ public class DashboardPage extends BasePage {
      *
      */
     public void validateRVTDownloadedRecordMobileCash(String downloadDirectory) {
+        addToReport(" -------------Start of validation of RVT Downloaded Record Mobile Cash-------------", Status.PASS);
         //mobile cash record
-
         //wait for the loading icon to diminish
         waitForLoadingToBeInvisible();
         waitForElementPresence(lblLoadingIcon);
-        waitForElementToBeInvisible(lblLoadingIcon, 10);
+        waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
 
         //select transfer tab
         clickOnElement(btnMobileCash);
@@ -2903,7 +2974,7 @@ public class DashboardPage extends BasePage {
 
         // Validate the content based on the extracted values from dashboard vs downloaded pdf
         clickOnElement(btnDownload);
-        waitForElementToBeInvisible(popUpPDFDownload, 20);
+        waitForElementToBeInvisible(popUpPDFDownload, LONG_WAIT);
         waitFor(10);
         try {
             // Get the latest downloaded file
@@ -2971,6 +3042,7 @@ public class DashboardPage extends BasePage {
             addToReport("Recent vishawa transactions downloaded PDF validation of mobile cash failed", Status.FAIL);
             throw new RuntimeException("Error - Validation of transfer under recent vishawa mobile cash failed", e);
         }
+        addToReport(" -------------End of validation of RVT Downloaded Record Mobile Cash-------------", Status.PASS);
     }
 
     /**
@@ -2981,8 +3053,8 @@ public class DashboardPage extends BasePage {
     {
         waitFor(2);
         //WaitForElementPresence(lblLoadingIcon);
-        waitForElementToBeInvisible(lblLoadingIcon, 25);
-        waitForElementToBeInvisible(lblAccountListLoading, 25);
+        waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+        waitForElementToBeInvisible(lblAccountListLoading, LONG_WAIT);
 
         waitFor(5);
 
@@ -3012,13 +3084,13 @@ public class DashboardPage extends BasePage {
                 //Store the account number
                 addValue(inc,getTextFromElement(lblAccountNumber));
                 addToReport("Successfully added account number : '" + getTextFromElement(lblAccountNumber) + "'", Status.PASS, true);
-      }               //Navigate to next account
-                clickOnElement(btnNextArrow);
+            }               //Navigate to next account
+            clickOnElement(btnNextArrow);
 
-                //WaitForElementPresence(lblLoadingIcon);
-                waitForElementToBeInvisible(lblLoadingIcon, 15);
+            //WaitForElementPresence(lblLoadingIcon);
+            waitForElementToBeInvisible(lblLoadingIcon, MODERATE_WAIT);
 
-            }
+        }
         else {
             addToReport("No accounts found", Status.FAIL);
             throw new RuntimeException("Error - No accounts found");
@@ -3035,7 +3107,7 @@ public class DashboardPage extends BasePage {
 
         waitForElementPresence(btnMainMenu(menuName));
         clickOnElement(btnMainMenu(menuName));
-        waitForElementToBeInvisible(lblLoadingIcon, 20);
+        waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
         addToReport("Clicked menu tab "+menuName, Status.PASS);
     }
 

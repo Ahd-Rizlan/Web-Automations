@@ -21,7 +21,7 @@ public class MyAccountTest extends BaseTest {
 
     }
 
-    @Test(priority = 2, description = "Validate 'My Accounts' items except pawning | 1,2,3,4,6,7,9,10,11,12,13,14,15")
+    @Test(priority = 2, description = "Validate 'My Accounts' items except pawning Includes detailed view of T-bills & repo | 1,2,3,4,6,7,9,10,11,12,13,14,15")
     public void validateMyAccountProductsExceptPawning() throws InterruptedException {
         dashboardPage.navigateToMainMenu(BillerConstants.BUTTON_MY_ACCOUNTS);
         myAccountsPage.navigateToAccountProductTypeAndValidate(MyAccountsConstants.TAB_NAMES, MyAccountsConstants.TILE_HEADERS);
@@ -35,10 +35,9 @@ public class MyAccountTest extends BaseTest {
 
     }
 
-    @Test(priority = 4, dataProvider = "LoginDataAlternateTwo", description = "Pre-Requisite :: Login to the Sampath vishwa application as alternate user two", dataProviderClass = DataProviders.LoginDataProvider.class)
+    @Test(priority = 4, dataProvider = "LoginDataAlternateOne", description = "Pre-Requisite :: Login to the Sampath vishwa application as alternate user two", dataProviderClass = DataProviders.LoginDataProvider.class)
     public void logIntoDahsboardAlternateUserTwo(String userName, String password, String emailSentSuccessMsg) throws InterruptedException {
 
-        driver.get(url);
         loginPage.validateTheLoginPage(LoginConstants.EXPECTED_TITLE, LoginConstants.LOGIN_TILE_NAME);
         loginPage.loginToSampathVishwaWeb(userName, password, emailSentSuccessMsg, LoginConstants.OTP_PAGE_HEADER, LoginConstants.FALASE);
         otpPage.validateTheOTPPage(LoginConstants.EXPECTED_TITLE, LoginConstants.OTP_PAGE_HEADER);
@@ -51,6 +50,13 @@ public class MyAccountTest extends BaseTest {
 
         dashboardPage.navigateToMainMenu(BillerConstants.BUTTON_MY_ACCOUNTS);
         myAccountsPage.navigateToAccountProductTypeAndValidate(MyAccountsConstants.TAB_NAME_PAWNING, MyAccountsConstants.TILE_HEADER_PAWNING);
+    }
+
+    @Test(priority = 6, description = "Validate 'My Accounts' items credit card | 18,19,20")
+    public void validateMyAccountCreditCard() throws InterruptedException {
+
+        dashboardPage.navigateToMainMenu(BillerConstants.BUTTON_MY_ACCOUNTS);
+        myAccountsPage.ValidateCreditCardDetails(MyAccountsConstants.CREDIT_CARDS, MyAccountsConstants.ACCOUNTS_CREDIT_CARDS,"");
     }
 
     @AfterMethod(description = "Rollback to dashboard")

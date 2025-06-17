@@ -15,6 +15,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
 
+import static utils.Drivers.*;
+
 public class MessagesPage extends BasePage {
 
     public MessagesPage(WebDriver driver) {
@@ -72,11 +74,11 @@ public class MessagesPage extends BasePage {
     }
 
     private static By tfOTP(int Index) {
-        return By.xpath("//input[@type='password'][" + Index + "]");
+        return By.xpath("//input[contains(@class,'otp-box')][" + Index + "]");
     }
 
     private static By lblMsgID(String subject) {
-        return By.xpath("//span[text()='" + subject + "']/parent::div/span[2]");
+        return By.xpath("//span[text()='" + subject + "']/parent::div/span[1]");
     }
     private static By lblResponseDate(String responseMessage) {
         return By.xpath("//p[text()='"+responseMessage+"']/ancestor::div[4]//span[contains(text(), '-') and contains(text(), ':')]");
@@ -143,10 +145,10 @@ public class MessagesPage extends BasePage {
 
             waitForElementPresence(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
             clickOnElement(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
-            waitForElementToBeInvisible(imgGreyLoader,20);
+            waitForElementToBeInvisible(imgGreyLoader,LONG_WAIT);
 
             selectFromDropdown(ddSubject, subject, MessagingConstants.VISIBLE_TEXT);
-            waitForElementToBeInvisible(imgGreyLoader,20);
+            waitForElementToBeInvisible(imgGreyLoader,LONG_WAIT);
 
             //  Get the actual dropdown visible texts
             List<String> actualBranchTexts = getSelectedOptionText(ddBranchList, MessagingConstants.ALL_OPTIONS);
@@ -181,7 +183,7 @@ public class MessagesPage extends BasePage {
 
         validatePopUpMsg(successMsg);
 
-        waitForElementPresence(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM),20);
+        waitForElementPresence(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM),LONG_WAIT);
 
         //Enter OTP values and continue
         sendKeysToElement(tfOTP(1), String.valueOf(OTP));
@@ -222,10 +224,10 @@ public class MessagesPage extends BasePage {
 
             waitForElementPresence(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
             clickOnElement(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
-            waitForElementToBeInvisible(imgGreyLoader, 20);
+            waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
 
             selectFromDropdown(ddSubject, subject, MessagingConstants.VISIBLE_TEXT);
-            waitForElementToBeInvisible(imgGreyLoader, 20);
+            waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
 
             //Validate the sub category options
             //  Get the actual dropdown visible texts
@@ -255,7 +257,7 @@ public class MessagesPage extends BasePage {
 
             validatePopUpMsg(successMsg);
 
-            waitForElementPresence(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM),20);
+            waitForElementPresence(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM),LONG_WAIT);
 
             //Enter OTP values and continue
             sendKeysToElement(tfOTP(1), String.valueOf(OTP));
@@ -303,11 +305,11 @@ public class MessagesPage extends BasePage {
 
             waitForElementPresence(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
             clickOnElement(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
-            waitForElementToBeInvisible(imgGreyLoader, 20);
+            waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
 
-            waitForElementToBeClickable(ddSubject,20);
+            waitForElementToBeClickable(ddSubject,LONG_WAIT);
             selectFromDropdown(ddSubject, subject, MessagingConstants.VISIBLE_TEXT);
-            waitForElementToBeInvisible(imgGreyLoader, 20);
+            waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
 
             //Validate the loaded fields
             if (isElementPresentBy(getElementByPlaceholder(ElementType.input,MessagingConstants.ENTER_AMOUNT))) {
@@ -424,8 +426,8 @@ public class MessagesPage extends BasePage {
      */
     public void validatePopUpMsg(String msg) {
         //waitForElementToBeInvisible(btnLogin,20);
-        waitForElementPresence(getMsg(msg),20);
-        waitForElementToBeClickable(getMsg(msg),20);
+        waitForElementPresence(getMsg(msg),LONG_WAIT);
+        waitForElementToBeClickable(getMsg(msg),LONG_WAIT);
         //Validate the success message
         if (isElementPresentBy(getMsg(msg))) {
             addToReport("'" + msg + "'  message is present.", Status.PASS,true);
@@ -454,11 +456,11 @@ public class MessagesPage extends BasePage {
 
             waitForElementPresence(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
             clickOnElement(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
-            waitForElementToBeInvisible(imgGreyLoader, 20);
+            waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
 
-            waitForElementToBeClickable(ddSubject,20);
+            waitForElementToBeClickable(ddSubject,LONG_WAIT);
             selectFromDropdown(ddSubject, subject, MessagingConstants.VISIBLE_TEXT);
-            waitForElementToBeInvisible(imgGreyLoader, 20);
+            waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
         try {
             //Validate the loaded fields
             if (isElementPresentBy(ddAccountNumber)) {
@@ -554,7 +556,7 @@ public class MessagesPage extends BasePage {
 
             validatePopUpMsg(successMsg);
 
-            waitForElementPresence(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM),20);
+            waitForElementPresence(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM),LONG_WAIT);
 
             //Enter OTP values and continue
             sendKeysToElement(tfOTP(1), String.valueOf(OTP));
@@ -607,11 +609,11 @@ public class MessagesPage extends BasePage {
             waitForElementPresence(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
             clickOnElement(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
             waitForElementToBeInvisible(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE),20);
-            waitForElementToBeInvisible(imgGreyLoader, 20);
+            waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
 
             waitFor(5);
             selectFromDropdown(ddSubject, subject, MessagingConstants.VISIBLE_TEXT);
-            waitForElementToBeInvisible(imgGreyLoader, 20);
+            waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
 
             //Validate the loaded fields
             if (isElementPresentBy(getElementByPlaceholder(ElementType.textarea,MessagingConstants.ENTER_MESSAGE))) {
@@ -634,7 +636,7 @@ public class MessagesPage extends BasePage {
 
             validatePopUpMsg(successMsg);
 
-            waitForElementPresence(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM),20);
+            waitForElementPresence(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM),LONG_WAIT);
 
             //Enter OTP values and continue
             sendKeysToElement(tfOTP(1), String.valueOf(OTP));
@@ -688,12 +690,12 @@ public class MessagesPage extends BasePage {
 
             waitForElementPresence(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
             clickOnElement(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
-            waitForElementToBeInvisible(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE),20);
-            waitForElementToBeInvisible(imgGreyLoader, 20);
+            waitForElementToBeInvisible(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE),LONG_WAIT);
+            waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
 
             waitFor(5);
             selectFromDropdown(ddSubject, subject, MessagingConstants.VISIBLE_TEXT);
-            waitForElementToBeInvisible(imgGreyLoader, 20);
+            waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
 
             //Validate the loaded fields
             if (isElementPresentBy(getElementByPlaceholder(ElementType.textarea,MessagingConstants.ENTER_MESSAGE))) {
@@ -716,7 +718,7 @@ public class MessagesPage extends BasePage {
 
             validatePopUpMsg(successMsg);
 
-            waitForElementPresence(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM),20);
+            waitForElementPresence(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM),LONG_WAIT);
 
             //Enter OTP values and continue
             sendKeysToElement(tfOTP(1), String.valueOf(OTP));
@@ -772,13 +774,13 @@ public class MessagesPage extends BasePage {
             waitForElementPresence(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
             clickOnElement(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
             waitForElementToBeInvisible(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE),20);
-            waitForElementToBeInvisible(imgGreyLoader, 20);
+            waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
         try {
-            waitForElementToBeClickable(ddSubject,20);
-            waitFor(2);
+            waitForElementToBeClickable(ddSubject,LONG_WAIT);
+            waitFor(VERY_SHORT_WAIT);
 
             selectFromDropdown(ddSubject, subject, MessagingConstants.VISIBLE_TEXT);
-            waitForElementToBeInvisible(imgGreyLoader, 20);
+            waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
 
             //Validate the loaded fields
             if (isElementPresentBy(getElementByPlaceholder(ElementType.textarea,MessagingConstants.ENTER_MESSAGE))) {
@@ -868,9 +870,9 @@ public class MessagesPage extends BasePage {
 
             addToReport("----------Start of validation of received messages are in reverse order----------", Status.PASS, false);
             clickOnElement(getElementByTypeAndText(ElementType.div,MessagingConstants.TRASH));
-            waitForElementToBeInvisible(imgGreyLoader,20);
+            waitForElementToBeInvisible(imgGreyLoader,LONG_WAIT);
             clickOnElement(getElementByTypeAndText(ElementType.div,MessagingConstants.ALL));
-            waitForElementToBeInvisible(imgGreyLoader,20);
+            waitForElementToBeInvisible(imgGreyLoader,LONG_WAIT);
 
             //Validate the order of messages
             verifyMessagesInReverseChronologicalOrder();
@@ -897,7 +899,7 @@ public class MessagesPage extends BasePage {
             }
 
             scrollPageToTop();
-            waitForElementToBeClickable(lblMessageContent,20);
+            waitForElementToBeClickable(lblMessageContent,LONG_WAIT);
             //Validate Message date
                 WebElement msgElement = driver.findElement(lblMessageContent);
                 WebElement dateElement = driver.findElement(lblResponseDate(message));
@@ -922,7 +924,7 @@ public class MessagesPage extends BasePage {
             scrollPageToTop();
             //Delete the last open record
             clickOnElement(btnDeleteMessage(1));
-            waitForElementToBeClickable(getElementByTypeAndText(ElementType.button, MessagingConstants.CONFIRM),20);
+            waitForElementToBeClickable(getElementByTypeAndText(ElementType.button, MessagingConstants.CONFIRM),LONG_WAIT);
             clickOnElement(getElementByTypeAndText(ElementType.button, MessagingConstants.CONFIRM));
             validatePopUpMsg(deletionSuccessMsg);
 
@@ -931,7 +933,7 @@ public class MessagesPage extends BasePage {
             addToReport("----------End of delete message----------", Status.PASS, false);
             addToReport("----------Start of recovery of deleted message----------", Status.PASS, false);
             clickOnElement(getElementByTypeAndText(ElementType.div,MessagingConstants.TRASH));
-            waitForElementToBeInvisible(imgGreyLoader,20);
+            waitForElementToBeInvisible(imgGreyLoader,LONG_WAIT);
 
             waitForElementPresence(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES));
             sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES),subject);
@@ -989,13 +991,13 @@ public class MessagesPage extends BasePage {
 
             waitForElementPresence(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
             clickOnElement(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
-            waitForElementToBeInvisible(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE),20);
-            waitForElementToBeInvisible(imgGreyLoader, 20);
+            waitForElementToBeInvisible(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE),LONG_WAIT);
+            waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
 
-            waitForElementToBeClickable(ddSubject,20);
-            waitFor(3);
+            waitForElementToBeClickable(ddSubject,LONG_WAIT);
+            waitFor(VERY_SHORT_WAIT);
             selectFromDropdown(ddSubject, subject, MessagingConstants.VISIBLE_TEXT);
-            waitForElementToBeInvisible(imgGreyLoader, 20);
+            waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
 
             addToReport("----------Start of draft message ----------", Status.PASS, false);
 
@@ -1009,7 +1011,7 @@ public class MessagesPage extends BasePage {
 
             validatePopUpMsg(successMsg);
 
-            waitForElementPresence(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM),20);
+            waitForElementPresence(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM),LONG_WAIT);
 
             //Enter OTP values and continue
             sendKeysToElement(tfOTP(1), String.valueOf(OTP));
@@ -1017,8 +1019,8 @@ public class MessagesPage extends BasePage {
             clickOnElement(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM));
             validatePopUpMsg(messageCreationSuccessMsg);
 
-            waitFor(2);
-            waitForElementToBeInvisible(imgGreyLoader,20);
+            waitFor(VERY_SHORT_WAIT);
+            waitForElementToBeInvisible(imgGreyLoader,LONG_WAIT);
             waitForElementPresence(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES));
 
             List<WebElement> messages = findElements(allMessages);
@@ -1072,7 +1074,7 @@ public class MessagesPage extends BasePage {
 
             clickOnElement(getElementByTypeAndText(ElementType.span,MessagingConstants.SAVE_AS_DRAFT));
 
-            waitForElementPresence(lblDraftMsg,20);
+            waitForElementPresence(lblDraftMsg,LONG_WAIT);
 
             //Validate the draft update
             if(!getTextFromElement(lblDraftMsg).equals(updatedMsg)){
@@ -1144,7 +1146,7 @@ public class MessagesPage extends BasePage {
         fileInput.sendKeys(filePath);
 
         // Wait for the file name to appear in the visible text input
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriverWait wait = new WebDriverWait(driver, MODERATE_WAIT);
         wait.until(driver -> {
             String value = driver.findElement(inputFileText).getAttribute("value");
             return value != null && !value.trim().isEmpty();
@@ -1212,8 +1214,8 @@ public class MessagesPage extends BasePage {
 
             waitForElementPresence(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
             clickOnElement(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
-            waitForElementToBeInvisible(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE),20);
-            waitForElementToBeInvisible(imgGreyLoader, 20);
+            waitForElementToBeInvisible(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE),LONG_WAIT);
+            waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
 
             //  Get the actual dropdown visible texts
             List<String> actualSubjectsTexts = getSelectedOptionText(ddSubject, MessagingConstants.ALL_OPTIONS);
@@ -1233,7 +1235,7 @@ public class MessagesPage extends BasePage {
             }
 
             selectFromDropdown(ddSubject, subject, MessagingConstants.VISIBLE_TEXT);
-            waitForElementToBeInvisible(imgGreyLoader, 20);
+            waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
 
             //Validate the loaded fields
             if (isElementPresentBy(getElementByPlaceholder(ElementType.textarea,MessagingConstants.ENTER_MESSAGE))) {
@@ -1245,22 +1247,22 @@ public class MessagesPage extends BasePage {
             //Validate the file upload option
             //Upload attachment Allowed types JPEG
             uploadAndValidateAttachment(getFileFromResources(MessagingConstants.MESSAGES_UPLOAD+"/"+fileNameOne));
-            waitForElementPresence(btnDeleteUpload,20);
+            waitForElementPresence(btnDeleteUpload,LONG_WAIT);
             clickOnElement(btnDeleteUpload);
 
             //Upload attachment Allowed types JPG
             uploadAndValidateAttachment(getFileFromResources(MessagingConstants.MESSAGES_UPLOAD+"/"+fileNameTwo));
-            waitForElementPresence(btnDeleteUpload,20);
+            waitForElementPresence(btnDeleteUpload,LONG_WAIT);
             clickOnElement(btnDeleteUpload);
 
             //Upload attachment Allowed types PNG
             uploadAndValidateAttachment(getFileFromResources(MessagingConstants.MESSAGES_UPLOAD+"/"+fileNameThree));
-            waitForElementPresence(btnDeleteUpload,20);
+            waitForElementPresence(btnDeleteUpload,LONG_WAIT);
             clickOnElement(btnDeleteUpload);
 
             //Upload attachment Allowed types PDF
             uploadAndValidateAttachment(getFileFromResources(MessagingConstants.MESSAGES_UPLOAD+"/"+fileNameFour));
-            waitForElementPresence(btnDeleteUpload,20);
+            waitForElementPresence(btnDeleteUpload,LONG_WAIT);
             clickOnElement(btnDeleteUpload);
 
             //Upload attachment Allowed types PDF above 512KB

@@ -7,9 +7,12 @@ import com.aventstack.extentreports.Status;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import utils.CommonUtils;
+import utils.constants.LoginConstants;
 import utils.constants.MyAccountsConstants;
 import java.io.File;
 import java.util.List;
+
+import static utils.Drivers.*;
 
 public class MyAccountsPage extends BasePage {
 
@@ -23,7 +26,7 @@ public class MyAccountsPage extends BasePage {
     }
 
     public enum ElementType {
-        button, label, span, div;
+        button, label, span, div, h2
     }
 
     private static final By lblAccountListLoading = By.xpath("//div[contains(@class,'dark:bg-gray')]");
@@ -48,6 +51,9 @@ public class MyAccountsPage extends BasePage {
     private static final By ddAdvancedSearchMonth = By.xpath("//span[@class='rdrMonthPicker']/select");
     private static final By ddAdvancedSearchYear = By.xpath("//span[@class='rdrYearPicker']/select");
     private static final By ddTransactionType = By.xpath("//select[@id='status']");
+    private static final By imgMasterCardLogo = By.xpath("//img[contains(@srcset,'MasterCardLogo')]");
+    private static final By lblInactiveCardStatus = By.xpath("//div[@class='flex gap-1']/div[1]");
+
 
     public static By lblNoDataFound(String text) {
         return By.xpath("//div[@class='gap-2']//span[contains(text(),'" + text + "')]");
@@ -67,6 +73,10 @@ public class MyAccountsPage extends BasePage {
 
     public static By lblAccountSummaryDetails(String text) {
         return By.xpath("//li[contains(text(),'" + text + "')]/span");
+    }
+
+    public static By lblCreditCardDetails(String text) {
+        return By.xpath("//div[contains(text(),'" + text + "')]/parent::div/div[2]");
     }
 
     public static By lblDatesAndRates(String text) {
@@ -116,8 +126,18 @@ public class MyAccountsPage extends BasePage {
     private static By lblHighlightedListContent(String content) {
         return By.xpath("//tr[contains(@class, 'bg-orange-300')]/td[text()='" + content + "']");
     }
+
     private static By lblLoanNoDataFound(String content) {
         return By.xpath("//div[@class='h-full w-full']//span[contains(text(),'" + content + "')]");
+    }
+    private static By lblCreditCardAvailableBalance(String text) {
+        return By.xpath("//div[contains(text(),'"+text+"')]/following-sibling::div/span[contains(@class,'text-green')]");
+    }
+    private static By lblCreditCardNumber(String text) {
+        return By.xpath("//div[contains(text(),'"+text+"')]/parent::div//span[contains(@class,'flex flex-col')]");
+    }
+    private static By lblCreditCardCustAccNumber(String text) {
+        return By.xpath("//span[contains(text(),'"+text+"')]/parent::div/span[1]");
     }
 
     private static By popUpPDFDownload(String msg) {
@@ -132,11 +152,11 @@ public class MyAccountsPage extends BasePage {
     public void selectTab(String mainTab) {
         try {
             //Select main tab
-            waitForElementToBeInvisible(lblAccountListLoading, 20);
+            waitForElementToBeInvisible(lblAccountListLoading, LONG_WAIT);
             waitForElementPresence(tabValue(mainTab));
-            waitForElementToBeClickable(tabValue(mainTab), 20);
+            waitForElementToBeClickable(tabValue(mainTab), LONG_WAIT);
             clickOnElement(tabValue(mainTab));
-            waitForElementToBeInvisible(icnTileLoading, 40);
+            waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
             addToReport("Main tab : " + mainTab + " is selected", Status.PASS, true);
 
         } catch (Exception e) {
@@ -153,10 +173,10 @@ public class MyAccountsPage extends BasePage {
     public void searchAndSelectAccountList(String accountNo) {
         try {
             //Select main tab
-            waitForElementToBeInvisible(lblAccountListLoading, 20);
+            waitForElementToBeInvisible(lblAccountListLoading, LONG_WAIT);
             sendKeysToElement(tfSearch, accountNo);
             clickOnElement(btnSearch);
-            waitForElementToBeInvisible(lblAccountListLoading, 20);
+            waitForElementToBeInvisible(lblAccountListLoading, LONG_WAIT);
 
             //Validate the search results
             int recordCount = isElementsPresentBy(tblRows);
@@ -166,7 +186,7 @@ public class MyAccountsPage extends BasePage {
                 if (getTextFromElement(tblCellRecord(1, 1)).equals(accountNo)) {
                     addToReport(" Account number " + accountNo + " has successfully returned on search", Status.PASS, true);
                     clickOnElement(tblCellRecord(1, 1));
-                    waitForElementToBeInvisible(lblAccountListLoading, 20);
+                    waitForElementToBeInvisible(lblAccountListLoading, LONG_WAIT);
                     if (isElementPresentBy(lblAccountHistory(accountNo))) {
                         addToReport(" Account History for account  " + accountNo + " has successfully returned on search", Status.PASS, true);
                     } else {
@@ -196,11 +216,11 @@ public class MyAccountsPage extends BasePage {
         try {
             if (referenceNo != null) {
                 //Search for valid description form accounts history
-                waitForElementToBeInvisible(lblAccountListLoading, 20);
+                waitForElementToBeInvisible(lblAccountListLoading, LONG_WAIT);
                 waitForElementPresence(tfSearch);
                 sendKeysToElement(tfSearch, referenceNo);
                 clickOnElement(btnSearch);
-                waitForElementToBeInvisible(lblAccountListLoading, 20);
+                waitForElementToBeInvisible(lblAccountListLoading, LONG_WAIT);
                 //Validate the search results
                 int recordCount = isElementsPresentBy(tblRows);
                 if (recordCount == 1) {
@@ -230,15 +250,15 @@ public class MyAccountsPage extends BasePage {
      */
     public void selectTabAndValidate(String tabName, String tileHeader) {
 
-        waitForElementToBeInvisible(lblAccountListLoading, 20);
-        waitForElementToBeClickable(tfSearch, 20);
+        waitForElementToBeInvisible(lblAccountListLoading, LONG_WAIT);
+        waitForElementToBeClickable(tfSearch, LONG_WAIT);
 
         try {
-            waitForElementToBeInvisible(lblLoadingIcon, 20);
+            waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
             //Select tab
             selectTab(tabName);
-            waitForElementToBeInvisible(lblAccountListLoading, 20);
-            waitForElementToBeClickable(getElementByTypeAndText(ElementType.span, tileHeader), 20);
+            waitForElementToBeInvisible(lblAccountListLoading, LONG_WAIT);
+            waitForElementToBeClickable(getElementByTypeAndText(ElementType.span, tileHeader), LONG_WAIT);
             //Validate the tile header
             if (isElementPresentBy(getElementByTypeAndText(ElementType.span, tileHeader))) {
                 addToReport("My Account page sub title : " + tileHeader + " is visible ", Status.PASS, true);
@@ -257,16 +277,16 @@ public class MyAccountsPage extends BasePage {
     /**
      * select tab and validate it's relevant tile
      *
-     * @param tabName  Table Name
+     * @param tabName    Table Name
      * @param tileHeader Tile header
      */
     public void navigateToAccountProductTypeAndValidate(String[] tabName, String[] tileHeader) {
 
         addToReport("----------Start of validation of that when user click on 'My Accounts' item in top navigation menu all account categories and other product lists displayed----------", Status.PASS, false);
 
-        waitForElementToBeInvisible(lblLoadingIcon, 25);
-        waitForElementToBeInvisible(icnTileLoading, 40);
-        waitForElementToBeInvisible(lblAccountListLoading, 40);
+        waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
+        waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
+        waitForElementToBeInvisible(lblAccountListLoading, VERY_LONG_WAIT);
         addToReport("----------End of validation of that when user click on 'My Accounts' item in top navigation menu all account categories and other product lists displayed----------", Status.PASS, true);
         for (int inc = 0; tabName.length > inc; inc++) {
             //Validate the tab and relative header
@@ -274,13 +294,13 @@ public class MyAccountsPage extends BasePage {
             selectTabAndValidate(tabName[inc], tileHeader[inc]);
 
             //Validate the selected tile and its relevant data loaded at list
-            waitForElementToBeInvisible(lblLoadingIcon, 25);
-            waitForElementToBeInvisible(icnTileLoading, 40);
+            waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+            waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
             if (tabName[inc].equals(MyAccountsConstants.TAB_PAWNING)) {
                 recordCount = 1;
             } else {
-                waitForElementToBeClickable(icnAccounts, 25);
+                waitForElementToBeClickable(icnAccounts, LONG_WAIT);
 
                 //Obtain pagination value
                 cardCount = CommonUtils.splitText(getAttributeOrText(icnAccounts, "text"), "/");
@@ -297,10 +317,10 @@ public class MyAccountsPage extends BasePage {
 
                     switch (currentTab) {
                         case MyAccountsConstants.TAB_ACCOUNTS:
-                            waitForElementToBeInvisible(lblAccountListLoading, 40);
-                            waitForElementToBeInvisible(lblLoadingIcon, 20);
-                            waitForElementToBeInvisible(icnTileLoading, 40);
-                            waitForElementToBeClickable(lblAccountNumber, 20);
+                            waitForElementToBeInvisible(lblAccountListLoading, VERY_LONG_WAIT);
+                            waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+                            waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
+                            waitForElementToBeClickable(lblAccountNumber, LONG_WAIT);
 
                             //Obtain account number and validate
                             accountNumber = getAttributeOrText(lblAccountNumber, "text");
@@ -330,8 +350,8 @@ public class MyAccountsPage extends BasePage {
 
                             //Select the account
                             clickOnElement(lblHighlightedAccountNo(accountNumber));
-                            waitForElementToBeClickable(lblAccountHistoryAccountNo(MyAccountsConstants.ACCOUNT_HISTORY), 30);
-                            waitForElementToBeInvisible(lblLoadingIcon, 30);
+                            waitForElementToBeClickable(lblAccountHistoryAccountNo(MyAccountsConstants.ACCOUNT_HISTORY), VERY_LONG_WAIT);
+                            waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
 
                             aHAccountNo = getTextFromElement(lblAccountHistoryAccountNo(MyAccountsConstants.ACCOUNT_HISTORY));
                             if (aHAccountNo.equals(accountNumber)) {
@@ -367,7 +387,7 @@ public class MyAccountsPage extends BasePage {
                             scrollPageToTop();
 
                             //Click on view list
-                            waitForElementToBeClickable(getElementByTypeAndText(ElementType.span, MyAccountsConstants.VIEW_LIST), 30);
+                            waitForElementToBeClickable(getElementByTypeAndText(ElementType.span, MyAccountsConstants.VIEW_LIST), VERY_LONG_WAIT);
                             clickOnElement(getElementByTypeAndText(ElementType.span, MyAccountsConstants.VIEW_LIST));
                             addToReport("----------End of validation of the content of operative Account list and functional behaviour ----------", Status.PASS, true);
 
@@ -375,16 +395,16 @@ public class MyAccountsPage extends BasePage {
                             clickOnElement(btnNextArrow);
 
                             //WaitForElementPresence(lblLoadingIcon);
-                            waitForElementToBeInvisible(lblLoadingIcon, 25);
+                            waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
                             break;
 
                         case MyAccountsConstants.TAB_DEPOSITS:
                             addToReport("----------Start of validation of the content of fixed deposits list and the functional behaviour ----------", Status.PASS, false);
 
-                            waitForElementToBeInvisible(lblAccountListLoading, 40);
-                            waitForElementToBeInvisible(lblLoadingIcon, 20);
-                            waitForElementToBeInvisible(icnTileLoading, 40);
-                            waitForElementToBeClickable(lblAccountNumber, 20);
+                            waitForElementToBeInvisible(lblAccountListLoading, VERY_LONG_WAIT);
+                            waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+                            waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
+                            waitForElementToBeClickable(lblAccountNumber, LONG_WAIT);
                             //Obtain account number and validate
                             accountNumber = getAttributeOrText(lblAccountNumber, "text");
                             accountNumber = accountNumber.replace(MyAccountsConstants.CURRENT_OUTSTANDING, "").trim().replaceAll("\\s+", "");
@@ -407,9 +427,9 @@ public class MyAccountsPage extends BasePage {
                                 }
                             }
                             clickOnElement(lblHighlightedAccountNo(accountNumber));
-                            waitForElementToBeClickable(lblAccountHistoryAccountNo(MyAccountsConstants.RENEWAL_HISTORY), 30);
-                            waitForElementToBeInvisible(lblLoadingIcon, 30);
-                            waitForElementToBeInvisible(lblAccountListLoading, 40);
+                            waitForElementToBeClickable(lblAccountHistoryAccountNo(MyAccountsConstants.RENEWAL_HISTORY), VERY_LONG_WAIT);
+                            waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
+                            waitForElementToBeInvisible(lblAccountListLoading, VERY_LONG_WAIT);
 
                             aHAccountNo = getTextFromElement(lblAccountHistoryAccountNo(MyAccountsConstants.RENEWAL_HISTORY));
                             if (aHAccountNo.equals(accountNumber)) {
@@ -442,7 +462,7 @@ public class MyAccountsPage extends BasePage {
 
                             }
                             scrollPageToTop();
-                            waitForElementToBeClickable(getElementByTypeAndText(ElementType.span, MyAccountsConstants.VIEW_LIST), 30);
+                            waitForElementToBeClickable(getElementByTypeAndText(ElementType.span, MyAccountsConstants.VIEW_LIST), VERY_LONG_WAIT);
                             clickOnElement(getElementByTypeAndText(ElementType.span, MyAccountsConstants.VIEW_LIST));
 
                             addToReport("----------End of validation of the content of fixed deposits list and the functional behaviour----------", Status.PASS, true);
@@ -450,15 +470,15 @@ public class MyAccountsPage extends BasePage {
                             clickOnElement(btnNextArrow);
 
                             //WaitForElementPresence(lblLoadingIcon);
-                            waitForElementToBeInvisible(lblLoadingIcon, 25);
+                            waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
                             break;
 
                         case MyAccountsConstants.TAB_LOANS:
                             addToReport("----------Start of validation of the content of loans list and the functional behaviour ----------", Status.PASS, false);
-                            waitForElementToBeInvisible(lblAccountListLoading, 40);
-                            waitForElementToBeInvisible(lblLoadingIcon, 20);
-                            waitForElementToBeInvisible(icnTileLoading, 40);
-                            waitForElementToBeClickable(lblAccountNumber, 20);
+                            waitForElementToBeInvisible(lblAccountListLoading, VERY_LONG_WAIT);
+                            waitForElementToBeInvisible(lblLoadingIcon, MODERATE_WAIT);
+                            waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
+                            waitForElementToBeClickable(lblAccountNumber, LONG_WAIT);
                             //Obtain account number and validate
                             accountNumber = getAttributeOrText(lblAccountNumber, "text");
                             accountNumber = accountNumber.replace(MyAccountsConstants.CURRENT_OUTSTANDING, "").trim().replaceAll("\\s+", "");
@@ -485,9 +505,9 @@ public class MyAccountsPage extends BasePage {
                             }
 
                             clickOnElement(lblHighlightedAccountNo(accountNumber));
-                            waitForElementToBeClickable(lblAccountNumberByHeader(MyAccountsConstants.PAID_INSTALLMENTS), 30);
-                            waitForElementToBeInvisible(lblLoadingIcon, 30);
-                            waitForElementToBeInvisible(lblAccountListLoading, 40);
+                            waitForElementToBeClickable(lblAccountNumberByHeader(MyAccountsConstants.PAID_INSTALLMENTS), VERY_LONG_WAIT);
+                            waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
+                            waitForElementToBeInvisible(lblAccountListLoading, VERY_LONG_WAIT);
 
                             aHAccountNo = getTextFromElement(lblAccountNumberByHeader(MyAccountsConstants.PAID_INSTALLMENTS));
                             accountNumber = aHAccountNo.split("-")[1].trim();
@@ -546,15 +566,15 @@ public class MyAccountsPage extends BasePage {
                             //Navigate to next account
                             clickOnElement(btnNextArrow);
                             //WaitForElementPresence(lblLoadingIcon);
-                            waitForElementToBeInvisible(lblLoadingIcon, 15);
+                            waitForElementToBeInvisible(lblLoadingIcon, MODERATE_WAIT);
                             break;
 
                         case MyAccountsConstants.TAB_PAWNING:
                             addToReport("----------Start of validation of the content of pawning list and the functional behaviour ----------", Status.PASS, false);
-                            waitForElementToBeInvisible(lblAccountListLoading, 40);
-                            waitForElementToBeInvisible(lblLoadingIcon, 20);
-                            waitForElementToBeInvisible(icnTileLoading, 40);
-                            waitForElementToBeClickable(lblPawningAccountNumber, 20);
+                            waitForElementToBeInvisible(lblAccountListLoading, VERY_LONG_WAIT);
+                            waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+                            waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
+                            waitForElementToBeClickable(lblPawningAccountNumber, LONG_WAIT);
                             //Obtain pawning number and validate
                             accountNumber = getAttributeOrText(lblPawningAccountNumber, "text");
                             if (isElementPresentBy(lblHighlightedAccountNo(accountNumber))) {
@@ -576,9 +596,9 @@ public class MyAccountsPage extends BasePage {
                                 }
                             }
                             clickOnElement(lblHighlightedAccountNo(accountNumber));
-                            waitForElementToBeClickable(lblAccountHistoryAccountNo(MyAccountsConstants.TAB_PAWNING_HISTORY), 30);
-                            waitForElementToBeInvisible(lblLoadingIcon, 30);
-                            waitForElementToBeInvisible(lblAccountListLoading, 40);
+                            waitForElementToBeClickable(lblAccountHistoryAccountNo(MyAccountsConstants.TAB_PAWNING_HISTORY), LONG_WAIT);
+                            waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+                            waitForElementToBeInvisible(lblAccountListLoading, VERY_LONG_WAIT);
 
                             aHAccountNo = getTextFromElement(lblAccountHistoryAccountNo(MyAccountsConstants.TAB_PAWNING_HISTORY));
                             if (aHAccountNo.equals(accountNumber)) {
@@ -593,14 +613,14 @@ public class MyAccountsPage extends BasePage {
                             //Navigate to next account
                             clickOnElement(btnNextArrow);
                             //WaitForElementPresence(lblLoadingIcon);
-                            waitForElementToBeInvisible(lblLoadingIcon, 15);
+                            waitForElementToBeInvisible(lblLoadingIcon, MODERATE_WAIT);
                             break;
 
                         case MyAccountsConstants.TAB_T_BILLS:
                             addToReport("----------Start of validation of user is able to view the detailed information of their treasury bill ----------", Status.PASS, false);
-                            waitForElementToBeInvisible(lblLoadingIcon, 20);
-                            waitForElementToBeInvisible(icnTileLoading, 40);
-                            waitForElementToBeInvisible(lblAccountListLoading, 40);
+                            waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+                            waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
+                            waitForElementToBeInvisible(lblAccountListLoading, VERY_LONG_WAIT);
 
                             //Obtain account number and validate
                             accountNumber = getAttributeOrText(lblPawningAccountNumber, "text");
@@ -666,15 +686,15 @@ public class MyAccountsPage extends BasePage {
                             //Navigate to next account
                             clickOnElement(btnNextArrow);
                             //WaitForElementPresence(lblLoadingIcon);
-                            waitForElementToBeInvisible(lblLoadingIcon, 25);
+                            waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
 
                             break;
 
                         case MyAccountsConstants.TAB_REPO:
                             addToReport("----------Start of validation of user is able to view the detailed information of their repo ----------", Status.PASS, false);
-                            waitForElementToBeInvisible(lblLoadingIcon, 20);
-                            waitForElementToBeInvisible(icnTileLoading, 40);
-                            waitForElementToBeInvisible(lblAccountListLoading, 40);
+                            waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+                            waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
+                            waitForElementToBeInvisible(lblAccountListLoading, VERY_LONG_WAIT);
                             //Obtain account number and validate
                             accountNumber = getAttributeOrText(lblPawningAccountNumber, "text");
                             repoMaturityDate = getAttributeOrText(lblDatesAndRates(MyAccountsConstants.MATURITY_DATE), "text");
@@ -727,7 +747,7 @@ public class MyAccountsPage extends BasePage {
                             clickOnElement(btnNextArrow);
 
                             //WaitForElementPresence(lblLoadingIcon);
-                            waitForElementToBeInvisible(lblLoadingIcon, 25);
+                            waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
                             break;
                         default:
                             addToReport("Tab name not recognized: " + currentTab, Status.WARNING, false);
@@ -754,8 +774,8 @@ public class MyAccountsPage extends BasePage {
 
         addToReport("----------Start of validation of that when user click on 'My Accounts' item in top navigation menu all account categories and other product lists displayed----------", Status.PASS, false);
 
-        waitForElementToBeInvisible(lblLoadingIcon, 25);
-        waitForElementToBeInvisible(icnTileLoading, 40);
+        waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+        waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
         for (int inc = 0; tabName.length > inc; inc++) {
             //Validate the tab and relative header
@@ -766,11 +786,11 @@ public class MyAccountsPage extends BasePage {
             switch (currentTab) {
                 case MyAccountsConstants.TAB_ACCOUNTS:
 
-                    waitForElementToBeInvisible(lblLoadingIcon, 25);
-                    waitForElementToBeInvisible(lblAccountListLoading, 40);
-                    waitForElementToBeInvisible(icnTileLoading, 40);
+                    waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+                    waitForElementToBeInvisible(lblAccountListLoading, VERY_LONG_WAIT);
+                    waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
-                    waitForElementToBeClickable(btnEditNickName, 20);
+                    waitForElementToBeClickable(btnEditNickName, LONG_WAIT);
 
                     clickOnElement(btnEditNickName);
 
@@ -787,13 +807,13 @@ public class MyAccountsPage extends BasePage {
                     clickOnElement(btnClosePopup);
 
                     clickOnElement(btnNextArrow);
-                    waitForElementToBeInvisible(lblLoadingIcon, 25);
-                    waitForElementToBeInvisible(lblAccountListLoading, 40);
-                    waitForElementToBeInvisible(icnTileLoading, 40);
+                    waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+                    waitForElementToBeInvisible(lblAccountListLoading, VERY_LONG_WAIT);
+                    waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
                     clickOnElement(btnPreviousArrow);
-                    waitForElementToBeInvisible(lblLoadingIcon, 25);
-                    waitForElementToBeInvisible(lblAccountListLoading, 40);
-                    waitForElementToBeInvisible(icnTileLoading, 40);
+                    waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+                    waitForElementToBeInvisible(lblAccountListLoading, VERY_LONG_WAIT);
+                    waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
                     if (isElementPresentBy(lblNickName(nickName))) {
                         addToReport("Nick name updated to  '" + nickName + "' is present under tab '" + tabName[inc] + "'", Status.PASS, true);
@@ -804,33 +824,33 @@ public class MyAccountsPage extends BasePage {
                     break;
 
                 case MyAccountsConstants.TAB_DEPOSITS:
-                    waitForElementToBeInvisible(lblLoadingIcon, 25);
-                    waitForElementToBeInvisible(lblAccountListLoading, 40);
-                    waitForElementToBeInvisible(icnTileLoading, 40);
+                    waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+                    waitForElementToBeInvisible(lblAccountListLoading, VERY_LONG_WAIT);
+                    waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
-                    waitForElementToBeClickable(btnEditNickName, 20);
+                    waitForElementToBeClickable(btnEditNickName, LONG_WAIT);
 
                     clickOnElement(btnEditNickName);
 
-                    waitForElementToBeClickable(tfNickName, 20);
+                    waitForElementToBeClickable(tfNickName, LONG_WAIT);
                     sendKeysToElement(tfNickName, nickName);
 
                     addToReport("Enter nick name " + nickName, Status.PASS, true);
                     clickOnElement(getElementByTypeAndText(ElementType.button, MyAccountsConstants.NEXT));
 
-                    waitForElementPresence(getElementByTypeAndText(ElementType.div, MyAccountsConstants.NICK_NAME_UPDATED), 20);
+                    waitForElementPresence(getElementByTypeAndText(ElementType.div, MyAccountsConstants.NICK_NAME_UPDATED), LONG_WAIT);
                     addToReport("NickName updated successfully popup received", Status.PASS, true);
                     clickOnElement(btnClosePopup);
 
                     clickOnElement(btnNextArrow);
-                    waitForElementToBeInvisible(lblLoadingIcon, 25);
-                    waitForElementToBeInvisible(lblAccountListLoading, 40);
-                    waitForElementToBeInvisible(icnTileLoading, 40);
+                    waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+                    waitForElementToBeInvisible(lblAccountListLoading, VERY_LONG_WAIT);
+                    waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
                     clickOnElement(btnPreviousArrow);
-                    waitForElementToBeInvisible(lblLoadingIcon, 25);
-                    waitForElementToBeInvisible(lblAccountListLoading, 40);
-                    waitForElementToBeInvisible(icnTileLoading, 40);
+                    waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+                    waitForElementToBeInvisible(lblAccountListLoading, VERY_LONG_WAIT);
+                    waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
                     if (isElementPresentBy(lblNickName(nickName))) {
                         addToReport("Nick name updated to  '" + nickName + "' is present under tab '" + tabName[inc] + "'", Status.PASS, true);
@@ -840,32 +860,32 @@ public class MyAccountsPage extends BasePage {
                     break;
 
                 case MyAccountsConstants.TAB_PAWNING:
-                    waitForElementToBeInvisible(lblLoadingIcon, 25);
-                    waitForElementToBeInvisible(lblAccountListLoading, 40);
-                    waitForElementToBeInvisible(icnTileLoading, 40);
+                    waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+                    waitForElementToBeInvisible(lblAccountListLoading, VERY_LONG_WAIT);
+                    waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
-                    waitForElementToBeClickable(btnEditNickName, 20);
+                    waitForElementToBeClickable(btnEditNickName, LONG_WAIT);
 
                     clickOnElement(btnEditNickName);
 
-                    waitForElementToBeClickable(tfNickName, 20);
+                    waitForElementToBeClickable(tfNickName, LONG_WAIT);
                     sendKeysToElement(tfNickName, nickName);
 
                     addToReport("Enter nick name " + nickName, Status.PASS, true);
                     clickOnElement(getElementByTypeAndText(ElementType.button, MyAccountsConstants.SAVE_CHANGES));
 
-                    waitForElementPresence(getElementByTypeAndText(ElementType.div, MyAccountsConstants.NICK_NAME_UPDATED), 20);
+                    waitForElementPresence(getElementByTypeAndText(ElementType.div, MyAccountsConstants.NICK_NAME_UPDATED), LONG_WAIT);
                     addToReport("NickName updated successfully popup received", Status.PASS, true);
                     clickOnElement(btnClosePopup);
 
                     clickOnElement(btnNextArrow);
-                    waitForElementToBeInvisible(lblLoadingIcon, 25);
-                    waitForElementToBeInvisible(lblAccountListLoading, 40);
-                    waitForElementToBeInvisible(icnTileLoading, 40);
+                    waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+                    waitForElementToBeInvisible(lblAccountListLoading, VERY_LONG_WAIT);
+                    waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
                     clickOnElement(btnPreviousArrow);
-                    waitForElementToBeInvisible(lblLoadingIcon, 25);
-                    waitForElementToBeInvisible(lblAccountListLoading, 40);
-                    waitForElementToBeInvisible(icnTileLoading, 40);
+                    waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+                    waitForElementToBeInvisible(lblAccountListLoading, VERY_LONG_WAIT);
+                    waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
                     if (isElementPresentBy(lblNickName(nickName))) {
                         addToReport("Nick name updated to  '" + nickName + "' is present under tab '" + tabName[inc] + "'", Status.PASS, true);
@@ -883,29 +903,30 @@ public class MyAccountsPage extends BasePage {
 
     /**
      * Validate the current account details
-     * @param tabName         The name of the tab to navigate
-     * @param tileHeader      The header of the account tile
-     * @param accountNumber   The account number to validate
-     * @param odLimit         Overdraft limit value
-     * @param tempOdLimit     Temporary overdraft limit
+     *
+     * @param tabName          The name of the tab to navigate
+     * @param tileHeader       The header of the account tile
+     * @param accountNumber    The account number to validate
+     * @param odLimit          Overdraft limit value
+     * @param tempOdLimit      Temporary overdraft limit
      * @param overdueLiability Overdue liability amount
-     * @param reservedAmount  Reserved amount in the account
-     * @param accountBalance  Final account balance shown
-     * @param openedOn        Date the account was opened
+     * @param reservedAmount   Reserved amount in the account
+     * @param accountBalance   Final account balance shown
+     * @param openedOn         Date the account was opened
      */
     public void ValidateCurrentAccountDetails(String tabName, String tileHeader, String accountNumber, String odLimit, String tempOdLimit, String overdueLiability, String reservedAmount, String accountBalance, String openedOn) {
         addToReport("----------Start of validation of user should be able to view the Current account details----------", Status.PASS, false);
 
-        waitForElementToBeInvisible(lblLoadingIcon, 25);
-        waitForElementToBeInvisible(icnTileLoading, 40);
+        waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+        waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
         //Selecet tab and account
         selectTabAndValidate(tabName, tileHeader);
         searchAndSelectAccountList(accountNumber);
 
-        waitForElementToBeInvisible(lblLoadingIcon, 25);
-        waitForElementToBeInvisible(icnTileLoading, 40);
-        waitForElementPresence(lblAccountSummaryDetails(MyAccountsConstants.ACCOUNT_CURRENCY), 40);
+        waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+        waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
+        waitForElementPresence(lblAccountSummaryDetails(MyAccountsConstants.ACCOUNT_CURRENCY), VERY_LONG_WAIT);
 
         // Permanent OD Limit
         if (odLimit.equals(getAttributeOrText(lblAccountSummaryDetails(MyAccountsConstants.PERMANENET_OD_LIMIT), "text"))) {
@@ -991,15 +1012,15 @@ public class MyAccountsPage extends BasePage {
     public void ValidateAdvancedSearch(String tabName, String tileHeader, String accountNumber, String month, String year, String from, String to, String fullDate, String amountFrom, String amountTo) {
         addToReport("----------Start of validation of user should be able to view the Current account details----------", Status.PASS, false);
 
-        waitForElementToBeInvisible(lblLoadingIcon, 25);
-        waitForElementToBeInvisible(icnTileLoading, 40);
+        waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+        waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
         //Selecet tab and account
         selectTabAndValidate(tabName, tileHeader);
         searchAndSelectAccountList(accountNumber);
 
-        waitForElementToBeInvisible(lblLoadingIcon, 25);
-        waitForElementToBeInvisible(icnTileLoading, 40);
+        waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+        waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
         clickOnElement(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_ADVANCE_SEARCH));
 
         waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_APPLY_FILTERS), 20);
@@ -1020,8 +1041,8 @@ public class MyAccountsPage extends BasePage {
         waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_APPLY_FILTERS), 10);
         clickOnElement(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_APPLY_FILTERS));
 
-        waitForElementToBeInvisible(lblLoadingIcon, 25);
-        waitForElementToBeInvisible(icnTileLoading, 40);
+        waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
+        waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
         //Validate the filter results
         int recordCount = isElementsPresentBy(tblRows);
@@ -1040,8 +1061,8 @@ public class MyAccountsPage extends BasePage {
         //validate close filter
         clickOnElement(btnCloseFilterIcon(MyAccountsConstants.FILTER_TRANSACTION_DATE));
         waitForElementToBeInvisible(btnCloseFilterIcon(MyAccountsConstants.FILTER_TRANSACTION_DATE), 20);
-        waitForElementToBeInvisible(lblLoadingIcon, 25);
-        waitForElementToBeInvisible(icnTileLoading, 40);
+        waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
+        waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
         scrollToWebElement(lblAccountHistoryAccountNo(MyAccountsConstants.ACCOUNT_HISTORY));
         waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_ADVANCE_SEARCH), 20);
@@ -1054,8 +1075,8 @@ public class MyAccountsPage extends BasePage {
         sendKeysToElement(getAdvanceSearchFields(ElementType.span, MyAccountsConstants.FILTER_AMOUNT_TO), amountTo);
         clickOnElement(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_APPLY_FILTERS));
 
-        waitForElementToBeInvisible(lblLoadingIcon, 25);
-        waitForElementToBeInvisible(icnTileLoading, 40);
+        waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
+        waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
         //Validate the filter results
         recordCount = isElementsPresentBy(tblRows);
@@ -1079,8 +1100,8 @@ public class MyAccountsPage extends BasePage {
         // close filter
         clickOnElement(btnCloseFilterIcon(MyAccountsConstants.FILTER_AMOUNT_FROM));
         waitForElementToBeInvisible(btnCloseFilterIcon(MyAccountsConstants.FILTER_AMOUNT_FROM), 20);
-        waitForElementToBeInvisible(lblLoadingIcon, 25);
-        waitForElementToBeInvisible(icnTileLoading, 40);
+        waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
+        waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
         scrollToWebElement(lblAccountHistoryAccountNo(MyAccountsConstants.ACCOUNT_HISTORY));
         waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_ADVANCE_SEARCH), 20);
@@ -1092,8 +1113,8 @@ public class MyAccountsPage extends BasePage {
 
         clickOnElement(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_APPLY_FILTERS));
 
-        waitForElementToBeInvisible(lblLoadingIcon, 25);
-        waitForElementToBeInvisible(icnTileLoading, 40);
+        waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
+        waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
         //Validate the filter results
         recordCount = isElementsPresentBy(tblRows);
@@ -1115,8 +1136,8 @@ public class MyAccountsPage extends BasePage {
         // close filter
         clickOnElement(btnCloseFilterIcon(MyAccountsConstants.TRANSFER_TYPE));
         waitForElementToBeInvisible(btnCloseFilterIcon(MyAccountsConstants.TRANSFER_TYPE), 20);
-        waitForElementToBeInvisible(lblLoadingIcon, 25);
-        waitForElementToBeInvisible(icnTileLoading, 40);
+        waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
+        waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
 
         waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_ADVANCE_SEARCH), 20);
@@ -1128,8 +1149,8 @@ public class MyAccountsPage extends BasePage {
 
         clickOnElement(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_APPLY_FILTERS));
 
-        waitForElementToBeInvisible(lblLoadingIcon, 25);
-        waitForElementToBeInvisible(icnTileLoading, 40);
+        waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
+        waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
         //Validate the filter results
         recordCount = isElementsPresentBy(tblRows);
@@ -1166,8 +1187,8 @@ public class MyAccountsPage extends BasePage {
     public void ValidateChequeRequestDetails(String tabName, String tileHeader, String accountNumber, List<String> noOFLeaves, List<String> numberOfBooks) {
         addToReport("----------Start of validation of user should be able to  request cheques for a LKR accounts----------", Status.PASS, false);
 
-        waitForElementToBeInvisible(lblLoadingIcon, 25);
-        waitForElementToBeInvisible(icnTileLoading, 40);
+        waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
+        waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
         //Select tab and account
         selectTabAndValidate(tabName, tileHeader);
@@ -1185,7 +1206,7 @@ public class MyAccountsPage extends BasePage {
 
         addToReport("----------End of validation of user should be able to  request cheques for a LKR accounts----------", Status.PASS, false);
         addToReport("----------Start of validation of user should be able to  able to view the mentioned fields when requesting the cheques----------", Status.PASS, false);
-        waitForElementToBeClickable(ddCollectingBranch, 25);
+        waitForElementToBeClickable(ddCollectingBranch, VERY_LONG_WAIT);
 
         // Collecting branch
         if (isElementPresentBy(ddCollectingBranch)) {
@@ -1233,13 +1254,13 @@ public class MyAccountsPage extends BasePage {
     public void ValidateSavingsAccountDetails(String tabName, String tileHeader, String accountNumber, String accHolderName, String systemReserved, String lienAmount, String accOpenedOn, String accountBalance, String floatBalance, String amountFrom, String amountTo, String downloadDirectory) {
         addToReport("----------Start of validation of user should be able to view the Savings account details----------", Status.PASS, false);
 
-        waitForElementToBeInvisible(lblLoadingIcon, 25);
-        waitForElementToBeInvisible(icnTileLoading, 40);
+        waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
+        waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
         //Selecet tab and account
         selectTabAndValidate(tabName, tileHeader);
 
-        waitForElementToBeClickable(icnAccounts, 25);
+        waitForElementToBeClickable(icnAccounts, LONG_WAIT);
 
         //Obtain pagination value
         cardCount = CommonUtils.splitText(getAttributeOrText(icnAccounts, "text"), "/");
@@ -1254,8 +1275,8 @@ public class MyAccountsPage extends BasePage {
                     //Navigate to next account
                     clickOnElement(btnNextArrow);
                     //WaitForElementPresence(lblLoadingIcon);
-                    waitForElementToBeInvisible(lblLoadingIcon, 25);
-                    waitForElementToBeInvisible(lblAccountListLoading, 25);
+                    waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+                    waitForElementToBeInvisible(lblAccountListLoading, LONG_WAIT);
 
                 } else {
                     break;
@@ -1287,7 +1308,6 @@ public class MyAccountsPage extends BasePage {
         }
 
         // Account Opened On
-        String c = getAttributeOrText(lblAccountSummaryDetails(MyAccountsConstants.ACCOUNT_OPENED_ON), "text");
         if (accOpenedOn.equals(getAttributeOrText(lblAccountSummaryDetails(MyAccountsConstants.ACCOUNT_OPENED_ON), "text"))) {
             addToReport("Successfully validated Account Opened On: '" + accOpenedOn + "'", Status.PASS, false);
         } else {
@@ -1311,11 +1331,11 @@ public class MyAccountsPage extends BasePage {
         //Click on account no row
         clickOnElement(lblHighlightedAccountNo(accountNumber));
         waitForElementToBeClickable(lblAccountHistoryAccountNo(MyAccountsConstants.ACCOUNT_HISTORY), 30);
-        waitForElementToBeInvisible(lblLoadingIcon, 30);
+        waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
 
         //    validate the advance search download
-        waitForElementToBeInvisible(lblLoadingIcon, 25);
-        waitForElementToBeInvisible(icnTileLoading, 40);
+        waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
+        waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
         //The last 10 account transactions must be displayed
         int recordCount = isElementsPresentBy(tblRows);
@@ -1352,8 +1372,8 @@ public class MyAccountsPage extends BasePage {
         sendKeysToElement(getAdvanceSearchFields(ElementType.span, MyAccountsConstants.FILTER_AMOUNT_TO), amountTo);
         clickOnElement(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_APPLY_FILTERS));
 
-        waitForElementToBeInvisible(lblLoadingIcon, 25);
-        waitForElementToBeInvisible(icnTileLoading, 40);
+        waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
+        waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
         waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_ADVANCE_SEARCH), 20);
         clickOnElement(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_ADVANCE_SEARCH));
@@ -1391,6 +1411,138 @@ public class MyAccountsPage extends BasePage {
 
     }
 
+    String cardNo,customerAccountNumber,expiryDate,cardStatus,cardType,availableBalance;
+    public void ValidateCreditCardDetails(String tabName, String tileHeader,String accountNumber) {
+        addToReport("----------Start of validation of user should be able to view the Credit card details----------", Status.PASS, false);
+
+        waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
+        waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
+
+        //Selecet tab and account
+        selectTabAndValidate(tabName, tileHeader);
+
+        if (isElementPresentBy(icnAccounts)){
+
+            waitForElementToBeClickable(icnAccounts, VERY_LONG_WAIT);
+        //Obtain pagination value
+        cardCount = CommonUtils.splitText(getAttributeOrText(icnAccounts, "text"), "/");
+        //Obtain the accounts record count
+        recordCount = Integer.parseInt(cardCount[1]);
+        if (recordCount != 0) {
+            for (int incr = 0; incr < recordCount; incr++) {
+
+                String accountNumberRetrived = getAttributeOrText(lblAccountNumber, "text").replace(" ", "");
+
+                if (!accountNumberRetrived.equals(accountNumber)) {
+                    //Navigate to next account
+                    clickOnElement(btnNextArrow);
+                    waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
+                    waitForElementToBeInvisible(lblAccountListLoading, VERY_LONG_WAIT);
+
+                } else {
+                    addToReport("Expected account "+accountNumber+" found", Status.FAIL, true);
+                    break;
+                }
+            }
+        } else {
+            addToReport("No accounts", Status.FAIL, true);
+        }
+
+        }
+
+        //Obtain text
+        availableBalance = getAttributeOrText(lblCreditCardAvailableBalance(MyAccountsConstants.AVAILABLE),"text");
+        cardNo = getAttributeOrText(lblCreditCardNumber(MyAccountsConstants.AVAILABLE),"text");
+        customerAccountNumber = getAttributeOrText(lblCreditCardCustAccNumber(MyAccountsConstants.CAN),"text");
+        cardStatus= getAttributeOrText(lblInactiveCardStatus,"text");
+        expiryDate = getAttributeOrText(lblCreditCardCustAccNumber(MyAccountsConstants.EXPIRY_DATE),"text");
+
+        // card type
+        if (isElementPresentBy(imgMasterCardLogo)) {
+            addToReport("Successfully obtained card type ", Status.PASS, false);
+            cardType = MyAccountsConstants.MASTER_INACTIVE;
+        } else {
+            addToReport("Failed to validate card type", Status.FAIL, true);
+        }
+
+
+        // Credit Card Number
+        if (cardNo.equals(getAttributeOrText(lblCreditCardDetails(MyAccountsConstants.CARD_NUMBER), "text"))) {
+            addToReport("Successfully validated " + MyAccountsConstants.CARD_NUMBER + " : '" + cardNo + "'", Status.PASS, false);
+        } else {
+            addToReport("Failed to validate " + MyAccountsConstants.CARD_NUMBER + ". Expected: '" + cardNo + "', but received: '" + getAttributeOrText(lblCreditCardDetails(MyAccountsConstants.CARD_NUMBER), "text") + "'", Status.FAIL, true);
+        }
+
+        // Customer Account Number
+        if (customerAccountNumber.equals(getAttributeOrText(lblCreditCardDetails(MyAccountsConstants.CUSTOMER_ACCOUNT_NUMBER), "text"))) {
+            addToReport("Successfully validated " + MyAccountsConstants.CUSTOMER_ACCOUNT_NUMBER + " : '" + customerAccountNumber + "'", Status.PASS, false);
+        } else {
+            addToReport("Failed to validate " + MyAccountsConstants.CUSTOMER_ACCOUNT_NUMBER + ". Expected: '" + customerAccountNumber + "', but received: '" + getAttributeOrText(lblCreditCardDetails(MyAccountsConstants.CUSTOMER_ACCOUNT_NUMBER), "text") + "'", Status.FAIL, true);
+        }
+
+        // Expiry Date
+        if (expiryDate.equals(getAttributeOrText(lblCreditCardDetails(MyAccountsConstants.EXPIRY_DATE), "text"))) {
+            addToReport("Successfully validated " + MyAccountsConstants.EXPIRY_DATE + " : '" + expiryDate + "'", Status.PASS, false);
+        } else {
+            addToReport("Failed to validate " + MyAccountsConstants.EXPIRY_DATE + ". Expected: '" + expiryDate + "', but received: '" + getAttributeOrText(lblCreditCardDetails(MyAccountsConstants.EXPIRY_DATE), "text") + "'", Status.FAIL, true);
+        }
+
+        // Card Status
+        if (cardStatus.equals(getAttributeOrText(lblCreditCardDetails(MyAccountsConstants.CARD_STATUS), "text"))) {
+            addToReport("Successfully validated " + MyAccountsConstants.CARD_STATUS + " : '" + cardStatus + "'", Status.PASS, false);
+        } else {
+            addToReport("Failed to validate " + MyAccountsConstants.CARD_STATUS + ". Expected: '" + cardStatus + "', but received: '" + getAttributeOrText(lblCreditCardDetails(MyAccountsConstants.CARD_STATUS), "text") + "'", Status.FAIL, true);
+        }
+
+        // Card Type
+        if (cardType.equals(getAttributeOrText(lblCreditCardDetails(MyAccountsConstants.CARD_TYPE), "text"))) {
+            addToReport("Successfully validated " + MyAccountsConstants.CARD_TYPE + " : '" + cardType + "'", Status.PASS, false);
+        } else {
+            addToReport("Failed to validate " + MyAccountsConstants.CARD_TYPE + ". Expected: '" + cardType + "', but received: '" + getAttributeOrText(lblCreditCardDetails(MyAccountsConstants.CARD_TYPE), "text") + "'", Status.FAIL, true);
+        }
+
+        // Available Balance
+        if (availableBalance.equals(getAttributeOrText(lblCreditCardDetails(MyAccountsConstants.AVAILABLE_BALANCE), "text"))) {
+            addToReport("Successfully validated " + MyAccountsConstants.AVAILABLE_BALANCE + " : '" + availableBalance + "'", Status.PASS, false);
+        } else {
+            addToReport("Failed to validate " + MyAccountsConstants.AVAILABLE_BALANCE + ". Expected: '" + availableBalance + "', but received: '" + getAttributeOrText(lblCreditCardDetails(MyAccountsConstants.AVAILABLE_BALANCE), "text") + "'", Status.FAIL, true);
+        }
+
+        //Validate supplementary card
+        if (isElementPresentBy(getElementByTypeAndText(ElementType.h2,MyAccountsConstants.SUPPLEMENTARY_CARDS))) {
+            addToReport("Successfully validated header " + MyAccountsConstants.SUPPLEMENTARY_CARDS, Status.PASS, false);
+        } else {
+            addToReport("Failed to validate header " + MyAccountsConstants.SUPPLEMENTARY_CARDS , Status.FAIL, true);
+        }
+
+        recordCount = isElementsPresentBy(tblTransactionRows);
+        if (recordCount != 0) {
+            for (int incr = 1; incr <= recordCount; incr++) {
+
+                //Validate supplementary card table headers
+                for (String header : MyAccountsConstants.SUPPLEMENTARY_CARD_TABLE_HEADERS) {
+
+                    if (isElementPresentBy(getHeaderByName(header))) {
+                        addToReport("Table header '" + header + "' is present under account " + accountNumber, Status.PASS, false);
+                    }  else {
+                        addToReport("Missing table header '" + header + "'  under account number " + accountNumber, Status.FAIL, true);
+                    }
+
+                }
+                if (getAttributeOrText(tblCellRecord(1,incr),"text").equals(null) || getAttributeOrText(tblCellRecord(2,incr),"text").equals(null)){
+                    addToReport("Invalid content under supplementary cards under account :" + accountNumber, Status.FAIL, true);
+                }else {
+                    addToReport("Successfully obtained card Number  " + getAttributeOrText(tblCellRecord(1, incr), "text"), Status.PASS, false);
+                    addToReport("Successfully obtained card Name " + getAttributeOrText(tblCellRecord(2, incr), "text"), Status.PASS, false);
+                }
+
+
+            }
+            } else {
+            addToReport("No supplementary cards were found ", Status.FAIL, true);
+        }
+
+        addToReport("----------End of validation of user should be able to view the Credit card details----------", Status.PASS, false);
+    }
+
 }
-
-

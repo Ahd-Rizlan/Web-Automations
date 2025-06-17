@@ -27,10 +27,13 @@ public class BillerConstants {
     public static final String BUTTON_TEXT_BILL_PAYMENT_HISTORY = "Bill Payment History";
     public static final String BUTTON_MY_ACCOUNTS = "My Accounts";
     public static final String BUTTON_ACCOUNTS = "Accounts";
-    public static final String BUTTON_NEXT = "Next";
+    public static final String BUTTON_BACK = "Back";
     public static final String BUTTON_BILL_PAYMENT = "Bill Payment";
     public static final String BUTTON_NEW_PAYMENT = "New Payment";
     public static final String BUTTON_SEND_MONEY = "Send Money";
+    public static final String PROCEED_TO_PAY = "Proceed to Pay";
+    public static final String PROCEED_TO_PAY_TWO = "Proceed To Pay";
+    public static final String BUTTON_FETCH = "Fetch";
 
     //-----------------One time data ----------------------
     public static final String OTP = "111111";
@@ -48,6 +51,9 @@ public class BillerConstants {
     public static final String MANAGE_SCHEDULE = "manage-schedule";
     public static final String SCHEDULE_MANAGEMENT = "Schedule Management";
     public static final String DOWNLOADS = "Downloads";
+    public static final String STUDENT_NO = "Student No.";
+    public static final String SELECTED_INVOICE_NO = "Selected Invoice No.";
+
 
     public static final Map<String, String> CONSTANTS_MAP = new HashMap<>();
 
@@ -127,6 +133,7 @@ public class BillerConstants {
         CONSTANTS_MAP.put("KW_SETUP_STANDING_ORDER_SCHEDULE", "Setup Standing Order/Schedule");
         CONSTANTS_MAP.put("KW_MOBILE_NUMBER_WITHOUT", "Mobile Number (Without");
         CONSTANTS_MAP.put("KW_SAVED_BILLERS", "Saved Billers");
+        CONSTANTS_MAP.put("KW_GOVERNMENT_PAYMENTS", "Government Payments");
     }
 
 
