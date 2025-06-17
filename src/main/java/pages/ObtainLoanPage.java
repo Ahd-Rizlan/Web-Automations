@@ -241,12 +241,6 @@ public class ObtainLoanPage extends BasePage {
 
         addToReport("---------- Start of Validating customer entered values----------", Status.INFO, false);
 
-         depositAccount = "";
-         expectedLoanAmount = "";
-         repaymentAccount = "";
-         expectedMonth = "";
-         expectedPurpose = "";
-
         try {
             // Selected Deposit Account
             List<String> expectedDepositeAccount = getSelectedOptionText(dddepositAccount, PawnConstants.FIRST_SELECTED_OPTION); //action
