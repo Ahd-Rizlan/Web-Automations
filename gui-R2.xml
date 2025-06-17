@@ -34,7 +34,7 @@
                     <include name="validatePawnSettlement"/>
                 </methods>
             </class>
-            <!--            Messaging covered in R1-->
+            <!--Messaging covered in R1-->
             <class name="gui.test.CurrentAccountDetailedTest">
                 <methods>
                     <include name="logIntoDahsboardAlternateUserFive"/>

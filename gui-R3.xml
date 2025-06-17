@@ -1,0 +1,10 @@
+<suite name="Sampath SVR4 GUI Test Suite">
+    <listeners>
+        <listener class-name="utils.report.TestNgListener"/>
+    </listeners>
+    <test verbose="2" preserve-order="true" name="Sampath SVR4 GUI Test R3">
+        <classes>
+
+        </classes>
+    </test>
+</suite>

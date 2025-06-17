@@ -200,7 +200,6 @@ public class DataProviders {
             String[] columnNames = {"expectedMessage", "fdAccountNumber"};
             return XlsReader.getDataFromSheet(filePath, "FDDetailView", columnNames).iterator();
         }
-
     }
     public static class LoanDetailsViewDataProvider {
         private static final String filePath;
