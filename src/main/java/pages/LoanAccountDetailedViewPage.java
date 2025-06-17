@@ -234,7 +234,7 @@ public class LoanAccountDetailedViewPage extends BasePage {
             } else {
                 for (int inc = recordCountBackWards; inc >= 1; inc--) {
                     clickOnElement(btnLeftArrow); // Move to previous card
-                    outStandingAmountcurrencyPart = getTextFromElement(lblPawningCardOutStandingAmount).trim().split(" ")[0]; // 🔁 Update the value
+                    outStandingAmountcurrencyPart = getTextFromElement(lblPawningCardOutStandingAmount).trim().split(" ")[0]; // Update the value
 
                     if (outStandingAmountcurrencyPart.equalsIgnoreCase(DashboardConstants.CURRENCY_VALUES[1])) {
                         clickOnElement(lblLoanCard);
