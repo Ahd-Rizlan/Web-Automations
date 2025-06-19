@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 
 public class ObtainLoanTest extends BaseTest {
 
-    @Test(priority = 1, dataProvider = "LoginDataSavingsFD", description = "Pre-Requisite :: Login to the Sampath vishwa application", dataProviderClass = DataProviders.SavingsandFDDataProvider.class)
+    @Test(priority = 1, dataProvider = "LoginDataObtainLoan", description = "Pre-Requisite :: Login to the Sampath vishwa application", dataProviderClass = DataProviders.LoginDataProvider.class)
     public void logIntoDahsboard(String userName, String password, String emailSentSuccessMsg) throws InterruptedException {
         loginPage.validateTheLoginPage(LoginConstants.EXPECTED_TITLE, LoginConstants.LOGIN_TILE_NAME);
         loginPage.loginToSampathVishwaWeb(userName, password, emailSentSuccessMsg, LoginConstants.OTP_PAGE_HEADER, LoginConstants.FALASE);
@@ -31,8 +31,10 @@ public class ObtainLoanTest extends BaseTest {
     @Test(priority = 3, dataProvider = "LoanDetails", description = "Obtain loan that in quick action section and validating the loan creation confirmation - 119,121,122,123,124,125,126,", dataProviderClass = DataProviders.ObtainLoanDataProvider.class)
     public void validateObtainLoanInQauickActions (String accountNumber1,String minimumAmount, String maximumAmount, String actualAmount, String wrongMonth, String correctMonth, String purpose, String accountNumber2){
         dashboardPage.navigateBackToDashboard();
+        obtainLoanPage.obtainAllAccountTypes();
         dashboardPage.selectQuickActions("Obtain");
         obtainLoanPage.ValidateObtainLoanPageContent(accountNumber1,minimumAmount, maximumAmount, actualAmount, wrongMonth, correctMonth, purpose, accountNumber2);
         obtainLoanPage.ValidateObtainLoanConfirmation();
+        obtainLoanPage.enterOTPAndContinueSettingsPage(LoginConstants.OTP);
     }
 }
