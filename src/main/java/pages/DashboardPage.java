@@ -1457,6 +1457,9 @@ public class DashboardPage extends BasePage {
                 clickOnElement(btnQActionsSavingsAccount);
                 waitForElementToBeInvisible(btnQActionsSavingsAccount, MODERATE_WAIT);
                 break;
+            case "obtain":
+                clickOnElement(btnQActionsObtainNewLoan);
+                break;
             default:
                 throw new IllegalArgumentException("Unable to click on quick action button :" + quickActionButton);
         }

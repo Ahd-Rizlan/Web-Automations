@@ -2,19 +2,31 @@ package pages;
 
 import com.aventstack.extentreports.Status;
 import org.openqa.selenium.Keys;
+import utils.CommonUtils;
+import utils.constants.DashboardConstants;
 import utils.constants.ObtainLoanConstants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import utils.constants.PawnConstants;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static utils.Drivers.*;
+
 public class ObtainLoanPage extends BasePage {
+
+
+    private String expectedLoanError;
+    private List<String> allAccountNumbers = new ArrayList<>();
+
     public ObtainLoanPage(WebDriver driver) {
         super(driver);
     }
+
+
 
     public enum ElementType {
         button, label, span, div;
@@ -39,15 +51,21 @@ public class ObtainLoanPage extends BasePage {
     private static final By btndownloadPdf = By.xpath("//button[@type='button' and @class='bg-green-500 p-3 px-7 rounded-lg text-white hover:bg-green-600 transition-colors']");
     private static final By btnback = By.xpath("//button[@type='button' and @class='bg-gray-500 p-3 px-7 rounded-lg text-white hover:bg-gray-600 transition-colors']");
     private static final By rdagreementBtn = By.xpath("//input[@class='peer appearance-none h-5 w-5 border-2 border-gray-400 bg-gray-200 rounded-md checked:bg-white hover:cursor-pointer']");
-
-
-
+    private static final By icnAccounts = By.xpath("//div[contains(@class,'flex flex-col items-center')]/div[3]/div[1]");
+    private static final By lblAccountNumber = By.xpath("//div[contains(@class,'full justify-center flex')]//div[contains(@class,'text-base')]/span");
+    private static final By btnNextArrow = By.xpath("//div[contains(@class,'flex gap-2')]/div[2]");
+    private static final By lblLoadingIcon = By.xpath("//div[contains(@class,'AccountsCards_loader')]");
+    private static final By depositsSection = By.xpath("//div[normalize-space(text())='Deposits']");
     private static By txtInputFieldByIndex(int index) {
         return By.xpath("(//input[@type='text'])[" + index + "]");
     }
 
     public By lblObtainLoanFDSection(String sectionText) {
         return By.xpath("//span[text()='" + sectionText + "']");
+    }
+
+    private static By tfOTP(int Index) {
+        return By.xpath("(//input[contains(@class, 'otp-box') and @type='number'])[" + Index + "]");
     }
 
     /**
@@ -101,6 +119,40 @@ public class ObtainLoanPage extends BasePage {
         addToReport("----------Starting the Obtain Loan validation from quick action section ----------", Status.INFO, false);
     }
 
+
+    /**
+     * Obtain all available accounts
+     *
+     */
+    public void obtainAllAccountTypes() {
+       // waitForElementPresence(depositsSection,SHORT_WAIT);
+        clickOnElement(depositsSection);
+        waitFor(2);
+        waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+        waitFor(5);
+
+        String[] cardCount = CommonUtils.splitText(getAttributeOrText(icnAccounts, "text"), "/");
+        int recordCount = Integer.parseInt(cardCount[1]);
+
+        if (recordCount != 0) {
+            for (int inc = 0; inc < recordCount; inc++) {
+                String accNum = getTextFromElement(lblAccountNumber).replaceAll("\\s+", "").trim();
+                allAccountNumbers.add(accNum);
+                addToReport("Successfully added account number: '" + accNum + "'", Status.PASS, true);
+
+                // Navigate to next account only if not on last card
+                if (inc < recordCount - 1) {
+                    clickOnElement(btnNextArrow);
+                    waitForElementToBeInvisible(lblLoadingIcon, MODERATE_WAIT);
+                }
+            }
+        } else {
+            addToReport("No accounts found", Status.FAIL);
+            throw new RuntimeException("Error - No accounts found");
+        }
+    }
+
+
     /**
      * This method will enter values and validate the error messages from the quick action section
      *
@@ -123,11 +175,39 @@ public class ObtainLoanPage extends BasePage {
         }
 
         clickOnElement(dddepositAccount);
+        // Get all dropdown values
+        List<String> dropdownAccounts = getSelectedOptionText(dddepositAccount,"ALL_OPTIONS_VALUE");
+
+        List<String> extractedAccountNumbers = new ArrayList<>();
+        for (String fullOptionText : dropdownAccounts) {
+            String[] parts = fullOptionText.split(" - ");
+            if (parts.length > 0) {
+                extractedAccountNumbers.add(parts[0].trim());
+            }
+        }
+
+        for (String account : allAccountNumbers) {
+            if (extractedAccountNumbers.contains(account)) {
+                addToReport("Dropdown contains account: " + account, Status.PASS, false);
+            } else {
+                addToReport("Missing account in dropdown: " + account, Status.FAIL);
+            }
+        }
+
         try {
             waitFor(5);
             selectFromDropdown(dddepositAccount,accountNumber1, PawnConstants.DROPDOWN_SELECT_BY_VALUE);
             addToReport("Successfully selected the first item from the deposit account dropdown.", Status.PASS);
-        } catch (Exception e) {
+            List<String> selectedAccountTextList = getSelectedOptionText(dddepositAccount, PawnConstants.FIRST_SELECTED_OPTION);
+// Extract AVL from first item if available
+            if (selectedAccountTextList != null && !selectedAccountTextList.isEmpty()) {
+                String selectedAccountText = selectedAccountTextList.get(0); // e.g. "217557792199 - AVL. 360,000.00"
+                String avlAmount = selectedAccountText.split("AVL\\. ")[1].split(" ")[0].split("\\.")[0].trim(); // → "360,000"
+                expectedLoanError = ObtainLoanConstants.LOAN_ERROR_MSG_02 + avlAmount;
+            }
+
+
+            } catch (Exception e) {
             addToReport("Failed to select the first item from the deposit account dropdown. Error: " + e.getMessage(), Status.FAIL);
         }
 
@@ -147,14 +227,14 @@ public class ObtainLoanPage extends BasePage {
         validateMessage(lblserviceFee, ObtainLoanConstants.SERVICE_FEE_O2);
 
         // Step 3: Maximum Loan
-        sendKeysToElement(txtenterLoanAmount, Keys.BACK_SPACE, 10); // character-by-character clear
+        sendKeysToElement(txtenterLoanAmount, Keys.BACK_SPACE, 10);
         sendKeysToElement(txtenterLoanAmount, maximumAmount);
         waitForPageLoadCompleteJS();
         waitFor(10);
         addToReport("Used '" + maximumAmount + "' for the new loan", Status.PASS, false);
         waitForElementPresence(txterrorMessageForLoanAmount, PawnConstants.WAIT_MEDIUM);
         waitForElementPresence(lblserviceFee, PawnConstants.WAIT_MEDIUM);
-        validateMessage(txterrorMessageForLoanAmount, ObtainLoanConstants.LOAN_ERROR_MSG_02);
+        validateMessage(txterrorMessageForLoanAmount,expectedLoanError);
         validateMessage(lblserviceFee, ObtainLoanConstants.SERVICE_FEE_O1);
 
         addToReport("---------- End Validating maximum and minimum amounts----------", Status.INFO, false);
@@ -240,12 +320,6 @@ public class ObtainLoanPage extends BasePage {
     public void ValidateObtainLoanConfirmation() {
 
         addToReport("---------- Start of Validating customer entered values----------", Status.INFO, false);
-
-         depositAccount = "";
-         expectedLoanAmount = "";
-         repaymentAccount = "";
-         expectedMonth = "";
-         expectedPurpose = "";
 
         try {
             // Selected Deposit Account
@@ -337,6 +411,34 @@ public class ObtainLoanPage extends BasePage {
         }
     }
 
+    /**
+     * This method is entering the OTP to navigates and validates the success message
+     *
+     * @param otp  - OTP
+     *
+     */
+    public void enterOTPAndContinueSettingsPage(String otp) {
+
+        //Enter OTP values and continue
+        try {
+            sendKeysToElement(tfOTP(1), String.valueOf(otp));
+
+            clickOnElement(btnsubmit);
+        } catch (Exception e) {
+            addToReport("Error when entering OTP", Status.FAIL);
+            throw new RuntimeException("Failed to enter OTP " + e.getMessage(), e);
+        }
+
+//        waitForElementPresence(getSuccessfulMsg(successMsg),20); //Request successful
+//        //Validate the error message
+//        if (isElementPresentBy(getSuccessfulMsg(successMsg))) {
+//            addToReport("'" + successMsg + "' message is present.", Status.PASS,true);
+//        } else {
+//            addToReport("'" + successMsg + "'  message is not present.", Status.FAIL);
+//            throw new RuntimeException("Error message validation is unsuccessful.");
+//        }
+
+    }
 
     /**
      * This method validate the locator gettext message with the expectedMessage
