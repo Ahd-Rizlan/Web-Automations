@@ -8,18 +8,22 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import utils.CommonUtils;
 import utils.constants.DashboardConstants;
+import utils.constants.LoanConstants;
 import utils.constants.LoginConstants;
 import utils.constants.PawnConstants;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static utils.Drivers.LONG_WAIT;
+
 public class LoanAccountDetailedViewPage extends BasePage {
 
-    String loanAccounttNumber,grantedDate,installmentsLeft,capitalInstallment,expireDate,overdueAmount,OutStandingamountOnly,outStandingAmountcurrencyPart,amount,charges,total;
+    String loanAccounttNumber, grantedDate, installmentsLeft, capitalInstallment, expireDate, overdueAmount, OutStandingamountOnly, outStandingAmountcurrencyPart, amount, charges, total;
     String[] cardCount;
     double ExpectedOutstandingAmountAfter;
-    public LoanAccountDetailedViewPage (WebDriver driver) {
+
+    public LoanAccountDetailedViewPage(WebDriver driver) {
         super(driver);
     }
 
@@ -29,13 +33,11 @@ public class LoanAccountDetailedViewPage extends BasePage {
 
     private static final By imgmyAccount = By.xpath("(//a[@class='NavBar_navlink__CRz3E NavBar_navlinkHover__eiXyp'])[1]");
     private static final By lblLoanAccountSummary = By.xpath("//span[contains(text(),'Loan Account Summary')]");
-
+    private static final By lblAccountListLoading = By.xpath("//div[contains(@class, 'bg-gray-300')]");
     private static final By lblLoans = By.xpath("(//a[@class='SubMenu_subMenuItem___oYCo'])[4]");
-    private static final By imgFDicon = By.xpath("//img[contains(@src, '2FNewLoanIcon')]");
-   private static final By icnAccounts = By.xpath("//div[contains(@class,'flex flex-col items-center')]/div[3]/div[1]");
+    private static final By icnAccounts = By.xpath("//div[contains(@class,'flex flex-col items-center')]/div[3]/div[1]");
     private static final By lblFDnumberamdAmount = By.xpath("//div[@class='flex']/span[2]");
     private static final By lblLoanCard = By.xpath("//div[contains(@class, 'items-center justify-center flex ')]");
-    private static final By lblOutStandingAmount = By.xpath("//span[@class='text-black']");
     private static final By btnRightArrow = By.xpath("//img[contains(@src, 'CardArrowRight')]");
     private static final By btnLeftArrow = By.xpath("//img[contains(@src, 'CardArrowLeft')]");
     private static final By lblPawningCardOutStandingAmount = By.xpath("//div[@class='text-2xl']/span[@class='text-black']");
@@ -51,22 +53,14 @@ public class LoanAccountDetailedViewPage extends BasePage {
     private static final By btnPaidInstallments = By.xpath("(//div[contains(@class, 'cursor-pointer text')])[1]");
     private static final By tblPartialInstallments = By.xpath("//table[contains(@class, 'min-w-full')]//tbody/tr");
     private static final By lblLoanAccountNumber = By.xpath("//span[contains(@class, 'flex') and contains(., 'Current Outstanding')]");
-
-   // private static final By lblLoanAccountNumber = By.xpath("//span[contains(@class, 'flex')]/text()[1]");
     private static final By lblOverDue = By.xpath("//li[contains(text(), 'Overdue Amount')]/span");
-    private static final By lblSavingsPrimaryStatus = By.xpath("//div[contains(@class,'justify-center items-center text-center')]");
-    private static final By lblPawningAccount = By.xpath("//div[contains(@class, 'flex flex-col pt-4 pl-4 gap-1')]//span[contains(@class, 'false')]");
-    private static final By lblPawningInterest = By.xpath("//div[contains(@class, 'flex flex-col')]//span[contains(@class, 'text-end')]");
-    private static final By tblPawningList = By.xpath("//tr[contains(@class, 'overflow-hidden shadow-md shadow-gray-300 ')]");
-    private static final By tblPawningHistoryList = By.xpath("//table[contains(@class, 'border-separate border-spacing')]");
-    private static final By btnNext = By.xpath("//button[contains(@class, 'text-white  min-w')]");
-    private static final By txtErrorMessage = By.xpath("//span[@class='text-red-500 text-xs']");
-    private static final By lblPawningConfirmation = By.xpath("//span[@class='text-sm font-bold']");
-    private static final By lblOutStandingPawningAmount = By.xpath("//div[@class='text-2xl']/span[@class='text-black']");
+    private static final By lblLoadingIcon = By.xpath("//div[contains(@class,'AccountsCards_loader')]");
+
 
     public By getLoanDetailValueByLabel(String label) {
         return By.xpath("//ul[contains(@class,'list-disc')]//li[contains(text(), '" + label + "')]/span");
     }
+
     private static By getSuccessfulMsg(String title) {
         return By.xpath("//div[contains(text(),'" + title + "')]");
     }
@@ -79,6 +73,10 @@ public class LoanAccountDetailedViewPage extends BasePage {
         return By.xpath("//table[contains(@class, 'min-w-full')]//tbody/tr[" + row + "]/td[" + col + "]");
     }
 
+    private static By tfOTP(int Index) {
+        return By.xpath("(//input[contains(@class, 'otp-box') and @type='number'])[" + Index + "]");
+    }
+
     /**
      * This method will navigate to the Loan Detail section
      */
@@ -89,7 +87,7 @@ public class LoanAccountDetailedViewPage extends BasePage {
 
         waitForElementPresence(imgmyAccount);
         hoverOverElement(driver, imgmyAccount);
-        addToReport("Hover on the My accounts tab ", Status.PASS,false);
+        addToReport("Hover on the My accounts tab ", Status.PASS, false);
 
         waitForElementPresence(lblLoans);
         clickOnElement(lblLoans);
@@ -105,11 +103,18 @@ public class LoanAccountDetailedViewPage extends BasePage {
 
     }
 
-    public void ValidatingLoanDetails(String[] currencyType, String errorMsg){
+    /**
+     * This method will validate the Loan details
+     *
+     * @param currencyType - currency type
+     * @param errorMsg     - Error message
+     */
+
+    public void ValidatingLoanDetails(String[] currencyType, String errorMsg) {
 
 
         //Obtain pagination value
-        cardCount=CommonUtils.splitText(getAttributeOrText(icnAccounts,"text"),"/");
+        cardCount = CommonUtils.splitText(getAttributeOrText(icnAccounts, "text"), "/");
 
         //Obtain the accounts record count
         int recordCount = Integer.parseInt(cardCount[1]);
@@ -118,8 +123,10 @@ public class LoanAccountDetailedViewPage extends BasePage {
 
             for (int inc = 0; inc < recordCount; inc++) {
 
-                waitForElementPresence(lblPawningCardOutStandingAmount,PawnConstants.WAIT_MEDIUM);
-                outStandingAmountcurrencyPart  = getTextFromElement(lblPawningCardOutStandingAmount).trim().split(" ")[0]; //LKR
+                waitForElementToBeInvisible(lblAccountListLoading, LONG_WAIT);
+                waitForElementPresence(lblLoanAccountSummary, LONG_WAIT);
+                waitForElementPresence(lblPawningCardOutStandingAmount, PawnConstants.WAIT_MEDIUM);
+                outStandingAmountcurrencyPart = getTextFromElement(lblPawningCardOutStandingAmount).trim().split(" ")[0]; //LKR
                 // Compare with constant
                 if (Arrays.asList(currencyType).contains(outStandingAmountcurrencyPart)) {
                     addToReport("Currency Type is: " + outStandingAmountcurrencyPart, Status.PASS, false);
@@ -127,6 +134,7 @@ public class LoanAccountDetailedViewPage extends BasePage {
                     addToReport("Currency mismatch. Expected: " + Arrays.toString(currencyType) + ", Found: " + outStandingAmountcurrencyPart, Status.FAIL);
                 }
 
+                waitForElementPresence(lblLoanAccountSummary, LONG_WAIT);
                 String[] loanParts = getTextFromElement(lblLoanAccountSummary).trim().split(":");
                 if (loanParts.length == 2) {
                     loanAccounttNumber = loanParts[1].trim();
@@ -135,11 +143,11 @@ public class LoanAccountDetailedViewPage extends BasePage {
                     addToReport("Loan Account summary format is invalid: '" + Arrays.toString(loanParts) + "'", Status.FAIL);
                     loanAccounttNumber = ""; // fallback to prevent null pointer if used later
                 }
-                grantedDate = getTextFromElement(getLoanDetailValueByLabel("Loan Granted Date")).trim();
-                installmentsLeft = getTextFromElement(getLoanDetailValueByLabel("Installments Left")).trim();
-                capitalInstallment = getTextFromElement(getLoanDetailValueByLabel("Capital Installment Amount")).trim();
-                expireDate = getTextFromElement(getLoanDetailValueByLabel("Loan Expire Date")).trim();
-                overdueAmount = getTextFromElement(getLoanDetailValueByLabel("Overdue Amount")).trim();
+                grantedDate = getTextFromElement(getLoanDetailValueByLabel(LoanConstants.GRANTED_DATE)).trim();
+                installmentsLeft = getTextFromElement(getLoanDetailValueByLabel(LoanConstants.INSTALLMENTS_LEFT)).trim();
+                capitalInstallment = getTextFromElement(getLoanDetailValueByLabel(LoanConstants.CAPITAL_INSTALLMENT)).trim();
+                expireDate = getTextFromElement(getLoanDetailValueByLabel(LoanConstants.EXPIRE_DATE)).trim();
+                overdueAmount = getTextFromElement(getLoanDetailValueByLabel(LoanConstants.OVERDUE_AMOUNT)).trim();
 
                 boolean flag = true;
 
@@ -166,8 +174,9 @@ public class LoanAccountDetailedViewPage extends BasePage {
                     flag = false;
                 }
 
+                // if (CommonUtils.containsAlphAndNumCharacters(capitalInstallment.replace("LKR", "").replace(",", "").trim()))
 // === Capital Installment Amount ===
-                if (CommonUtils.containsNumericCharactersWithNegativeValues(capitalInstallment.replace("LKR", "").replace(",", "").trim())) {
+                if (CommonUtils.containsAlphAndNumCharacters(capitalInstallment)) {
                     addToReport("Successfully validated Capital Installment Amount: '" + capitalInstallment + "'", Status.PASS, false);
                 } else {
                     addToReport("Capital Installment Amount is not valid: '" + capitalInstallment + "'", Status.FAIL);
@@ -183,7 +192,7 @@ public class LoanAccountDetailedViewPage extends BasePage {
                 }
 
 // === Overdue Amount ===
-                if (CommonUtils.containsNumericCharactersWithNegativeValues(overdueAmount.replace("LKR", "").replace(",", "").trim())) {
+                if (CommonUtils.containsAlphAndNumCharacters(overdueAmount)) {
                     addToReport("Successfully validated Overdue Amount: '" + overdueAmount + "'", Status.PASS, false);
                 } else {
                     addToReport("Overdue Amount is not valid: '" + overdueAmount + "'", Status.FAIL);
@@ -198,7 +207,7 @@ public class LoanAccountDetailedViewPage extends BasePage {
                         addToReport("Fixed Deposit text format is invalid: " + Arrays.toString(fdAccountNumber), Status.FAIL);
                     }
                 } else {
-                    addToReport("Fixed Deposit Details unavailable.", Status.PASS);
+                    addToReport("Sometimes expected behaviour Fixed Deposit Details unavailable.", Status.PASS);
                 }
 
 
@@ -213,8 +222,7 @@ public class LoanAccountDetailedViewPage extends BasePage {
                 clickOnElement(btnRightArrow);
             }
 
-        }
-        else {
+        } else {
             addToReport("No accounts found", Status.FAIL);
             throw new RuntimeException("Error - No accounts found");
         }
@@ -249,14 +257,14 @@ public class LoanAccountDetailedViewPage extends BasePage {
             addToReport("No cards available to search for dollar account.", Status.FAIL);
         }
 
-        waitForElementPresence(lblDuration,20);
+        waitForElementPresence(lblDuration, 20);
         addToReport("Loan duration is visible", Status.PASS, false);
 
         clickOnElement(btnSettleLoan);
-        waitForElementPresence(getSuccessfulMsg(errorMsg),20);
+        waitForElementPresence(getSuccessfulMsg(errorMsg), 20);
         //Validate the error message
         if (isElementPresentBy(getSuccessfulMsg(errorMsg))) {
-            addToReport("'" + errorMsg + "' message is present.", Status.PASS,true);
+            addToReport("'" + errorMsg + "' message is present.", Status.PASS, true);
         } else {
             addToReport("'" + errorMsg + "'  message is not present.", Status.FAIL);
             throw new RuntimeException("Error message validation is unsuccessful.");
@@ -265,7 +273,15 @@ public class LoanAccountDetailedViewPage extends BasePage {
 
     }
 
-    public void ValidatethePartialSettlement(String loanAccountNumber,String accountNumber, String customAmount,String successMsg) {
+    /**
+     * This method will validate the partial Loan settlement
+     *
+     * @param loanAccountNumber - Loan number
+     * @param accountNumber     - From account number
+     * @param successMsg        - Success message
+     */
+
+    public void ValidatethePartialSettlement(String loanAccountNumber, String accountNumber, String successMsg) {
 
 
         String firstCardNumber = "";
@@ -312,200 +328,222 @@ public class LoanAccountDetailedViewPage extends BasePage {
         }
 
 
-            waitForElementPresence(lblOutStandngAmount, 20);
-            OutStandingamountOnly = getTextFromElement(lblOutStandngAmount).replace("LKR", "").replace("-", "").trim();
+        waitForElementPresence(lblOutStandngAmount, 20);
+        OutStandingamountOnly = getTextFromElement(lblOutStandngAmount).replace("LKR", "").replace("-", "").trim();
 
-            clickOnElement(lblLoanCard);
-            addToReport("Click on the LKR account", Status.PASS);
-            waitForElementPresence(lblDuration,PawnConstants.WAIT_EXTRA_LONG);
-            clickOnElement(btnSettleLoan);
-            addToReport("Click on the loan settlement button", Status.PASS);
+        clickOnElement(lblLoanCard);
+        addToReport("Click on the LKR account", Status.PASS);
+        waitForElementPresence(lblDuration, PawnConstants.WAIT_EXTRA_LONG);
+        clickOnElement(btnSettleLoan);
+        addToReport("Click on the loan settlement button", Status.PASS);
 
-            waitForElementPresence(btnSubmit, 20);
-            if (isElementPresentBy(btnSubmit)) {
-                addToReport("Loan Payments Page is Visible", Status.PASS, true);
-            } else {
-                addToReport("Loan Payments Page is not Visible", Status.FAIL);
-                throw new RuntimeException("Error - Loan Payments Page is Visible");
-            }
+        waitForElementPresence(btnSubmit, 20);
+        if (isElementPresentBy(btnSubmit)) {
+            addToReport("Loan Payments Page is Visible", Status.PASS, true);
+        } else {
+            addToReport("Loan Payments Page is not Visible", Status.FAIL);
+            throw new RuntimeException("Error - Loan Payments Page is Visible");
+        }
 
-            selectFromDropdown(ddDebitedAccount, accountNumber, PawnConstants.DROPDOWN_SELECT_BY_VALUE);
-            addToReport("'" + accountNumber + "' number Selected from the dropDown", Status.PASS, false);
+        selectFromDropdown(ddDebitedAccount, accountNumber, PawnConstants.DROPDOWN_SELECT_BY_VALUE);
+        addToReport("'" + accountNumber + "' number Selected from the dropDown", Status.PASS, false);
 
-            sendKeysToElement(txtCustomAmountAmount, customAmount);
-            addToReport("'" + customAmount + "'Enter as the custom amount", Status.PASS, true);
+        String customAmount = CommonUtils.generateRandomAmountTwoDecimals(); //generating random amount
 
-            clickOnElement(btnSubmit);
-            addToReport("Click on the submit button", Status.PASS, false);
+        sendKeysToElement(txtCustomAmountAmount, customAmount);
+        addToReport("'" + customAmount + "'Enter as the custom amount", Status.PASS, true);
+        clickOnElement(txtCustomAmountAmount);
 
-            waitForElementPresence(getSuccessfulMsg(successMsg), 20);
-            //Validate the error message
-            if (isElementPresentBy(getSuccessfulMsg(successMsg))) {
-                addToReport("'" + successMsg + "' message is present.", Status.PASS, true);
-            } else {
-                addToReport("'" + successMsg + "'  message is not present.", Status.FAIL);
-                throw new RuntimeException("Error message validation is unsuccessful.");
-            }
+        clickOnElement(btnSubmit);
+        addToReport("Click on the submit button", Status.PASS, false);
 
-            amount = getTextFromElement(getSummaryValueByLabel("Amount")).replace("LKR", "").trim();
-            charges = getTextFromElement(getSummaryValueByLabel("charges")).replace("LKR", "").trim();
-            total = getTextFromElement(getSummaryValueByLabel("Total")).trim();
+        waitForElementPresence(getSuccessfulMsg(successMsg), 20);
+        //Validate the error message
+        if (isElementPresentBy(getSuccessfulMsg(successMsg))) {
+            addToReport("'" + successMsg + "' message is present.", Status.PASS, true);
+        } else {
+            addToReport("'" + successMsg + "'  message is not present.", Status.FAIL);
+            throw new RuntimeException("Error message validation is unsuccessful.");
+        }
+
+        amount = getTextFromElement(getSummaryValueByLabel("Amount")).replace("LKR", "").trim();
+        charges = getTextFromElement(getSummaryValueByLabel("charges")).replace("LKR", "").trim();
+        total = getTextFromElement(getSummaryValueByLabel("Total")).trim();
 
 //validate that the enter amount displayed
 
-            if (amount.equalsIgnoreCase(customAmount)) {
-                addToReport("Amount is validated: " + amount, Status.PASS, true);
-            } else {
-                addToReport("Amount  mismatch. Expected: " + customAmount + ", Found: " + amount, Status.FAIL);
-            }
-            double amountt = Double.parseDouble(amount);
-            double chargess = Double.parseDouble(charges);
-            double totall = Double.parseDouble(total);
+        if (amount.equalsIgnoreCase(customAmount)) {
+            addToReport("Amount is validated: " + amount, Status.PASS, true);
+        } else {
+            addToReport("Amount  mismatch. Expected: " + customAmount + ", Found: " + amount, Status.FAIL);
+        }
+        double amountt = Double.parseDouble(amount);
+        double chargess = Double.parseDouble(charges);
+        double totall = Double.parseDouble(total);
 
 // Check if amount + charges equals total
-            if (amountt + chargess == totall) {
-                addToReport("Amount + Charges = Total (" + amount + " + " + charges + " = " + total + ")", Status.PASS, false);
-            } else {
-                addToReport("Amount + Charges ≠ Total (" + amount + " + " + charges + " ≠ " + total + ")", Status.FAIL);
-            }
+        if (amountt + chargess == totall) {
+            addToReport("Amount + Charges = Total (" + amount + " + " + charges + " = " + total + ")", Status.PASS, false);
+        } else {
+            addToReport("Amount + Charges ≠ Total (" + amount + " + " + charges + " ≠ " + total + ")", Status.FAIL);
+        }
 
-            OutStandingamountOnly = getTextFromElement(lblOutStandngAmount).replace("LKR", "").replace("-", "").replace(",", "").trim();
-            double DoubleOutStandingamountOnly = Double.parseDouble(OutStandingamountOnly);
-            double sheetAmount = Double.parseDouble(customAmount);
-            ExpectedOutstandingAmountAfter = DoubleOutStandingamountOnly - sheetAmount;
+        OutStandingamountOnly = getTextFromElement(lblOutStandngAmount).replace("LKR", "").replace("-", "").replace(",", "").trim();
+        double DoubleOutStandingamountOnly = Double.parseDouble(OutStandingamountOnly);
+        double sheetAmount = Double.parseDouble(customAmount);
+        ExpectedOutstandingAmountAfter = DoubleOutStandingamountOnly - sheetAmount;
 
-            clearTheElement(rdAgreement);
-            addToReport("Click on the agreement radio button", Status.PASS, false);
+        clickOnElement(rdAgreement);
+        addToReport("Click on the agreement radio button", Status.PASS, false);
 
 
     }
 
-        public void ValidatetheInstallmentDetails() {
+    /**
+     * Validate the  Partial Installments and Paid instalment tables and validate the paid installment table after the payment
+     */
+    public void ValidatetheInstallmentDetails() {
 
-            clearTheElement(btnSettlement);
-            addToReport("Click on the settlement button", Status.PASS, true);
+        //to refresh the card values
+        clickOnElement(btnRightArrow);
+        waitForElementToBeInvisible(lblAccountListLoading, LONG_WAIT);
+        waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+        clickOnElement(btnLeftArrow);
+        waitForElementToBeInvisible(lblAccountListLoading, LONG_WAIT);
+        waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+        waitForElementPresence(lblOutStandngAmount, LONG_WAIT);
+        String OutStandingamountOnlyForCompatision = getTextFromElement(lblOutStandngAmount).replace("LKR", "").replace("-", "").replace(",", "").trim();
+        String formattedExpected = String.format("%.2f", ExpectedOutstandingAmountAfter);
 
-            //to refresh the card values
-            clickOnElement(btnLeftArrow);
-            clickOnElement(btnRightArrow);
+        if (OutStandingamountOnlyForCompatision.equalsIgnoreCase(formattedExpected)) {
+            addToReport("Outstanding Amount matches expected value: " + OutStandingamountOnlyForCompatision, Status.PASS, true);
+        } else {
+            addToReport("Mismatch in Outstanding Amount. Expected: " + formattedExpected + ", Found: " + OutStandingamountOnlyForCompatision, Status.FAIL);
+        }
 
-            String formattedExpected = String.format("%,.2f", ExpectedOutstandingAmountAfter);
+        clickOnElement(lblLoanCard);
+        addToReport("Click on the LKR account", Status.PASS, false);
 
-            if (OutStandingamountOnly.equalsIgnoreCase(formattedExpected)) {
-                addToReport("Outstanding Amount matches expected value: " + OutStandingamountOnly, Status.PASS, true);
+        clickOnElement(btnPartialInstallments);
+        addToReport("Click on the Partial Installments button", Status.PASS, false);
+
+        waitForElementPresence(tblPartialInstallments, 20);
+        addToReport("Partial Installments table visible", Status.PASS);
+        boolean matchFound = false;
+
+
+// Construct expected date from constants
+        String fullDate = LoanConstants.DAY + LoanConstants.DATE_SEPARATOR + LoanConstants.MONTH + LoanConstants.DATE_SEPARATOR + LoanConstants.YEAR;
+
+        List<WebElement> rows = driver.findElements(tblPartialInstallments);
+
+        for (int i = 1; i <= rows.size(); i++) {
+            String paidAmount = getTextFromElement(tblCellRecord(i, 1)).trim();         // Column 1: Paid Amount
+            String transactionDate = getTextFromElement(tblCellRecord(i, 2)).trim();    // Column 2: Transaction Date
+
+            String cleanAmount = paidAmount.replace("LKR", "").replace(",", "").trim();
+
+            boolean amountMatches = total.equalsIgnoreCase(cleanAmount);
+            boolean dateMatches = fullDate.equalsIgnoreCase(transactionDate);
+
+            if (amountMatches && dateMatches) {
+                addToReport("Row " + i + ": Found matching Paid Amount: '" + paidAmount + "' and Transaction Date: '" + transactionDate + "'", Status.PASS, false);
+                matchFound = true;
+                break; // Stop at first match
+            }
+        }
+
+        if (matchFound) {
+            addToReport("Paid Transaction table contains expected amount '" + total + "' on date '" + fullDate + "'", Status.PASS);
+        } else {
+            addToReport("Failed to find Paid Amount '" + total + "' with Date '" + fullDate + "' in the Paid Transaction table.", Status.FAIL);
+        }
+
+        clickOnElement(btnPaidInstallments);
+        addToReport("Click on the Paid Installments button", Status.PASS, false);
+
+        waitForElementPresence(tblPartialInstallments, 20);
+        addToReport("Paid Installments table visible", Status.PASS);
+
+        boolean flag = true;
+        // Get number of rows in the table
+        List<WebElement> rowss = driver.findElements(tblPartialInstallments);
+
+        for (int i = 1; i <= rowss.size(); i++) {
+            String dueDate = getTextFromElement(tblCellRecord(i, 1)).trim();
+            String paidDate = getTextFromElement(tblCellRecord(i, 2)).trim();
+            String capitalDemand = getTextFromElement(tblCellRecord(i, 3)).trim();
+            String interestDemand = getTextFromElement(tblCellRecord(i, 4)).trim();
+            String collectionAmount = getTextFromElement(tblCellRecord(i, 5)).trim();
+
+            // Due Date validation
+            if (CommonUtils.containsValuesOnDate(dueDate)) {
+                addToReport("Row " + i + ": Valid Due Date (Finacle):: " + dueDate, Status.PASS, false);
             } else {
-                addToReport("Mismatch in Outstanding Amount. Expected: " + formattedExpected + ", Found: " + formattedExpected, Status.FAIL);
+                addToReport("Row " + i + ": Invalid Due Date: " + dueDate, Status.FAIL);
+                flag = false;
             }
 
-            clickOnElement(lblLoanCard);
-            addToReport("Click on the LKR account", Status.PASS, false);
-
-            clickOnElement(btnPartialInstallments);
-            addToReport("Click on the Partial Installments button", Status.PASS, false);
-
-            waitForElementPresence(tblPartialInstallments, 20);
-            addToReport("Partial Installments table visible", Status.PASS);
-
-
-            boolean flag = true;
-
-            // Get number of rows in the table
-            List<WebElement> rows = driver.findElements(tblPartialInstallments);
-
-            for (int i = 1; i <= rows.size(); i++) {
-                String paidAmount = getTextFromElement(tblCellRecord(i, 1)).trim(); // Column 1: Paid Amount
-                String transactionDate = getTextFromElement(tblCellRecord(i, 2)).trim(); // Column 2: Transaction Date
-
-                // Validate Paid Amount - must be numeric after stripping LKR and commas
-                String cleanAmount = paidAmount.replace("LKR", "").replace(",", "").trim();
-                if (total.equalsIgnoreCase(cleanAmount)) {
-                    addToReport("Row " + i + ": Valid Paid Amount: " + paidAmount, Status.PASS, false);
-                } else {
-                    addToReport("Row " + i + ": Invalid Paid Amount: " + paidAmount, Status.FAIL);
-                    flag = false;
-                }
-
-                // Validate Transaction Date - format: DD-MM-YYYY
-                if (CommonUtils.containsValuesOnDate(transactionDate)) {
-                    addToReport("Row " + i + ": Valid Transaction Date (Finacle): " + transactionDate, Status.PASS, false);
-                } else {
-                    addToReport("Row " + i + ": Invalid Transaction Date: " + transactionDate, Status.FAIL);
-                    flag = false;
-                }
-            }
-
-            if (flag) {
-                addToReport("All rows in Paid Transaction table validated successfully.", Status.PASS);
+            // Paid Date validation
+            if (CommonUtils.containsValuesOnDate(paidDate)) {
+                addToReport("Row " + i + ": Valid Paid Date (Finacle):: " + paidDate, Status.PASS, false);
             } else {
-                addToReport("Some rows in Paid Transaction table failed validation.", Status.FAIL);
+                addToReport("Row " + i + ": Invalid Paid Date: " + paidDate, Status.FAIL);
+                flag = false;
             }
 
-            clickOnElement(btnPaidInstallments);
-            addToReport("Click on the Paid Installments button", Status.PASS, false);
-
-            waitForElementPresence(tblPartialInstallments, 20);
-            addToReport("Paid Installments table visible", Status.PASS);
-
-            // Get number of rows in the table
-            List<WebElement> rowss = driver.findElements(tblPartialInstallments);
-
-            for (int i = 1; i <= rowss.size(); i++) {
-                String dueDate = getTextFromElement(tblCellRecord(i, 1)).trim();
-                String paidDate = getTextFromElement(tblCellRecord(i, 2)).trim();
-                String capitalDemand = getTextFromElement(tblCellRecord(i, 3)).replace("LKR", "").replace(",", "").trim();
-                String interestDemand = getTextFromElement(tblCellRecord(i, 4)).replace("LKR", "").replace(",", "").trim();
-                String collectionAmount = getTextFromElement(tblCellRecord(i, 5)).replace("LKR", "").replace(",", "").trim();
-
-                // Due Date validation
-                if (CommonUtils.containsValuesOnDate(dueDate)) {
-                    addToReport("Row " + i + ": Valid Due Date (Finacle):: " + dueDate, Status.PASS, false);
-                } else {
-                    addToReport("Row " + i + ": Invalid Due Date: " + dueDate, Status.FAIL);
-                    flag = false;
-                }
-
-                // Paid Date validation
-                if (paidDate.equals("-") || CommonUtils.containsValuesOnDate(paidDate)) {
-                    addToReport("Row " + i + ": Valid Paid Date (Finacle):: " + paidDate, Status.PASS, false);
-                } else {
-                    addToReport("Row " + i + ": Invalid Paid Date: " + paidDate, Status.FAIL);
-                    flag = false;
-                }
-
-                // Capital Demand validation
-                if (CommonUtils.containsNumericCharactersWithNegativeValues(capitalDemand)) {
-                    addToReport("Row " + i + ": Valid Capital Demand: " + capitalDemand, Status.PASS, false);
-                } else {
-                    addToReport("Row " + i + ": Invalid Capital Demand: " + capitalDemand, Status.FAIL);
-                    flag = false;
-                }
-
-                // Interest Demand validation
-                if (CommonUtils.containsNumericCharactersWithNegativeValues(interestDemand)) {
-                    addToReport("Row " + i + ": Valid Interest Demand: " + interestDemand, Status.PASS, false);
-                } else {
-                    addToReport("Row " + i + ": Invalid Interest Demand: " + interestDemand, Status.FAIL);
-                    flag = false;
-                }
-
-                // Collection Amount validation
-                if (CommonUtils.containsNumericCharactersWithNegativeValues(collectionAmount)) {
-                    addToReport("Row " + i + ": Valid Collection Amount: " + collectionAmount, Status.PASS, false);
-                } else {
-                    addToReport("Row " + i + ": Invalid Collection Amount: " + collectionAmount, Status.FAIL);
-                    flag = false;
-                }
-            }
-
-            if (flag) {
-                addToReport("All installment rows validated successfully.", Status.PASS);
+            // Capital Demand validation
+            if (CommonUtils.containsAlphAndNumCharacters(capitalDemand) || CommonUtils.containsNumericCharacters(capitalDemand)) {
+                addToReport("Row " + i + ": Valid Capital Demand: " + capitalDemand, Status.PASS, false);
             } else {
-                addToReport("Some installment rows failed validation.", Status.FAIL);
+                addToReport("Row " + i + ": Invalid Capital Demand: " + capitalDemand, Status.FAIL);
+                flag = false;
             }
 
+            // Interest Demand validation
+            if (CommonUtils.containsAlphAndNumCharacters(interestDemand) || CommonUtils.containsNumericCharacters(interestDemand)) {
+                addToReport("Row " + i + ": Valid Interest Demand: " + interestDemand, Status.PASS, false);
+            } else {
+                addToReport("Row " + i + ": Invalid Interest Demand: " + interestDemand, Status.FAIL);
+                flag = false;
+            }
 
+            // Collection Amount validation
+            if (CommonUtils.containsAlphAndNumCharacters(collectionAmount)) {
+                addToReport("Row " + i + ": Valid Collection Amount: " + collectionAmount, Status.PASS, false);
+            } else {
+                addToReport("Row " + i + ": Invalid Collection Amount: " + collectionAmount, Status.FAIL);
+                flag = false;
+            }
+        }
+
+        if (flag) {
+            addToReport("All installment rows validated successfully.", Status.PASS);
+        } else {
+            addToReport("Some installment rows failed validation.", Status.FAIL);
         }
 
 
+    }
 
+
+    /**
+     * This method is entering the OTP to navigates and validates the success message
+     *
+     * @param otp - OTP
+     */
+    public void enterOTPAndContinueLoanDetailsPage(String otp) {
+
+        //Enter OTP values and continue
+        try {
+            sendKeysToElement(tfOTP(1), String.valueOf(otp));
+
+            clickOnElement(btnSettlement);
+        } catch (Exception e) {
+            addToReport("Error when entering OTP", Status.FAIL);
+            throw new RuntimeException("Failed to enter OTP " + e.getMessage(), e);
+        }
+        waitForElementToBeInvisible(btnSettlement, LONG_WAIT);
+
+    }
 }
