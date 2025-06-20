@@ -21,6 +21,7 @@ public class DataSheetNameConstants {
     public static final String OLD_VISHWA_DATA = "OldVishwaData";
     public static final String LPOPP_DATA = "LPOPPData";
     public static final String LYCEUM_DATA = "LyceumData";
+    public static final String LOANDETAILS_DATA = "LoanDetailsData";
     public static final String FDDETAIL_VIEW = "FDDetailView";
 
 }
