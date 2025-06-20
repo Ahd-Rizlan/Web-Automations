@@ -8,8 +8,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import utils.CommonUtils;
-
-
 import java.util.Arrays;
 import java.util.List;
 import static utils.Drivers.*;
@@ -257,6 +255,10 @@ public class LoginPage extends BasePage {
             addToReport("Unable to verify incorrect Password", Status.FAIL);
             throw new RuntimeException("Error - Failed to validate the incorrect Password. " + e.getMessage(), e);
         }
+        //Close popup window
+        if(isElementPresentBy(btnCloseDashboardAlertPopup)){
+            clickOnElement(btnCloseDashboardAlertPopup);
+        }
     }
 
     /**
@@ -293,6 +295,11 @@ public class LoginPage extends BasePage {
             addToReport("Unable to verify incorrect " + errorContext, Status.FAIL);
             throw new RuntimeException("Error - Failed to validate login with only " + errorContext + ".", e);
         }
+        //Close popup window
+        if(isElementPresentBy(btnCloseDashboardAlertPopup)){
+            clickOnElement(btnCloseDashboardAlertPopup);
+        }
+
     }
 
     /**
@@ -548,6 +555,11 @@ public class LoginPage extends BasePage {
                 addToReport("Didn't receive correct invalid message  : '" + invalidMsg + "'.", Status.FAIL);
                 throw new RuntimeException("Didn't receive correct invalid message  : '" + invalidMsg + "'..");
             }
+            //Close popup window
+            if(isElementPresentBy(btnCloseDashboardAlertPopup)){
+                clickOnElement(btnCloseDashboardAlertPopup);
+            }
+
         } catch (Exception e) {
             addToReport("Unable to verify invalid message", Status.FAIL);
             throw new RuntimeException("Unable to verify invalid message", e);
@@ -570,10 +582,9 @@ public class LoginPage extends BasePage {
             clickOnElement(btnLogin);
 
             waitForElementPresence(popUpMsg,SHORT_WAIT);
-            //Validate invalid user message
-            waitForElementPresence(popUpIncorrectUserId, SHORT_WAIT);
 
-            String actualMessage = getTextFromElement(popUpIncorrectUserId);
+            //Validate invalid user message
+            String actualMessage = getTextFromElement(popUpMsg);
             if (actualMessage.equals(errorMsg)) {
                 addToReport("Received correct invalid message  : '" + errorMsg + "'.", Status.PASS);
             } else {
@@ -584,6 +595,11 @@ public class LoginPage extends BasePage {
             addToReport("Unable to verify invalid message", Status.FAIL);
             throw new RuntimeException("Unable to verify invalid message", e);
         }
+        //Close popup window
+        if(isElementPresentBy(btnCloseDashboardAlertPopup)){
+            clickOnElement(btnCloseDashboardAlertPopup);
+        }
+
     }
 
     /***

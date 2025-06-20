@@ -1,0 +1,15 @@
+<suite name="Sampath SVR4 GUI Test Suite">
+    <listeners>
+        <listener class-name="utils.report.TestNgListener"/>
+    </listeners>
+    <test verbose="2" preserve-order="true" name="Sampath SVR4 GUI Test - Bill Payments">
+        <classes>
+            <class name="gui.test.PaymentsAndBillerMaintenanceTest">
+                <methods>
+                     <include name="logIntoDahsboardAlternateUserOne"/>
+                     <include name="validateBillPaymentsThroughAccounts"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

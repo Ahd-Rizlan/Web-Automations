@@ -34,6 +34,7 @@ public class BillerConstants {
     public static final String PROCEED_TO_PAY = "Proceed to Pay";
     public static final String PROCEED_TO_PAY_TWO = "Proceed To Pay";
     public static final String BUTTON_FETCH = "Fetch";
+    public static final String BUTTON_LOGISTICS = "Logistics";
 
     //-----------------One time data ----------------------
     public static final String OTP = "111111";
@@ -53,7 +54,9 @@ public class BillerConstants {
     public static final String DOWNLOADS = "Downloads";
     public static final String STUDENT_NO = "Student No.";
     public static final String SELECTED_INVOICE_NO = "Selected Invoice No.";
-
+    public static final String NUMBER_TWENTY_TWENTY_FOUR = "2024";
+    public static final String JULY = "July";
+    public static final String NUMBER_TWENTY_ONE = "21";
 
     public static final Map<String, String> CONSTANTS_MAP = new HashMap<>();
 
@@ -134,6 +137,7 @@ public class BillerConstants {
         CONSTANTS_MAP.put("KW_MOBILE_NUMBER_WITHOUT", "Mobile Number (Without");
         CONSTANTS_MAP.put("KW_SAVED_BILLERS", "Saved Billers");
         CONSTANTS_MAP.put("KW_GOVERNMENT_PAYMENTS", "Government Payments");
+        CONSTANTS_MAP.put("KW_YOUR_GSM_PHONE_NUMBER", "Your GSM Phone Number");
     }
 
 

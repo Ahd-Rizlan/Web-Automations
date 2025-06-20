@@ -8,6 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import utils.CommonUtils;
+import utils.constants.MyAccountsConstants;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -156,7 +157,7 @@ public class MakeTransactionsPage extends BasePage {
         }
 
         //Temporary wait due to sporadic failure in ALL_OPTIONS_VALUE selection
-        waitFor(6);
+        waitFor(SHORT_WAIT);
 
         //Obtain the first selected value from the dropdown
         List<String> fromAccDropdownValue = getSelectedOptionText(ddFromAccount, "FIRST_SELECTED");
@@ -258,20 +259,22 @@ public class MakeTransactionsPage extends BasePage {
         }
         addToReport("----------End of validation of whether a Both sender and beneficiary remark fields needs to accept up to 20 number of characters ----------", Status.PASS, false);
 
+        //Commenting out below as the transfer limit is unlimited might need on other env
         // Submit the transfer with the maximum amount
-        clickOnElement(btnSubmit);
+//        clickOnElement(btnSubmit);
 
         // Validate if the correct popup message is displayed for exceeding the maximum limit
-        checkPopupMessage(maxAmountMsg);
-        addToReport("----------End of validation of whether accessing next page without mandatory fields, transaction limit & remark characters ----------", Status.PASS, false);
+//        checkPopupMessage(maxAmountMsg);
+//        addToReport("----------End of validation of whether accessing next page without mandatory fields, transaction limit & remark characters ----------", Status.PASS, false);
+
         addToReport("----------Start of validation of entering amount ----------", Status.PASS, false);
 
         //Daily transaction limit was already checked
         //Check for minimum amount of the transaction category "0"
         //validate the default loaded account on both tile and dropdown
-        selectTabUnderSendMoney("Other Accounts");
+        selectTabUnderSendMoney(MyAccountsConstants.TAB_OTHER_ACCOUNTS);
         scrollPageToTop();
-        selectTabUnderSendMoney("Own Account");
+        selectTabUnderSendMoney(MyAccountsConstants.TAB_OWN_ACCOUNT);
 
         waitForPageLoadCompleteJS();
         waitForElementToBeInvisible(lblToAccountGrayLoader,LONG_WAIT);
@@ -303,7 +306,7 @@ public class MakeTransactionsPage extends BasePage {
         // Enter the maximum amount into the amount field
         //sendKeysToElement(tfEnterAmount, amt[1]);
 
-        String amountStr = amt[1].trim(); // This will be something like "8,254.05"
+        String amountStr = amt[1].trim();
 
         // Remove comma
         amountStr = amountStr.replace(",", "");
@@ -600,7 +603,7 @@ public class MakeTransactionsPage extends BasePage {
         }
 
         // Delete the previous amount entry
-        sendKeysToElement(tfEnterAmount, Keys.BACK_SPACE, 1);
+        sendKeysToElement(tfEnterAmount, Keys.BACK_SPACE, 3);
         sendKeysToElement(tfEnterAmount, maxAmountEntry);
 
         clickOnElement(btnSubmit);
@@ -615,7 +618,7 @@ public class MakeTransactionsPage extends BasePage {
         int wholeAmount = (int) Math.round(amountDouble);
         int maxAmount = wholeAmount + 1;
 
-        sendKeysToElement(tfEnterAmount, Keys.BACK_SPACE, 6);
+        sendKeysToElement(tfEnterAmount, Keys.BACK_SPACE, 8);
         sendKeysToElement(tfEnterAmount, String.valueOf(maxAmount));
         scrollToWebElement(btnSubmit);
         // Click on the Submit button to validate error
@@ -648,7 +651,7 @@ public class MakeTransactionsPage extends BasePage {
 
         // Click on the Submit button to initiate the transfer
         clickOnElement(btnSubmit);
-
+        waitForElementToBeInvisible(lblSubmitLoading,LONG_WAIT);
         // OTP confirmation page validation
         addToReport("----------Start of validation of OTP confirmation page----------", Status.PASS, true);
         validateOtpPageDetails(accountNumbers.get(0), actualTransactionAmount, toAccount, sRemark, bRemark, transferMode, kwTransfersMap, currencyType,
@@ -729,7 +732,7 @@ public class MakeTransactionsPage extends BasePage {
         }
 
         // Wait for 6 seconds due to sporadic failures in ALL_OPTIONS_VALUE selection
-        waitFor(6);
+        waitFor(SHORT_WAIT);
 
         // Obtain the first selected value from the dropdown
         List<String> fromAccDropdownValue = getSelectedOptionText(ddFromAccount, "FIRST_SELECTED");
@@ -826,7 +829,7 @@ public class MakeTransactionsPage extends BasePage {
         double amountDouble = Double.parseDouble(amountStr);
         int wholeAmount = (int) Math.round(amountDouble);
         int maxAmount = wholeAmount + 1;
-        sendKeysToElement(tfEnterAmount,Keys.BACK_SPACE,6);
+        sendKeysToElement(tfEnterAmount,Keys.BACK_SPACE,8);
         sendKeysToElement(tfEnterAmount, String.valueOf(maxAmount));
         clickOnElement(btnSubmit);
 
@@ -842,8 +845,8 @@ public class MakeTransactionsPage extends BasePage {
         }
 
 
-        sendKeysToElement(tfEnterAmount,Keys.BACK_SPACE,6);
-        // Enter the minimum amount of the transaction catergory as 0
+        sendKeysToElement(tfEnterAmount,Keys.BACK_SPACE,8);
+        // Enter the minimum amount of the transaction category as 0
         sendKeysToElement(tfEnterAmount, String.valueOf(minAmount));
         try {
             // Validate the error message
@@ -860,7 +863,7 @@ public class MakeTransactionsPage extends BasePage {
         //Enter amount within the accepted parameter
         try {
             if (wholeAmount>500){
-                sendKeysToElement(tfEnterAmount,Keys.BACK_SPACE);
+                sendKeysToElement(tfEnterAmount,Keys.BACK_SPACE,3);
                 sendKeysToElement(tfEnterAmount,String.valueOf(amount));
             }else {
                 addToReport("Amount in the account : '" + wholeAmount + "' is NOT sufficient to perform a transfer", Status.FAIL);
@@ -875,7 +878,6 @@ public class MakeTransactionsPage extends BasePage {
         addToReport("----------Start of validation of OTP confirmation page----------", Status.PASS, false);
         //Validate the OTP confirmation
         validateOtpPageDetails(accountNumbers.get(0),String.valueOf(amount),"",sRemark,bRemark,transferMode, kwTransfersMap,currencyValue,bankName,"","",creditCardNumber);
-
         String headerContent = getTextFromElement(tfOTPConfirmationHeaderContent);
 
         if (headerContent.contains(nameOnCard)){

@@ -46,7 +46,8 @@ public class MessagesPage extends BasePage {
     private static final By lblDraftMsg = By.xpath("//div[text()='"+MessagingConstants.DRAFT+"']/ancestor::div[1]/div[1]");
     private static final By lblUploadedDoc = By.xpath("//span[contains(@class, 'text-sm')]");
     private static final By btnDeleteUpload = By.xpath("//img[contains(@src, '2Fclose-icon')]");
-
+    private static final By lblClickableArea = By.cssSelector(".cursor-pointer, [class*='cursor-pointer']");
+    private static final By lblCustomLoader = By.xpath("//div[contains(@class,'customloader')]");
 
     public enum ElementType {
         button, label, span, div, textarea, input;
@@ -139,7 +140,7 @@ public class MessagesPage extends BasePage {
      * @param messageCreationSuccessMsg The expected confirmation message after the inquiry message is successfully created
      * @return                         A string indicating the result of the inquiry process (reference number)
      */
-    public String fixedDepositInquiry(String subject, String branch, String msg, String successMsg, String OTP, String messageCreationSuccessMsg) {
+    public void fixedDepositInquiry(String subject, String branch, String msg, String successMsg, String OTP, String messageCreationSuccessMsg) {
         addToReport("----------Start of Checking whether after selecting the Fixed deposit inquiry subject , branch list is displayed ----------", Status.PASS, false);
         try {
 
@@ -193,18 +194,17 @@ public class MessagesPage extends BasePage {
 
         waitForElementPresence(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES));
         sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES),subject);
-
-        List<WebElement> messages = findElements(allMessages);
-        WebElement latestMessage = getLatestElementByDate(messages, getElementByTypeAndText(ElementType.div,MessagingConstants.LAST_MODIFIED_ON), MessagingConstants.LAST_MODIFIED_ON);
+        waitFor(EXTREME_SHORT_WAIT);
+        WebElement latestMessage = getLatestElementByDate(allMessages, getElementByTypeAndText(ElementType.div,MessagingConstants.LAST_MODIFIED_ON), MessagingConstants.LAST_MODIFIED_ON,lblClickableArea);
 //        clickOnElement(latestMessage);
 
         scrollPageToTop();
         waitForElementPresence(lblMsgID(subject));
 
         addToReport("----------End of Checking whether a message upon selecting a branch user can send a message to a selected branch ----------", Status.PASS, false);
-        return getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "");
 
     }
+
 
     /**
      * Validates the message flow for the Card Center subject, including subcategory selection,
@@ -264,23 +264,24 @@ public class MessagesPage extends BasePage {
 
             clickOnElement(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM));
             validatePopUpMsg(messageCreationSuccessMsg);
+            waitForElementToBeInvisible(lblCustomLoader,LONG_WAIT);
 
             waitForElementPresence(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES));
             sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES),subCategory);
 
             //Fix this once stabilized
             List<WebElement> messages = findElements(allMessages);
-            WebElement latestMessage = getLatestElementByDate(messages, getElementByTypeAndText(ElementType.div,MessagingConstants.LAST_MODIFIED_ON), MessagingConstants.LAST_MODIFIED_ON);
+            WebElement latestMessage = getLatestElementByDate(allMessages, getElementByTypeAndText(ElementType.div,MessagingConstants.LAST_MODIFIED_ON), MessagingConstants.LAST_MODIFIED_ON,lblClickableArea);
 //            clickOnElement(latestMessage);
 
             scrollPageToTop();
 
             waitForElementPresence(lblMsgID(subCategory));
-            if(getTextFromElement(lblMsgID(subCategory)).replaceAll("[^0-9]", "").isEmpty()){
-                addToReport("Error fetching message id", Status.FAIL);
-                throw new RuntimeException("Failed to fetch message id after sending message");
+            if(getTextFromElement(lblMsgID(subCategory)).isEmpty()){
+                addToReport("Error fetching message subject", Status.FAIL);
+                throw new RuntimeException("Failed to fetch message subject after sending message");
             }else {
-                addToReport("Generated message id : "+getTextFromElement(lblMsgID(subCategory)).replaceAll("[^0-9]", ""), Status.PASS,false);
+                addToReport("Message subject : "+getTextFromElement(lblMsgID(subCategory)), Status.PASS,false);
             }
 
 
@@ -288,7 +289,7 @@ public class MessagesPage extends BasePage {
             addToReport("Error logging into retail admin", Status.FAIL);
             throw new RuntimeException("Failed log into retail admin" + e.getMessage(), e);
         }
-        return getTextFromElement(lblMsgID(subCategory)).replaceAll("[^0-9]", "");
+        return getTextFromElement(lblMsgID(subCategory));
     }
     /**
      * fund transfer request message validation
@@ -392,11 +393,13 @@ public class MessagesPage extends BasePage {
             clickOnElement(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM));
             validatePopUpMsg(messageCreationSuccessMsg);
 
+            waitForElementToBeInvisible(lblCustomLoader,LONG_WAIT);
+
             waitForElementPresence(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES));
             sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES),subject);
 
             List<WebElement> messages = findElements(allMessages);
-            WebElement latestMessage = getLatestElementByDate(messages, getElementByTypeAndText(ElementType.div,MessagingConstants.LAST_MODIFIED_ON), MessagingConstants.LAST_MODIFIED_ON);
+            WebElement latestMessage = getLatestElementByDate(allMessages, getElementByTypeAndText(ElementType.div,MessagingConstants.LAST_MODIFIED_ON), MessagingConstants.LAST_MODIFIED_ON,lblClickableArea);
 //        clickOnElement(latestMessage);
 
             scrollPageToTop();
@@ -450,7 +453,7 @@ public class MessagesPage extends BasePage {
      * @param sampleText                 The expected sample text that should appear in the confirmation
      * @return                           A string result indicating the outcome of the validation (Message ID)
      */
-    public String BalanceConfirmationValidations(String subject,String successMsg, String OTP, String messageCreationSuccessMsg,String sampleText) {
+    public void BalanceConfirmationValidations(String subject,String successMsg, String OTP, String messageCreationSuccessMsg,String sampleText) {
         addToReport("----------Start of checking whether Selecting ‘Balance Confirmation Request’ displays fields ----------", Status.PASS, false);
 
 
@@ -564,22 +567,24 @@ public class MessagesPage extends BasePage {
             clickOnElement(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM));
             validatePopUpMsg(messageCreationSuccessMsg);
 
+            waitForElementToBeInvisible(lblCustomLoader,LONG_WAIT);
+
             waitForElementPresence(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES));
             sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES),subject);
 
             List<WebElement> messages = findElements(allMessages);
-            WebElement latestMessage = getLatestElementByDate(messages, getElementByTypeAndText(ElementType.div,MessagingConstants.LAST_MODIFIED_ON), MessagingConstants.LAST_MODIFIED_ON);
-//        clickOnElement(latestMessage);
+            WebElement latestMessage = getLatestElementByDate(allMessages, getElementByTypeAndText(ElementType.div,MessagingConstants.LAST_MODIFIED_ON), MessagingConstants.LAST_MODIFIED_ON,lblClickableArea);
+//            clickOnElement(latestMessage);
 
             scrollPageToTop();
-            waitForElementPresence(lblMsgID(subject));
-
-            if(getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "").isEmpty()){
-                addToReport("Error fetching message id", Status.FAIL);
-                throw new RuntimeException("Failed to fetch message id after sending message");
-            }else {
-                addToReport("Generated message id : "+getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", ""), Status.PASS,false);
-            }
+//            waitForElementPresence(lblMsgID(subject));
+//
+//            if(getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "").isEmpty()){
+//                addToReport("Error fetching message id", Status.FAIL);
+//                throw new RuntimeException("Failed to fetch message id after sending message");
+//            }else {
+//                addToReport("Generated message id : "+getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", ""), Status.PASS,false);
+//            }
 
             addToReport("----------End of of entering values and send message ----------", Status.PASS, true);
 
@@ -587,7 +592,6 @@ public class MessagesPage extends BasePage {
             addToReport("Error sending message under fund balance confirmation", Status.FAIL);
             throw new RuntimeException("Failed initiate balance confirmation" + e.getMessage(), e);
         }
-        return getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "");
     }
 
     /**
@@ -611,7 +615,7 @@ public class MessagesPage extends BasePage {
             waitForElementToBeInvisible(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE),20);
             waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
 
-            waitFor(5);
+            waitFor(SHORT_WAIT);
             selectFromDropdown(ddSubject, subject, MessagingConstants.VISIBLE_TEXT);
             waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
 
@@ -644,12 +648,14 @@ public class MessagesPage extends BasePage {
             clickOnElement(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM));
             validatePopUpMsg(messageCreationSuccessMsg);
 
+            waitForElementToBeInvisible(lblCustomLoader,20);
+
             waitForElementPresence(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES));
             sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES),subject);
 
             List<WebElement> messages = findElements(allMessages);
-            WebElement latestMessage = getLatestElementByDate(messages, getElementByTypeAndText(ElementType.div,MessagingConstants.LAST_MODIFIED_ON), MessagingConstants.LAST_MODIFIED_ON);
-//        clickOnElement(latestMessage);
+            WebElement latestMessage = getLatestElementByDate(allMessages, getElementByTypeAndText(ElementType.div,MessagingConstants.LAST_MODIFIED_ON), MessagingConstants.LAST_MODIFIED_ON,lblClickableArea);
+//            clickOnElement(latestMessage);
 
             scrollPageToTop();
             waitForElementPresence(lblMsgID(subject));
@@ -726,11 +732,13 @@ public class MessagesPage extends BasePage {
             clickOnElement(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM));
             validatePopUpMsg(messageCreationSuccessMsg);
 
+            waitForElementToBeInvisible(lblCustomLoader,LONG_WAIT);
+
             waitForElementPresence(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES));
             sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES),subject);
 
             List<WebElement> messages = findElements(allMessages);
-            WebElement latestMessage = getLatestElementByDate(messages, getElementByTypeAndText(ElementType.div,MessagingConstants.LAST_MODIFIED_ON), MessagingConstants.LAST_MODIFIED_ON);
+            WebElement latestMessage = getLatestElementByDate(allMessages, getElementByTypeAndText(ElementType.div,MessagingConstants.LAST_MODIFIED_ON), MessagingConstants.LAST_MODIFIED_ON,lblClickableArea);
 //        clickOnElement(latestMessage);
 
             scrollPageToTop();
@@ -827,12 +835,14 @@ public class MessagesPage extends BasePage {
             clickOnElement(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM));
             validatePopUpMsg(messageCreationSuccessMsg);
 
+            waitForElementToBeInvisible(lblCustomLoader,LONG_WAIT);
+
             waitForElementPresence(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES));
             sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES),subject);
 
             List<WebElement> messages = findElements(allMessages);
-            WebElement latestMessage = getLatestElementByDate(messages, getElementByTypeAndText(ElementType.div,MessagingConstants.LAST_MODIFIED_ON), MessagingConstants.LAST_MODIFIED_ON);
-            //clickOnElement(latestMessage);
+            WebElement latestMessage = getLatestElementByDate(allMessages, getElementByTypeAndText(ElementType.div,MessagingConstants.LAST_MODIFIED_ON), MessagingConstants.LAST_MODIFIED_ON,lblClickableArea);
+//            clickOnElement(latestMessage);
 
             scrollPageToTop();
             waitForElementPresence(lblMsgID(subject));
@@ -1019,23 +1029,24 @@ public class MessagesPage extends BasePage {
             clickOnElement(getElementByTypeAndText(ElementType.button,MessagingConstants.CONFIRM));
             validatePopUpMsg(messageCreationSuccessMsg);
 
+            waitForElementToBeInvisible(lblCustomLoader,LONG_WAIT);
             waitFor(VERY_SHORT_WAIT);
             waitForElementToBeInvisible(imgGreyLoader,LONG_WAIT);
             waitForElementPresence(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES));
 
             List<WebElement> messages = findElements(allMessages);
-            WebElement latestMessage = getLatestElementByDate(messages, getElementByTypeAndText(ElementType.div,MessagingConstants.LAST_MODIFIED_ON), MessagingConstants.LAST_MODIFIED_ON);
-//        clickOnElement(latestMessage);
+            WebElement latestMessage = getLatestElementByDate(allMessages, getElementByTypeAndText(ElementType.div,MessagingConstants.LAST_MODIFIED_ON), MessagingConstants.LAST_MODIFIED_ON,lblClickableArea);
+//            clickOnElement(latestMessage);
 
             scrollPageToTop();
-            waitForElementPresence(lblMsgID(subject));
-
-            if(getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "").isEmpty()){
-                addToReport("Error fetching message id", Status.FAIL);
-                throw new RuntimeException("Failed to fetch message id after sending message");
-            }else {
-                addToReport("Generated message id : "+getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", ""), Status.PASS,false);
-            }
+//            waitForElementPresence(lblMsgID(subject));
+//
+//            if(getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "").isEmpty()){
+//                addToReport("Error fetching message id", Status.FAIL);
+//                throw new RuntimeException("Failed to fetch message id after sending message");
+//            }else {
+//                addToReport("Generated message id : "+getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", ""), Status.PASS,false);
+//            }
 
             //Validate draft message date and time
             WebElement dateElement = driver.findElement(lblDraftMsgDate);

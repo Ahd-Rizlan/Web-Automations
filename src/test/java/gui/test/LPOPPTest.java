@@ -29,14 +29,13 @@ public class LPOPPTest extends BaseTest {
         billPaymentPage.selectCategory(category,billerName);
         billPaymentPage.initiateBillPaymentsForLPOPAndValidate(BillerConstants.OTP,category,billerName,paymentUsing,BillerConstants.CONSTANTS_MAP);
         dashboardPage.captureBaseWindowHandle();
-        vishwaRetailAdminLoginPage.navigateToTab(1);
+        dashboardPage.navigateToTab(1,false);
         billPaymentPage.validateURL(expectedPart);
         billPaymentPage.closeBrowser();
     }
 
     @AfterMethod(description = "Rollback to dashboard")
     public void rollBackToDashboard() {
-//        dashboardPage.navigateBackToDashboard();
         extent.flush();
     }
 
