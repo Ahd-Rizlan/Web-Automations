@@ -12,7 +12,7 @@
                     <include name="validateTheUnSuccessfulLoginWithIncorrectPassword"/>
                     <include name="validateTheSuccessfulLogout"/>
                     <include name="validateTheUnSuccessfulResetWithIncorrectPassword"/>
-                    <!--Update below with revert-->
+                     <!--Update below with revert-->
                     <!-- <include name="validateIncorrectAnswersForSecurityQuestions"/> -->
                     <include name="ValidateLoginAttemptWithLockedUserID"/>
                     <include name="validateTheUnSuccessfulResetWithLockedUser"/>
@@ -46,9 +46,9 @@
                     <include name="validateKeyPointsInDeposits"/>
                     <include name="validateMarkedPayeesAsFavouriteIsVisibleInPayeeWidget"/>
                     <include name="validateKeyPointsInLoans"/>
-                    <!-- <include name="validateDownloadedRecord"/>-->
+                     <include name="validateDownloadedRecord"/>
                     <include name="logIntoDahsboardAlternateUserOne"/>
-                    <!--<include name="validatePortfolioioFunctions"/>-->
+                    <include name="validatePortfolioioFunctions"/>
                     <include name="validateKeyPointsInCurrentAccount"/>
                     <include name="validateSettingsOption"/>
                 </methods>
@@ -72,7 +72,7 @@
                     <include name="validateUserSettingsData"/>
                     <include name="validatePrimaryAccount"/>
                     <include name="enterOTPToChangeThePrimaryAccount"/>
-                    <!-- <include name="NavigatetoToOTPVerificationMode"/>-->
+                     <include name="NavigatetoToOTPVerificationMode"/>
                     <include name="navigateToPasswordSection"/>
                     <include name="passwordChange"/>
                     <include name="loginAfterChangingThePassword"/>
@@ -99,6 +99,21 @@
                     <include name="validateDraftMessages"/>
                     <include name="validateBillPaymentDispute"/>
                     <include name="validateComposeNewMessage"/>
+                </methods>
+            </class>
+            <class name="gui.test.OpenFDTest">
+                <methods>
+                    <include name="runFullFDFlow"/>
+                </methods>
+            </class>
+            <class name="gui.test.OpenSavingAccountTest">
+                <methods>
+                    <include name="logIntoDahsboard"/>
+                    <include name="getLoginDataSavingFD"/>
+                    <include name="validateDataSavingFD"/>
+                    <include name="selectAccountNumberDropdown"/>
+                    <include name="enteringFundDetails"/>
+                    <include name="validatingAccountDetails"/>
                 </methods>
             </class>
         </classes>

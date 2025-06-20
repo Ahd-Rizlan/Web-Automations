@@ -1018,16 +1018,15 @@ public class MyAccountsPage extends BasePage {
         //Selecet tab and account
         selectTabAndValidate(tabName, tileHeader);
         searchAndSelectAccountList(accountNumber);
-
         waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
         waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
         clickOnElement(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_ADVANCE_SEARCH));
 
-        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_APPLY_FILTERS), 20);
+        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_APPLY_FILTERS), LONG_WAIT);
 
         clickOnElement(getAdvanceSearchFields(ElementType.span, MyAccountsConstants.TRANSACTION_DATE));
 
-        waitForElementToBeClickable(getElementByTypeAndText(ElementType.button, MyAccountsConstants.BUTTON_TEXT_CLEAR), 20);
+        waitForElementToBeClickable(getElementByTypeAndText(ElementType.button, MyAccountsConstants.BUTTON_TEXT_CLEAR), LONG_WAIT);
 
         // Select the same 'To Account' again from the dropdown
         selectFromDropdown(ddAdvancedSearchYear, year, "visibletext");
@@ -1038,7 +1037,7 @@ public class MyAccountsPage extends BasePage {
         clickOnElement(lnkAdvancedSearchDay(to));
 
         clickOnElement(getElementByTypeAndText(ElementType.button, MyAccountsConstants.BUTTON_APPLY));
-        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_APPLY_FILTERS), 10);
+        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_APPLY_FILTERS), LONG_WAIT);
         clickOnElement(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_APPLY_FILTERS));
 
         waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
@@ -1060,16 +1059,16 @@ public class MyAccountsPage extends BasePage {
 
         //validate close filter
         clickOnElement(btnCloseFilterIcon(MyAccountsConstants.FILTER_TRANSACTION_DATE));
-        waitForElementToBeInvisible(btnCloseFilterIcon(MyAccountsConstants.FILTER_TRANSACTION_DATE), 20);
+        waitForElementToBeInvisible(btnCloseFilterIcon(MyAccountsConstants.FILTER_TRANSACTION_DATE), LONG_WAIT);
         waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
         waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
         scrollToWebElement(lblAccountHistoryAccountNo(MyAccountsConstants.ACCOUNT_HISTORY));
-        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_ADVANCE_SEARCH), 20);
+        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_ADVANCE_SEARCH), LONG_WAIT);
         clickOnElement(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_ADVANCE_SEARCH));
 
 
-        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_APPLY_FILTERS), 20);
+        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_APPLY_FILTERS), LONG_WAIT);
 
         sendKeysToElement(getAdvanceSearchFields(ElementType.span, MyAccountsConstants.FILTER_AMOUNT_FROM), amountFrom);
         sendKeysToElement(getAdvanceSearchFields(ElementType.span, MyAccountsConstants.FILTER_AMOUNT_TO), amountTo);
@@ -1099,15 +1098,15 @@ public class MyAccountsPage extends BasePage {
         //Validate debit and credit filters
         // close filter
         clickOnElement(btnCloseFilterIcon(MyAccountsConstants.FILTER_AMOUNT_FROM));
-        waitForElementToBeInvisible(btnCloseFilterIcon(MyAccountsConstants.FILTER_AMOUNT_FROM), 20);
+        waitForElementToBeInvisible(btnCloseFilterIcon(MyAccountsConstants.FILTER_AMOUNT_FROM), LONG_WAIT);
         waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
         waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
         scrollToWebElement(lblAccountHistoryAccountNo(MyAccountsConstants.ACCOUNT_HISTORY));
-        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_ADVANCE_SEARCH), 20);
+        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_ADVANCE_SEARCH), LONG_WAIT);
         clickOnElement(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_ADVANCE_SEARCH));
 
-        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_APPLY_FILTERS), 20);
+        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_APPLY_FILTERS), LONG_WAIT);
 
         selectFromDropdown(ddTransactionType, MyAccountsConstants.CREDIT, "visibletext");
 
@@ -1135,15 +1134,15 @@ public class MyAccountsPage extends BasePage {
         }
         // close filter
         clickOnElement(btnCloseFilterIcon(MyAccountsConstants.TRANSFER_TYPE));
-        waitForElementToBeInvisible(btnCloseFilterIcon(MyAccountsConstants.TRANSFER_TYPE), 20);
+        waitForElementToBeInvisible(btnCloseFilterIcon(MyAccountsConstants.TRANSFER_TYPE), LONG_WAIT);
         waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
         waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
 
-        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_ADVANCE_SEARCH), 20);
+        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_ADVANCE_SEARCH), LONG_WAIT);
         clickOnElement(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_ADVANCE_SEARCH));
 
-        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_APPLY_FILTERS), 20);
+        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_APPLY_FILTERS), LONG_WAIT);
 
         selectFromDropdown(ddTransactionType, MyAccountsConstants.DEBIT, "visibletext");
 
@@ -1194,7 +1193,7 @@ public class MyAccountsPage extends BasePage {
         selectTabAndValidate(tabName, tileHeader);
         searchAndSelectAccountList(accountNumber);
 
-        waitForElementToBeClickable(getElementByTypeAndText(ElementType.span, MyAccountsConstants.CHEQUE_BOOK_REQUEST), 25);
+        waitForElementToBeClickable(getElementByTypeAndText(ElementType.span, MyAccountsConstants.CHEQUE_BOOK_REQUEST), LONG_WAIT);
 
         // Account Opened On
         if (isElementPresentBy(getElementByTypeAndText(ElementType.span, MyAccountsConstants.CHEQUE_BOOK_REQUEST))) {
@@ -1330,7 +1329,7 @@ public class MyAccountsPage extends BasePage {
 
         //Click on account no row
         clickOnElement(lblHighlightedAccountNo(accountNumber));
-        waitForElementToBeClickable(lblAccountHistoryAccountNo(MyAccountsConstants.ACCOUNT_HISTORY), 30);
+        waitForElementToBeClickable(lblAccountHistoryAccountNo(MyAccountsConstants.ACCOUNT_HISTORY), VERY_LONG_WAIT);
         waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
 
         //    validate the advance search download
@@ -1362,11 +1361,11 @@ public class MyAccountsPage extends BasePage {
         addToReport("----------Start of validation the customer able to download the filtered transactions----------", Status.PASS, false);
 
 
-        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_ADVANCE_SEARCH), 20);
+        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_ADVANCE_SEARCH), LONG_WAIT);
         clickOnElement(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_ADVANCE_SEARCH));
 
 
-        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_APPLY_FILTERS), 20);
+        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_APPLY_FILTERS), LONG_WAIT);
 
         sendKeysToElement(getAdvanceSearchFields(ElementType.span, MyAccountsConstants.FILTER_AMOUNT_FROM), amountFrom);
         sendKeysToElement(getAdvanceSearchFields(ElementType.span, MyAccountsConstants.FILTER_AMOUNT_TO), amountTo);
@@ -1375,18 +1374,18 @@ public class MyAccountsPage extends BasePage {
         waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
         waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
-        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_ADVANCE_SEARCH), 20);
+        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_ADVANCE_SEARCH), LONG_WAIT);
         clickOnElement(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_ADVANCE_SEARCH));
 
         scrollDownPage();
         //Select download
-        waitForElementToBeClickable(getElementByTypeAndText(ElementType.button, MyAccountsConstants.DOWNLOAD), 20);
+        waitForElementToBeClickable(getElementByTypeAndText(ElementType.button, MyAccountsConstants.DOWNLOAD), LONG_WAIT);
         clickOnElement(getElementByTypeAndText(ElementType.button, MyAccountsConstants.DOWNLOAD));
 
-        waitForElementPresence(popUpPDFDownload(MyAccountsConstants.PDF_DOWNLOADED_SUCCESSFULLY), 20);
+        waitForElementPresence(popUpPDFDownload(MyAccountsConstants.PDF_DOWNLOADED_SUCCESSFULLY), LONG_WAIT);
 
         //Wait for download to initiate - update this with dynamic once stabilized
-        waitFor(5);
+        waitFor(SHORT_WAIT);
         clickOnElement(btnClosePopup);
 
         // Get the latest downloaded file
@@ -1412,6 +1411,13 @@ public class MyAccountsPage extends BasePage {
     }
 
     String cardNo,customerAccountNumber,expiryDate,cardStatus,cardType,availableBalance;
+
+    /**
+     * Validation of credit card details
+     * @param tabName
+     * @param tileHeader
+     * @param accountNumber
+     */
     public void ValidateCreditCardDetails(String tabName, String tileHeader,String accountNumber) {
         addToReport("----------Start of validation of user should be able to view the Credit card details----------", Status.PASS, false);
 
@@ -1543,6 +1549,48 @@ public class MyAccountsPage extends BasePage {
         }
 
         addToReport("----------End of validation of user should be able to view the Credit card details----------", Status.PASS, false);
+    }
+
+
+    /**
+     *
+     * Performs an advanced search using a date range
+     * This method is typically used to filter results between a specific start and end date
+     *
+     * @param year     the year to be selected in the search criteria
+     * @param month    the month to be selected
+     * @param dayFrom  the starting day of the date range
+     * @param dayTo    the ending day of the date range (e.g., "15" for the 15th day of the month)
+     */
+    public void advanceSearchByDate(String year, String month,String dayFrom,String dayTo) {
+        addToReport("----------Start of advance search using date----------", Status.PASS, false);
+
+        waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+        waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
+        clickOnElement(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_ADVANCE_SEARCH));
+
+        waitForElementToBeClickable(getAdvanceSearchFields(ElementType.span, MyAccountsConstants.TRANSACTION_DATE), LONG_WAIT);
+
+        clickOnElement(getAdvanceSearchFields(ElementType.span, MyAccountsConstants.TRANSACTION_DATE));
+
+        waitForElementToBeClickable(getElementByTypeAndText(ElementType.button, MyAccountsConstants.BUTTON_TEXT_CLEAR), LONG_WAIT);
+
+        // Select the same 'To Account' again from the dropdown
+        selectFromDropdown(ddAdvancedSearchYear, year, "visibletext");
+        selectFromDropdown(ddAdvancedSearchMonth, month, "visibletext");
+
+
+        clickOnElement(lnkAdvancedSearchDay(dayFrom));
+        clickOnElement(lnkAdvancedSearchDay(dayTo));
+        addToReport("Entered search values ", Status.INFO, true);
+        clickOnElement(getElementByTypeAndText(ElementType.button, MyAccountsConstants.BUTTON_APPLY));
+        waitForElementToBeClickable(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_APPLY_FILTERS), LONG_WAIT);
+        clickOnElement(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_APPLY_FILTERS));
+
+        waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
+        waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
+        waitForElementToBeClickable(tblRows,LONG_WAIT);
+        addToReport("----------End of advance search using date----------", Status.PASS, false);
     }
 
 }

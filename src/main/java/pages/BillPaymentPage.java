@@ -36,13 +36,13 @@ public class BillPaymentPage extends BasePage {
     private static final By tfAmountTo = By.xpath("//input[@placeholder='Amount To']");
     private static final By tfTransactionDate = By.xpath("//input[@placeholder='Transaction date']");
     private static final By ddStatus = By.xpath("//select[@id='status']");
-    private static final By btnApplyFilters = By.xpath("//button[text()='Apply Filters']");
+    private static final By btnApplyFilters = By.xpath("//div[text()='Apply Filters']");
     private static final By ddMonth = By.xpath("//span[@class='rdrMonthPicker']/select");
     private static final By ddYear = By.xpath("//span[@class='rdrYearPicker']/select");
     private static final By btnRightArrow = By.xpath("//img[contains(@src,'FArrowRight')]");
     private static final By btnPaginationNumbers = By.xpath("//img[contains(@src,'FArrowRight')]/ancestor::div[contains(@class,'flex justify-end')]/div[1]/div");
     private static final By imgGreyLoader = By.xpath("//div[contains(@class,'bg-gray')]");
-    private static final By btnCloseFilter = By.xpath("//img[contains(@class,'cursor-pointer') and @alt='']");
+    private static final By btnCloseFilter = By.xpath("//img[contains(@class,'cursor-pointer') and @alt='Remove filter']");
     private static final By popUpPDFDownload = By.xpath("//div[text()='PDF downloaded successfully!']");
     private static final By popUpMsgBillerDeleted = By.xpath("//div[text()='PDF downloaded successfully!']");
     private static final By lblFavouriteBillerWidgetRow = By.xpath("//span[contains(text(),'Favorite Billers')]/parent::div//div[contains(@class,'grid grid-cols')]/div");
@@ -162,7 +162,7 @@ public class BillPaymentPage extends BasePage {
     }
 
     private static By btnSavedBillerReinitiate(int row) {
-        return By.xpath("(//img[contains(@src,'Frepeat') ]/ancestor::tr/td[8]//button[1])[" + row + "]");
+        return By.xpath("(//img[contains(@src,'Frepeat') ]/ancestor::tr/td[7]//button[1])[" + row + "]");
     }
 
     private static By datePickerDay(int day) {
@@ -182,7 +182,7 @@ public class BillPaymentPage extends BasePage {
     }
 
     private static By btnCloseFilter(int index) {
-        return By.xpath("(//img[contains(@class,'cursor-pointer') and @alt=''])[" + index + "]");
+        return By.xpath("(//img[contains(@class,'cursor-pointer') and @alt='Remove filter'])[" + index + "]");
     }
 
     private static By getElementByTypeAndText(BillPaymentPage.ElementType type, String text) {
@@ -405,10 +405,10 @@ public class BillPaymentPage extends BasePage {
             waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
 
             //Extract required the first record data
-            String paymentID = getTextFromElement(tblCellRecord(2, 1));
-            String billerTitle = getTextFromElement(tblCellRecord(3, 1));
-            String status = getTextFromElement(tblCellRecord(5, 1));
-            String[] CurrencyAndAmt = getTextFromElement(tblCellRecord(6, 1)).split(" ");
+            String paymentID = getTextFromElement(tblCellRecord(1, 1));
+            String billerTitle = getTextFromElement(tblCellRecord(2, 1));
+            String status = getTextFromElement(tblCellRecord(4, 1));
+            String[] CurrencyAndAmt = getTextFromElement(tblCellRecord(5, 1)).split(" ");
 
             addToReport("Obtained record with payment id : " + paymentID + ", biller tittle : " + billerTitle + " and status :" + status, Status.PASS, true);
 
@@ -425,10 +425,10 @@ public class BillPaymentPage extends BasePage {
             int recordCount = isElementsPresentBy(tblRows);
             if (recordCount != 0) {
                 for (int inc = 1; inc <= recordCount; inc++) {
-                    if (getTextFromElement(tblCellRecord(2, inc)).equals(paymentID) &&
-                            getTextFromElement(tblCellRecord(3, inc)).equals(billerTitle) &&
-                            getTextFromElement(tblCellRecord(5, inc)).equals(status)) {
-                        addToReport("Filtered value is available in row : " + inc + " for filter by from and to amount", Status.PASS, true);
+                    if (getTextFromElement(tblCellRecord(1, inc)).equals(paymentID) &&
+                            getTextFromElement(tblCellRecord(2, inc)).equals(billerTitle) &&
+                            getTextFromElement(tblCellRecord(4, inc)).equals(status)) {
+                        addToReport("Filtered value "+paymentID+" is available in row : " + inc + " for filter by from and to amount", Status.PASS, true);
                         break;
                     }
                     if (recordCount == inc) {
@@ -469,16 +469,15 @@ public class BillPaymentPage extends BasePage {
             recordCount = isElementsPresentBy(tblRows);
             if (recordCount != 0) {
                 for (int inc = 1; inc <= recordCount; inc++) {
-                    if (getTextFromElement(tblCellRecord(2, inc)).equals(paymentID) &&
-                            getTextFromElement(tblCellRecord(3, inc)).equals(billerTitle) &&
-                            getTextFromElement(tblCellRecord(5, inc)).equals(status)) {
-                        addToReport("Filtered value is available in row : " + inc + " for filter by status", Status.PASS, true);
+                    if (getTextFromElement(tblCellRecord(1, inc)).equals(paymentID) &&
+                            getTextFromElement(tblCellRecord(2, inc)).equals(billerTitle) &&
+                            getTextFromElement(tblCellRecord(4, inc)).equals(status)) {
+                        addToReport("Filtered value "+paymentID+" is available in row : " + inc + " for filter by status", Status.PASS, true);
 
                         //Download the record
-                        clickOnElement(tblActionDownloadOrDelete(8, inc));
+                        clickOnElement(tblActionDownloadOrDelete(7, inc));
 
                         //Validate the download
-
                         waitFor(SHORT_WAIT);
                         // Get the latest downloaded file
                         File latestFile = getLatestDownloadedFile(downloadDirectory);
@@ -490,19 +489,21 @@ public class BillPaymentPage extends BasePage {
                             addToReport(" Latest downloaded pdf :  : '" + extractedText, Status.INFO, false);
                             System.out.println("Latest Downloaded PDF: " + extractedText);
 
-                            waitForElementToBeInvisible(popUpPDFDownload, LONG_WAIT);
+                            waitForElementToBeInvisible(popUpPDFDownload, MODERATE_WAIT);
 
                             //validate payment id
                             if (extractedText.contains(paymentID)) {
                                 addToReport(" Validated payment id " + paymentID + " of the downloaded record", Status.PASS, false);
+                                break;
                             } else {
                                 addToReport(" Failed to validate payment id of the downloaded record", Status.FAIL, false);
                             }
+
                         } else {
                             addToReport("Error verifying downloaded saved biller record", Status.FAIL);
                             throw new RuntimeException("Failed to validate downloaded saved billers ");
                         }
-                        break;
+
                     }
                     if (recordCount == inc) {
                         addToReport("Filtered record did not display under saved billers", Status.FAIL);
@@ -1533,15 +1534,15 @@ public class BillPaymentPage extends BasePage {
             if (recordCount != 0) {
                 for (int inc = 1; inc <= recordCount; inc++) {
                     //Reinitiate transaction based on biller title
-                    if (billerTitle.equals(getTextFromElement(tblCellRecord(3, inc)))) {
+                    if (billerTitle.equals(getTextFromElement(tblCellRecord(2, inc)))) {
                         rCount = inc;
                         break;
                     }
                 }
                 //Extract required the first record data
-                String paymentID = getTextFromElement(tblCellRecord(2, rCount));
-                String bTitle = getTextFromElement(tblCellRecord(3, rCount));
-                String CurrencyAndAmt = getTextFromElement(tblCellRecord(6, rCount));
+                String paymentID = getTextFromElement(tblCellRecord(1, rCount));
+                String bTitle = getTextFromElement(tblCellRecord(2, rCount));
+                String CurrencyAndAmt = getTextFromElement(tblCellRecord(5, rCount));
 
                 addToReport("Obtained record with payment id : " + paymentID + ", biller tittle : " + billerTitle, Status.PASS, true);
 

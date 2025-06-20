@@ -13,6 +13,8 @@ public class MyAccountsConstants {
     public static final String TAB_PAWNING_HISTORY = "Pawning History";
     public static final String TAB_T_BILLS = "T-Bills";
     public static final String TAB_REPO = "Repo";
+    public static final String TAB_OTHER_ACCOUNTS = "Other Accounts";
+    public static final String TAB_OWN_ACCOUNT = "Own Account";
     public static final String[] TAB_NAMES = {"Accounts", "Deposits", "Loans", "T-Bills", "Repo"};
     public static final String[] TAB_NAME_PAWNING = {"Pawning"};
     public static final String[] TAB_NAMES_FOR_NICKNAME = {"Accounts", "Deposits"};
@@ -24,7 +26,7 @@ public class MyAccountsConstants {
             "'Treasury Bills'", "'Repository Account Investments'"
     };
     public static final String[] TILE_HEADERS_FOR_NICKNAME = {
-            "'Accounts / Savings'", "'My Accounts / FD'"
+            "'Accounts / Operative'", "'My Accounts / FD'"
     };
 
     //-------------------- Table Headers --------------------

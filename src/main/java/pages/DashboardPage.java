@@ -8,17 +8,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import utils.CommonUtils;
-import utils.constants.DashboardConstants;
 
 import java.io.File;
 import java.text.NumberFormat;
 import java.util.*;
 
-import static utils.Drivers.VERY_SHORT_WAIT;
-import static utils.Drivers.SHORT_WAIT;
-import static utils.Drivers.MODERATE_WAIT;
-import static utils.Drivers.LONG_WAIT;
-import static utils.Drivers.VERY_LONG_WAIT;
+import static utils.Drivers.*;
+
 
 public class DashboardPage extends BasePage {
 
@@ -44,6 +40,7 @@ public class DashboardPage extends BasePage {
     private static final By lblSavingsAccountStatus = By.xpath("//span[text()='Savings Account']/ancestor::div[contains(@class,'flex flex-col')]/following::div[contains(@class,'text-white font-bold')][2]");
     private static final By lblAccountStatus = By.xpath("//span/ancestor::div[contains(@class,'flex flex-col')]/following::div[contains(@class,'text-white font-bold')][1]");
     private static final By lblAccountStat = By.xpath("//span/ancestor::div[contains(@class,'flex flex-col')]/following::div[contains(@class,'text-white font-bold')][2]");
+    private static final By lblAccountStatuses = By.xpath("//span/ancestor::div[contains(@class,'flex flex-col')]/following::div[contains(@class,'text-white font-bold')]");
     private static final By lblSavingsAccountProductName = By.xpath("//span[text()='Savings Account']/ancestor::div[contains(@class,'flex flex-col')]/following::span[contains(@class,'self-end')]");
     private static final By lblAccountProductName = By.xpath("//span/ancestor::div[contains(@class,'flex flex-col')]/following::span[contains(@class,'self-end')]");
     private static final By icnAccounts = By.xpath("//div[contains(@class,'flex flex-col items-center')]/div[3]/div[1]");
@@ -524,6 +521,10 @@ public class DashboardPage extends BasePage {
      * @param accountStat  - account status
      */
     public void validateAllCurrentAccountsAtDashboard(String[] currencyType, String[] accountStat) {
+        waitForElementToBeClickable(imgAdvertisement,VERY_LONG_WAIT);
+        //wait for the loading icon to diminish
+        waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+        waitForElementToBeClickable(icnAccounts, MODERATE_WAIT);
 
         //click button accounts
         if (isElementClickable(btnAccounts)) {
@@ -532,8 +533,8 @@ public class DashboardPage extends BasePage {
             addToReport("Unable to find accounts button", Status.FAIL);
             throw new RuntimeException("Error - accounts button is not found");
         }
-
-        waitForElementToBeInvisible(icnAccounts, MODERATE_WAIT);
+        waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+//        waitForElementToBeInvisible(icnAccounts, LONG_WAIT);
         //Obtain pagination value
         String[] cardCount=CommonUtils.splitText(getAttributeOrText(icnAccounts,"text"),"/");
 
@@ -541,12 +542,19 @@ public class DashboardPage extends BasePage {
         int recordCount = Integer.parseInt(cardCount[1]);
         if (recordCount != 0) {
 
-            for (int inc = 0; inc < recordCount; inc++) {
+            for (int inc = 1; inc <= recordCount; inc++) {
+
 
                 if (isElementPresentBy(lblCurrentAccount)) {
-                    if (isElementPresentBy(lblCurrentPrimaryStatus)) {
-                        addToReport("Successfully validated primary status", Status.PASS, false);
 
+                    int accCount =isElementsPresentBy(lblAccountStatuses);
+                    if(accCount==2){
+
+                        if (isElementPresentBy(lblAccountStatus)) {
+                            addToReport("Successfully validated primary status", Status.PASS, false);
+                        }else {
+                            addToReport("Primary account status is not validated", Status.FAIL);
+                        }
                         //Validate account status
                         String AccountStatus = getTextFromElement(lblAccountStat);
                         if (Arrays.asList(accountStat).contains(AccountStatus)) {
@@ -554,8 +562,8 @@ public class DashboardPage extends BasePage {
                         } else {
                             addToReport("Account status is not validated", Status.FAIL);
                         }
-                    } else {
-
+                    }
+                    else {
                         //Validate account status
                         String AccountStatus = getTextFromElement(lblAccountStatus);
                         if (Arrays.asList(accountStat).contains(AccountStatus)) {
@@ -609,7 +617,7 @@ public class DashboardPage extends BasePage {
      * @param currencyType - currency type
      */
     public void validateAllFDAccountsAtDashboard(String[] currencyType) {
-
+        waitFor(VERY_SHORT_WAIT);
         waitForPageLoadCompleteJS();
         clickOnElement(btnLoans);
         waitForElementToBeInvisible(lblAccountListLoading,VERY_LONG_WAIT);
@@ -702,8 +710,8 @@ public class DashboardPage extends BasePage {
     public void validateAllLoanAccountsAtDashboard(String[] currencyType) {
 
         waitForPageLoadCompleteJS();
-        waitForElementPresence(lblAccountListLoading,VERY_LONG_WAIT);
-        waitForElementPresence(btnLoans,LONG_WAIT);
+        waitForElementToBeInvisible(lblAccountListLoading,VERY_LONG_WAIT);
+        waitForElementToBeClickable(btnLoans,LONG_WAIT);
 
         //click button Loans
         if (isElementClickable(btnLoans)) {
@@ -2607,6 +2615,7 @@ public class DashboardPage extends BasePage {
             }
 
             if (userName.equals("settlement")) {
+                addToReport("Using the image from :"+imgLocation, Status.INFO, false);
                 if (compareImage(imgAccountPortfolio, imgLocation, Integer.parseInt(thresholdValue))) {
                     addToReport("Dashboard page account portfolio pie chart validated successfully", Status.PASS, true);
                 } else {
@@ -2715,7 +2724,7 @@ public class DashboardPage extends BasePage {
         String Amount = getTextFromElement(lblRVTTransferPopupRecords(2, 9));
         addToReport("Extracted Amount: " + Amount, Status.INFO,false);
 
-        String Bank = getTextFromElement(lblRVTTransferPopupRecords(2, 7));
+        String Bank = getTextFromElement(lblRVTTransferPopupRecords(2, 7)).toUpperCase();
         addToReport("Extracted Bank: " + Bank, Status.INFO,false);
 
         // Optional split and log each part of the reference
@@ -3051,13 +3060,12 @@ public class DashboardPage extends BasePage {
      */
     public void obtainAllAccountTypes(String primaryStatus)
     {
-        waitFor(2);
+
         //WaitForElementPresence(lblLoadingIcon);
         waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
         waitForElementToBeInvisible(lblAccountListLoading, LONG_WAIT);
-
-        waitFor(5);
-
+        waitForElementToBeClickable(icnAccounts,LONG_WAIT);
+        waitFor(VERY_SHORT_WAIT);
         //Obtain pagination value
         String[] cardCount=CommonUtils.splitText(getAttributeOrText(icnAccounts,"text"),"/");
 
@@ -3076,20 +3084,18 @@ public class DashboardPage extends BasePage {
 
             for (int inc = 0; inc < recordCount; inc++) {
 
-                String AccountStatus = getTextFromElement(lblAccountStatus);
-                if (!AccountStatus.equals(DashboardConstants.STATUS_VALUES[1])){
 
-                }
+                waitForElementToBeClickable(lblAccountNumber,LONG_WAIT);
 
                 //Store the account number
                 addValue(inc,getTextFromElement(lblAccountNumber));
                 addToReport("Successfully added account number : '" + getTextFromElement(lblAccountNumber) + "'", Status.PASS, true);
-            }               //Navigate to next account
-            clickOnElement(btnNextArrow);
+                           //Navigate to next account
+                clickOnElement(btnNextArrow);
 
             //WaitForElementPresence(lblLoadingIcon);
             waitForElementToBeInvisible(lblLoadingIcon, MODERATE_WAIT);
-
+            }
         }
         else {
             addToReport("No accounts found", Status.FAIL);

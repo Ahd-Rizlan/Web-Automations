@@ -60,8 +60,7 @@ public class PawningTicketPage extends BasePage {
         return By.xpath("//div[contains(@class, 'w-full')]/div//div[contains(@class,'flex') and span[1][normalize-space(text())='" + label + "']]/span[2]");
     }
     private static By tfOTP(int Index) {
-
-        return By.xpath("//input[@type='password'][" + Index + "]");
+        return By.xpath("//input[contains(@class,'otp-box')][" + Index + "]");
     }
 
     /**
@@ -93,6 +92,7 @@ public class PawningTicketPage extends BasePage {
 
     /**
      * This method will validate the pawning account and validates the pawning history table
+     *
      */
 
     private String ticketNumber;

@@ -188,6 +188,42 @@ public class DataProviders {
         }
     }
 
+    public static class FDDetailsveiwDataProvider {
+        private static final String filePath;
+
+        static {
+            String projectRoot = System.getProperty("user.dir");
+            filePath = projectRoot + "/" + property.getProperty("gui-config", "TESTDATA_PATH")+ DataSheetNameConstants.FDDETAIL_VIEW +DataSheetNameConstants.SHEET_TYPE_XLSX;
+        }
+
+        @DataProvider(name = "FDDetailView")
+        public static Iterator<Object[]> getFDdetails() {
+            String[] columnNames = {"expectedMessage", "fdAccountNumber"};
+            return XlsReader.getDataFromSheet(filePath, "FDDetailView", columnNames).iterator();
+        }
+
+    }
+
+
+    public static class LoanDetailsViewDataProvider {
+        private static final String filePath;
+
+        static {
+            String projectRoot = System.getProperty("user.dir");
+            filePath = projectRoot + "/" + property.getProperty("gui-config", "TESTDATA_PATH");
+        }
+        @DataProvider(name = "ExpectederrorMsg")
+        public static Iterator<Object[]> geterrorMsgData() {
+            String[] columnNames = {"errorMsg"};
+            return XlsReader.getDataFromSheet(filePath, "ExpectederrorMsg", columnNames).iterator();
+        }
+        @DataProvider(name = "LoanDetailsView")
+        public static Iterator<Object[]> getLoanDetailsView() {
+            String[] columnNames = {"loanAccountNumber","accountNumber", "customAmount", "successMsg"};
+            return XlsReader.getDataFromSheet(filePath, "LoanDetailsView", columnNames).iterator();
+        }
+
+    }
     public static class SavingsandFDDataProvider {
         private static final String filePath;
 
