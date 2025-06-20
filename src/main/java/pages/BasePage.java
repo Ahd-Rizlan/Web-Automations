@@ -328,7 +328,7 @@ public abstract class BasePage extends helpers {
      */
     public boolean isElementPresentBy(By locator) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, LONG_WAIT);
+            WebDriverWait wait = new WebDriverWait(driver, SHORT_WAIT);
             wait.until(ExpectedConditions.presenceOfElementLocated(locator));
             return true;
         } catch (Exception e) {
@@ -1132,23 +1132,30 @@ public abstract class BasePage extends helpers {
 
     /**
      * Get the latest element based on date Eg : used at instances on message list to get the latest
-     * @param elements      - element
-     * @param dateLocator   - date locator
      * @param datePrefix    - date prefix
      * @return
      */
-    public WebElement getLatestElementByDate(List<WebElement> elements, By dateLocator, String datePrefix) {
+    public WebElement getLatestElementByDate(By containerLocator, By dateLocatorInside, String datePrefix, By clickableLocator) {
+        List<WebElement> elements = driver.findElements(containerLocator);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Map<WebElement, Date> elementDateMap = new HashMap<>();
 
         for (WebElement element : elements) {
             try {
-                WebElement dateElement = element.findElement(dateLocator);
-                String dateText = dateElement.getText().replace(datePrefix, "").trim();
-                Date parsedDate = sdf.parse(dateText);
-                elementDateMap.put(element, parsedDate);
+                // Find all inner elements that might contain date text
+                List<WebElement> dateElements = element.findElements(dateLocatorInside);
+                for (WebElement dateEl : dateElements) {
+                    String text = dateEl.getText().trim();
+                    // Match by prefix (e.g., "Last modified on")
+                    if (text.startsWith(datePrefix)) {
+                        String dateText = text.replace(datePrefix, "").trim();
+                        Date parsedDate = sdf.parse(dateText);
+                        elementDateMap.put(element, parsedDate);
+                        break; // Only consider the first matching date
+                    }
+                }
             } catch (Exception e) {
-                addToReport("Skipping element due to error: " + e.getMessage(), Status.INFO);
+                addToReport("Skipping element due to date parse error: " + e.getMessage(), Status.INFO);
             }
         }
 
@@ -1156,8 +1163,21 @@ public abstract class BasePage extends helpers {
             throw new RuntimeException("No elements with valid dates found.");
         }
 
-        return Collections.max(elementDateMap.entrySet(), Map.Entry.comparingByValue()).getKey();
+        // Find the element with the latest (most recent) date
+        WebElement latestElement = Collections.max(
+                elementDateMap.entrySet(),
+                Map.Entry.comparingByValue()
+        ).getKey();
+
+        // Get the clickable part inside the element
+        WebElement clickableElement = latestElement.findElement(clickableLocator);
+
+        // Scroll and click
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", clickableElement);
+
+        return latestElement;
     }
+
 
     /**
      * Retrieves the absolute file path of a file located in the test resources directory (src/test/resources)
@@ -1265,6 +1285,33 @@ public abstract class BasePage extends helpers {
         WebElement element = driver.findElement(locator);
         Actions actions = new Actions(driver);
         actions.moveToElement(element).perform();
+    }
+
+    /**
+     * Opens a new browser tab, navigates to a URL based on tab index, and validates mail list availability
+     *
+     * @param tabIndex A string representing the tab identifier or URL target
+     * @param openNewWindow  should open a new window true / false
+     */
+    public void navigateToTab(int tabIndex,boolean openNewWindow) {
+
+        if (openNewWindow) {
+            // Open a new tab using JavaScript
+            ((JavascriptExecutor) driver).executeScript("window.open();");
+        }
+        // Convert tabIndex to an integer
+        int index = tabIndex;
+
+        // Convert the set of window handles to a list
+        List<String> windowHandles = new ArrayList<>(driver.getWindowHandles());
+
+        // Check if the index is valid
+        if (index >= 0 && index < windowHandles.size()) {
+            // Switch to the tab by index
+            driver.switchTo().window(windowHandles.get(index));
+        } else {
+            throw new IllegalArgumentException("Invalid tab index: " + tabIndex);
+        }
     }
 
 }

@@ -4,17 +4,15 @@ import com.aventstack.extentreports.Status;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import utils.CommonUtils;
+import utils.constants.FDDetailConstant;
 import utils.constants.SaveAccountConstants;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
+import static utils.Drivers.*;
 
 public class FDDetailViewPage extends BasePage {
-
-    CommonUtils commonUtils = new CommonUtils();
 
     public FDDetailViewPage(WebDriver driver) {
         super(driver);
@@ -27,16 +25,12 @@ public class FDDetailViewPage extends BasePage {
     private static final By imgmyAccount = By.xpath("(//a[@class='NavBar_navlink__CRz3E NavBar_navlinkHover__eiXyp'])[1]");
     private static final By lblFixedDeposits = By.xpath("(//a[@class='SubMenu_subMenuItem___oYCo'])[2]");
     private static final By tblinterestAmount = By.xpath("//table[@class='min-w-full border-separate border-spacing-y-2 whitespace-nowrap']");
-    private static final By btnDeposits = By.xpath("//div[contains(@class,'Container_body')]//div[contains(text(),'Deposits')]");
-    private static final By icnAccounts = By.xpath("//div[contains(@class,'flex flex-col items-center')]/div[3]/div[1]");
     private static final By lblACNumber = By.xpath("//span/ancestor::div[contains(@class,'flex justify-between')]/following::span[contains(@class,'flex flex-col')]");
     private static final By lblCurrencyAndAvailableBalance = By.xpath("//div[contains(text(),'Available')]/following-sibling::div/span[@class='text-black']");
     private static final By lblFDMaturityValue = By.xpath("//span[contains(text(),'Maturity Value')]/parent::div/span[1]");
     private static final By lblFDMaturityDate = By.xpath("//span[contains(text(),'Maturity Date')]/parent::div/span[1]");
     private static final By lblFDInterestRate = By.xpath("//span[contains(text(),'Interest Rate')]/parent::div/span[1]");
     private static final By imgWithdrawFD = By.xpath("//img[contains(@src, 'WithdrawFD') and contains(@class, 'object-contain')]");
-    private static final By btnCardArrowRight= By.xpath("//img[contains(@src, 'CardArrowRight')]");
-    private static final By btnCardArrowLeft= By.xpath("//img[contains(@src, 'CardArrowLeft')]");
     private static final By lblPrematureClosure= By.xpath("//span[contains(@class,'text-orange-500 text-center')]");
     private static final By lblFdDetails= By.xpath("//div[contains(@class, 'flex flex-col gap-4')]");
     private static final By ddCreditedAccount= By.xpath("//select[@id='accountfrom']");
@@ -74,9 +68,14 @@ public class FDDetailViewPage extends BasePage {
 
     public void validateAllFDAccountsAtDashboard (String[] currencyType ,String expectedMessage, String fdAccountNumber) {
 
-        waitForElementPresence(btnDeposits,20);
-        clickOnElement(btnDeposits);
+        waitForElementPresence(lblACNumber,LONG_WAIT);
+        clickOnElement(lblACNumber);
 
+        if (waitForElementPresence(tblinterestAmount, LONG_WAIT)) {
+            addToReport("FD details amount table is visible.", Status.PASS, false);
+        } else {
+            addToReport("FD details amount table is not visible.", Status.FAIL);
+        }
 
         boolean flag = true;
 
@@ -111,7 +110,8 @@ public class FDDetailViewPage extends BasePage {
         }
 
         //Validate Maturity Date
-        String FDMaturityDate = getTextFromElement(lblFDMaturityDate);
+        String FDMaturityDate = getTextFromElement(lblFDMaturityDate).trim();
+        String cleanFDMaturityDate = getTextFromElement(lblFDMaturityDate).replaceAll("\\D", "");
         if (CommonUtils.containsValuesOnDate(FDMaturityDate)) {
             addToReport("Successfully validated maturity date : '" + FDMaturityDate, Status.PASS, false);
         } else {
@@ -135,11 +135,12 @@ public class FDDetailViewPage extends BasePage {
 
 
 
-        String depositAmount = getTextFromElement(getFDDetailByLabel("Deposit Amount"));
-        String maturityAmount = getTextFromElement(getFDDetailByLabel("Maturity Amount"));
-        String maturityDate = getTextFromElement(getFDDetailByLabel("Maturity Date"));
-        String interestRate = getTextFromElement(getFDDetailByLabel("Interest Rate"));
-        String accountNumber = CommonUtils.removeSpaceCharacters(getTextFromElement(getFDDetailByLabel("Account Number")));
+        String depositAmount = getTextFromElement(getFDDetailByLabel(FDDetailConstant.DEPOSIT_AMOUNT));
+        String maturityAmount = getTextFromElement(getFDDetailByLabel(FDDetailConstant.MATURITY_AMOUNT));
+        String maturityDate = getTextFromElement(getFDDetailByLabel(FDDetailConstant.MATURITY_DATE)).trim();
+        String cleanMaturityDate = getTextFromElement(getFDDetailByLabel(FDDetailConstant.MATURITY_DATE)).replaceAll("\\D", "");
+        String interestRate = getTextFromElement(getFDDetailByLabel(FDDetailConstant.INTEREST_RATE));
+        String accountNumber = CommonUtils.removeSpaceCharacters(getTextFromElement(getFDDetailByLabel(FDDetailConstant.ACCOUNT_NUMBER)));
 
 
 
@@ -160,12 +161,11 @@ public class FDDetailViewPage extends BasePage {
         }
 
 // Normalize Maturity Date
-        String cleanExpectedDate = CommonUtils.removeSpaceCharacters(FDMaturityDate).trim();
-        String cleanActualDate = CommonUtils.removeSpaceCharacters(maturityDate).trim();
-        if (cleanExpectedDate.equalsIgnoreCase(cleanActualDate)) {
-            addToReport("Maturity Date matches: " + cleanActualDate, Status.PASS, false);
+
+        if (cleanFDMaturityDate.equalsIgnoreCase(cleanMaturityDate)) {
+            addToReport("Maturity Date matches: " + cleanMaturityDate, Status.PASS, false);
         } else {
-            addToReport("Maturity Date mismatch. Expected: " + cleanExpectedDate + ", Actual: " + cleanActualDate, Status.FAIL);
+            addToReport("Maturity Date mismatch. Expected: " + cleanFDMaturityDate + ", Actual: " + cleanMaturityDate, Status.FAIL);
         }
 
 
@@ -184,7 +184,7 @@ public class FDDetailViewPage extends BasePage {
 //validate the values that only available under the account summary section
 
         //Lien Amount
-        String[] lienAmt = getTextFromElement(getFDDetailByLabel("Lien Amount")).split(" ");
+        String[] lienAmt = getTextFromElement(getFDDetailByLabel(FDDetailConstant.LIEN_AMOUNT)).split(" ");
         if (lienAmt[0].equals("0.00")) {
             addToReport("Successfully validated Lien Amount as 0.00", Status.PASS, false);
         } else if (Arrays.asList(currencyType).contains(lienAmt[0]) &&
@@ -196,7 +196,7 @@ public class FDDetailViewPage extends BasePage {
         }
 
         //Account open date
-        String fdOpenDate = getTextFromElement(getFDDetailByLabel("Account Open Date"));
+        String fdOpenDate =  getTextFromElement(getFDDetailByLabel(FDDetailConstant.ACCOUNT_OPEN_DATE));
         if (CommonUtils.containsValuesOnDate(fdOpenDate)) {
             addToReport("Successfully validated Open date : '" + fdOpenDate, Status.PASS, false);
         } else {
@@ -205,7 +205,7 @@ public class FDDetailViewPage extends BasePage {
         }
 
         //deposit period
-        String depositPeriod = getTextFromElement(getFDDetailByLabel("Deposit Period in Months"));
+        String depositPeriod = getTextFromElement(getFDDetailByLabel(FDDetailConstant.DEPOSIT_PERIOD_IN_MONTHS));
         if (CommonUtils.containsNumericCharacters(depositPeriod)) {
             addToReport("Successfully validated deposit period : '" + depositPeriod, Status.PASS, false);
         } else {
@@ -243,7 +243,7 @@ public class FDDetailViewPage extends BasePage {
                     addToReport(" Maturity date is in the future. Possible premature closure.", Status.INFO, false);
 
                     // Validate Premature Closure message
-                    if (waitForElementPresence(lblPrematureClosure, 10)) {
+                    if (waitForElementPresence(lblPrematureClosure, MODERATE_WAIT)) {
                         String actualMessage = getTextFromElement(lblPrematureClosure).trim();
 
                         if (actualMessage.equalsIgnoreCase(expectedMessage)) {
@@ -274,37 +274,37 @@ public class FDDetailViewPage extends BasePage {
         selectFromDropdown(ddCreditedAccount, fdAccountNumber, "value");
         addToReport("Selected account number '" + fdAccountNumber + "' from dropdown.", Status.PASS, true);
 
-        String amountValue = getTextFromElement(getFDSectionValueByLabel("Amount"));
-        String interestEarnedValue = getTextFromElement(getFDSectionValueByLabel("Interests earned"));
-        String interestRateValue = getTextFromElement(getFDSectionValueByLabel("Interests Rate"));
-        String totalValue = getTextFromElement(getFDSectionValueByLabel("Total"));
+        String amountValue = getTextFromElement(getFDSectionValueByLabel(FDDetailConstant.AMOUNT));
+        String interestEarnedValue = getTextFromElement(getFDSectionValueByLabel(FDDetailConstant.INTERESTS_EARNED));
+        String interestRateValue = getTextFromElement(getFDSectionValueByLabel(FDDetailConstant.INTERESTS_RATE));
+        String totalValue = getTextFromElement(getFDSectionValueByLabel(FDDetailConstant.TOTAL));
 
         clickOnElement(btnNext);
         addToReport("Successfully clicked on the next button", Status.PASS);
         validateMessage(withdrawConfirmationTitle,SaveAccountConstants.FIXED_DEPOSIT_WITHDRAW);
 
-        if (amountValue.equalsIgnoreCase(getTextFromElement(getFDSectionValueByLabel("Amount")))) {
+        if (amountValue.equalsIgnoreCase(getTextFromElement(getFDSectionValueByLabel(FDDetailConstant.AMOUNT)))) {
             addToReport("Amount matches: " + amountValue, Status.PASS, false);
         } else {
-            addToReport("Amount mismatch. Expected: " + amountValue + ", Actual: " + getTextFromElement(getFDSectionValueByLabel("Amount")), Status.FAIL);
+            addToReport("Amount mismatch. Expected: " + amountValue + ", Actual: " + getTextFromElement(getFDSectionValueByLabel(FDDetailConstant.AMOUNT)), Status.FAIL);
         }
-        if (interestEarnedValue.equalsIgnoreCase(getTextFromElement(getFDSectionValueByLabel("Interests earned")))) {
+        if (interestEarnedValue.equalsIgnoreCase(getTextFromElement(getFDSectionValueByLabel(FDDetailConstant.INTERESTS_EARNED)))) {
             addToReport("Interests earned matches: " + interestEarnedValue, Status.PASS, false);
         }
         else {
-            addToReport("Interests earned mismatch. Expected: " + interestEarnedValue + ", Actual: " + getTextFromElement(getFDSectionValueByLabel("Interests earned")), Status.FAIL);
+            addToReport("Interests earned mismatch. Expected: " + interestEarnedValue + ", Actual: " + getTextFromElement(getFDSectionValueByLabel(FDDetailConstant.INTERESTS_EARNED)), Status.FAIL);
         }
-        if (interestRateValue.equalsIgnoreCase(getTextFromElement(getFDSectionValueByLabel("Interests Rate")))) {
+        if (interestRateValue.equalsIgnoreCase(getTextFromElement(getFDSectionValueByLabel(FDDetailConstant.INTERESTS_RATE)))) {
             addToReport("Interests Rate matches: " + interestRateValue, Status.PASS, false);
         }
         else {
-            addToReport("Interests Rate mismatch. Expected: " + interestRateValue + ", Actual: " + getTextFromElement(getFDSectionValueByLabel("Interests Rate")), Status.FAIL);
+            addToReport("Interests Rate mismatch. Expected: " + interestRateValue + ", Actual: " + getTextFromElement(getFDSectionValueByLabel(FDDetailConstant.INTERESTS_RATE)), Status.FAIL);
         }
-        if (totalValue.equalsIgnoreCase(getTextFromElement(getFDSectionValueByLabel("Total")))) {
+        if (totalValue.equalsIgnoreCase(getTextFromElement(getFDSectionValueByLabel(FDDetailConstant.TOTAL)))) {
             addToReport("Total matches: " + totalValue, Status.PASS, false);
         }
         else {
-            addToReport("Total mismatch. Expected: " + totalValue + ", Actual: " + getTextFromElement(getFDSectionValueByLabel("Total")), Status.FAIL);
+            addToReport("Total mismatch. Expected: " + totalValue + ", Actual: " + getTextFromElement(getFDSectionValueByLabel(FDDetailConstant.TOTAL)), Status.FAIL);
         }
         if (flag) {
             addToReport("Successfully validated fixed deposit : '" + AccountNo, Status.PASS, true);
@@ -318,7 +318,7 @@ public class FDDetailViewPage extends BasePage {
     }
 
     private void validateMessage(By locator, String expectedMessage) {
-        if (waitForElementPresence(locator, 10)) {
+        if (waitForElementPresence(locator, MODERATE_WAIT)) {
             String actualMsg = getTextFromElement(locator);
             if (actualMsg != null && actualMsg.trim().equalsIgnoreCase(expectedMessage)) {
                 addToReport("Validation successful: " + actualMsg.trim(), Status.PASS);

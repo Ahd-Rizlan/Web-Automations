@@ -72,7 +72,7 @@
                     <include name="validateUserSettingsData"/>
                     <include name="validatePrimaryAccount"/>
                     <include name="enterOTPToChangeThePrimaryAccount"/>
-                    <!-- <include name="NavigatetoToOTPVerificationMode"/>-->
+                     <include name="NavigatetoToOTPVerificationMode"/>
                     <include name="navigateToPasswordSection"/>
                     <include name="passwordChange"/>
                     <include name="loginAfterChangingThePassword"/>
@@ -108,7 +108,12 @@
             </class>
             <class name="gui.test.OpenSavingAccountTest">
                 <methods>
-                    <include name="AccountCreation"/>
+                    <include name="logIntoDahsboard"/>
+                    <include name="getLoginDataSavingFD"/>
+                    <include name="validateDataSavingFD"/>
+                    <include name="selectAccountNumberDropdown"/>
+                    <include name="enteringFundDetails"/>
+                    <include name="validatingAccountDetails"/>
                 </methods>
             </class>
         </classes>

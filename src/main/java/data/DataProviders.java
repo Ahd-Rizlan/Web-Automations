@@ -187,12 +187,13 @@ public class DataProviders {
             return XlsReader.getDataFromSheet(filePath, "SuccessMessageSettings", columnNames).iterator();
         }
     }
+
     public static class FDDetailsveiwDataProvider {
         private static final String filePath;
 
         static {
             String projectRoot = System.getProperty("user.dir");
-            filePath = projectRoot + "/" + property.getProperty("gui-config", "TESTDATA_PATH");
+            filePath = projectRoot + "/" + property.getProperty("gui-config", "TESTDATA_PATH")+ DataSheetNameConstants.FDDETAIL_VIEW +DataSheetNameConstants.SHEET_TYPE_XLSX;
         }
 
         @DataProvider(name = "FDDetailView")
@@ -200,7 +201,10 @@ public class DataProviders {
             String[] columnNames = {"expectedMessage", "fdAccountNumber"};
             return XlsReader.getDataFromSheet(filePath, "FDDetailView", columnNames).iterator();
         }
+
     }
+
+
     public static class LoanDetailsViewDataProvider {
         private static final String filePath;
 

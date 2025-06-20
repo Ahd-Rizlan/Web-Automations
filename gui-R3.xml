@@ -4,7 +4,18 @@
     </listeners>
     <test verbose="2" preserve-order="true" name="Sampath SVR4 GUI Test R3">
         <classes>
-
+            <class name="gui.test.CreditCardDetailedViewTest">
+                <methods>
+                    <include name="logIntoDahsboard"/>
+                    <include name="validateCreditCardDetailsAndSettlement"/>
+                </methods>
+            </class>
+            <class name="gui.test.WebCardDetailedViewTest">
+                <methods>
+                    <include name="logIntoDahsboard"/>
+                    <include name="validateCreditCardDetailsAndSettlement"/>
+                </methods>
+            </class>
         </classes>
     </test>
 </suite>

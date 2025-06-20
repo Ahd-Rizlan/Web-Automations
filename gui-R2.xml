@@ -12,7 +12,7 @@
                 </methods>
             </class>
             <class name="gui.test.MyAccountTest">
-                <!--                        This includes T-bill and repo-->
+                <!--This includes T-bill and repo-->
                 <methods>
                     <include name="logIntoDahsboardAlternateUserOne"/>
                     <include name="validateMyAccountProductsExceptPawning"/>
@@ -30,7 +30,7 @@
             </class>
             <class name="gui.test.PawningTicketTest">
                 <methods>
-                    <include name="LoginDataAlternateTwo"/>
+                    <include name="logIntoDahsboard"/>
                     <include name="validatePawnSettlement"/>
                 </methods>
             </class>

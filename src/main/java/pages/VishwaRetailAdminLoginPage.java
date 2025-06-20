@@ -71,6 +71,8 @@ public class VishwaRetailAdminLoginPage extends BasePage {
      */
     public void navigateToTab(int tabIndex) {
 
+        // Open a new tab using JavaScript
+        ((JavascriptExecutor) driver).executeScript("window.open();");
         // Convert tabIndex to an integer
         int index = tabIndex;
 

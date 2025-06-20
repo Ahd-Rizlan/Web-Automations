@@ -120,33 +120,39 @@ public class VishwaRetailAdminTaskPage extends BasePage {
         // Re-click the keyword filter button (To close the filter panel)
         clickOnElement(getElementByTypeAndExactText(ElementType.span, AdminTaskConstants.FILTER));
     }
-
+    String mailReference;
     /**
      * Select appropriate mail
-     * @param mailReference
      * @param mailSubject
      */
-    public void selectMail(String mailReference,String mailSubject) {
+    public void selectMail(String mailSubject) {
 
         //validate the mail list availability
         int recordCount = isElementsPresentBy(lnkMailRowCount);
         if (recordCount != 0) {
 
-            //Search if appropriate subject appears
-            if (mailReference.equals(CommonUtils.removeLeadingCharacters(getTextFromElement(lnkRowReference(1)),'0'))){
+            //Select the last message
+            clickOnElement(lnkRow(1));
+            mailReference =  getTextFromElement(lnkRowReference(1));
 
-                clickOnElement(lnkRowSubject(1));
-            }else {
-                addToReport("Error selecting mail with reference : "+mailReference, Status.FAIL);
-                throw new RuntimeException("Failed to select mail");
-            }
+            //Search if appropriate subject appears
+//            if (mailReference.equals(CommonUtils.removeLeadingCharacters(getTextFromElement(lnkRowReference(1)),'0'))){
+//
+//                clickOnElement(lnkRowSubject(1));
+//            }else {
+//                addToReport("Error selecting mail with reference : "+mailReference, Status.FAIL);
+//                throw new RuntimeException("Failed to select mail");
+//            }
 
             //Validate opened reference
-            if (isElementPresentBy(lblMailReference(mailSubject))) {
-                addToReport("Selected the correct mail with subject :"+mailSubject+" and reference :"+mailReference, Status.PASS, true);
+            if (isElementPresentBy(lblMailReference(mailReference))) {
+                addToReport("Selected the correct mail with reference :"+mailSubject+" :"+mailReference, Status.PASS, true);
             } else {
-                addToReport("Didn't select correct mail with subject :"+mailSubject+" and reference :"+mailReference, Status.FAIL);
+                addToReport("Didn't select correct mail with reference :"+mailSubject+" :"+mailReference, Status.FAIL);
             }
+
+
+
         }
     }
 
@@ -174,7 +180,9 @@ public class VishwaRetailAdminTaskPage extends BasePage {
      */
     public void performMailAction(String buttonName,boolean isClicked) {
         try {
+
             boolean isButtonVisible = waitForElementPresence(btnUsingWildCard(buttonName));
+            waitForElementToBeClickable(btnUsingWildCard(buttonName),LONG_WAIT);
 
             if (isButtonVisible) {
                 addToReport("Button name '" + buttonName + "' is visible", Status.PASS, false);
@@ -198,16 +206,32 @@ public class VishwaRetailAdminTaskPage extends BasePage {
     /**
      * Read received mail and forward the mail
      * @param subject       - Message subject
-     * @param mailReference   - Key word to be entered in the text field
+     * @param message   - Key word to be entered in the text field
      */
-    public void readReceivedMailAction(String mailReference, String subject) {
+    public void readReceivedMailAction(String message, String subject) {
 
         // Wait for the mail list to load
         waitForElementPresence(getElementByTypeAndExactText(ElementType.span, AdminTaskConstants.FILTER), MODERATE_WAIT);
 
         //Subject and reference have to come from client
-        selectMail(mailReference,subject);
         selectTaskHeader(AdminTaskConstants.INBOX);
+        selectMail(subject);
+
+        //Obtain the record count
+        int msgCount = isElementsPresentBy(lblMessageThread);
+        if (msgCount == 1 ) {
+            addToReport(" Message thread is available as expected", Status.PASS,false);
+        }else {
+            addToReport(" Message thread is not available as expected as the number of messages in thread is : "+msgCount, Status.FAIL,true);
+            throw new RuntimeException("Error - Mail thread did not display appropriately");
+        }
+        //Validate opened reference
+        if (message.equals(getTextFromElement(lblMessageThread))) {
+            addToReport("Message thread is loaded with message:"+message, Status.PASS, false);
+        } else {
+            addToReport("Message thread is not loaded with message:"+message, Status.FAIL);
+        }
+
         boolean isButtonVisible = waitForElementPresence(getElementByTypeAndText(ElementType.button, AdminTaskConstants.REPLY));
 
         if (isButtonVisible) {
@@ -291,15 +315,15 @@ public class VishwaRetailAdminTaskPage extends BasePage {
 
     /**
      * Validate the sent email
-     * @param messageID  The unique identifier of the message
+     * @param initialMessage  The unique identifier of the message
      * @param subject    The subject or title of the message
      * @param message    The content of the message
      * @param user       The user associated with the message
      * @param branch     The branch  related to the message
      */
-    public void validateSentMails(String messageID,String subject,String message,String user, String branch){
+    public void validateSentMails(String initialMessage,String subject,String message,String user, String branch){
         addToReport("----------Start of validation of received mail----------", Status.PASS, false);
-        readReceivedMailAction(messageID,subject);
+        readReceivedMailAction(initialMessage,subject);
         addToReport("----------End of validation of received mail----------", Status.PASS, false);
         addToReport("----------Start of validation of forwarded mail thread is available is available in mail thread----------", Status.PASS, false);
         forwardMailAndValidate(subject,branch,message,user);
@@ -308,17 +332,17 @@ public class VishwaRetailAdminTaskPage extends BasePage {
 
     /**
      * validate forwarded mails on branchs
-     * @param messageID  The unique identifier for the message
+     * @param message  The unique identifier for the message
      * @param subject    The  title of the message
      * @param messages   The message contents
      * @param users      The users associated with the messages
      * @param branch     The branch related to the messages
      */
-    public void validateForwardedMailsBranch(String messageID,String subject,String[] messages,String[] users, String branch){
+    public void validateForwardedMailsBranch(String message,String subject,String[] messages,String[] users, String branch){
 
         addToReport("----------Start of validation of forwarded mail thread is available is available in mail thread----------", Status.PASS, false);
 
-        filterMails(AdminTaskConstants.KEYWORD,messageID,"","");
+        filterMails(AdminTaskConstants.KEYWORD,messages[2],"","");
 
         //Obtain the record count
         int userCount = isElementsPresentBy(lblUsersInThread);
@@ -377,11 +401,11 @@ public class VishwaRetailAdminTaskPage extends BasePage {
 
     /**
      * Validate fund transfer request
-     * @param messageID The unique identifier for the message
+     * @param message The unique identifier for the message
      */
-    public void validateFundTransferRequest(String messageID){
+    public void validateFundTransferRequest(String message){
         addToReport("----------Start of validation of fund transfer request are available in admin----------", Status.PASS, false);
-        filterMails(AdminTaskConstants.KEYWORD,messageID,"","");
+        filterMails(AdminTaskConstants.KEYWORD,message,"","");
         addToReport("----------End of validation of fund transfer request are available in admin----------", Status.PASS, true);
 
     }
