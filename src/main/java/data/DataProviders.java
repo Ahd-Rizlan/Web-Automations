@@ -484,7 +484,7 @@ public class DataProviders {
             filePath = projectRoot + "/" + property.getProperty("gui-config", "TESTDATA_PATH")+ DataSheetNameConstants.OLD_VISHWA_DATA +DataSheetNameConstants.SHEET_TYPE_XLSX;
         }
 
-        @DataProvider(name = "AcknowledgementMessagesData")
+        @DataProvider(name = "InboxMessagesData")
         public static Iterator<Object[]> getInboxData() {
             String[] columnNames = {"subjectHeader"
             };
@@ -543,6 +543,7 @@ public class DataProviders {
         }
 
     }
+
 
 
 }
