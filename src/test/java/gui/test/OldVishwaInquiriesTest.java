@@ -27,18 +27,18 @@ public class OldVishwaInquiriesTest extends BaseTest {
         OldVishwaPage.navigateToOldVishwaMailAndValidateInboxAndSentMsg();
     }
 
-    @Test(priority = 3, description = "Old vishwa inquiries| 3",  dataProviderClass = DataProviders.LoginDataProvider.class)
+    @Test(priority = 3, dataProvider = "InboxMessagesData",  description = "Old vishwa inquiries| 3",  dataProviderClass = DataProviders.OldVishwaInquiryDataProvider.class)
     public void validateInboxMessages(String subjectHeader) {
         dashboardPage.navigateToMessages();
         OldVishwaPage.navigateToOldVishwaMailAndValidateInboxMessage(subjectHeader);
     }
-    @Test(priority = 3, description = "Old vishwa inquiries| 12")
+    @Test(priority = 4, description = "Old vishwa inquiries| 12")
     public void validatePaymentsTableAndData() {
         dashboardPage.selectQuickActions(BillerConstants.BUTTON_SEND_MONEY);
         billPaymentPage.selectHeaderTab(OldVishwaConstants.KEYWORD_TRANSACTION_HISTORY);
         OldVishwaPage.navigatePayeeAndValidateOldVishwaTransactions();
     }
-    @Test(priority = 3, description = "Old vishwa inquiries| 13")
+    @Test(priority = 5, description = "Old vishwa inquiries| 13")
     public void validateBillPaymentTableAndData() {
         dashboardPage.selectQuickActions(BillerConstants.BUTTON_BILL_PAYMENT);
         billPaymentPage.selectHeaderTab(OldVishwaConstants.KEYWORD_BILL_PAYMENT_HISTORY);

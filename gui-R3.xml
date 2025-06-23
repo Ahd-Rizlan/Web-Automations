@@ -16,6 +16,34 @@
                     <include name="validateCreditCardDetailsAndSettlement"/>
                 </methods>
             </class>
+            <class name="gui.test.OldVishwaInquiriesTest">
+                <methods>
+                    <include name="logIntoDahsboardAlternateUserSix"/>
+                    <include name="validateAcknowledgementMsg"/>
+                    <include name="validateInboxMessages"/>
+                    <include name="validatePaymentsTableAndData"/>
+                    <include name="validateBillPaymentTableAndData"/>
+                    <include name="validateAcknowledgementMsg"/>
+                </methods>
+            </class>
+            <class name="gui.test.LyceumTest">
+                <methods>
+                    <include name="logIntoDahsboardAlternateUserTwo"/>
+                    <include name="validateLyceum"/>
+                </methods>
+            </class>
+            <class name="gui.test.LPOPPTest">
+                <methods>
+                    <include name="logIntoDahsboardAlternateUserTwo"/>
+                    <include name="validateLPOPP"/>
+                </methods>
+            </class>
+            <class name="gui.test.AcknowledgementMsgTest">
+                <methods>
+                    <include name="logIntoDahsboardAlternateUserTwo"/>
+                    <include name="validateAcknowledgementMsg"/>
+                </methods>
+            </class>
         </classes>
     </test>
 </suite>

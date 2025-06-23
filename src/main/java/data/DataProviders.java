@@ -81,7 +81,11 @@ public class DataProviders {
             String[] columnNames = {"userName", "password" ,"emailSentSuccessMsg"};
             return XlsReader.getDataFromSheet(filePath, "LoginDataAlternateSix", columnNames).iterator();
         }
-
+        @DataProvider(name = "LoanDetailsUserData")
+        public static Iterator<Object[]> getLoginDataLoanDetails() {
+            String[] columnNames = {"userName", "password" ,"emailSentSuccessMsg"};
+            return XlsReader.getDataFromSheet(filePath, "LoanDetailsUserData", columnNames).iterator();
+        }
 
     }
     public static class DashboardDataProvider {
@@ -480,7 +484,7 @@ public class DataProviders {
             filePath = projectRoot + "/" + property.getProperty("gui-config", "TESTDATA_PATH")+ DataSheetNameConstants.OLD_VISHWA_DATA +DataSheetNameConstants.SHEET_TYPE_XLSX;
         }
 
-        @DataProvider(name = "AcknowledgementMessagesData")
+        @DataProvider(name = "InboxMessagesData")
         public static Iterator<Object[]> getInboxData() {
             String[] columnNames = {"subjectHeader"
             };
@@ -518,6 +522,7 @@ public class DataProviders {
             return XlsReader.getDataFromSheet(filePath, "lyceumData", columnNames).iterator();
         }
     }
+
 
 
 }
