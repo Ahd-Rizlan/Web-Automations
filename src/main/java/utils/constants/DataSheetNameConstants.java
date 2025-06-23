@@ -23,5 +23,7 @@ public class DataSheetNameConstants {
     public static final String LYCEUM_DATA = "LyceumData";
     public static final String LOANDETAILS_DATA = "LoanDetailsData";
     public static final String FDDETAIL_VIEW = "FDDetailView";
+    public static final String CREDITCARDDETAIL_VIEW = "CreditCardDetailViewData";
+
 
 }

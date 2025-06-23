@@ -6,7 +6,7 @@ import utils.constants.LoginConstants;
 
 public class CreditCardDetailedViewTest extends BaseTest {
 
-    @Test(priority = 1, dataProvider = "LoanAccoutnDetailUser", description = "Pre-Requisite :: Login to the Sampath vishwa application", dataProviderClass = DataProviders.LoanDetailsViewDataProvider.class)
+    @Test(priority = 1, dataProvider = "CreditCardDetailLoginData", description = "Pre-Requisite :: Login to the Sampath vishwa application", dataProviderClass = DataProviders.LoginDataProvider.class)
     public void logIntoDahsboard(String userName, String password, String emailSentSuccessMsg) throws InterruptedException {
         loginPage.validateTheLoginPage(LoginConstants.EXPECTED_TITLE, LoginConstants.LOGIN_TILE_NAME);
         loginPage.loginToSampathVishwaWeb(userName, password, emailSentSuccessMsg, LoginConstants.OTP_PAGE_HEADER, LoginConstants.FALASE);
