@@ -20,9 +20,10 @@ public class BaseTest extends Drivers {
     protected BillPaymentPage billPaymentPage;
     protected OldVishwaPage OldVishwaPage;
     protected PawningTicketPage pawningTicketPage;
-    protected ObtainLoanPage obtainLoanPage;
+    protected  ObtainLoanPage obtainLoanPage;
     protected FDDetailViewPage fdDetailViewPage;
     protected LoanAccountDetailedViewPage loanAccountDetailedViewPage;
+    protected  CreditCardDetailedViewPage creditCardDetailedViewPage;
 
 
     @BeforeClass
@@ -43,6 +44,8 @@ public class BaseTest extends Drivers {
         OldVishwaPage = new  OldVishwaPage(driver);
         fdDetailViewPage = new FDDetailViewPage(driver);
         loanAccountDetailedViewPage = new LoanAccountDetailedViewPage(driver);
+        creditCardDetailedViewPage = new CreditCardDetailedViewPage(driver);
+
         driver.get(url);
     }
 

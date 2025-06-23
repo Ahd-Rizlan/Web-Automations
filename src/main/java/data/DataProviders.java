@@ -86,6 +86,11 @@ public class DataProviders {
             String[] columnNames = {"userName", "password" ,"emailSentSuccessMsg"};
             return XlsReader.getDataFromSheet(filePath, "LoanDetailsUserData", columnNames).iterator();
         }
+        @DataProvider(name = "CreditCardDetailLoginData")
+        public static Iterator<Object[]> getLoginDataCreditCardDetails() {
+            String[] columnNames = {"userName", "password" ,"emailSentSuccessMsg"};
+            return XlsReader.getDataFromSheet(filePath, "CreditCardDetailLoginData", columnNames).iterator();
+        }
 
     }
     public static class DashboardDataProvider {
@@ -209,25 +214,6 @@ public class DataProviders {
     }
 
 
-    public static class LoanDetailsViewDataProvider {
-        private static final String filePath;
-
-        static {
-            String projectRoot = System.getProperty("user.dir");
-            filePath = projectRoot + "/" + property.getProperty("gui-config", "TESTDATA_PATH");
-        }
-        @DataProvider(name = "ExpectederrorMsg")
-        public static Iterator<Object[]> geterrorMsgData() {
-            String[] columnNames = {"errorMsg"};
-            return XlsReader.getDataFromSheet(filePath, "ExpectederrorMsg", columnNames).iterator();
-        }
-        @DataProvider(name = "LoanDetailsView")
-        public static Iterator<Object[]> getLoanDetailsView() {
-            String[] columnNames = {"loanAccountNumber","accountNumber", "customAmount", "successMsg"};
-            return XlsReader.getDataFromSheet(filePath, "LoanDetailsView", columnNames).iterator();
-        }
-
-    }
     public static class SavingsandFDDataProvider {
         private static final String filePath;
 
@@ -540,6 +526,23 @@ public class DataProviders {
         public static Iterator<Object[]> getLoanDetailsView() {
             String[] columnNames = {"loanAccountNumber","accountNumber", "successMsg"};
             return XlsReader.getDataFromSheet(filePath, "LoanDetailsView", columnNames).iterator();
+        }
+
+    }
+
+    public static class CreditCardDetailViewDataProvider {
+
+        private static final String filePath;
+
+        static {
+            String projectRoot = System.getProperty("user.dir");
+            filePath = projectRoot + "/" + property.getProperty("gui-config", "TESTDATA_PATH")+ DataSheetNameConstants.CREDITCARDDETAIL_VIEW +DataSheetNameConstants.SHEET_TYPE_XLSX;
+        }
+
+        @DataProvider(name = "CreditCardDetailViewData")
+        public static Iterator<Object[]> getLoanDetailsView() {
+            String[] columnNames = {"payingAccountNumber","paymentAmount", "successMsg"};
+            return XlsReader.getDataFromSheet(filePath, "CreditCardDetailViewData", columnNames).iterator();
         }
 
     }

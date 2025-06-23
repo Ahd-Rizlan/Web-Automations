@@ -392,6 +392,16 @@ public class CommonUtils extends Drivers {
     }
 
     /**
+     * Function to check if the text matches masked card number format like '5471 65XX XXXX 6154'
+     *
+     * @param text - masked card number string to validate
+     * @return boolean - true if format is valid
+     */
+    public static boolean containsMaskedCardFormat(String text) {
+        return text != null && text.matches("^\\d{4} \\d{2}XX XXXX \\d{4}$");
+    }
+
+/**
      * Generate Random number between 0 -100
      * @return - return the value
      */
@@ -399,8 +409,8 @@ public class CommonUtils extends Drivers {
         Random random = new Random();
         double value = 0 + (100 - 0) * random.nextDouble();
         return String.format("%.2f", value); // returns string like "23.89"
-    }
 
+    }
 
 
 
