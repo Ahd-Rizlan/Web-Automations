@@ -13,7 +13,8 @@ public class MyAccountsConstants {
     public static final String TAB_PAWNING_HISTORY = "Pawning History";
     public static final String TAB_T_BILLS = "T-Bills";
     public static final String TAB_REPO = "Repo";
-
+    public static final String TAB_OTHER_ACCOUNTS = "Other Accounts";
+    public static final String TAB_OWN_ACCOUNT = "Own Account";
     public static final String[] TAB_NAMES = {"Accounts", "Deposits", "Loans", "T-Bills", "Repo"};
     public static final String[] TAB_NAME_PAWNING = {"Pawning"};
     public static final String[] TAB_NAMES_FOR_NICKNAME = {"Accounts", "Deposits"};
@@ -21,11 +22,11 @@ public class MyAccountsConstants {
     //-------------------- Tile Headers --------------------
     public static final String[] TILE_HEADER_PAWNING = {"'Accounts / Pawning'"};
     public static final String[] TILE_HEADERS = {
-            "'Accounts / Savings'", "'My Accounts / FD'", "'My Accounts / Loans'",
+            "'Accounts / Operative'", "'My Accounts / FD'", "'My Accounts / Loans'",
             "'Treasury Bills'", "'Repository Account Investments'"
     };
     public static final String[] TILE_HEADERS_FOR_NICKNAME = {
-            "'Accounts / Savings'", "'My Accounts / FD'"
+            "'Accounts / Operative'", "'My Accounts / FD'"
     };
 
     //-------------------- Table Headers --------------------
@@ -35,6 +36,10 @@ public class MyAccountsConstants {
 
     public static final String[] ACCOUNT_TABLE_HEADERS = {
             "Date", "Description", "Type", "Amount (LKR)", "Balance (LKR)"
+    };
+
+    public static final String[] SUPPLEMENTARY_CARD_TABLE_HEADERS = {
+            "Card Number", "Card Holder Name"
     };
 
     public static final String[] DEPOSITS_TABLE_HEADERS = {
@@ -95,6 +100,26 @@ public class MyAccountsConstants {
     public static final String NICK_NAME_UPDATED = "'Nickname Updated Successfully'";
     public static final String NEXT = "'Next'";
     public static final String PDF_DOWNLOADED_SUCCESSFULLY = "PDF downloaded successfully!";
+
+    public static final String CUSTOMER_ACCOUNT_NUMBER = "Customer Account Number";
+    public static final String EXPIRY_DATE = "Expiry Date";
+    public static final String CARD_STATUS = "Card Status";
+    public static final String CARD_TYPE = "Card Type";
+    public static final String AVAILABLE_BALANCE = "Available Balance";
+    public static final String CARD_NUMBER = "Card Number";
+    public static final String AVAILABLE = "Available";
+
+    public static final String CAN = "CAN";
+    public static final String INACTIVE = "Inactive";
+    public static final String MASTER_INACTIVE = "Master Regular";
+
+    public static final String ACCOUNTS_CREDIT_CARDS = "'Accounts / Credit Cards'";
+    public static final String CREDIT_CARDS = "Credit Cards";
+
+    public static final String SUPPLEMENTARY_CARDS = "'Supplementary Cards'";
+    public static final String CARD_HOLDER_NAME = "Card Holder Name";
+
+
 
     //-------------------- Filters / Form Fields --------------------
     public static final String INVESTMENT_DATE = "Investment Date";

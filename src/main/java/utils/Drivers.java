@@ -26,7 +26,13 @@ public class Drivers{
     public static String userName = property.getProperty("gui-config", "USERNAME");
     public static String password = property.getProperty("gui-config", "PASSWORD");
     public static String dowloadLocation = System.getProperty("user.home") +"/"+property.getProperty("gui-config", "DOWNLOAD");
-
+    public static final int VERY_SHORT_WAIT = Integer.parseInt(property.getProperty("gui-config", "VERY_SHORT_WAIT"));
+    public static int SHORT_WAIT = Integer.parseInt(property.getProperty("gui-config", "SHORT_WAIT"));
+    public static int MODERATE_WAIT = Integer.parseInt(property.getProperty("gui-config", "MODERATE_WAIT"));
+    public static int LONG_WAIT = Integer.parseInt(property.getProperty("gui-config", "LONG_WAIT"));
+    public static int VERY_LONG_WAIT = Integer.parseInt(property.getProperty("gui-config", "VERY_LONG_WAIT"));
+    public static int EXTREME_LONG_WAIT = Integer.parseInt(property.getProperty("gui-config", "EXTREME_LONG_WAIT"));
+    public static int EXTREME_SHORT_WAIT = Integer.parseInt(property.getProperty("gui-config", "EXTREME_SHORT_WAIT"));
     String projectRoot = System.getProperty("user.dir");
     String webDriverRoot = projectRoot + "/" + property.getProperty("gui-config","WEBDRIVERS");
     String chromeDriverPath = webDriverRoot + "chromedriver.exe";

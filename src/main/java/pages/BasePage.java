@@ -27,6 +27,8 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static utils.Drivers.*;
+
 public abstract class BasePage extends helpers {
 
     protected WebDriver driver;
@@ -47,13 +49,13 @@ public abstract class BasePage extends helpers {
      */
     public void sendKeysToElement(By byLocator, String inputText) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebDriverWait wait = new WebDriverWait(driver, MODERATE_WAIT);
             WebElement webElement = wait.until(ExpectedConditions.elementToBeClickable(byLocator));
             webElement.clear();
             addToReport("Clear the input textbox.", Status.PASS, false);
             webElement.sendKeys(inputText);
             addToReport("Type '" + inputText + "' on textbox.", Status.PASS, false);
-            waitFor(2000);
+            waitFor(EXTREME_SHORT_WAIT);
         } catch (Exception e) {
             addToReport("Unable to type on '" + inputText + "'  textbox.", Status.FAIL);
             System.err.println("Error sending keys to WebElement: " + e.getMessage());
@@ -68,7 +70,7 @@ public abstract class BasePage extends helpers {
      */
     public void sendKeysToElementUsingJS(By byLocator, String inputText) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebDriverWait wait = new WebDriverWait(driver, MODERATE_WAIT);
             WebElement element = wait.until(ExpectedConditions.elementToBeClickable(byLocator));
 
             // Use JavaScript to set the value
@@ -81,7 +83,7 @@ public abstract class BasePage extends helpers {
             );
 
             addToReport("Typed '" + inputText + "' into the textbox using JavaScript.", Status.PASS, false);
-            waitFor(2000);
+            waitFor(EXTREME_SHORT_WAIT);
         } catch (Exception e) {
             addToReport("Unable to type '" + inputText + "' into textbox using JavaScript.", Status.FAIL);
             System.err.println("Error sending keys via JS: " + e.getMessage());
@@ -100,13 +102,13 @@ public abstract class BasePage extends helpers {
      */
     public void sendKeysToWebElement(WebElement webElement, String inputText) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebDriverWait wait = new WebDriverWait(driver, MODERATE_WAIT);
             WebElement element = wait.until(ExpectedConditions.elementToBeClickable(webElement));
             element.clear();
             addToReport("Clear the input textbox.", Status.PASS);
             element.sendKeys(inputText);
             addToReport("Type '" + inputText + "' into the element.", Status.PASS);
-            waitFor(2000);
+            waitFor(EXTREME_SHORT_WAIT);
 
         } catch (Exception e) {
             addToReport("Unable to type '" + inputText + "' into the element.", Status.FAIL);
@@ -123,7 +125,7 @@ public abstract class BasePage extends helpers {
      */
     public void sendEnterKeyToElement(By byLocator) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebDriverWait wait = new WebDriverWait(driver, MODERATE_WAIT);
             WebElement webElement = wait.until(ExpectedConditions.elementToBeClickable(byLocator));
             webElement.sendKeys(Keys.ENTER);
             addToReport("Press the 'Enter' key.", Status.PASS);
@@ -141,7 +143,7 @@ public abstract class BasePage extends helpers {
      */
     public void sendTabKeyToElement(By byLocator) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebDriverWait wait = new WebDriverWait(driver, MODERATE_WAIT);
             WebElement webElement = wait.until(ExpectedConditions.elementToBeClickable(byLocator));
             webElement.sendKeys(Keys.TAB);
             addToReport("Press the 'Tab' key.", Status.PASS);
@@ -160,7 +162,7 @@ public abstract class BasePage extends helpers {
      */
     public void clickOnWebElement(WebElement locator) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebDriverWait wait = new WebDriverWait(driver, MODERATE_WAIT);
             wait.until(ExpectedConditions.elementToBeClickable(locator));
             locator.click();
             addToReport("Click on the '" + locator + "' web element locator.", Status.PASS);
@@ -182,7 +184,7 @@ public abstract class BasePage extends helpers {
 
     public void clickOnElement(By locator) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebDriverWait wait = new WebDriverWait(driver, MODERATE_WAIT);
             wait.until(ExpectedConditions.elementToBeClickable(locator));
             driver.findElement(locator).click();
             addToReport("Successfully clicked on the '" + locator + "' element.", Status.PASS, false);
@@ -202,7 +204,7 @@ public abstract class BasePage extends helpers {
 
     public void clickOnElement(WebElement element) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebDriverWait wait = new WebDriverWait(driver, MODERATE_WAIT);
             wait.until(ExpectedConditions.elementToBeClickable(element));
             element.click();
             addToReport("Successfully clicked on the '" + element + "' element.", Status.PASS, false);
@@ -221,7 +223,7 @@ public abstract class BasePage extends helpers {
      */
     public void clickOnElementUsingJS(By locator) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebDriverWait wait = new WebDriverWait(driver, MODERATE_WAIT);
             wait.until(ExpectedConditions.elementToBeClickable(locator));
             JavascriptExecutor js = (JavascriptExecutor) driver;
             WebElement element = driver.findElement(locator);
@@ -244,7 +246,7 @@ public abstract class BasePage extends helpers {
      */
     public String getTextFromElement(By locator) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebDriverWait wait = new WebDriverWait(driver, MODERATE_WAIT);
             wait.until(ExpectedConditions.presenceOfElementLocated(locator));
             return driver.findElement(locator).getText();
         } catch (Exception e) {
@@ -260,13 +262,16 @@ public abstract class BasePage extends helpers {
      *
      * @param seconds the number of seconds to wait
      */
-    public void waitFor(int seconds) {
+    public static void waitFor(int seconds) {
         try {
-            Thread.sleep(seconds);
+            Thread.sleep(seconds * 1000L); // Convert seconds to milliseconds
         } catch (InterruptedException e) {
             System.err.println("Interrupted during wait: " + e.getMessage());
+            Thread.currentThread().interrupt(); // Restore interrupt status
         }
     }
+
+
 
     /**
      * Waits until an element is present in the DOM.
@@ -280,7 +285,7 @@ public abstract class BasePage extends helpers {
      */
         public boolean waitForElementPresence(By locator) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebDriverWait wait = new WebDriverWait(driver, MODERATE_WAIT);
             wait.until(ExpectedConditions.presenceOfElementLocated(locator));
             return true;
         } catch (Exception e) {
@@ -323,7 +328,7 @@ public abstract class BasePage extends helpers {
      */
     public boolean isElementPresentBy(By locator) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 20);
+            WebDriverWait wait = new WebDriverWait(driver, SHORT_WAIT);
             wait.until(ExpectedConditions.presenceOfElementLocated(locator));
             return true;
         } catch (Exception e) {
@@ -364,7 +369,7 @@ public abstract class BasePage extends helpers {
      */
     public int isElementsPresentBy(By locator) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 20);
+            WebDriverWait wait = new WebDriverWait(driver, LONG_WAIT);
             wait.until(ExpectedConditions.presenceOfElementLocated(locator));
             List<WebElement> records = driver.findElements(locator);
             if (!records.isEmpty()) {
@@ -391,7 +396,7 @@ public abstract class BasePage extends helpers {
      */
     public boolean isElementPresent(WebElement locator) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebDriverWait wait = new WebDriverWait(driver, LONG_WAIT);
 
             wait.until(ExpectedConditions.visibilityOf(locator));
             return true;
@@ -452,7 +457,7 @@ public abstract class BasePage extends helpers {
      */
     public boolean isElementInvisible(By locator) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebDriverWait wait = new WebDriverWait(driver, LONG_WAIT);
             wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
             return true;
 
@@ -474,7 +479,7 @@ public abstract class BasePage extends helpers {
      */
     public boolean isElementClickable(By locator) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebDriverWait wait = new WebDriverWait(driver, LONG_WAIT);
             wait.until(ExpectedConditions.elementToBeClickable(locator));
             return true;
         } catch (Exception e) {
@@ -490,7 +495,7 @@ public abstract class BasePage extends helpers {
      */
     public void waitForLoadingToBeInvisible() {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebDriverWait wait = new WebDriverWait(driver, LONG_WAIT);
             wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div/img[@alt=\"loading...\"]")));
             addToReport("Loading indicator is not visible", Status.PASS);
 
@@ -547,7 +552,7 @@ public abstract class BasePage extends helpers {
      */
     public void waitForLoadingDropToBeInvisible() {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebDriverWait wait = new WebDriverWait(driver, LONG_WAIT);
             wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[@class='css-fraxkc']")));
             addToReport("Loading dropdown is not visible:", Status.PASS);
 
@@ -629,11 +634,11 @@ public abstract class BasePage extends helpers {
      */
     public void clearTheElement(By byLocator) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebDriverWait wait = new WebDriverWait(driver, MODERATE_WAIT);
             WebElement webElement = wait.until(ExpectedConditions.elementToBeClickable(byLocator));
             webElement.clear();
             addToReport("Clear the '" + byLocator + "' input textbox.", Status.PASS);
-            waitFor(2000);
+            waitFor(EXTREME_SHORT_WAIT);
         } catch (Exception e) {
             addToReport("Unable to clear the '" + byLocator + "'  textbox.", Status.FAIL);
             System.err.println("Error clearing the web element " + e.getMessage());
@@ -642,7 +647,7 @@ public abstract class BasePage extends helpers {
 
     public void mouseClick(By locator) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebDriverWait wait = new WebDriverWait(driver, MODERATE_WAIT);
             wait.until(ExpectedConditions.elementToBeClickable(locator));
             WebElement element = driver.findElement(locator);
             Actions actions = new Actions(driver);
@@ -660,7 +665,7 @@ public abstract class BasePage extends helpers {
      */
     public void mouseHover(By locator) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebDriverWait wait = new WebDriverWait(driver, MODERATE_WAIT);
             wait.until(ExpectedConditions.elementToBeClickable(locator));
             WebElement element = driver.findElement(locator);
             Actions actions = new Actions(driver);
@@ -682,11 +687,11 @@ public abstract class BasePage extends helpers {
      */
     public void typeWithoutClear(By byLocator, String inputText) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebDriverWait wait = new WebDriverWait(driver, MODERATE_WAIT);
             WebElement webElement = wait.until(ExpectedConditions.elementToBeClickable(byLocator));
             webElement.sendKeys(inputText);
             addToReport("Type '" + inputText + "' on textbox.", Status.PASS);
-            waitFor(2000);
+            waitFor(EXTREME_SHORT_WAIT);
         } catch (Exception e) {
             addToReport("Unable to type on '" + inputText + "'  textbox.", Status.FAIL);
             System.err.println("Error sending keys to WebElement: " + e.getMessage());
@@ -713,7 +718,7 @@ public abstract class BasePage extends helpers {
 
     public void removeLastCharacterFromField(By fieldLocator) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebDriverWait wait = new WebDriverWait(driver, MODERATE_WAIT);
             WebElement field = wait.until(ExpectedConditions.elementToBeClickable(fieldLocator));
             field.sendKeys(Keys.BACK_SPACE); // Simulates pressing the BACK_SPACE key
         } catch (Exception e) {
@@ -736,7 +741,7 @@ public abstract class BasePage extends helpers {
         System.out.println("Start of image verification");
 
         //Obtain the element
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriverWait wait = new WebDriverWait(driver, MODERATE_WAIT);
         WebElement webElement = wait.until(ExpectedConditions.elementToBeClickable(byLocator));
         //Based on web element retrieved the image
         Screenshot screenshot = new AShot()
@@ -816,7 +821,7 @@ public abstract class BasePage extends helpers {
 //        waitForDownload(dirPath,20);
         //Adding sleep due to network latency
         try {
-            Thread.sleep(10000);
+            waitFor(MODERATE_WAIT);
         } catch (Exception e) {
             System.err.println("Error on wait : " + e.getMessage());
         }
@@ -824,7 +829,7 @@ public abstract class BasePage extends helpers {
         File[] files = dir.listFiles((d, name) -> name.endsWith(".pdf"));
         //Adding sleep due to network latency
         try {
-            Thread.sleep(15000);
+            waitFor(MODERATE_WAIT);
         } catch (Exception e) {
             System.err.println("Error on wait : " + e.getMessage());
         }
@@ -853,12 +858,7 @@ public abstract class BasePage extends helpers {
             if (crdownloadFiles == null || crdownloadFiles.length == 0) {
                 return; // Download complete
             }
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                return;
-            }
+                waitFor(EXTREME_SHORT_WAIT);
         }
     }
 
@@ -942,10 +942,10 @@ public abstract class BasePage extends helpers {
         try {
             //start of temp work around as data loading issue in dropdown
             clickOnElement(locator);
-            waitFor(1);
+            waitFor(EXTREME_SHORT_WAIT);
             clickOnElement(locator);
             //End of temp work around
-            waitFor(5);
+            waitFor(EXTREME_SHORT_WAIT);
             WebElement dropdownElement = driver.findElement(locator); // Replace with actual dropdown ID
             Select dropdown = new Select(dropdownElement);
             switch (action) {
@@ -1029,7 +1029,7 @@ public abstract class BasePage extends helpers {
      * Waits until the page has fully loaded (document.readyState is 'complete').
      */
     public void waitForPageLoadCompleteJS() {
-        new WebDriverWait(driver, 20).until(
+        new WebDriverWait(driver, MODERATE_WAIT).until(
                 webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
     }
 
@@ -1132,23 +1132,30 @@ public abstract class BasePage extends helpers {
 
     /**
      * Get the latest element based on date Eg : used at instances on message list to get the latest
-     * @param elements      - element
-     * @param dateLocator   - date locator
      * @param datePrefix    - date prefix
      * @return
      */
-    public WebElement getLatestElementByDate(List<WebElement> elements, By dateLocator, String datePrefix) {
+    public WebElement getLatestElementByDate(By containerLocator, By dateLocatorInside, String datePrefix, By clickableLocator) {
+        List<WebElement> elements = driver.findElements(containerLocator);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Map<WebElement, Date> elementDateMap = new HashMap<>();
 
         for (WebElement element : elements) {
             try {
-                WebElement dateElement = element.findElement(dateLocator);
-                String dateText = dateElement.getText().replace(datePrefix, "").trim();
-                Date parsedDate = sdf.parse(dateText);
-                elementDateMap.put(element, parsedDate);
+                // Find all inner elements that might contain date text
+                List<WebElement> dateElements = element.findElements(dateLocatorInside);
+                for (WebElement dateEl : dateElements) {
+                    String text = dateEl.getText().trim();
+                    // Match by prefix (e.g., "Last modified on")
+                    if (text.startsWith(datePrefix)) {
+                        String dateText = text.replace(datePrefix, "").trim();
+                        Date parsedDate = sdf.parse(dateText);
+                        elementDateMap.put(element, parsedDate);
+                        break; // Only consider the first matching date
+                    }
+                }
             } catch (Exception e) {
-                addToReport("Skipping element due to error: " + e.getMessage(), Status.INFO);
+                addToReport("Skipping element due to date parse error: " + e.getMessage(), Status.INFO);
             }
         }
 
@@ -1156,8 +1163,21 @@ public abstract class BasePage extends helpers {
             throw new RuntimeException("No elements with valid dates found.");
         }
 
-        return Collections.max(elementDateMap.entrySet(), Map.Entry.comparingByValue()).getKey();
+        // Find the element with the latest (most recent) date
+        WebElement latestElement = Collections.max(
+                elementDateMap.entrySet(),
+                Map.Entry.comparingByValue()
+        ).getKey();
+
+        // Get the clickable part inside the element
+        WebElement clickableElement = latestElement.findElement(clickableLocator);
+
+        // Scroll and click
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", clickableElement);
+
+        return latestElement;
     }
+
 
     /**
      * Retrieves the absolute file path of a file located in the test resources directory (src/test/resources)
@@ -1213,14 +1233,50 @@ public abstract class BasePage extends helpers {
             robot.keyPress(KeyEvent.VK_V);
             robot.keyRelease(KeyEvent.VK_V);
             robot.keyRelease(KeyEvent.VK_CONTROL);
-            Thread.sleep(1000);
+            waitFor(EXTREME_SHORT_WAIT);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * This method will hover on an element
+     * Returns the cutoff date that is X months before the current date
+     *
+     * @param monthsBack number of months to go back
+     * @return Date object representing the cutoff date
+     */
+    public static Date getCutoffDate(int monthsBack) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.MONTH, -monthsBack);
+        return cal.getTime();
+    }
+
+    /**
+     * Validates whether the current browser URL contains a specific expected substring.
+     *
+     * @param expectedUrlPart The expected part of the URL
+     */
+    public void validateURL(String expectedUrlPart) {
+        String currentUrl = driver.getCurrentUrl();
+        if (currentUrl.contains(expectedUrlPart)) {
+            // Log success if current URL contains the expected part
+            addToReport("URL contains expected part: " + expectedUrlPart, Status.PASS, true);
+        } else {
+            // Log failure with the actual URL if it does not contain the expected part
+            addToReport("URL does not contain expected part. Actual URL: " + currentUrl, Status.FAIL, true);
+        }
+    }
+
+    /**
+     * Closes the current browser window.
+     * This will close only the active tab or window, not all open tabs.
+     */
+    public void closeBrowser() {
+        driver.close(); // Closes the current browser tab
+    }
+
+     /* This method will hover on an element
      *
      * @param driver - driver
      * @param locator - location
@@ -1231,6 +1287,32 @@ public abstract class BasePage extends helpers {
         actions.moveToElement(element).perform();
     }
 
+    /**
+     * Opens a new browser tab, navigates to a URL based on tab index, and validates mail list availability
+     *
+     * @param tabIndex A string representing the tab identifier or URL target
+     * @param openNewWindow  should open a new window true / false
+     */
+    public void navigateToTab(int tabIndex,boolean openNewWindow) {
+
+        if (openNewWindow) {
+            // Open a new tab using JavaScript
+            ((JavascriptExecutor) driver).executeScript("window.open();");
+        }
+        // Convert tabIndex to an integer
+        int index = tabIndex;
+
+        // Convert the set of window handles to a list
+        List<String> windowHandles = new ArrayList<>(driver.getWindowHandles());
+
+        // Check if the index is valid
+        if (index >= 0 && index < windowHandles.size()) {
+            // Switch to the tab by index
+            driver.switchTo().window(windowHandles.get(index));
+        } else {
+            throw new IllegalArgumentException("Invalid tab index: " + tabIndex);
+        }
+    }
 
 }
 

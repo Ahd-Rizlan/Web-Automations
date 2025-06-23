@@ -11,6 +11,8 @@ import utils.constants.SaveAccountConstants;
 
 import java.util.*;
 
+import static utils.Drivers.*;
+
 public class OpenFDPage extends BasePage {
 
     public OpenFDPage (WebDriver driver)  {
@@ -53,7 +55,7 @@ public class OpenFDPage extends BasePage {
 
     private static By tfOTP(int Index) {
 
-        return By.xpath("//input[@type='password'][" + Index + "]");
+        return By.xpath("//input[contains(@class,'otp-box')][" + Index + "]");
     }
     private static By lblMaturity(int index) {
         return By.xpath("(//div[contains(@class, 'w-auto h-28 rounded-lg')])[" + index + "]");
@@ -112,7 +114,7 @@ public class OpenFDPage extends BasePage {
         addToReport("----------End of user not be able to access FD page Test case----------", Status.INFO, false);
         addToReport("----------Start of user Residency validation Test case----------", Status.INFO, false);
 
-        waitForElementPresence(lblOpenFDtext, 20);
+        waitForElementPresence(lblOpenFDtext, VERY_LONG_WAIT);
         boolean clickOpenSA = isElementPresentBy(lblOpenFDtext);
         if (clickOpenSA) {
             addToReport("Successfully validated the open FD account page description", Status.PASS);
@@ -123,7 +125,7 @@ public class OpenFDPage extends BasePage {
         } clickOnElement(rdoFDResident);
         clickOnElement(btnFDContinue);
 
-        waitForElementPresence(ddfdsourceOfFunds, 20);
+        waitForElementPresence(ddfdsourceOfFunds, VERY_LONG_WAIT);
         boolean headingAccountSection = isElementPresentBy(ddfdsourceOfFunds);
         if (headingAccountSection) {
             addToReport("Successfully open the FD account page ", Status.PASS);
@@ -229,7 +231,7 @@ public class OpenFDPage extends BasePage {
         // Step 2: Click Next
         clickOnElement(btnsubmit);
         waitForPageLoadCompleteJS();
-        waitForElementToBeInvisible(lblconfirmAccountOptions, 10);
+        waitForElementToBeInvisible(lblconfirmAccountOptions, MODERATE_WAIT);
         boolean headingAccountOptionsSection = isElementPresentBy(lblconfirmAccountOptions);
         if (headingAccountOptionsSection) {
             addToReport("Successfully open the Confirm Account Options section ", Status.PASS);
@@ -365,7 +367,7 @@ public class OpenFDPage extends BasePage {
 
                 // Clean both UI and Excel inputs
                 String cleanMonthText = monthText.replaceAll("[^0-9]", "").trim();
-                waitFor(6);
+                waitFor(SHORT_WAIT);
                 String cleanExpectedMonth = month.replaceAll("[^0-9]", "").trim();
 
                 String cleanRateText = rateText.replaceAll("[^0-9.]", "").trim();
@@ -399,8 +401,8 @@ public class OpenFDPage extends BasePage {
             sendKeysToElement(txtAmount,amount);
             addToReport(" Used '" + amount + "' for the new account", Status.PASS, true);
 
-            waitForElementPresence(lblmaturityInterestAmount, 10);
-            waitForElementPresence(lbltotalAmount, 10);
+            waitForElementPresence(lblmaturityInterestAmount, SHORT_WAIT);
+            waitForElementPresence(lbltotalAmount, SHORT_WAIT);
 
             boolean isInterestVisible = isElementPresentBy(lblmaturityInterestAmount);
             boolean isTotalVisible = isElementPresentBy(lbltotalAmount);

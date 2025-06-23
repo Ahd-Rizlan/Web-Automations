@@ -8,10 +8,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import utils.CommonUtils;
+import utils.constants.MyAccountsConstants;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import static utils.Drivers.*;
 
 import static utils.CommonUtils.getCharacterCount;
 
@@ -83,7 +85,7 @@ public class MakeTransactionsPage extends BasePage {
         return By.xpath("//span[contains(normalize-space(),'" + type +"' )]/parent::div/input[@disabled]");
     }
     private static By tfOTP(int Index) {
-        return By.xpath("//input[@type='password'][" + Index + "]");
+        return By.xpath("//input[contains(@class,'otp-box')][" + Index + "]");
     }
 
     /**
@@ -143,7 +145,7 @@ public class MakeTransactionsPage extends BasePage {
         List<String> accountNumbers = getValues();
 
         //Validate page title
-        waitForElementPresence(lblPageHeader,10);
+        waitForElementPresence(lblPageHeader,SHORT_WAIT);
         waitForPageLoadCompleteJS();
 
         //Validate the account number
@@ -155,7 +157,7 @@ public class MakeTransactionsPage extends BasePage {
         }
 
         //Temporary wait due to sporadic failure in ALL_OPTIONS_VALUE selection
-        waitFor(6);
+        waitFor(SHORT_WAIT);
 
         //Obtain the first selected value from the dropdown
         List<String> fromAccDropdownValue = getSelectedOptionText(ddFromAccount, "FIRST_SELECTED");
@@ -257,23 +259,25 @@ public class MakeTransactionsPage extends BasePage {
         }
         addToReport("----------End of validation of whether a Both sender and beneficiary remark fields needs to accept up to 20 number of characters ----------", Status.PASS, false);
 
+        //Commenting out below as the transfer limit is unlimited might need on other env
         // Submit the transfer with the maximum amount
-        clickOnElement(btnSubmit);
+//        clickOnElement(btnSubmit);
 
         // Validate if the correct popup message is displayed for exceeding the maximum limit
-        checkPopupMessage(maxAmountMsg);
-        addToReport("----------End of validation of whether accessing next page without mandatory fields, transaction limit & remark characters ----------", Status.PASS, false);
+//        checkPopupMessage(maxAmountMsg);
+//        addToReport("----------End of validation of whether accessing next page without mandatory fields, transaction limit & remark characters ----------", Status.PASS, false);
+
         addToReport("----------Start of validation of entering amount ----------", Status.PASS, false);
 
         //Daily transaction limit was already checked
         //Check for minimum amount of the transaction category "0"
         //validate the default loaded account on both tile and dropdown
-        selectTabUnderSendMoney("Other Accounts");
+        selectTabUnderSendMoney(MyAccountsConstants.TAB_OTHER_ACCOUNTS);
         scrollPageToTop();
-        selectTabUnderSendMoney("Own Account");
+        selectTabUnderSendMoney(MyAccountsConstants.TAB_OWN_ACCOUNT);
 
         waitForPageLoadCompleteJS();
-        waitForElementToBeInvisible(lblToAccountGrayLoader,20);
+        waitForElementToBeInvisible(lblToAccountGrayLoader,LONG_WAIT);
 
         // Repeat the above steps with the maximum amount for limit validation
         selectFromDropdown(ddFromAccount,primaryAccount,"value");
@@ -302,7 +306,7 @@ public class MakeTransactionsPage extends BasePage {
         // Enter the maximum amount into the amount field
         //sendKeysToElement(tfEnterAmount, amt[1]);
 
-        String amountStr = amt[1].trim(); // This will be something like "8,254.05"
+        String amountStr = amt[1].trim();
 
         // Remove comma
         amountStr = amountStr.replace(",", "");
@@ -337,17 +341,17 @@ public class MakeTransactionsPage extends BasePage {
 
         clickOnElement(btnSubmit);
 
-        waitForElementToBeInvisible(lblSubmitLoading,20);
+        waitForElementToBeInvisible(lblSubmitLoading,LONG_WAIT);
 
         addToReport("----------Start of validation of OTP confirmation page----------", Status.PASS, false);
         //Validate the OTP confirmation
         validateOtpPageDetails(primaryAccount,String.valueOf(amount),toAccount,sRemark,bRemark,transferMode, kwTransfersMap,currencyType,"","","","");
 
         //Enter OTP
-        waitForElementPresence(tfOTP(1), 20);
+        waitForElementPresence(tfOTP(1), LONG_WAIT);
         sendKeysToElement(tfOTP(1), String.valueOf(OTPValue));
         clickOnElement(btnConfirm);
-        waitForElementToBeInvisible(btnNextLoading, 20);
+        waitForElementToBeInvisible(btnNextLoading, LONG_WAIT);
 
         addToReport("----------End of validation of OTP confirmation page----------", Status.PASS, true);
         addToReport("----------Start of validation of OTP success page----------", Status.PASS, false);
@@ -377,7 +381,7 @@ public class MakeTransactionsPage extends BasePage {
 
         addToReport("----------End of validation of OTP success page----------", Status.PASS, true);
         //Close the popup
-        waitForElementToBeClickable(btnOTPClosePopup, 10);
+        waitForElementToBeClickable(btnOTPClosePopup, LONG_WAIT);
         clickOnElement(btnOTPClosePopup);
     }
 
@@ -419,7 +423,7 @@ public class MakeTransactionsPage extends BasePage {
             addToReport("Skipping validation for '" + label + "' as expected value is empty or null.", Status.INFO);
             return;
         }
-        waitForElementPresence(tfOtpConfirmation(label),15);
+        waitForElementPresence(tfOtpConfirmation(label),LONG_WAIT);
         String actualValue = getAttributeOrText(tfOtpConfirmation(label), "value").replaceAll("\\s+", "");
         expectedValue = expectedValue.replaceAll("\\s+", "");
         if (expectedValue.equals(actualValue)) {
@@ -470,7 +474,7 @@ public class MakeTransactionsPage extends BasePage {
     public void checkPopupMessage(String popupMessage) {
         try {
             waitForElementPresence(btnClosePopup);
-            waitForElementToBeClickable(btnClosePopup,20);
+            waitForElementToBeClickable(btnClosePopup,LONG_WAIT);
             waitForPageLoadCompleteJS();
             // Check if the popup message is available
             if (isElementPresentBy(getPopUpMsg(popupMessage))) {
@@ -524,7 +528,7 @@ public class MakeTransactionsPage extends BasePage {
         // Scroll to top and wait for page load
         scrollPageToTop();
         waitForPageLoadCompleteJS();
-        waitForElementToBeInvisible(lblToAccountGrayLoader, 20);
+        waitForElementToBeInvisible(lblToAccountGrayLoader, LONG_WAIT);
 
         // Validate the account number
         String pAccountNo = getTextFromElement(lblSavingsAccountNo);
@@ -599,7 +603,7 @@ public class MakeTransactionsPage extends BasePage {
         }
 
         // Delete the previous amount entry
-        sendKeysToElement(tfEnterAmount, Keys.BACK_SPACE, 1);
+        sendKeysToElement(tfEnterAmount, Keys.BACK_SPACE, 3);
         sendKeysToElement(tfEnterAmount, maxAmountEntry);
 
         clickOnElement(btnSubmit);
@@ -614,7 +618,7 @@ public class MakeTransactionsPage extends BasePage {
         int wholeAmount = (int) Math.round(amountDouble);
         int maxAmount = wholeAmount + 1;
 
-        sendKeysToElement(tfEnterAmount, Keys.BACK_SPACE, 6);
+        sendKeysToElement(tfEnterAmount, Keys.BACK_SPACE, 8);
         sendKeysToElement(tfEnterAmount, String.valueOf(maxAmount));
         scrollToWebElement(btnSubmit);
         // Click on the Submit button to validate error
@@ -647,17 +651,17 @@ public class MakeTransactionsPage extends BasePage {
 
         // Click on the Submit button to initiate the transfer
         clickOnElement(btnSubmit);
-
+        waitForElementToBeInvisible(lblSubmitLoading,LONG_WAIT);
         // OTP confirmation page validation
         addToReport("----------Start of validation of OTP confirmation page----------", Status.PASS, true);
         validateOtpPageDetails(accountNumbers.get(0), actualTransactionAmount, toAccount, sRemark, bRemark, transferMode, kwTransfersMap, currencyType,
                 bankName, CommonUtils.getTodayDateFormatted("yyyy-MM-dd"), purpose,"");
 
         // Enter OTP and submit
-        waitForElementPresence(tfOTP(1), 20);
+        waitForElementPresence(tfOTP(1), LONG_WAIT);
         sendKeysToElement(tfOTP(1), OTPValue);
         clickOnElement(btnConfirm);
-        waitForElementToBeInvisible(btnNextLoading, 20);
+        waitForElementToBeInvisible(btnNextLoading, LONG_WAIT);
 
         addToReport("----------End of validation of OTP confirmation page----------", Status.PASS, true);
         addToReport("----------Start of validation of OTP success page----------", Status.PASS, false);
@@ -691,7 +695,7 @@ public class MakeTransactionsPage extends BasePage {
         addToReport("----------End of validation of OTP success page----------", Status.PASS, true);
         //Close the popup
         scrollPageToTop();
-        waitForElementToBeClickable(btnOTPClosePopup, 10);
+        waitForElementToBeClickable(btnOTPClosePopup, MODERATE_WAIT);
         clickOnElement(btnOTPClosePopup);
 
         addToReport("----------Start of validation of availability of last 10 records----------", Status.PASS, false);
@@ -717,7 +721,7 @@ public class MakeTransactionsPage extends BasePage {
         // Scroll to top and wait for page load
         scrollPageToTop();
         waitForPageLoadCompleteJS();
-        waitForElementToBeInvisible(lblToAccountGrayLoader, 20);
+        waitForElementToBeInvisible(lblToAccountGrayLoader, LONG_WAIT);
 
         // Validate the account number
         String pAccountNo = getTextFromElement(lblSavingsAccountNo);
@@ -728,7 +732,7 @@ public class MakeTransactionsPage extends BasePage {
         }
 
         // Wait for 6 seconds due to sporadic failures in ALL_OPTIONS_VALUE selection
-        waitFor(6);
+        waitFor(SHORT_WAIT);
 
         // Obtain the first selected value from the dropdown
         List<String> fromAccDropdownValue = getSelectedOptionText(ddFromAccount, "FIRST_SELECTED");
@@ -777,7 +781,7 @@ public class MakeTransactionsPage extends BasePage {
         selectFromDropdown(ddBank,bankName, "visibletext");
 
         if (branchName != null && !branchName.trim().isEmpty()){
-            waitForElementToBeInvisible(lblToAccountGrayLoader,15);
+            waitForElementToBeInvisible(lblToAccountGrayLoader,LONG_WAIT);
             waitForElementToBeClickable(ddBranch,15);
             selectFromDropdown(ddBranch,branchName, "visibletext");
         }
@@ -809,7 +813,7 @@ public class MakeTransactionsPage extends BasePage {
             clickOnElement(rdoSchadule); // Select 'Schedule Transaction'
         }
         clickOnElement(chkSavePayee);
-        waitForElementToBeClickable(tfNickName,10);
+        waitForElementToBeClickable(tfNickName,MODERATE_WAIT);
         sendKeysToElement(tfNickName,templateName);
 
         clickOnElement(btnSubmit);
@@ -825,7 +829,7 @@ public class MakeTransactionsPage extends BasePage {
         double amountDouble = Double.parseDouble(amountStr);
         int wholeAmount = (int) Math.round(amountDouble);
         int maxAmount = wholeAmount + 1;
-        sendKeysToElement(tfEnterAmount,Keys.BACK_SPACE,6);
+        sendKeysToElement(tfEnterAmount,Keys.BACK_SPACE,8);
         sendKeysToElement(tfEnterAmount, String.valueOf(maxAmount));
         clickOnElement(btnSubmit);
 
@@ -841,8 +845,8 @@ public class MakeTransactionsPage extends BasePage {
         }
 
 
-        sendKeysToElement(tfEnterAmount,Keys.BACK_SPACE,6);
-        // Enter the minimum amount of the transaction catergory as 0
+        sendKeysToElement(tfEnterAmount,Keys.BACK_SPACE,8);
+        // Enter the minimum amount of the transaction category as 0
         sendKeysToElement(tfEnterAmount, String.valueOf(minAmount));
         try {
             // Validate the error message
@@ -859,7 +863,7 @@ public class MakeTransactionsPage extends BasePage {
         //Enter amount within the accepted parameter
         try {
             if (wholeAmount>500){
-                sendKeysToElement(tfEnterAmount,Keys.BACK_SPACE);
+                sendKeysToElement(tfEnterAmount,Keys.BACK_SPACE,3);
                 sendKeysToElement(tfEnterAmount,String.valueOf(amount));
             }else {
                 addToReport("Amount in the account : '" + wholeAmount + "' is NOT sufficient to perform a transfer", Status.FAIL);
@@ -874,7 +878,6 @@ public class MakeTransactionsPage extends BasePage {
         addToReport("----------Start of validation of OTP confirmation page----------", Status.PASS, false);
         //Validate the OTP confirmation
         validateOtpPageDetails(accountNumbers.get(0),String.valueOf(amount),"",sRemark,bRemark,transferMode, kwTransfersMap,currencyValue,bankName,"","",creditCardNumber);
-
         String headerContent = getTextFromElement(tfOTPConfirmationHeaderContent);
 
         if (headerContent.contains(nameOnCard)){
@@ -884,10 +887,10 @@ public class MakeTransactionsPage extends BasePage {
         }
 
         //Enter OTP
-        waitForElementPresence(tfOTP(1), 20);
+        waitForElementPresence(tfOTP(1), LONG_WAIT);
         sendKeysToElement(tfOTP(1), String.valueOf(otpValue));
         clickOnElement(btnConfirm);
-        waitForElementToBeInvisible(btnNextLoading, 20);
+        waitForElementToBeInvisible(btnNextLoading, LONG_WAIT);
 
         addToReport("----------End of validation of OTP confirmation page----------", Status.PASS, true);
         addToReport("----------Start of validation of OTP success page----------", Status.PASS, false);
@@ -920,17 +923,17 @@ public class MakeTransactionsPage extends BasePage {
         addToReport("----------Start of validation of search saved template and delete----------", Status.PASS, false);
 
         //Close the popup
-        waitForElementToBeClickable(btnOTPClosePopup, 10);
+        waitForElementToBeClickable(btnOTPClosePopup, SHORT_WAIT);
         clickOnElement(btnOTPClosePopup);
         scrollPageToTop();
         selectTabUnderSendMoney(savedPayees);
 
-        waitForElementToBeClickable(btnSearchPayee, 20);
+        waitForElementToBeClickable(btnSearchPayee, LONG_WAIT);
         scrollPageToTop();
         sendKeysToElement(tfSearch, templateName);
         clickOnElementUsingJS(btnSearchPayee);
 
-        waitForElementToBeInvisible(icnSavedPayeeGridLoading, 20);
+        waitForElementToBeInvisible(icnSavedPayeeGridLoading, LONG_WAIT);
 
         //Validate the search results
         int recordCount = isElementsPresentBy(tblRows);
@@ -945,19 +948,19 @@ public class MakeTransactionsPage extends BasePage {
             }
 
             //Delete the template
-            waitForElementPresence(tfOTP(1), 20);
+            waitForElementPresence(tfOTP(1), LONG_WAIT);
             sendKeysToElement(tfOTP(1), String.valueOf(otpValue));
             addToReport(" OTP confirmation for template deletion of " + templateName, Status.PASS, true);
             clickOnElement(btnConfirm);
-            waitForElementToBeInvisible(btnNextLoading, 20);
+            waitForElementToBeInvisible(btnNextLoading, LONG_WAIT);
 
             selectTabUnderSendMoney(savedPayees);
-            waitForElementToBeClickable(btnSearchPayee, 20);
+            waitForElementToBeClickable(btnSearchPayee, LONG_WAIT);
 
             sendKeysToElement(tfSearch, templateName);
             clickOnElement(btnSearchPayee);
 
-            waitForElementToBeInvisible(icnSavedPayeeGridLoading, 20);
+            waitForElementToBeInvisible(icnSavedPayeeGridLoading, LONG_WAIT);
 
             //Validate the search results
             recordCount = isElementsPresentBy(tblRows);

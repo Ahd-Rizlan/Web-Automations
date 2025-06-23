@@ -401,6 +401,16 @@ public class CommonUtils extends Drivers {
         return text != null && text.matches("^\\d{4} \\d{2}XX XXXX \\d{4}$");
     }
 
+/**
+     * Generate Random number between 0 -100
+     * @return - return the value
+     */
+    public static String generateRandomAmountTwoDecimals() {
+        Random random = new Random();
+        double value = 0 + (100 - 0) * random.nextDouble();
+        return String.format("%.2f", value); // returns string like "23.89"
+
+    }
 
 
 

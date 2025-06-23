@@ -11,6 +11,8 @@ import org.openqa.selenium.WebDriver;
 import java.util.ArrayList;
 import java.util.List;
 
+import static utils.Drivers.*;
+
 public class VishwaRetailAdminLoginPage extends BasePage {
 
     public VishwaRetailAdminLoginPage(WebDriver driver) {
@@ -53,7 +55,7 @@ public class VishwaRetailAdminLoginPage extends BasePage {
             //Click Login
             clickOnElement(btnLogin);
 
-            waitForElementToBeInvisible(btnLogin,20);
+            waitForElementToBeInvisible(btnLogin,MODERATE_WAIT);
 
         } catch (Exception e) {
             addToReport("Error logging into retail admin", Status.FAIL);
@@ -68,9 +70,9 @@ public class VishwaRetailAdminLoginPage extends BasePage {
      * @param tabIndex A string representing the tab identifier or URL target
      */
     public void navigateToTab(int tabIndex) {
+
         // Open a new tab using JavaScript
         ((JavascriptExecutor) driver).executeScript("window.open();");
-
         // Convert tabIndex to an integer
         int index = tabIndex;
 

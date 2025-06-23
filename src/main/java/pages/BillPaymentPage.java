@@ -7,6 +7,7 @@ import com.aventstack.extentreports.Status;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import utils.CommonUtils;
+import utils.constants.BillerConstants;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -14,14 +15,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static utils.Drivers.*;
+
 public class BillPaymentPage extends BasePage {
 
     public BillPaymentPage(WebDriver driver) {
         super(driver);
     }
 
+    String InvoiceNo,InvoiceAmount;
+
     public enum ElementType {
-        button, label, span, div;
+        button, label, span, div, p;
     }
 
     private static final By icnAddToFav = By.xpath("//img[contains(@class,'cursor-pointer invert') and @alt='']");
@@ -31,13 +36,13 @@ public class BillPaymentPage extends BasePage {
     private static final By tfAmountTo = By.xpath("//input[@placeholder='Amount To']");
     private static final By tfTransactionDate = By.xpath("//input[@placeholder='Transaction date']");
     private static final By ddStatus = By.xpath("//select[@id='status']");
-    private static final By btnApplyFilters = By.xpath("//button[text()='Apply Filters']");
+    private static final By btnApplyFilters = By.xpath("//div[text()='Apply Filters']");
     private static final By ddMonth = By.xpath("//span[@class='rdrMonthPicker']/select");
     private static final By ddYear = By.xpath("//span[@class='rdrYearPicker']/select");
     private static final By btnRightArrow = By.xpath("//img[contains(@src,'FArrowRight')]");
     private static final By btnPaginationNumbers = By.xpath("//img[contains(@src,'FArrowRight')]/ancestor::div[contains(@class,'flex justify-end')]/div[1]/div");
     private static final By imgGreyLoader = By.xpath("//div[contains(@class,'bg-gray')]");
-    private static final By btnCloseFilter = By.xpath("//img[contains(@class,'cursor-pointer') and @alt='']");
+    private static final By btnCloseFilter = By.xpath("//img[contains(@class,'cursor-pointer') and @alt='Remove filter']");
     private static final By popUpPDFDownload = By.xpath("//div[text()='PDF downloaded successfully!']");
     private static final By popUpMsgBillerDeleted = By.xpath("//div[text()='PDF downloaded successfully!']");
     private static final By lblFavouriteBillerWidgetRow = By.xpath("//span[contains(text(),'Favorite Billers')]/parent::div//div[contains(@class,'grid grid-cols')]/div");
@@ -55,15 +60,16 @@ public class BillPaymentPage extends BasePage {
     private static final By tfFieldFive = By.xpath("//input[contains(@name,'fieldData.2')]");
     private static final By tfFieldSix = By.xpath("//input[contains(@name,'fieldData.3')]");
     private static final By tfFieldSeven = By.xpath("//input[contains(@name,'fieldData.4')]");
-    private static final By tfPhoneNumberBell = By.xpath("//input[@name='fieldData.1.fieldValue']");
+    private static final By tfFieldEight = By.xpath("//input[@name='fieldData.0.fieldValue']");
     private static final By rdoOTTransaction = By.xpath("//input[@value='ONLINE']");
     private static final By rdoSchadule = By.xpath("//input[@value='SCHEDULE']");
     private static final By chkSaveBiller = By.xpath("//input[@id='savedBiller']");
     private static final By btnNext = By.xpath("//button[normalize-space()='Next']");
     private static final By tfTemplateName = By.xpath("//input[@placeholder='Template Name']");
-    private static final By btnNextLoading = By.xpath("//div[contains(@class,'BillPayment_customloader')]");
+    private static final By btnNextLoading = By.xpath("//div[contains(@class,'customloader')]");
     private static final By lblNewPayment = By.xpath("//span[text()='New Payment']");
     private static final By lblPopUpHeaderPaymentConfirmation = By.xpath("//div[contains(text(),'Payment Confirmation')]");
+
     private static final By lblPayeeName = By.xpath("//div[contains(@class,'text-sm')]/span[1]");
     private static final By btnConfirm = By.xpath("//button[contains(normalize-space(text()),'Confirm')]");
     private static final By btnSearchBiller = By.xpath("//button[@type='submit']");
@@ -82,6 +88,9 @@ public class BillPaymentPage extends BasePage {
     private static final By imgSavedBillerFavRecordsList = By.xpath("//img[contains(@srcset,'.c7bd4030') and @alt='favorite star']");
     private static final By lblBillPaymentsHeader = By.xpath("//div[@class='flex flex-col']/span[text()='Bill Payments']");
     private static final By lblNoFavBillersAddedMsg = By.xpath("//span[contains(text(),'No favorites added yet')]");
+    private static final By chkAckMsg = By.xpath("//label/input[@type='checkbox']");
+
+    private static final By btnBack = By.xpath("//button[@type='button' and contains(normalize-space(@class),'bg-gray')]");
 
     private static By lblErrorMsg(String msg, int index) {
         return By.xpath("(//span[contains(normalize-space(),\"" + msg + "\")])[" + index + "]");
@@ -99,12 +108,22 @@ public class BillPaymentPage extends BasePage {
         return By.xpath("//span[contains(normalize-space(),\"" + type + "\")]/parent::div/input[@disabled]");
     }
 
+    private static By tfPayFromConfirmation(String type) {
+        return By.xpath("//span[contains(normalize-space(),\"" + type + "\")]/parent::div/span[2]");
+    }
+    private static By tfAmountConfirmation(String type) {
+        return By.xpath("//span[contains(normalize-space(),\"" + type + "\")]/ancestor::div[@class='relative']//span[2]");
+    }
+    private static By tfInvoiceNoConfirmation(String type) {
+        return By.xpath("//span[contains(normalize-space(),\"" + type + "\")]/ancestor::div[@class='relative']/div/div/span");
+    }
+
     private static By tfPaymentConfirmationMobileNo(String type) {
         return By.xpath("//span[contains(normalize-space()," + type + ")]/parent::div/input[@disabled]");
     }
 
     private static By tfOTP(int Index) {
-        return By.xpath("//input[@type='password'][" + Index + "]");
+        return By.xpath("//input[contains(@class,'otp-box')][" + Index + "]");
     }
 
     private static By btnMenuOptions(String buttonText) {
@@ -123,6 +142,9 @@ public class BillPaymentPage extends BasePage {
         return By.xpath("(//table//tr/td[" + col + "])[" + row + "]");
     }
 
+    private static By tblCellRecordInput(int col, int row) {
+        return By.xpath("(//table//tr/td[" + col + "])[" + row + "]//input");
+    }
     private static By tblActionDownloadOrDelete(int col, int row) {
         return By.xpath("(//table//tr/td[" + col + "]//button[2])[" + row + "]");
     }
@@ -140,7 +162,7 @@ public class BillPaymentPage extends BasePage {
     }
 
     private static By btnSavedBillerReinitiate(int row) {
-        return By.xpath("(//img[contains(@src,'Frepeat') ]/ancestor::tr/td[8]//button[1])[" + row + "]");
+        return By.xpath("(//img[contains(@src,'Frepeat') ]/ancestor::tr/td[7]//button[1])[" + row + "]");
     }
 
     private static By datePickerDay(int day) {
@@ -160,11 +182,11 @@ public class BillPaymentPage extends BasePage {
     }
 
     private static By btnCloseFilter(int index) {
-        return By.xpath("(//img[contains(@class,'cursor-pointer') and @alt=''])[" + index + "]");
+        return By.xpath("(//img[contains(@class,'cursor-pointer') and @alt='Remove filter'])[" + index + "]");
     }
 
     private static By getElementByTypeAndText(BillPaymentPage.ElementType type, String text) {
-        return By.xpath("//" + type.name() + "[contains(normalize-space(text()), " + text + ")]");
+        return By.xpath("//" + type.name() + "[contains(normalize-space(text()), '" + text + "')]");
     }
 
     private static By btnCategories(String category) {
@@ -196,7 +218,7 @@ public class BillPaymentPage extends BasePage {
      */
     public void validateNoSavedBillersAreMarkedAsFavourites() {
         try {
-            waitForElementToBeInvisible(imgGreyLoader, 20);
+            waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
 
             if (isElementPresentBy(lblNoFavBillersAddedMsg)) {
                 addToReport("Validated no favourite biller found msg : ", Status.PASS, true);
@@ -220,14 +242,14 @@ public class BillPaymentPage extends BasePage {
     public void selectCategory(String mainCategory, String subCategory) {
         try {
             //Select main category
-            waitForElementToBeInvisible(icnCategoryLoading, 20);
+            waitForElementToBeInvisible(icnCategoryLoading, LONG_WAIT);
             waitForElementPresence(lnkCategory(mainCategory));
             clickOnElement(lnkCategory(mainCategory));
             addToReport("Main category : " + mainCategory + " is selected", Status.PASS, false);
             if (!subCategory.isEmpty()) {
                 //Select sub category
-                waitForElementToBeInvisible(lnkCategory(mainCategory), 20);
-                waitForElementToBeInvisible(icnCategoryLoading, 20);
+                waitForElementToBeInvisible(lnkCategory(mainCategory), LONG_WAIT);
+                waitForElementToBeInvisible(icnCategoryLoading, LONG_WAIT);
                 clickOnElement(lnkCategory(subCategory));
                 addToReport("Sub category : " + subCategory + " is selected", Status.PASS, true);
             }
@@ -246,14 +268,14 @@ public class BillPaymentPage extends BasePage {
         try {
             //Select appropriate header
             selectHeaderTab(primaryTab);
-            waitForElementToBeInvisible(imgGreyLoader, 20);
+            waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
             //Use pagination to go to next
             if (isElementPresentBy(btnRightArrow)) {
                 int recordCount = isElementsPresentBy(btnPaginationNumbers);
                 if (recordCount != 0) {
                     for (int inc = 1; inc <= recordCount; inc++) {
-                        waitForElementToBeInvisible(imgGreyLoader, 20);
-                        waitForElementToBeClickable(icnAddToFav(1), 20);
+                        waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
+                        waitForElementToBeClickable(icnAddToFav(1), LONG_WAIT);
                         scrollToWebElement(icnAddToFav(1));
                         //validate the favourite icon availability
                         int rCount = isElementsPresentBy(icnAddToFav);
@@ -299,7 +321,7 @@ public class BillPaymentPage extends BasePage {
             selectHeaderTab(newPaymentTab);
             //Navigate back to saved billers tab
             selectHeaderTab(savedBillersTab);
-            waitForElementToBeInvisible(icnSavedBillerGridLoading, 20);
+            waitForElementToBeInvisible(icnSavedBillerGridLoading, LONG_WAIT);
 
             //Declare list to extract from table
             ArrayList<String> TemplateListName = new ArrayList<>();
@@ -354,11 +376,11 @@ public class BillPaymentPage extends BasePage {
      * @param category
      */
     public void searchBillPaymentCategories(String category) {
-        waitForElementToBeInvisible(imgGreyLoader, 20);
-        waitForElementToBeClickable(tfSearchCategories, 10);
+        waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
+        waitForElementToBeClickable(tfSearchCategories, MODERATE_WAIT);
         typeWithoutClear(tfSearchCategories, category);
         clickOnElement(btnSearchCategory);
-        waitForElementToBeInvisible(imgGreyLoader, 20);
+        waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
 
         int recordCount = isElementsPresentBy(lblCategorySearchResults);
         if (recordCount != 0) {
@@ -380,13 +402,13 @@ public class BillPaymentPage extends BasePage {
         try {
             //Select appropriate header
             selectHeaderTab(primaryTab);
-            waitForElementToBeInvisible(imgGreyLoader, 20);
+            waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
 
             //Extract required the first record data
-            String paymentID = getTextFromElement(tblCellRecord(2, 1));
-            String billerTitle = getTextFromElement(tblCellRecord(3, 1));
-            String status = getTextFromElement(tblCellRecord(5, 1));
-            String[] CurrencyAndAmt = getTextFromElement(tblCellRecord(6, 1)).split(" ");
+            String paymentID = getTextFromElement(tblCellRecord(1, 1));
+            String billerTitle = getTextFromElement(tblCellRecord(2, 1));
+            String status = getTextFromElement(tblCellRecord(4, 1));
+            String[] CurrencyAndAmt = getTextFromElement(tblCellRecord(5, 1)).split(" ");
 
             addToReport("Obtained record with payment id : " + paymentID + ", biller tittle : " + billerTitle + " and status :" + status, Status.PASS, true);
 
@@ -397,16 +419,16 @@ public class BillPaymentPage extends BasePage {
             typeWithoutClear(tfAmountTo, String.valueOf(Double.parseDouble(CurrencyAndAmt[1]) + 1));
 
             clickOnElement(btnApplyFilters);
-            waitForElementToBeInvisible(imgGreyLoader, 20);
+            waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
 
             //Validate the search results
             int recordCount = isElementsPresentBy(tblRows);
             if (recordCount != 0) {
                 for (int inc = 1; inc <= recordCount; inc++) {
-                    if (getTextFromElement(tblCellRecord(2, inc)).equals(paymentID) &&
-                            getTextFromElement(tblCellRecord(3, inc)).equals(billerTitle) &&
-                            getTextFromElement(tblCellRecord(5, inc)).equals(status)) {
-                        addToReport("Filtered value is available in row : " + inc + " for filter by from and to amount", Status.PASS, true);
+                    if (getTextFromElement(tblCellRecord(1, inc)).equals(paymentID) &&
+                            getTextFromElement(tblCellRecord(2, inc)).equals(billerTitle) &&
+                            getTextFromElement(tblCellRecord(4, inc)).equals(status)) {
+                        addToReport("Filtered value "+paymentID+" is available in row : " + inc + " for filter by from and to amount", Status.PASS, true);
                         break;
                     }
                     if (recordCount == inc) {
@@ -422,7 +444,7 @@ public class BillPaymentPage extends BasePage {
             recordCount = isElementsPresentBy(btnCloseFilter);
             for (int inc = 1; inc <= recordCount; inc++) {
                 clickOnElement(btnCloseFilter(1));
-                waitForElementToBeInvisible(imgGreyLoader, 20);
+                waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
             }
             addToReport("Removed all existing filters ", Status.PASS, true);
 
@@ -440,24 +462,23 @@ public class BillPaymentPage extends BasePage {
             }
             //Click apply filter
             clickOnElement(btnApplyFilters);
-            waitForElementToBeInvisible(imgGreyLoader, 20);
+            waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
 
             int rowNumber = 0;
             //Validate the search results
             recordCount = isElementsPresentBy(tblRows);
             if (recordCount != 0) {
                 for (int inc = 1; inc <= recordCount; inc++) {
-                    if (getTextFromElement(tblCellRecord(2, inc)).equals(paymentID) &&
-                            getTextFromElement(tblCellRecord(3, inc)).equals(billerTitle) &&
-                            getTextFromElement(tblCellRecord(5, inc)).equals(status)) {
-                        addToReport("Filtered value is available in row : " + inc + " for filter by status", Status.PASS, true);
+                    if (getTextFromElement(tblCellRecord(1, inc)).equals(paymentID) &&
+                            getTextFromElement(tblCellRecord(2, inc)).equals(billerTitle) &&
+                            getTextFromElement(tblCellRecord(4, inc)).equals(status)) {
+                        addToReport("Filtered value "+paymentID+" is available in row : " + inc + " for filter by status", Status.PASS, true);
 
                         //Download the record
-                        clickOnElement(tblActionDownloadOrDelete(8, inc));
+                        clickOnElement(tblActionDownloadOrDelete(7, inc));
 
                         //Validate the download
-
-                        waitFor(5);
+                        waitFor(SHORT_WAIT);
                         // Get the latest downloaded file
                         File latestFile = getLatestDownloadedFile(downloadDirectory);
 
@@ -468,19 +489,21 @@ public class BillPaymentPage extends BasePage {
                             addToReport(" Latest downloaded pdf :  : '" + extractedText, Status.INFO, false);
                             System.out.println("Latest Downloaded PDF: " + extractedText);
 
-                            waitForElementToBeInvisible(popUpPDFDownload, 20);
+                            waitForElementToBeInvisible(popUpPDFDownload, MODERATE_WAIT);
 
                             //validate payment id
                             if (extractedText.contains(paymentID)) {
                                 addToReport(" Validated payment id " + paymentID + " of the downloaded record", Status.PASS, false);
+                                break;
                             } else {
                                 addToReport(" Failed to validate payment id of the downloaded record", Status.FAIL, false);
                             }
+
                         } else {
                             addToReport("Error verifying downloaded saved biller record", Status.FAIL);
                             throw new RuntimeException("Failed to validate downloaded saved billers ");
                         }
-                        break;
+
                     }
                     if (recordCount == inc) {
                         addToReport("Filtered record did not display under saved billers", Status.FAIL);
@@ -539,7 +562,7 @@ public class BillPaymentPage extends BasePage {
         List<String> accountNumbers = getValues();
 
         //Check by default primary account needs to selected
-        waitForElementPresence(lblNewPaymentAccountNumber, 20);
+        waitForElementPresence(lblNewPaymentAccountNumber, LONG_WAIT);
         waitForElementPresence(btnNext);
 
         //Temporary wait till due to sporadic failure in ALL_OPTIONS_VALUE selection
@@ -573,7 +596,7 @@ public class BillPaymentPage extends BasePage {
 
         //Click button without entering data
         clickOnElement(btnNext);
-        waitForElementToBeInvisible(btnNextLoading, 20);
+        waitForElementToBeInvisible(btnNextLoading, LONG_WAIT);
 
         //Validate error messages
         if (isElementPresentBy(lblAmountErrorMsg)) {
@@ -888,21 +911,21 @@ public class BillPaymentPage extends BasePage {
         clickOnElement(chkSaveBiller);
 
         //Enter template name = prefix of biller name + autogenerated text
-        waitForElementToBeClickable(tfTemplateName, 20);
+        waitForElementToBeClickable(tfTemplateName, LONG_WAIT);
         sendKeysToElement(tfTemplateName, templateName);
 
         addToReport("Entered details related to payment", Status.PASS, true);
         //Click button after entering data
         clickOnElement(btnNext);
-        waitForElementToBeInvisible(btnNextLoading, 20);
+        waitForElementToBeInvisible(btnNextLoading, LONG_WAIT);
 
 
         addToReport("----------End of enter details for billers with up to maximum number of characters----------", Status.PASS, false);
         addToReport("----------Start of validation of OTP confirmation page----------", Status.PASS, false);
 
         //Validate confirmation header
-        if (isElementPresentBy(lblPopUpHeaderPaymentConfirmation,3)) {
-            waitForElementToBeClickable(lblPopUpHeaderPaymentConfirmation,20);
+        if (isElementPresentBy(lblPopUpHeaderPaymentConfirmation,VERY_SHORT_WAIT)) {
+            waitForElementToBeClickable(lblPopUpHeaderPaymentConfirmation,LONG_WAIT);
             addToReport("OTP confirmation appeared", Status.PASS, true);
         } else {
             waitFor(3);
@@ -912,10 +935,10 @@ public class BillPaymentPage extends BasePage {
         validateOTPPopup(category, billerName, transferMode, amount, mobileNo, accountNumber, nicNo, name, policyNumber, admissionNumber, classID, purpose, date, code, referenceOrReservationNo, branch, email, pAccountNo, purp, kwBillersMap);
 
         addToReport("End of validation for  biller : " + billerName + " in the OTP page", Status.PASS, true);
-        waitForElementPresence(tfOTP(1), 20);
+        waitForElementPresence(tfOTP(1), LONG_WAIT);
         sendKeysToElement(tfOTP(1), String.valueOf(OTPValue));
         clickOnElement(btnConfirm);
-        waitForElementToBeInvisible(btnNextLoading, 20);
+        waitForElementToBeInvisible(btnNextLoading, LONG_WAIT);
 
         addToReport("----------End of validation of OTP confirmation page----------", Status.PASS, false);
         addToReport("----------Start of validation of OTP success page----------", Status.PASS, false);
@@ -952,7 +975,7 @@ public class BillPaymentPage extends BasePage {
             addToReport(" Latest downloaded pdf :  : '" + extractedText, Status.INFO, false);
             System.out.println("Latest Downloaded PDF: " + extractedText);
 
-            waitForElementToBeInvisible(popUpPDFDownload, 20);
+            waitForElementToBeInvisible(popUpPDFDownload, LONG_WAIT);
 
             //validate payment id
             if (extractedText.contains(referenceNumber[1].trim())) {
@@ -969,12 +992,12 @@ public class BillPaymentPage extends BasePage {
         addToReport("----------Start of validation of search saved template and delete----------", Status.PASS, false);
         scrollPageToTop();
         selectHeaderTab(kwBillersMap.get("KW_SAVED_BILLERS"));
-        waitForElementToBeClickable(btnSearchBiller, 20);
+        waitForElementToBeClickable(btnSearchBiller, LONG_WAIT);
         scrollPageToTop();
         sendKeysToElement(tfSearch, templateName);
         clickOnElementUsingJS(btnSearchBiller);
 
-        waitForElementToBeInvisible(icnSavedBillerGridLoading, 20);
+        waitForElementToBeInvisible(icnSavedBillerGridLoading, LONG_WAIT);
 
         //Validate the search results
         int recordCount = isElementsPresentBy(tblRows);
@@ -989,21 +1012,21 @@ public class BillPaymentPage extends BasePage {
             }
 
             //Delete the template
-            waitForElementPresence(tfOTP(1), 20);
+            waitForElementPresence(tfOTP(1), LONG_WAIT);
             sendKeysToElement(tfOTP(1), String.valueOf(OTPValue));
             addToReport(" OTP confirmation for template deletion of " + templateName, Status.PASS, true);
             clickOnElement(btnConfirm);
-            waitForElementToBeInvisible(btnNextLoading, 20);
-            waitForElementPresence(popUpMsgBillerDeleted, 20);
+            waitForElementToBeInvisible(btnNextLoading, LONG_WAIT);
+            waitForElementPresence(popUpMsgBillerDeleted, LONG_WAIT);
 
             scrollPageToTop();
             selectHeaderTab(kwBillersMap.get("KW_SAVED_BILLERS"));
-            waitForElementToBeClickable(btnSearchBiller, 20);
+            waitForElementToBeClickable(btnSearchBiller, LONG_WAIT);
 
             sendKeysToElement(tfSearch, templateName);
             clickOnElement(btnSearchBiller);
 
-            waitForElementToBeInvisible(icnSavedBillerGridLoading, 20);
+            waitForElementToBeInvisible(icnSavedBillerGridLoading, LONG_WAIT);
 
             //Validate the search results
             recordCount = isElementsPresentBy(tblRows);
@@ -1489,6 +1512,7 @@ public class BillPaymentPage extends BasePage {
                 }
             }
         }
+
         addToReport("End of validation for  biller : " + billerName + " in the OTP page", Status.PASS, true);
     }
 
@@ -1502,7 +1526,7 @@ public class BillPaymentPage extends BasePage {
     public void validateReinitiationOfTransactionFromHistory(String billerTitle,String otpValue,String kWAmount, String kWMobileNoWithout) {
         try {
             //Select appropriate header
-            waitForElementToBeInvisible(imgGreyLoader, 20);
+            waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
             int rCount = 0;
 
             //Validate the search results
@@ -1510,21 +1534,21 @@ public class BillPaymentPage extends BasePage {
             if (recordCount != 0) {
                 for (int inc = 1; inc <= recordCount; inc++) {
                     //Reinitiate transaction based on biller title
-                    if (billerTitle.equals(getTextFromElement(tblCellRecord(3, inc)))) {
+                    if (billerTitle.equals(getTextFromElement(tblCellRecord(2, inc)))) {
                         rCount = inc;
                         break;
                     }
                 }
                 //Extract required the first record data
-                String paymentID = getTextFromElement(tblCellRecord(2, rCount));
-                String bTitle = getTextFromElement(tblCellRecord(3, rCount));
-                String CurrencyAndAmt = getTextFromElement(tblCellRecord(6, rCount));
+                String paymentID = getTextFromElement(tblCellRecord(1, rCount));
+                String bTitle = getTextFromElement(tblCellRecord(2, rCount));
+                String CurrencyAndAmt = getTextFromElement(tblCellRecord(5, rCount));
 
                 addToReport("Obtained record with payment id : " + paymentID + ", biller tittle : " + billerTitle, Status.PASS, true);
 
                 clickOnElement(btnSavedBillerReinitiate(rCount));
 
-                waitForElementToBeInvisible(imgGreyLoader, 20);
+                waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
 
                 //Validate contents from text fields
 
@@ -1543,7 +1567,7 @@ public class BillPaymentPage extends BasePage {
                 addToReport("Entered details related to payment", Status.PASS, true);
                 //Click button after entering data
                 clickOnElement(btnNext);
-                waitForElementToBeInvisible(btnNextLoading, 20);
+                waitForElementToBeInvisible(btnNextLoading, LONG_WAIT);
 
                 //Validate the OTP page
 
@@ -1566,10 +1590,10 @@ public class BillPaymentPage extends BasePage {
 
                 addToReport("End of validation for  biller : " + bTitle + " in the OTP page", Status.PASS, true);
 
-                waitForElementPresence(tfOTP(1), 20);
+                waitForElementPresence(tfOTP(1), LONG_WAIT);
                 sendKeysToElement(tfOTP(1), String.valueOf(otpValue));
                 clickOnElement(btnConfirm);
-                waitForElementToBeInvisible(btnNextLoading, 20);
+                waitForElementToBeInvisible(btnNextLoading, LONG_WAIT);
 
                 //Validate the success label,payee name,pay from,amount,payment mode and entered reference while retrieving the reference number
                 if (isElementPresentBy(lblSuccess)) {
@@ -1594,8 +1618,350 @@ public class BillPaymentPage extends BasePage {
             throw new RuntimeException("Failed to re initiation of transactions in biller ", e);
         }
         //Close the popup
-        waitForElementToBeClickable(btnClosePopup, 10);
+        waitForElementToBeClickable(btnClosePopup, MODERATE_WAIT);
         clickOnElement(btnClosePopup);
+    }
+
+    /**
+     * Initiate bill payments for multiple categories and validate via my account
+     *
+     * @param OTPValue                 One-time password used for authentication.
+     * @param category                 The main category of the biller (e.g., Utilities, Insurance, Education).
+     * @param billerName               The name of the biller (e.g., CEB, NWSDB).
+     * @param paymentUsing             The payment method selected (e.g., Credit Card, Savings Account).
+     * @param transferMode             The mode of transfer (e.g., IMPS, NEFT).
+     * @param amount                   The payment amount.
+     * @param mobileNo                 Mobile number of the user/customer.
+     * @param accountNumber            Account number related to the biller or customer.
+     * @param nicNo                    National Identity Card number.
+     * @param name                     Name of the policyholder or customer.
+     * @param policyNumber             Insurance policy number.
+     * @param admissionNumber          Student's admission number (for school fee payments).
+     * @param classID                  Class identifier (e.g., Grade 6, C6).
+     * @param purpose                  Purpose of the payment.
+     * @param date                     Date associated with the transaction (e.g., due date, birthdate).
+     * @param code                     Short code for payment reason or institution.
+     * @param referenceOrReservationNo Reference number or reservation ID.
+     * @param branch                   Branch associated with the employee or customer.
+     * @param email                    Email address of the user.
+     * @param kwBillersMap             key word and the content of keyword is added as suffix
+     * @return
+     */
+    public void initiateBillPaymentsUsingForexAndValidate(String OTPValue, String category, String billerName, String paymentUsing, String transferMode, String amount, String mobileNo, String accountNumber, String ackMsg, String nicNo, String name, String policyNumber, String admissionNumber, String classID, String purpose, String date, String code, String referenceOrReservationNo, String branch, String email, Map<String, String> kwBillersMap) {
+
+        addToReport("----------Start of validation of acknowledgement message----------", Status.PASS, false);
+
+        //Check by default primary account needs to selected
+        waitForElementPresence(lblNewPaymentAccountNumber, LONG_WAIT);
+        waitForElementPresence(btnNext);
+        waitForElementToBeClickable(btnNext,LONG_WAIT);
+
+        //validate the primary account number both in panel and from pay from dropdown
+        List<String> ddAccountNumbers = getSelectedOptionText(ddPayFrom, "ALL_OPTIONS_VALUE");
+        selectFromDropdown(ddPayFrom,accountNumber,"value");
+        addToReport("All available accounts for the user "+ddAccountNumbers, Status.PASS, false);
+
+        String purp = purpose + " " + CommonUtils.randomAlphaNumeric(5);
+
+        //Select payment using
+        if (paymentUsing.equals("Account")) {
+            scrollToWebElement(lblNewPaymentAccountNumber);
+            clickOnElement(rdoAccount);
+        } else if (paymentUsing.equals("Credit Card")) {
+            scrollToWebElement(lblNewPaymentAccountNumber);
+            clickOnElement(rdoCreditCard);
+        }
+
+        //Enter amount and other relevant values
+        sendKeysToElement(tfAmount, amount);
+
+        //Type mobile number is available in data table
+        if (!mobileNo.isEmpty()) {
+            sendKeysToElement(tfFieldOne, mobileNo);
+            sendKeysToElement(tfFieldTwo, mobileNo);
+        }
+
+        //Select transfer mode
+        if (transferMode.equals(kwBillersMap.get("KW_ONE_TIME_TRANSACTION"))) {
+            clickOnElement(rdoOTTransaction);
+        } else if (transferMode.equals(kwBillersMap.get("KW_SETUP_STANDING_ORDER_SCHEDULE"))) {
+            clickOnElement(rdoSchadule);
+        }
+        addToReport("Entered details related to payment", Status.PASS, true);
+        //Click button after entering data
+        clickOnElement(btnNext);
+        waitForElementToBeInvisible(btnNextLoading, LONG_WAIT);
+
+        //Validate confirmation header
+        if (isElementPresentBy(lblPopUpHeaderPaymentConfirmation, VERY_SHORT_WAIT)) {
+            waitForElementToBeClickable(lblPopUpHeaderPaymentConfirmation, LONG_WAIT);
+            addToReport("OTP confirmation appeared", Status.PASS, true);
+        } else {
+            waitFor(3);
+            addToReport("OTP confirmation did not appear", Status.FAIL);
+        }
+        //Validate confirmation header
+        if (isElementPresentBy(btnConfirm, VERY_SHORT_WAIT)) {
+            addToReport("OTP confirm button appeared", Status.PASS, false);
+        } else {
+            waitFor(3);
+            addToReport("OTP confirm button did not appear", Status.FAIL);
+        }
+        if (isElementPresentBy(btnBack, VERY_SHORT_WAIT)) {
+            addToReport("OTP back button appeared", Status.PASS, false);
+        } else {
+            waitFor(3);
+            addToReport("OTP back button did not appear", Status.FAIL);
+        }
+
+        validateOTPPopup(category, billerName, transferMode, amount, mobileNo, "", nicNo, name, policyNumber, admissionNumber, classID, purpose, date, code, referenceOrReservationNo, branch, email, accountNumber, purp, kwBillersMap);
+
+        isElementPresentBy(getElementByTypeAndText(ElementType.span,"'"+ackMsg+"'"),VERY_LONG_WAIT);
+
+        //Click on cancel button
+        clickOnElement(btnBack);
+
+        waitForElementToBeInvisible(getElementByTypeAndText(ElementType.span,"'"+ackMsg+"'"),VERY_LONG_WAIT);
+        waitForElementPresence(lblNewPaymentAccountNumber, VERY_LONG_WAIT);
+
+        selectFromDropdown(ddPayFrom,accountNumber,"value");
+        //Enter amount and other relevant values
+        sendKeysToElement(tfAmount, amount);
+
+        if (isElementPresentBy(lblNewPaymentAccountNumber, VERY_SHORT_WAIT)) {
+            addToReport("Navigated back to biller page", Status.PASS, true);
+        } else {
+            addToReport("Did not navigate back to biller page", Status.FAIL);
+        }
+
+        clickOnElement(btnNext);
+        waitForElementToBeInvisible(btnNextLoading, LONG_WAIT);
+
+        //Validate confirmation header
+        if (isElementPresentBy(lblPopUpHeaderPaymentConfirmation, VERY_SHORT_WAIT)) {
+            waitForElementToBeClickable(lblPopUpHeaderPaymentConfirmation, VERY_LONG_WAIT);
+            addToReport("OTP confirmation appeared", Status.PASS, true);
+        } else {
+            waitFor(VERY_SHORT_WAIT);
+            addToReport("OTP confirmation did not appear", Status.FAIL);
+        }
+        //Validate confirmation header
+        if (isElementPresentBy(btnConfirm, VERY_SHORT_WAIT)) {
+            addToReport("OTP confirm button appeared", Status.PASS, false);
+        } else {
+            waitFor(VERY_SHORT_WAIT);
+            addToReport("OTP confirm button did not appear", Status.FAIL);
+        }
+        if (isElementPresentBy(btnBack, VERY_SHORT_WAIT)) {
+            addToReport("OTP back button appeared", Status.PASS, false);
+        } else {
+            waitFor(VERY_SHORT_WAIT);
+            addToReport("OTP back button did not appear", Status.FAIL);
+        }
+
+        validateOTPPopup(category, billerName, transferMode, amount, mobileNo, "", nicNo, name, policyNumber, admissionNumber, classID, purpose, date, code, referenceOrReservationNo, branch, email, accountNumber, purp, kwBillersMap);
+
+        isElementPresentBy(getElementByTypeAndText(ElementType.span,"'"+ackMsg+"'"),VERY_LONG_WAIT);
+
+        clickOnElement(chkAckMsg);
+
+        addToReport("End of validation for  biller : " + billerName + " in the OTP page", Status.PASS, true);
+        waitForElementPresence(tfOTP(1), LONG_WAIT);
+        sendKeysToElement(tfOTP(1), String.valueOf(OTPValue));
+        clickOnElement(btnConfirm);
+        waitForElementToBeInvisible(btnNextLoading, LONG_WAIT);
+
+        addToReport("----------End of validation of OTP confirmation page----------", Status.PASS, false);
+        addToReport("----------Start of validation of OTP success page----------", Status.PASS, false);
+
+        //Validate the success label,payee name,pay from,amount,payment mode and entered reference while retrieving the reference number
+        if (isElementPresentBy(lblSuccess)) {
+            addToReport("Validated the success message in the OTP success page", Status.PASS, false);
+        } else {
+            addToReport("Failed to validate the success message in the OTP success page", Status.FAIL);
+        }
+        String[] referenceNumber = getTextFromElement(lblRefernceID).split("- ");
+        if (referenceNumber[1] != null) {
+            addToReport("Obtained the payment reference number " + referenceNumber[1], Status.PASS, false);
+        } else {
+            addToReport("Failed to get the reference number", Status.FAIL);
+        }
+
+        validateOTPPopup(category, billerName, transferMode, amount, mobileNo, "", nicNo, name, policyNumber, admissionNumber, classID, purpose, date, code, referenceOrReservationNo, branch, email, accountNumber, purp, kwBillersMap);
+
+        addToReport("End of validation for  biller : " + billerName + " in the OTP confirmation page", Status.PASS, true);
+
+        clickOnElement(btnClosePopup);
+        addToReport("----------End of validation of OTP success page----------", Status.PASS, false);
+        addToReport("----------End of validation of acknowledgement message----------", Status.PASS, false);
+    }
+
+    /**
+     * Initiate bill payments for LPOPP
+     *
+     * @param OTPValue                 One-time password used for authentication
+     * @param category                 The main category of the biller (e.g., Utilities, Insurance, Education)
+     * @param billerName               The name of the biller (e.g., CEB, NWSDB)
+     * @param accountNumber            Account number related to the biller or customer
+     * @param kwBillersMap             key word and the content of keyword is added as suffix
+     */
+    public void initiateBillPaymentsForLPOPAndValidate(String OTPValue, String category, String billerName, String accountNumber, Map<String, String> kwBillersMap) {
+
+        addToReport("----------Start of validation of LPOP Payments----------", Status.PASS, false);
+
+        //Check by default primary account needs to selected
+        waitForElementPresence(lblNewPaymentAccountNumber, LONG_WAIT);
+        waitForElementPresence(btnNext);
+        waitForElementToBeClickable(btnNext,LONG_WAIT);
+
+        //validate the primary account number both in panel and from pay from dropdown
+        List<String> ddAccountNumbers = getSelectedOptionText(ddPayFrom, "ALL_OPTIONS_VALUE");
+        selectFromDropdown(ddPayFrom,accountNumber,"value");
+        addToReport("All available accounts for the user "+ddAccountNumbers, Status.PASS, false);
+
+        addToReport("Entered details related to LPOP payment", Status.PASS, true);
+        //Click button after entering data
+        clickOnElement(btnNext);
+        waitForElementToBeInvisible(btnNextLoading, LONG_WAIT);
+
+        //Validate confirmation header
+        if (isElementPresentBy(lblPopUpHeaderPaymentConfirmation, VERY_SHORT_WAIT)) {
+            waitForElementToBeClickable(lblPopUpHeaderPaymentConfirmation, LONG_WAIT);
+            addToReport("OTP confirmation appeared", Status.PASS, true);
+        } else {
+            waitFor(VERY_SHORT_WAIT);
+            addToReport("OTP confirmation did not appear", Status.FAIL);
+        }
+        //Validate confirmation header
+        if (isElementPresentBy(getElementByTypeAndText(ElementType.button, BillerConstants.PROCEED_TO_PAY), 3)) {
+            addToReport("OTP proceed to pay button appeared", Status.PASS, false);
+        } else {
+            waitFor(VERY_SHORT_WAIT);
+            addToReport("OTP proceed to pay button did not appear", Status.FAIL);
+        }
+        if (isElementPresentBy(btnBack, 3)) {
+            addToReport("OTP back button appeared", Status.PASS, false);
+        } else {
+            waitFor(VERY_SHORT_WAIT);
+            addToReport("OTP back button did not appear", Status.FAIL);
+        }
+
+            if (isElementPresentBy(getElementByTypeAndText(ElementType.p,"'"+kwBillersMap.get("KW_GOVERNMENT_PAYMENTS")+"'"))) {
+                addToReport("Validated the biller name " + kwBillersMap.get("KW_GOVERNMENT_PAYMENTS") + " in the OTP page", Status.PASS, false);
+            } else {
+                addToReport("Failed to validate the biller name " + category + " in the OTP page found :"+kwBillersMap.get("KW_GOVERNMENT_PAYMENTS"), Status.FAIL);
+            }
+
+        addToReport("End of validation for  biller : " + billerName + " in the OTP page for LPOP", Status.PASS, true);
+        waitForElementPresence(tfOTP(1), LONG_WAIT);
+        sendKeysToElement(tfOTP(1), String.valueOf(OTPValue));
+        clickOnElement(getElementByTypeAndText(ElementType.button, BillerConstants.PROCEED_TO_PAY));
+        waitForElementToBeInvisible(btnNextLoading, LONG_WAIT);
+
+        addToReport("----------End of validation of OTP confirmation for LPOP ----------", Status.PASS, true);
+    }
+
+
+    /**
+     * Initiate bill payments for Lyceum
+     * @param accountNumber            Account number related to the biller or customer
+     * @param studentNo                Student number
+     * @param secondPageSuccessMsg     Second page success msg
+     * @param kwBillersMap             key word and the content of keyword is added as suffix
+     */
+    public void initiateBillPaymentsForLyceumAndValidate(String accountNumber,String studentNo,String secondPageSuccessMsg, Map<String, String> kwBillersMap) {
+
+        addToReport("----------Start of validation of Lyceum Payments----------", Status.PASS, false);
+
+        //Check by default primary account needs to selected
+        waitForElementPresence(getElementByTypeAndText(ElementType.button, BillerConstants.BUTTON_FETCH), LONG_WAIT);
+
+        //validate the primary account number both in panel and from pay from dropdown
+        List<String> ddAccountNumbers = getSelectedOptionText(ddPayFrom, "ALL_OPTIONS_VALUE");
+        selectFromDropdown(ddPayFrom,accountNumber,"value");
+        addToReport("All available accounts for the user "+ddAccountNumbers, Status.PASS, false);
+
+        //Enter student number
+        sendKeysToElement(tfFieldEight,studentNo);
+
+        addToReport("Entered details related to Lyceum payment", Status.PASS, true);
+
+        //Click fetch button after entering data
+        clickOnElement(getElementByTypeAndText(ElementType.button, BillerConstants.BUTTON_FETCH));
+        waitForElementToBeInvisible(btnNextLoading, LONG_WAIT);
+
+        waitForElementPresence(getElementByTypeAndText(ElementType.div,secondPageSuccessMsg),LONG_WAIT);
+
+        //Validate the search results
+        int recordCount = isElementsPresentBy(tblRows);
+        if (recordCount != 0) {
+            //Select the first record
+            clickOnElement(tblCellRecordInput(1, 1));
+
+            //Fetch data from the first row
+             InvoiceNo = getTextFromElement(tblCellRecord(2, 1));
+             InvoiceAmount = getTextFromElement(tblCellRecord(7, 1));
+        }else {
+            addToReport("No invoices present", Status.FAIL);
+            throw new RuntimeException("Failed due to non availability of invoices");
+        }
+
+        //Validate confirmation header
+        if (isElementPresentBy(getElementByTypeAndText(ElementType.button, BillerConstants.PROCEED_TO_PAY_TWO), 3)) {
+            addToReport(" proceed to pay button appeared", Status.PASS, false);
+        } else {
+            waitFor(VERY_SHORT_WAIT);
+            addToReport(" proceed to pay button did not appear", Status.FAIL);
+        }
+        if (isElementPresentBy(getElementByTypeAndText(ElementType.button, BillerConstants.BUTTON_BACK), 3)) {
+            addToReport(" back button appeared", Status.PASS, false);
+        } else {
+            waitFor(VERY_SHORT_WAIT);
+            addToReport(" back button did not appear", Status.FAIL);
+        }
+
+        scrollDownPage();
+        clickOnElement(getElementByTypeAndText(ElementType.button, BillerConstants.PROCEED_TO_PAY_TWO));
+
+        waitForElementToBeInvisible(btnNextLoading,LONG_WAIT);
+
+        //Validate account number at confirmation popup
+        if (getAttributeOrText(tfPayFromConfirmation(kwBillersMap.get("KW_PAY_FROM")), "text").contains(accountNumber)) {
+            addToReport("Validated the pay from " + getAttributeOrText(tfPayFromConfirmation(kwBillersMap.get("KW_PAY_FROM")), "text") + " in the OTP page", Status.PASS, false);
+        } else {
+            addToReport("Failed to validate the pay from " + accountNumber + " in the OTP page", Status.FAIL);
+        }
+        //Validate the student no
+        if (studentNo.equals(getAttributeOrText(tfPayFromConfirmation(BillerConstants.STUDENT_NO), "text"))) {
+            addToReport("Validated the student no from " + getAttributeOrText(tfPayFromConfirmation(BillerConstants.STUDENT_NO), "text") + " in the OTP page", Status.PASS, false);
+        } else {
+            addToReport("Failed to validate the student no from " + studentNo + " in the OTP page", Status.FAIL);
+        }
+
+        //Validate amount
+        if (getAttributeOrText(tfAmountConfirmation(kwBillersMap.get("KW_AMOUNT")), "text").contains(InvoiceAmount)) {
+            addToReport("Validated the invoice amount from " + getAttributeOrText(tfAmountConfirmation(kwBillersMap.get("KW_AMOUNT")), "text") + " in the OTP page", Status.PASS, false);
+        } else {
+            addToReport("Failed to validate the invoice amount from " + InvoiceAmount + " in the OTP page", Status.FAIL);
+        }
+        //Validate amount
+        if (InvoiceNo.equals(getAttributeOrText(tfInvoiceNoConfirmation(BillerConstants.SELECTED_INVOICE_NO), "text"))) {
+            addToReport("Validated the invoice no from " + getAttributeOrText(tfInvoiceNoConfirmation(BillerConstants.SELECTED_INVOICE_NO), "text") + " in the OTP page", Status.PASS, false);
+        } else {
+            addToReport("Failed to validate the invoice no from " + InvoiceNo + " in the OTP page", Status.FAIL);
+        }
+
+        if (isElementClickable(getElementByTypeAndText(ElementType.button, BillerConstants.PROCEED_TO_PAY_TWO))) {
+            addToReport("Validated the proceed to pay button in the OTP page", Status.PASS, true);
+        } else {
+            addToReport("Failed to validate the proceed to pay button in the OTP page", Status.FAIL);
+        }
+
+        isElementClickable(getElementByTypeAndText(ElementType.button, BillerConstants.BUTTON_BACK));
+        clickOnElementUsingJS(getElementByTypeAndText(ElementType.button, BillerConstants.BUTTON_BACK));
+        waitForElementToBeInvisible(btnNextLoading,LONG_WAIT);
+
+        addToReport("----------End of validation of OTP confirmation for Lyceum ----------", Status.PASS, true);
     }
 
 }
