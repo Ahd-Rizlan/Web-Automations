@@ -57,7 +57,7 @@ public class FDDetailViewPage extends BasePage {
         clickOnElement(lblFixedDeposits);
         addToReport("Clicked on the Fixed deposits tab ", Status.PASS);
 
-        if (waitForElementPresence(tblinterestAmount, 20)) {
+        if (waitForElementPresence(tblinterestAmount, LONG_WAIT)) {
             addToReport("FD details amount table is visible.", Status.PASS, false);
         } else {
             addToReport("FD details amount table is not visible.", Status.FAIL);
@@ -66,6 +66,13 @@ public class FDDetailViewPage extends BasePage {
     }
 
 
+    /**
+     * Validate all the fd accounts at the dashboard
+     *
+     * @param currencyType
+     * @param expectedMessage
+     * @param fdAccountNumber
+     */
     public void validateAllFDAccountsAtDashboard (String[] currencyType ,String expectedMessage, String fdAccountNumber) {
 
         waitForElementPresence(lblACNumber,LONG_WAIT);
