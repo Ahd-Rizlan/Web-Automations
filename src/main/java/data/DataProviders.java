@@ -379,7 +379,7 @@ public class DataProviders {
         @DataProvider(name = "PawningData")
         public static Iterator<Object[]> getPawningData() {
             String[] columnNames = {
-                    "maxiumAmount", "expectedMessage", "incorrectAmount", "lowBalanceAccount", "amountHigherBalance", "expectedinsufficientFundMessage", "correctAccount", "correctAmount"};
+                    "maxiumAmount", "expectedMessage", "incorrectAmount", "lowBalanceAccount", "amountHigherBalance", "expectedinsufficientFundMessage", "correctAccount", "correctAmount", "successMsg", "maxRetries"};
             return XlsReader.getDataFromSheet(filePath, "PawningData", columnNames).iterator();
         }
 
