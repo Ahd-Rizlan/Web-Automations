@@ -13,6 +13,8 @@ import utils.constants.PawnConstants;
 
 import java.util.List;
 
+import static utils.Drivers.LONG_WAIT;
+
 public class PawningTicketPage extends BasePage {
 
     public PawningTicketPage(WebDriver driver) {
@@ -38,6 +40,10 @@ public class PawningTicketPage extends BasePage {
     private static final By txtErrorMessage = By.xpath("//span[@class='text-red-500 text-xs']");
     private static final By lblPawningConfirmation = By.xpath("//span[@class='text-sm font-bold']");
     private static final By lblOutStandingPawningAmount = By.xpath("//div[@class='text-2xl']/span[@class='text-black']");
+    private static final By lblLoadingIcon = By.xpath("//div[contains(@class,'AccountsCards_loader')]");
+    private static final By lblAccountListLoading = By.xpath("//div[contains(@class,'dark:bg-gray')]");
+    private static final By btnAccount = By.xpath("(//div[contains(@class, 'bg-[#4A4A4A]') and contains(@class, 'text-white') and contains(@class, 'p-3')])[1]");
+    private static final By btnPawning = By.xpath("(//div[contains(@class, 'bg-[#4A4A4A]') and contains(@class, 'text-white') and contains(@class, 'p-3')])[3]");
 
 
 
@@ -62,6 +68,9 @@ public class PawningTicketPage extends BasePage {
     private static By tfOTP(int Index) {
         return By.xpath("//input[contains(@class,'otp-box')][" + Index + "]");
     }
+    private static By getSuccessfulMsg(String title) {
+        return By.xpath("//div[contains(text(),'" + title + "')]");
+    }
 
     /**
      * This method will navigate to the pawning section
@@ -72,6 +81,7 @@ public class PawningTicketPage extends BasePage {
         addToReport("----------Navigating to the Pawning section ----------", Status.INFO, false);
 
         waitForElementPresence(imgmyAccount);
+        waitForElementToBeInvisible(lblLoadingIcon,LONG_WAIT);
         hoverOverElement(driver, imgmyAccount);
         addToReport("Hover on the My accounts tab ", Status.PASS);
 
@@ -384,15 +394,16 @@ public class PawningTicketPage extends BasePage {
 
         sendKeysToElement(txtPawningAmount, Keys.BACK_SPACE, 14);
         selectFromDropdown(ddDebitedAccount, lowBalanceAccount, PawnConstants.DROPDOWN_SELECT_BY_VALUE);
+        String avlAmount = getSelectedOptionText(ddDebitedAccount, "FIRST_SELECTED").get(0).split("AVL\\.")[1].trim().replace(",", "");
         sendKeysToElement(txtPawningAmount, amountHigherBalance); //4000
         clickOnElement(btnNext);
         waitForElementPresence(txtErrorMessage,PawnConstants.WAIT_SHORT); //Insufficient balance. Maximum available: LKR 3261.00
         String insufficientFundMessage1 = getTextFromElement(txtErrorMessage).trim();
 
-        if (insufficientFundMessage1.equalsIgnoreCase(expectedinsufficientFundMessage)) {
+        if ((expectedinsufficientFundMessage + " " + avlAmount).equalsIgnoreCase(insufficientFundMessage1)) {
             addToReport("Insufficient Fund Message is correct: '" + insufficientFundMessage1 + "'", Status.PASS);
         } else {
-            addToReport("Insufficient Fund Message mismatch. Expected: '" + expectedinsufficientFundMessage + "', Found: '" + insufficientFundMessage1 + "'", Status.FAIL);
+            addToReport("Insufficient Fund Message mismatch. Expected: '" + expectedinsufficientFundMessage + avlAmount + "', Found: '" + insufficientFundMessage1 + "'", Status.FAIL);
         }
 
         sendKeysToElement(txtPawningAmount, Keys.BACK_SPACE, 14);
@@ -438,7 +449,7 @@ public class PawningTicketPage extends BasePage {
      *
      * @param otp  - OTP
      */
-    public void enterOTPAndContinueSettingsPage(String otp) {
+    public void enterOTPAndContinueSettingsPage(String otp, String successMsg) {
 
         //Enter OTP values and continue
         try {
@@ -449,6 +460,15 @@ public class PawningTicketPage extends BasePage {
             addToReport("Error when entering OTP", Status.FAIL);
             throw new RuntimeException("Failed to enter OTP " + e.getMessage(), e);
         }
+
+        waitForElementPresence(getSuccessfulMsg(successMsg),20); //Request successful
+        //Validate the error message
+        if (isElementPresentBy(getSuccessfulMsg(successMsg))) {
+            addToReport("'" + successMsg + "' message is present.", Status.PASS,true);
+        } else {
+            addToReport("'" + successMsg + "'  message is not present.", Status.FAIL);
+            throw new RuntimeException("Error message validation is unsuccessful.");
+        }
     }
 
 
@@ -457,28 +477,46 @@ public class PawningTicketPage extends BasePage {
      * This method validate the deducted amount will display as the new outstanding amount
      */
     private String confirmationAmountText;
+    public void validateOutstandingAmountWithRetry(String maxRetriesStr) {
+        addToReport("---------- Starting to validate the Pawning outstanding amount ----------", Status.INFO, false);
 
-    public void ValidateOutstandingAmount() {
-
-        addToReport("----------Starting to validate the Pawning outstanding amount  ----------", Status.INFO, false);
+        int maxRetries = Integer.parseInt(maxRetriesStr); // Convert string to int
 
         waitForElementToBeInvisible(lblPawningConfirmation, 20);
-        String cleanAmount = capitalAmountinConfirmation.replace("LKR", "").replace(",", "").trim();
-// Convert to double and subtract 100 -  inner logic for subtracting 100 from pawning amount
-        double amount = Double.parseDouble(cleanAmount);
-        double updatedAmount = amount - 100;
 
+        double amount = Double.parseDouble(capitalAmountinConfirmation.replace("LKR", "").replace(",", "").trim());
+        double updatedAmount = amount - 100;
         String expectedFormatted = String.format("LKR %,.2f", updatedAmount);
 
-        confirmationAmountText = getTextFromElement(lblOutStandingPawningAmount).trim(); // e.g., "LKR 99,900.00"
+        boolean matched = false;
 
-        if (confirmationAmountText.equalsIgnoreCase(expectedFormatted)) {
-            addToReport("Capital Outstanding Amount after -100 is correct: " + confirmationAmountText, Status.PASS, true);
-        } else {
-            addToReport("Mismatch in Capital Outstanding Amount. Expected: " + expectedFormatted + ", Found: " + confirmationAmountText, Status.FAIL);
+        for (int attempt = 1; attempt <= maxRetries; attempt++) {
+            waitForElementToBeInvisible(lblAccountListLoading, LONG_WAIT);
+            waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+
+            clickOnElement(btnAccount);
+            waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+
+            clickOnElement(btnPawning);
+            waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+
+            confirmationAmountText = getTextFromElement(lblOutStandingPawningAmount).trim();
+
+            if (confirmationAmountText.equalsIgnoreCase(expectedFormatted)) {
+                addToReport("Capital Outstanding Amount is correct on attempt " + attempt + ": " + confirmationAmountText, Status.PASS, true);
+                matched = true;
+                break;
+            } else {
+                addToReport("Attempt " + attempt + ": Amount not updated yet. Found: " + confirmationAmountText, Status.INFO, false);
+            }
         }
 
-        addToReport("----------Ending the validation of the Pawning outstanding amount  ----------", Status.INFO, false);
+        if (!matched) {
+            addToReport("FAILED: Outstanding amount did not update to expected value. Expected: " + expectedFormatted + ", Last Found: " + confirmationAmountText, Status.FAIL);
+        }
+
+        addToReport("---------- Ending the validation of the Pawning outstanding amount ----------", Status.INFO, false);
     }
+
 
 }

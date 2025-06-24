@@ -16,12 +16,12 @@ public class PawningTicketTest extends BaseTest{
     }
 
     @Test(priority = 2, dataProvider = "PawningData", description = "Pawning settlement and validation -187,188,189,190", dataProviderClass = DataProviders.PawningDataProvider.class)
-    public void validatePawnSettlement (String maxiumAmount, String expectedMessage, String incorrectAmount, String lowBalanceAccount, String amountHigherBalance, String expectedinsufficientFundMessage, String correctAccount, String correctAmount){
+    public void validatePawnSettlement (String maxiumAmount, String expectedMessage, String incorrectAmount, String lowBalanceAccount, String amountHigherBalance, String expectedinsufficientFundMessage, String correctAccount, String correctAmount, String successMsg, String maxRetries){
         pawningTicketPage.NavogatetoPawningPage();
         pawningTicketPage.ValidatingPawningAccountSummary();
         pawningTicketPage.ValidatetheSettlement( maxiumAmount,  expectedMessage,  incorrectAmount,  lowBalanceAccount,  amountHigherBalance,  expectedinsufficientFundMessage,  correctAccount,correctAmount);
-        pawningTicketPage.enterOTPAndContinueSettingsPage(LoginConstants.OTP);
-        pawningTicketPage.ValidateOutstandingAmount();
+        pawningTicketPage.enterOTPAndContinueSettingsPage(LoginConstants.OTP,successMsg);
+        pawningTicketPage.validateOutstandingAmountWithRetry(maxRetries);
 
     }
 
