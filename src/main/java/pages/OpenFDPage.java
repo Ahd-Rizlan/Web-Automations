@@ -30,7 +30,7 @@ public class OpenFDPage extends BasePage {
     private static final By txtAmount = By.xpath("//input[@name='" + SaveAccountConstants.ATTR_AMOUNT + "']");
     private static final By ddPurpose = By.xpath("//select[@id='branch' and @name='" + SaveAccountConstants.NAME_PURPOSE_OF_ACCOUNT + "']");
 
-    private static final By txtnickName = By.xpath("//input[@name='" + SaveAccountConstants.ATTR_NICKNAME + "']");
+    private static final By txtnickName = By.xpath("//input[@placeholder='Set Nick Name']");
     private static final By btnsubmit= By.xpath("//button[@type='submit']");
     private static final By lblconfirmAccountOptions = By.xpath("//div[text()='" + SaveAccountConstants.TEXT_CONFIRM_ACCOUNT_OPTIONS + "']");
     private static final By btnQActionsOpenNewFD = By.xpath("//h1[text()='Quick Actions']/ancestor::div[contains(@class,'Container_container')]//span[contains(text(),'Open New')]/parent::div/span[contains(text(),'Fixed Deposit')]");
@@ -215,9 +215,6 @@ public class OpenFDPage extends BasePage {
         List<String> sourceOfFoundList = getSelectedOptionText(ddsourceOfFunds, "FIRST_SELECTED");
         String expectedSourceOfFunds = sourceOfFoundList.get(0);
 
-        List<String> purposeList = getSelectedOptionText(ddPurpose, "FIRST_SELECTED");
-        String expectedPurpose = purposeList.get(0);
-
         List<String> payableModeList = getSelectedOptionText(ddinterestPayableMode, "FIRST_SELECTED");
         String expectedPayableMode = payableModeList.get(0);
 
@@ -289,13 +286,6 @@ public class OpenFDPage extends BasePage {
             addToReport("Source of Funds mismatch. Expected: " + expectedSourceOfFunds + ", Actual: " + actualSourceOfFunds, Status.FAIL);
         }
 
-// === Purpose of Account ===
-        String actualPurpose = getAttributeOrText(lblConfirmationFieldByLabel("Purpose of Account"), "text").trim();
-        if (expectedPurpose.equalsIgnoreCase(actualPurpose)) {
-            addToReport("Purpose matched: " + actualPurpose, Status.PASS, false);
-        } else {
-            addToReport("Purpose mismatch. Expected: " + expectedPurpose + ", Actual: " + actualPurpose, Status.FAIL);
-        }
 
 // === Interest Payable Mode ===
         String actualPayableMode = getAttributeOrText(lblConfirmationFieldByLabel("Interest Payable Mode"), "text").trim();
@@ -437,10 +427,6 @@ public class OpenFDPage extends BasePage {
 
         try {
 
-            clickOnElement(ddPurpose);
-            selectFromDropdown(ddPurpose, "P01", "value");
-            addToReport("Selected first purpose option: BUSINESS TRANSACTIONS", Status.PASS, true);
-
             clickOnElement(ddsourceOfFunds);
             selectFromDropdown(ddsourceOfFunds, "SF01", "value");
             addToReport("Selected first source Of Funds option: SALES AND BUSINESS TURNOVER", Status.PASS, true);
@@ -475,6 +461,7 @@ public class OpenFDPage extends BasePage {
             sendKeysToElement(tfOTP(1), String.valueOf(otp));
 
             clickOnElement(btnConfirm);
+            waitForElementToBeInvisible(lblconfirmAccountOptions,LONG_WAIT);
         } catch (Exception e) {
             addToReport("Error when entering OTP", Status.FAIL);
             throw new RuntimeException("Failed to enter OTP " + e.getMessage(), e);

@@ -61,12 +61,31 @@ public class ObtainLoanPage extends BasePage {
     }
 
     public By lblObtainLoanFDSection(String sectionText) {
-        return By.xpath("//span[text()='" + sectionText + "']");
+        return By.xpath("//span[normalize-space(text())='" + sectionText.trim() + "']");
     }
 
     private static By tfOTP(int Index) {
-        return By.xpath("(//input[contains(@class, 'otp-box') and @type='number'])[" + Index + "]");
+        return By.xpath("//input[contains(@class,'otp-box')][" + Index + "]");
     }
+    public By lblLoanConfirmationSection(String sectionText) {
+        return By.xpath("//div[contains(@class, 'flex flex-col') and contains(., 'Loan Granted Successfully')]//div[contains(text(), '" + sectionText + "')]");
+    }
+
+    public By lblLoanAccountNumber(String prefix) {
+        return By.xpath("//span[contains(text(),'" + prefix + "')]");
+    }
+    public String getLoanConfirmationFieldValue(String fieldName) {
+        String xpath = "//td[normalize-space(text())='" + fieldName + "']/following-sibling::td[1]";
+        return getTextFromElement(By.xpath(xpath)).trim();
+    }
+    private static By getSuccessfulMsg(String title) {
+        return By.xpath("//div[contains(text(),'" + title + "')]");
+    }
+    public By lblLoanConfirmationValue(String fieldName) {
+        return By.xpath("//div[text()='" + fieldName + "']/following-sibling::div/span");
+    }
+
+
 
     /**
      * This method will navigate and validate the Obtain loan from fixed deposit section
@@ -126,6 +145,8 @@ public class ObtainLoanPage extends BasePage {
      */
     public void obtainAllAccountTypes() {
        // waitForElementPresence(depositsSection,SHORT_WAIT);
+        waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+        waitFor(5);
         clickOnElement(depositsSection);
         waitFor(2);
         waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
@@ -316,6 +337,8 @@ public class ObtainLoanPage extends BasePage {
     private String repaymentAccount = "";
     private String expectedMonth = "";
     private String expectedPurpose = "";
+    private String cleanRepaymentAccount;
+    private String cleanDepositAccount;
 
     public void ValidateObtainLoanConfirmation() {
 
@@ -327,6 +350,7 @@ public class ObtainLoanPage extends BasePage {
             if (expectedDepositeAccount != null && !expectedDepositeAccount.isEmpty()) {
                 depositAccount = Optional.ofNullable(expectedDepositeAccount.get(0)).orElse("").trim();
             }
+            cleanDepositAccount = depositAccount.split("-")[0].replaceAll("\\s+", "");
             addToReport("Selected Deposit Account: " + depositAccount, Status.INFO, false);
 
             // Loan Amount
@@ -338,6 +362,7 @@ public class ObtainLoanPage extends BasePage {
             if (expectedRepaymentAccount != null && !expectedRepaymentAccount.isEmpty()) {
                 repaymentAccount = Optional.ofNullable(expectedRepaymentAccount.get(0)).orElse("").trim();
             }
+            cleanRepaymentAccount = repaymentAccount.split("-")[0].replaceAll("\\s+", "");
             addToReport("Selected Repayment Account: " + repaymentAccount, Status.INFO, false);
 
             // Repayment Period (Months)
@@ -417,7 +442,7 @@ public class ObtainLoanPage extends BasePage {
      * @param otp  - OTP
      *
      */
-    public void enterOTPAndContinueSettingsPage(String otp) {
+    public void enterOTPAndContinueSettingsPage(String otp, String successMsg) {
 
         //Enter OTP values and continue
         try {
@@ -429,14 +454,127 @@ public class ObtainLoanPage extends BasePage {
             throw new RuntimeException("Failed to enter OTP " + e.getMessage(), e);
         }
 
-//        waitForElementPresence(getSuccessfulMsg(successMsg),20); //Request successful
-//        //Validate the error message
+        waitForElementPresence(getSuccessfulMsg(successMsg),20); //Request successful
+        //Validate the error message
 //        if (isElementPresentBy(getSuccessfulMsg(successMsg))) {
 //            addToReport("'" + successMsg + "' message is present.", Status.PASS,true);
 //        } else {
 //            addToReport("'" + successMsg + "'  message is not present.", Status.FAIL);
 //            throw new RuntimeException("Error message validation is unsuccessful.");
 //        }
+
+        waitForElementToBeInvisible(rdagreementBtn,LONG_WAIT);
+    }
+
+    public void ValidateObtainLoanConfirmationSummary(){
+
+        String loanAmount = getTextFromElement(lblLoanConfirmationValue("Loan Amount")).split("\\.")[0].trim();
+        String interestInfo = getTextFromElement(lblLoanConfirmationSection("p.a. Interest Rate")).trim();
+        String accountNumber = getTextFromElement(lblLoanAccountNumber("Loan Account")).trim().split("-")[1].trim();
+        String transactionId = getLoanConfirmationFieldValue("Transaction ID");
+        String transactionDate = getLoanConfirmationFieldValue("Transaction Date");
+        String loanAmount1 = getLoanConfirmationFieldValue("Loan Amount").split("\\.")[0].trim();
+        String loanAccountNumber = getLoanConfirmationFieldValue("Loan Account Number");
+        String repaymentAccountNumber = getLoanConfirmationFieldValue("Repayment Account Number");
+        String paybackPeriod = getLoanConfirmationFieldValue("Payback Period (Months)");
+        String repaymentFrequency = getLoanConfirmationFieldValue("Repayment Frequency");
+        String interestRate = getLoanConfirmationFieldValue("Loan Interest Rate");
+        String capitalInstallment = getLoanConfirmationFieldValue("Capital Installment Amount");
+        String installmentDate = getLoanConfirmationFieldValue("Installment Date");
+        String fdAccountNumber = getLoanConfirmationFieldValue("Fixed Deposit Account Number");
+
+
+        // Validate Loan Amount
+        if (loanAmount.equalsIgnoreCase(expectedLoanAmount)) {
+            addToReport("Loan amount is correct: " + loanAmount, Status.PASS);
+        } else {
+            addToReport("Loan amount mismatch. Expected: " + expectedLoanAmount + ", Found: " + loanAmount, Status.FAIL);
+        }
+
+        // Validate Loan Amount
+        if (loanAmount1.equalsIgnoreCase(expectedLoanAmount)) {
+            addToReport("Loan amount is correct: " + loanAmount1, Status.PASS);
+        } else {
+            addToReport("Loan amount mismatch. Expected: " + expectedLoanAmount + ", Found: " + loanAmount1, Status.FAIL);
+        }
+
+// Validate Payback Period (Months)
+        if (paybackPeriod.equalsIgnoreCase(expectedMonth)) {
+            addToReport("Payback period is correct: " + paybackPeriod, Status.PASS);
+        } else {
+            addToReport("Payback period mismatch. Expected: " + expectedMonth + ", Found: " + paybackPeriod, Status.FAIL);
+        }
+
+// Validate Repayment Account Number
+        if (repaymentAccountNumber.equalsIgnoreCase(cleanRepaymentAccount)) {
+            addToReport("Repayment account number is correct: " + repaymentAccountNumber, Status.PASS);
+        } else {
+            addToReport("Repayment account number mismatch. Expected: " + cleanRepaymentAccount + ", Found: " + repaymentAccountNumber, Status.FAIL);
+        }
+
+// Validate Fixed Deposit Account Number
+        if (fdAccountNumber.equalsIgnoreCase(cleanDepositAccount)) {
+            addToReport("Fixed Deposit account number is correct: " + fdAccountNumber, Status.PASS);
+        } else {
+            addToReport("Fixed Deposit account number mismatch. Expected: " + cleanDepositAccount + ", Found: " + fdAccountNumber, Status.FAIL);
+        }
+
+        // Check if account number starts with 3
+        if (accountNumber.startsWith("3") && CommonUtils.containsNumericCharacters(accountNumber)) {
+            addToReport("Loan Account Number is valid and starts with 3: " + accountNumber, Status.PASS);
+        } else {
+            addToReport("Invalid Loan Account Number. Either does not start with 3 or contains non-numeric characters: " + accountNumber, Status.FAIL);
+        }
+
+// Compare both account numbers
+        if (accountNumber.equalsIgnoreCase(loanAccountNumber)) {
+            addToReport("Loan Account Number is correctly matched: " + accountNumber, Status.PASS);
+        } else {
+            addToReport("Loan Account Number mismatch. Expected: " + accountNumber + ", Found: " + loanAccountNumber, Status.FAIL);
+        }
+
+        // Interest Info should contain '%' and 'p.a.'
+        if (CommonUtils.containsAlphNumAndSpecialCharacters(interestInfo)) {
+            addToReport("Interest Info is valid: " + interestInfo, Status.PASS);
+        } else {
+            addToReport("Invalid Interest Info format: " + interestInfo, Status.FAIL);
+        }
+
+// Transaction ID should be numeric
+        if (CommonUtils.containsNumericCharacters(transactionId)) {
+            addToReport("Transaction ID is valid: " + transactionId, Status.PASS);
+        } else {
+            addToReport("Invalid Transaction ID (non-numeric): " + transactionId, Status.FAIL);
+        }
+
+// Transaction Date should match a valid date format (e.g., YYYY-MM-DD)
+        if (CommonUtils.containsValuesOnDateYearFirst(transactionDate)) {
+            addToReport("Transaction Date is valid: " + transactionDate, Status.PASS);
+        } else {
+            addToReport("Invalid Transaction Date: " + transactionDate, Status.FAIL);
+        }
+
+// Repayment Frequency should be Monthly or a known frequency
+        if (repaymentFrequency.equalsIgnoreCase("Monthly") || repaymentFrequency.equalsIgnoreCase("Maturity")) {
+            addToReport("Repayment Frequency is valid: " + repaymentFrequency, Status.PASS);
+        } else {
+            addToReport("Unexpected Repayment Frequency: " + repaymentFrequency, Status.FAIL);
+        }
+
+// Interest Rate should contain '%' and be numeric before the %
+        if (CommonUtils.containsAlphNumAndSpecialCharacters(interestRate)) {
+            addToReport("Interest Rate is valid: " + interestRate, Status.PASS);
+        } else {
+            addToReport("Invalid Interest Rate: " + interestRate, Status.FAIL);
+        }
+
+// Capital Installment should be a valid currency amount
+        if (CommonUtils.containsAlphNumAndSpecialCharactersandSpace(capitalInstallment)) {
+            addToReport("Capital Installment Amount is valid: " + capitalInstallment, Status.PASS);
+        } else {
+            addToReport("Invalid Capital Installment Amount format: " + capitalInstallment, Status.FAIL);
+        }
+
 
     }
 
