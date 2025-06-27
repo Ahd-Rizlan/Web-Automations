@@ -1,16 +1,8 @@
 package gui.test;
 
-import com.aventstack.extentreports.ExtentTest;
 import data.DataProviders;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.*;
-import utils.Drivers;
-import utils.constants.DashboardConstants;
 import utils.constants.LoginConstants;
-import utils.report.TestContext;
-
-import java.lang.reflect.Method;
 
 public class ObtainLoanTest extends BaseTest {
 

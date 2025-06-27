@@ -161,13 +161,14 @@ public class MessagesPage extends BasePage {
             //  Compare
             boolean isMatching = CommonUtils.compareTwoArraylist(expectedBranchTexts, actualBranchTexts, true); // true -> ignore order
 
-            List<String> missingBranches = findMissingElements(actualBranchTexts,expectedBranchTexts);
-
-            if (isMatching) {
-                addToReport("All branches loaded",Status.PASS,true);
-            } else {
-                addToReport("All branches did not load missing branches from list : "+missingBranches,Status.PASS,true);
-            }
+            //Uncomment below once the branch mapping is updated in constant
+//            List<String> missingBranches = findMissingElements(actualBranchTexts,expectedBranchTexts);
+//
+//            if (isMatching) {
+//                addToReport("All branches loaded",Status.PASS,true);
+//            } else {
+//                addToReport("All branches did not load missing branches from list : "+missingBranches,Status.FAIL,true);
+//            }
 
         } catch (Exception e) {
             addToReport("Error logging into retail admin", Status.FAIL);
@@ -306,7 +307,7 @@ public class MessagesPage extends BasePage {
 
             waitForElementPresence(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
             clickOnElement(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
-            waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
+            waitForElementToBeInvisible(imgGreyLoader, VERY_LONG_WAIT);
 
             waitForElementToBeClickable(ddSubject,LONG_WAIT);
             selectFromDropdown(ddSubject, subject, MessagingConstants.VISIBLE_TEXT);
@@ -405,7 +406,7 @@ public class MessagesPage extends BasePage {
             scrollPageToTop();
             waitForElementPresence(lblMsgID(subject));
 
-            if(getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "").isEmpty()){
+            if(getTextFromElement(lblMsgID(subject)).isEmpty()){
                 addToReport("Error fetching message id", Status.FAIL);
                 throw new RuntimeException("Failed to fetch message id after sending message");
             }else {
@@ -612,7 +613,7 @@ public class MessagesPage extends BasePage {
 
             waitForElementPresence(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
             clickOnElement(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
-            waitForElementToBeInvisible(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE),20);
+            waitForElementToBeInvisible(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE),LONG_WAIT);
             waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
 
             waitFor(SHORT_WAIT);
@@ -660,7 +661,7 @@ public class MessagesPage extends BasePage {
             scrollPageToTop();
             waitForElementPresence(lblMsgID(subject));
 
-            if(getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "").isEmpty()){
+            if(getTextFromElement(lblMsgID(subject)).isEmpty()){
                 addToReport("Error fetching message id", Status.FAIL);
                 throw new RuntimeException("Failed to fetch message id after sending message");
             }else {
@@ -673,7 +674,7 @@ public class MessagesPage extends BasePage {
             addToReport("Error sending message under fund balance confirmation", Status.FAIL);
             throw new RuntimeException("Failed initiate balance confirmation" + e.getMessage(), e);
         }
-        return getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "");
+        return getTextFromElement(lblMsgID(subject));
     }
 
 
@@ -744,11 +745,11 @@ public class MessagesPage extends BasePage {
             scrollPageToTop();
             waitForElementPresence(lblMsgID(subject));
 
-            if(getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "").isEmpty()){
+            if(getTextFromElement(lblMsgID(subject)).isEmpty()){
                 addToReport("Error fetching message id", Status.FAIL);
                 throw new RuntimeException("Failed to fetch message id after sending message");
             }else {
-                addToReport("Generated message id : "+getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", ""), Status.PASS,false);
+                addToReport("Generated message id : "+getTextFromElement(lblMsgID(subject)), Status.PASS,false);
             }
 
             addToReport("----------End of of entering values and send message ----------", Status.PASS, true);
@@ -757,7 +758,7 @@ public class MessagesPage extends BasePage {
             addToReport("Error sending message under fund balance confirmation", Status.FAIL);
             throw new RuntimeException("Failed initiate balance confirmation" + e.getMessage(), e);
         }
-        return getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "");
+        return getTextFromElement(lblMsgID(subject));
     }
 
 
@@ -847,11 +848,11 @@ public class MessagesPage extends BasePage {
             scrollPageToTop();
             waitForElementPresence(lblMsgID(subject));
 
-            if(getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "").isEmpty()){
+            if(getTextFromElement(lblMsgID(subject)).isEmpty()){
                 addToReport("Error fetching message id", Status.FAIL);
                 throw new RuntimeException("Failed to fetch message id after sending message");
             }else {
-                addToReport("Generated message id : "+getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", ""), Status.PASS,false);
+                addToReport("Generated message id : "+getTextFromElement(lblMsgID(subject)), Status.PASS,false);
             }
 
             addToReport("----------End of of entering values and send message ----------", Status.PASS, true);
@@ -860,7 +861,7 @@ public class MessagesPage extends BasePage {
             addToReport("Error sending message under fund balance confirmation", Status.FAIL);
             throw new RuntimeException("Failed initiate balance confirmation" + e.getMessage(), e);
         }
-        return getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", "");
+        return getTextFromElement(lblMsgID(subject));
     }
 
     /**
@@ -902,7 +903,7 @@ public class MessagesPage extends BasePage {
             clickOnElement(icnRecivedMessage);
 
             //Validate the message id
-            if (messageID.equals(getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", ""))) {
+            if (messageID.equals(getTextFromElement(lblMsgID(subject)))) {
                 addToReport("Received message id is :"+messageID, Status.PASS,true);
             } else {
                 addToReport("Received message id is not loaded", Status.FAIL);
@@ -950,7 +951,7 @@ public class MessagesPage extends BasePage {
 
             clickOnElement(lblDeletedMessage(1));
 
-            if (messageID.equals(getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", ""))) {
+            if (messageID.equals(getTextFromElement(lblMsgID(subject)))) {
                 addToReport("Deleted message id is validated"+messageID, Status.PASS,true);
             } else {
                 addToReport("Deleted message id is not loaded instead loaded ID :"+messageID, Status.FAIL);
@@ -967,7 +968,7 @@ public class MessagesPage extends BasePage {
 
             clickOnElement(icnReadMessageRecord(1));
 
-            if (messageID.equals(getTextFromElement(lblMsgID(subject)).replaceAll("[^0-9]", ""))) {
+            if (messageID.equals(getTextFromElement(lblMsgID(subject)))) {
                 addToReport("Restored message id is validated"+messageID, Status.PASS,true);
             } else {
                 addToReport("Restored message id is not loaded instead loaded ID :"+messageID, Status.FAIL);

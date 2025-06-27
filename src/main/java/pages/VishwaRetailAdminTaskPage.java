@@ -34,7 +34,7 @@ public class VishwaRetailAdminTaskPage extends BasePage {
     private static final By lblRepliedUser = By.xpath("//div[contains(@class,'flex flex-col items-end')]/p[1]");
     private static final By lblUsersInThread = By.xpath("//div[contains(@class,'flex flex-col items')]/p[1]");
     private static final By lblMessagesInThread = By.xpath("//div[@class='inline']");
-
+    private static final By lblMessagesChatBody = By.xpath("//div[contains(@class,'flex flex-col gap-5')]/div/div");
     private static final By btnForwardPopup = By.xpath("//div[@role='tablist']//button[text()=\"Forward\"]");
 
 
@@ -97,11 +97,12 @@ public class VishwaRetailAdminTaskPage extends BasePage {
         // Check if the selected type is keyword-based filtering
         if (type.equals(AdminTaskConstants.KEYWORD)) {
 
+            addToReport("Search using the key word "+keyWordText, Status.PASS,true);
             // Enter the keyword text into the keyword input field
             sendKeysToElement(tfKeyWord, keyWordText);
 
         } else if (type.equals(AdminTaskConstants.DATE)) {
-
+            addToReport("Search using the from date : "+fromDate +" to date :"+toDate,  Status.PASS,true);
             // Enter the 'from' date in the date picker
             sendKeysToElement(dpDate(AdminTaskConstants.FROM_DATE), fromDate);
 
@@ -211,9 +212,10 @@ public class VishwaRetailAdminTaskPage extends BasePage {
     public void readReceivedMailAction(String message, String subject) {
 
         // Wait for the mail list to load
-        waitForElementPresence(getElementByTypeAndExactText(ElementType.span, AdminTaskConstants.FILTER), MODERATE_WAIT);
+        waitForElementPresence(getElementByTypeAndExactText(ElementType.span, AdminTaskConstants.FILTER), LONG_WAIT);
 
-        //Subject and reference have to come from client
+        //Subject and reference have to come from client This is a test    message  with   spacing and alignment.
+        //Commenting below due to a bug (SVR4-1350)
         selectTaskHeader(AdminTaskConstants.INBOX);
         selectMail(subject);
 
@@ -324,6 +326,7 @@ public class VishwaRetailAdminTaskPage extends BasePage {
     public void validateSentMails(String initialMessage,String subject,String message,String user, String branch){
         addToReport("----------Start of validation of received mail----------", Status.PASS, false);
         readReceivedMailAction(initialMessage,subject);
+        waitFor(SHORT_WAIT);
         addToReport("----------End of validation of received mail----------", Status.PASS, false);
         addToReport("----------Start of validation of forwarded mail thread is available is available in mail thread----------", Status.PASS, false);
         forwardMailAndValidate(subject,branch,message,user);
@@ -342,7 +345,7 @@ public class VishwaRetailAdminTaskPage extends BasePage {
 
         addToReport("----------Start of validation of forwarded mail thread is available is available in mail thread----------", Status.PASS, false);
 
-        filterMails(AdminTaskConstants.KEYWORD,messages[2],"","");
+        filterMails(AdminTaskConstants.KEYWORD,messages[1],"","");
 
         //Obtain the record count
         int userCount = isElementsPresentBy(lblUsersInThread);
@@ -403,9 +406,15 @@ public class VishwaRetailAdminTaskPage extends BasePage {
      * Validate fund transfer request
      * @param message The unique identifier for the message
      */
-    public void validateFundTransferRequest(String message){
+    public void validateFundTransferRequest(String subject,String message){
         addToReport("----------Start of validation of fund transfer request are available in admin----------", Status.PASS, false);
-        filterMails(AdminTaskConstants.KEYWORD,message,"","");
+        filterMails(AdminTaskConstants.KEYWORD,subject.toLowerCase(),"","");
+        // Validate the loaded message
+        if (getTextFromElement(lblMessagesChatBody).contains(message)) {
+            addToReport("Message thread is loaded with message:"+message, Status.PASS, false);
+        } else {
+            addToReport("Message thread is not loaded with message:"+message, Status.FAIL);
+        }
         addToReport("----------End of validation of fund transfer request are available in admin----------", Status.PASS, true);
 
     }

@@ -539,7 +539,7 @@ public class MakeTransactionsPage extends BasePage {
         }
 
         // Wait for 6 seconds due to sporadic failures in ALL_OPTIONS_VALUE selection
-        waitFor(6);
+        waitFor(SHORT_WAIT);
 
         // Obtain the first selected value from the dropdown
         List<String> fromAccDropdownValue = getSelectedOptionText(ddFromAccount, "FIRST_SELECTED");

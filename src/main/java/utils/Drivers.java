@@ -74,8 +74,9 @@ public class Drivers{
                     System.setProperty("webdriver.chrome.driver", chromeDriverPath);
                     ChromeOptions chromeOptions = new ChromeOptions();
                     chromeOptions.addArguments("--headless");
+                    chromeOptions.addArguments("--window-size=1920,1080");
+                    chromeOptions.addArguments("--disable-gpu");
                     driver = new ChromeDriver(chromeOptions);
-                    driver.manage().window().maximize();
                     break;
                 case "Firefox":
                     FirefoxDriverManager.firefoxdriver().setup();
