@@ -27,7 +27,7 @@ public class CreditCardDetailedViewPage extends BasePage {
 
     private static final By imgmyAccount = By.xpath("(//a[@class='NavBar_navlink__CRz3E NavBar_navlinkHover__eiXyp'])[1]");
     private static final By lblLoans = By.xpath("(//a[@class='SubMenu_subMenuItem___oYCo'])[2]");
-    private static final By btnSettlement = By.xpath("//button[contains(@class, 'font-semibold')]");
+    private static final By btnSettlement = By.xpath("(//button[contains(@class, 'font-semibold')])[2]");
     private static final By txtCustomAmount = By.xpath("//input[contains(@inputmode, 'numeric')]");
     private static final By ddFromAccount = By.xpath("//select[contains(@class, 'font-semibold')]");
     private static final By txtMinimumeAmount = By.xpath("(//div[contains(@class, 'rounded-lg') and contains(@class, 'p-4') and contains(@class, 'appearance-none')])[2]");
@@ -146,7 +146,6 @@ public class CreditCardDetailedViewPage extends BasePage {
             addToReport("Available Balance format issue: " + balance, Status.FAIL);
         }
 
-///////////////////////////////////////////////////////////////////////////////////////////////
 
         String CardViewCan = getTextFromElement(getValueBeforeLabel(CreditCardConstants.CAN_LABEL)).trim();
         String CardViewexpiryDate = getTextFromElement(getValueBeforeLabel(CreditCardConstants.EXPIRY_DATE_LABEL)).trim();
@@ -489,6 +488,7 @@ public class CreditCardDetailedViewPage extends BasePage {
 
         addToReport("----- Pending section Validation Completed -----", Status.INFO, false);
 
+        //Uncomment below once credit card details are available
 
         //Validating the installment section
 //

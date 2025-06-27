@@ -159,6 +159,7 @@ public class MyAccountsConstants {
     public static final String BUTTON_TEXT_BACK = "'Back'";
     public static final String BUTTON_APPLY_FILTERS = "'Apply Filters'";
     public static final String BUTTON_TEXT_CLEAR = "'Clear'";
+    public static final String BUTTON_TEXT_CANCEL = "'Cancel'";
     public static final String BUTTON_APPLY = "'Apply'";
 
     //-------------------- Currency --------------------

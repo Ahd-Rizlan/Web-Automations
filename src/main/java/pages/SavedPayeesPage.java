@@ -44,7 +44,7 @@ public class SavedPayeesPage extends BasePage {
     private static final By lblPopupMsgFavPayeeRemoved = By.xpath("//div[contains(text(),'Favourite Payee Removed Successfully!')]");
     private static final By tfFBAmount = By.xpath("//input[@placeholder='Enter Amount']");
     private static final By tfFBMobilePhoneNumber = By.xpath("//input[contains(@name,'fieldData.0')]");
-    private static final By lblFBBillerName = By.xpath("//div[contains(@class,'flex flex-col w-full')]//span[contains(@class,'font-semibold')]");
+    private static final By lblFBBillerName = By.xpath("//input[@placeholder='Biller Name']");
     private static final By tfFBMobilePhoneNumberReEnter = By.xpath("//input[contains(@name,'fieldData2.0')]");
     private static final By loadingBranchName = By.xpath("(//div[contains(@class,'animate-pulse bg-gray')])[4]");
 
@@ -208,6 +208,9 @@ public class SavedPayeesPage extends BasePage {
             String BName = FBillerData[1];
             String FieldName = FBillerData[2];
 
+            waitForElementToBeClickable(btnQFTSubmit,LONG_WAIT);
+            waitForElementPresence(lblFBBillerName,LONG_WAIT);
+
             //validate account label
             boolean boolSavingsAccount = isElementPresentBy(lblFBSBAName());
             if (boolSavingsAccount) {
@@ -262,7 +265,7 @@ public class SavedPayeesPage extends BasePage {
                 addToReport("Failed to validate presence of Next button in  Fav biller ", Status.FAIL, true);
             }
             //Close the popup
-            clickOnElement(btnQFTBack);
+            clickOnElementUsingJS(btnQFTBack);
 
         } catch (Exception e) {
             addToReport("Error verifying favourite biller popup", Status.FAIL);

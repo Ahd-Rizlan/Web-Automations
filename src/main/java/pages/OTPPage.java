@@ -8,6 +8,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import utils.CommonUtils;
 
+import static utils.Drivers.*;
+
 public class OTPPage extends BasePage {
 
     CommonUtils cu = new CommonUtils();
@@ -80,14 +82,17 @@ public class OTPPage extends BasePage {
                 throw new RuntimeException("OTP page button confirm is not disabled as expected.");
             }
 
+            waitForElementToBeClickable(tfOTP(1),LONG_WAIT);
             //Enter OTP values and continue
             sendKeysToElement(tfOTP(1), String.valueOf(otp));
-
-            clickOnElement(btnConfirm);
         } catch (Exception e) {
             addToReport("Error when entering OTP", Status.FAIL);
             throw new RuntimeException("Failed to enter OTP " + e.getMessage(), e);
         }
+            waitForElementToBeClickable(btnConfirm,LONG_WAIT);
+            clickOnElement(btnConfirm);
+            waitFor(SHORT_WAIT);
+
     }
 
 }
