@@ -76,9 +76,9 @@ public class DashboardPage extends BasePage {
     private static final By btnMobileCash = By.xpath("//div[contains(@class,'RecentVishwaTransactions')]//div[contains(text(),'Mobile Cash')]");
     private static final By lblRVTTransferRecord = By.xpath("//div[contains(@class,'RecentVishwaTransactions_scrollContainer')]//div[contains(@class,'RecentVishwaTransactions_transactionCard')]");
     private static final By lblRVTPaymentAccountName = By.xpath("//div[contains(@class,'RecentVishwaTransactions_transactionCard')][1]//div[contains(@class,'transactionDetails')]/span[1]");
-    private static final By lblSendMoneyHeader = By.xpath("//div[text()='Make Transactions']/ancestor::div[contains(@class,'rounded-lg')]/following-sibling::div//span[contains(text(),'Send Money')]");
-    private static final By lblMobileCashHeader = By.xpath(" //div[text()='Make Transactions']/ancestor::div[contains(@class,'rounded-lg')]/following-sibling::div//span[contains(text(),'Mobile Cash')]");
-    private static final By lblBillPaymentHeader = By.xpath("//span[text()='Bill Payments']/ancestor::div[contains(@class,'rounded-lg')]/following-sibling::div//span[contains(text(),'Bill Payments')]");
+    private static final By lblSendMoneyHeader = By.xpath("//span[text()='Send Money']/parent::div/span[contains(text(),'Sampath Bank Accounts')]");
+    private static final By lblMobileCashHeader = By.xpath(" //span[text()='Send Money']/parent::div/span[contains(text(),'Mobile Cash')]");
+    private static final By lblBillPaymentHeader = By.xpath("//span[text()='Bill Payments']/parent::div[contains(@class,'sm font-medium')]/span[contains(text(),'New Payment')]");
     private static final By imgAccountPortfolio = By.xpath("//canvas[@role='img']");
     private static final By imgAdvertisement = By.xpath("//div[contains(@class,'auto relative group')]/img");
     private static final By lblOpenFDPopupHeader = By.xpath("//span[text()='Fixed Deposits']");
@@ -179,11 +179,11 @@ public class DashboardPage extends BasePage {
     }
 
     private static By lblFavouriteBillerTempName(int index) {
-        return By.xpath("//span[contains(text(),'Favorite Billers')]/parent::div//div[contains(@class,'flex items')][" + index + "]//span[1]");
+        return By.xpath("//span[contains(text(),'Favorite Billers')]/parent::div/parent::div//div[contains(@class,'flex items')][" + index + "]//span[1]");
     }
 
     private static By lblFavouriteBillerBName(int index) {
-        return By.xpath("//span[contains(text(),'Favorite Billers')]/parent::div//div[contains(@class,'flex items')][" + index + "]//span[2]");
+        return By.xpath("//span[contains(text(),'Favorite Billers')]/parent::div/parent::div//div[contains(@class,'flex items')][" + index + "]//span[2]");
     }
 
     private static By lblFavouritePayeeName(int index) {
@@ -191,11 +191,11 @@ public class DashboardPage extends BasePage {
     }
 
     private static By lblFavouriteBillerFieldName(int index) {
-        return By.xpath("//span[contains(text(),'Favorite Billers')]/parent::div//div[contains(@class,'flex items')][" + index + "]//span[3]");
+        return By.xpath("//span[contains(text(),'Favorite Billers')]/parent::div/parent::div//div[contains(@class,'flex items')][" + index + "]//span[3]");
     }
 
     private static By lblFavouritePayeeFieldName(int index) {
-        return By.xpath("//span[contains(text(),'Favorite Payee')]/parent::div//div[contains(@class,'flex items')][" + index + "]//span[3]");
+        return By.xpath("//span[contains(text(),'Favorite Payee')]/parent::div/parent::div//div[contains(@class,'flex items')][" + index + "]//span[3]");
     }
 
     private static By lblRVTTransferRecordOAName(int index) {
@@ -355,10 +355,12 @@ public class DashboardPage extends BasePage {
      * Validate title
      */
     public void validateTheTitle() {
+        waitFor(VERY_SHORT_WAIT);
         waitForElementToBeInvisible(imgSampathPreLoader, LONG_WAIT);
         waitForElementPresence(title);
         addToReport("Successfully validated the title '" + title + "'", Status.PASS);
-        waitForElementPresence(imgAdvertisement, 30);
+        waitForElementPresence(imgAdvertisement, LONG_WAIT);
+        waitFor(VERY_SHORT_WAIT);
     }
 
     /**
@@ -1405,6 +1407,7 @@ public class DashboardPage extends BasePage {
      * Navigate back to dashboard
      */
     public void navigateBackToDashboard() {
+        waitFor(VERY_SHORT_WAIT);
         if (waitForElementPresence(btnCloseBillerPopup, VERY_SHORT_WAIT)) {
             clickOnElement(btnCloseBillerPopup);
             waitForElementToBeInvisible(btnCloseBillerPopup, SHORT_WAIT);
@@ -1413,6 +1416,7 @@ public class DashboardPage extends BasePage {
         waitForElementPresence(btnDashboard);
         clickOnElement(btnDashboard);
         waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+        waitFor(VERY_SHORT_WAIT);
     }
 
     /**
@@ -3063,7 +3067,7 @@ public class DashboardPage extends BasePage {
      */
     public void obtainAllAccountTypes(String primaryStatus)
     {
-
+        waitFor(VERY_SHORT_WAIT);
         //WaitForElementPresence(lblLoadingIcon);
         waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
         waitForElementToBeInvisible(lblAccountListLoading, LONG_WAIT);

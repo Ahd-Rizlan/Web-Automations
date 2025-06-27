@@ -7,7 +7,7 @@ import com.aventstack.extentreports.Status;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import utils.CommonUtils;
-import utils.constants.LoginConstants;
+import utils.constants.BillerConstants;
 import utils.constants.MyAccountsConstants;
 import java.io.File;
 import java.util.List;
@@ -353,6 +353,9 @@ public class MyAccountsPage extends BasePage {
                             waitForElementToBeClickable(lblAccountHistoryAccountNo(MyAccountsConstants.ACCOUNT_HISTORY), VERY_LONG_WAIT);
                             waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
 
+                            //Remove this once finacle dates are synchronized
+                            advanceSearchByDate(BillerConstants.NUMBER_TWENTY_TWENTY_FOUR, BillerConstants.JULY, BillerConstants.NUMBER_TWENTY_ONE, BillerConstants.NUMBER_TWENTY_ONE);
+
                             aHAccountNo = getTextFromElement(lblAccountHistoryAccountNo(MyAccountsConstants.ACCOUNT_HISTORY));
                             if (aHAccountNo.equals(accountNumber)) {
                                 addToReport("Successfully validated account number : '" + accountNumber + "' under the account history", Status.PASS, true);
@@ -508,6 +511,8 @@ public class MyAccountsPage extends BasePage {
                             waitForElementToBeClickable(lblAccountNumberByHeader(MyAccountsConstants.PAID_INSTALLMENTS), VERY_LONG_WAIT);
                             waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
                             waitForElementToBeInvisible(lblAccountListLoading, VERY_LONG_WAIT);
+                            //Remove this once finacle dates are synchronized
+                            advanceSearchByDate(BillerConstants.NUMBER_TWENTY_TWENTY_FOUR, BillerConstants.JULY, BillerConstants.NUMBER_TWENTY_ONE, BillerConstants.NUMBER_TWENTY_ONE);
 
                             aHAccountNo = getTextFromElement(lblAccountNumberByHeader(MyAccountsConstants.PAID_INSTALLMENTS));
                             accountNumber = aHAccountNo.split("-")[1].trim();
@@ -599,6 +604,8 @@ public class MyAccountsPage extends BasePage {
                             waitForElementToBeClickable(lblAccountHistoryAccountNo(MyAccountsConstants.TAB_PAWNING_HISTORY), LONG_WAIT);
                             waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
                             waitForElementToBeInvisible(lblAccountListLoading, VERY_LONG_WAIT);
+                            //Remove this once finacle dates are synchronized
+                            advanceSearchByDate(BillerConstants.NUMBER_TWENTY_TWENTY_FOUR, BillerConstants.JULY, BillerConstants.NUMBER_TWENTY_ONE, BillerConstants.NUMBER_TWENTY_ONE);
 
                             aHAccountNo = getTextFromElement(lblAccountHistoryAccountNo(MyAccountsConstants.TAB_PAWNING_HISTORY));
                             if (aHAccountNo.equals(accountNumber)) {
@@ -1229,7 +1236,8 @@ public class MyAccountsPage extends BasePage {
         }
         addToReport("----------End of validation of user should be able to  able to view the mentioned fields when requesting the cheques----------", Status.PASS, false);
 
-        clickOnElement(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_TEXT_BACK));
+        clickOnElementUsingJS(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_TEXT_CANCEL));
+        waitForElementToBeInvisible(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_TEXT_CANCEL),SHORT_WAIT);
     }
 
 
@@ -1331,6 +1339,9 @@ public class MyAccountsPage extends BasePage {
         clickOnElement(lblHighlightedAccountNo(accountNumber));
         waitForElementToBeClickable(lblAccountHistoryAccountNo(MyAccountsConstants.ACCOUNT_HISTORY), VERY_LONG_WAIT);
         waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
+
+        //Remove this once finacle dates are synchronized
+        advanceSearchByDate(BillerConstants.NUMBER_TWENTY_TWENTY_FOUR, BillerConstants.JULY, BillerConstants.NUMBER_TWENTY_ONE, BillerConstants.NUMBER_TWENTY_ONE);
 
         //    validate the advance search download
         waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);

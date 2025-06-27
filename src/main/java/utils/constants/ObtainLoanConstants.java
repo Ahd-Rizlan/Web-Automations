@@ -1,6 +1,7 @@
 package utils.constants;
 
-public class ObtainLoanConstants {
+public class
+ObtainLoanConstants {
 
     public static final String OBTAIN_LOAN_FIXED_DEPOSIT_SECTION= "Obtain a Loan against fixed deposit";
     public static final String LOAN_ERROR_MSG_01 = "Minimum transfer amount is LKR.5,000";

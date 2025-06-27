@@ -1,20 +1,12 @@
 package gui.test;
 
-import com.aventstack.extentreports.ExtentTest;
 import data.DataProviders;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.*;
-import utils.Drivers;
-import utils.constants.DashboardConstants;
 import utils.constants.LoginConstants;
-import utils.report.TestContext;
-
-import java.lang.reflect.Method;
 
 public class ObtainLoanTest extends BaseTest {
 
-    @Test(priority = 1, dataProvider = "LoginDataObtainLoan", description = "Pre-Requisite :: Login to the Sampath vishwa application", dataProviderClass = DataProviders.LoginDataProvider.class)
+    @Test(priority = 1, dataProvider = "LoginDataAlternateEight", description = "Pre-Requisite :: Login to the Sampath vishwa application", dataProviderClass = DataProviders.LoginDataProvider.class)
     public void logIntoDahsboard(String userName, String password, String emailSentSuccessMsg) throws InterruptedException {
         loginPage.validateTheLoginPage(LoginConstants.EXPECTED_TITLE, LoginConstants.LOGIN_TILE_NAME);
         loginPage.loginToSampathVishwaWeb(userName, password, emailSentSuccessMsg, LoginConstants.OTP_PAGE_HEADER, LoginConstants.FALASE);

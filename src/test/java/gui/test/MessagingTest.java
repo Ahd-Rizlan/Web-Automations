@@ -36,28 +36,11 @@ public class MessagingTest extends BaseTest {
         vishwaRetailAdminLoginPage.navigateToTab(1);
         driver.get(retailAdminURL);
         vishwaRetailAdminLoginPage.loginTOAdminModule(headerTile,branchUserName,branchPassword);
-        vishwaRetailAdminTaskPage.validateFDInquiryRequest(message);
+        vishwaRetailAdminTaskPage.validateFDInquiryRequest(subject);
         vishwaRetailAdminTaskPage.validateSentMails(message,subject,forwardMessage+message,branchUserName,AdminTaskConstants.CBOU);
         driver.get(retailAdminURL);
         vishwaRetailAdminLoginPage.loginTOAdminModule(headerTile,CBOUUserName,CBOUPassword);
         vishwaRetailAdminTaskPage.validateForwardedMailsBranch(message,subject, new String[]{message, forwardMessage + message}, new String[]{userName, branchUserName},AdminTaskConstants.CBOU);
-//
-//
-//        dashboardPage.navigateToMessages();
-//        //Fd inquiry to be done
-//        message=message+" "+randomAlphaNumeric(5);
-//        messagesPage.fixedDepositInquiry(subject,branch,message,successMsg,otp,messageCreationSuccessMsg);
-//        dashboardPage.captureBaseWindowHandle();
-//        //Sent mail admin validation
-//        vishwaRetailAdminLoginPage.navigateToTab(1);
-//        driver.get(retailAdminURL);
-//        vishwaRetailAdminLoginPage.loginTOAdminModule(headerTile,branchUserName,branchPassword);
-//        vishwaRetailAdminTaskPage.validateFDInquiryRequest(messageID);
-//        vishwaRetailAdminTaskPage.validateSentMails(messageID,subject,forwardMessage+messageID,branchUserName,AdminTaskConstants.CBOU);
-//        driver.get(retailAdminURL);
-//        vishwaRetailAdminLoginPage.loginTOAdminModule(headerTile,CBOUUserName,CBOUPassword);
-//        vishwaRetailAdminTaskPage.validateForwardedMailsBranch(messageID,subject, new String[]{message, forwardMessage + messageID}, new String[]{userName, branchUserName},AdminTaskConstants.CBOU);
-
     }
 
 
@@ -84,13 +67,13 @@ public class MessagingTest extends BaseTest {
         dashboardPage.navigateToMessages();
         //Ft request to be done
         message=message+" "+randomAlphaNumeric(5);
-        messagesPage.fundTransferRequestValidations(subject,Integer.parseInt(amount),message,successMsg,otp,messageCreationSuccessMsg,accountNo,remark);
+        messagesPage.fundTransferRequestValidations(subject,Integer.parseInt(amount),remark,successMsg,otp,messageCreationSuccessMsg,accountNo,remark);
         dashboardPage.captureBaseWindowHandle();
         //Sent mail admin validation
         vishwaRetailAdminLoginPage.navigateToTab(1);
         driver.get(retailAdminURL);
         vishwaRetailAdminLoginPage.loginTOAdminModule(headerTile,userName,password);
-        vishwaRetailAdminTaskPage.validateFundTransferRequest(message);
+        vishwaRetailAdminTaskPage.validateFundTransferRequest(subject,remark);
 
     }
 
@@ -107,7 +90,7 @@ public class MessagingTest extends BaseTest {
         vishwaRetailAdminLoginPage.navigateToTab(1);
         driver.get(retailAdminURL);
         vishwaRetailAdminLoginPage.loginTOAdminModule(headerTile,userName,password);
-        vishwaRetailAdminTaskPage.validateFundTransferRequest(message);
+        vishwaRetailAdminTaskPage.validateFundTransferRequest(subject,message);
     }
 
 
@@ -123,7 +106,7 @@ public class MessagingTest extends BaseTest {
         vishwaRetailAdminLoginPage.navigateToTab(1);
         driver.get(retailAdminURL);
         vishwaRetailAdminLoginPage.loginTOAdminModule(headerTile,userName,password);
-        vishwaRetailAdminTaskPage.validateFundTransferRequest(message);
+        vishwaRetailAdminTaskPage.validateFundTransferRequest(subject,message);
 
     }
 
@@ -139,7 +122,7 @@ public class MessagingTest extends BaseTest {
         vishwaRetailAdminLoginPage.navigateToTab(1);
         driver.get(retailAdminURL);
         vishwaRetailAdminLoginPage.loginTOAdminModule(headerTile,userName,password);
-        vishwaRetailAdminTaskPage.validateFundTransferRequest(message);
+        vishwaRetailAdminTaskPage.validateFundTransferRequest(subject,message);
     }
 
 
@@ -155,7 +138,7 @@ public class MessagingTest extends BaseTest {
         vishwaRetailAdminLoginPage.navigateToTab(1);
         driver.get(retailAdminURL);
         vishwaRetailAdminLoginPage.loginTOAdminModule(headerTile,userName,password);
-        vishwaRetailAdminTaskPage.validateFundTransferRequest(message);
+        vishwaRetailAdminTaskPage.validateFundTransferRequest(subject,message);
         vishwaRetailAdminTaskPage.replyToMail(message,responseMsg);
         vishwaRetailAdminLoginPage.navigateToTab(0);
         messagesPage.inboxMessagesValidation(subject,message,responseMsg,messageDeletionSuccessMsg,messageRecoverySuccessMsg);
@@ -184,7 +167,7 @@ public class MessagingTest extends BaseTest {
         vishwaRetailAdminLoginPage.navigateToTab(1);
         driver.get(retailAdminURL);
         vishwaRetailAdminLoginPage.loginTOAdminModule(headerTile,userName,password);
-        vishwaRetailAdminTaskPage.validateFundTransferRequest(message);
+        vishwaRetailAdminTaskPage.validateFundTransferRequest(subject,message);
 
     }
     @Test(priority = 11, description = "Compose new message | 41, 42",dataProvider = "ComposeNewMessageValidationData", dataProviderClass = DataProviders.MessagesPageDataProvider.class)

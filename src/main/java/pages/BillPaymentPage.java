@@ -70,7 +70,7 @@ public class BillPaymentPage extends BasePage {
     private static final By lblNewPayment = By.xpath("//span[text()='New Payment']");
     private static final By lblPopUpHeaderPaymentConfirmation = By.xpath("//div[contains(text(),'Payment Confirmation')]");
 
-    private static final By lblPayeeName = By.xpath("//div[contains(@class,'text-sm')]/span[1]");
+    private static final By lblPayeeName = By.xpath("//div[contains(@class,'BillPaymentConfirmation')]//div[contains(@class,'text-sm')]/span[1]");
     private static final By btnConfirm = By.xpath("//button[contains(normalize-space(text()),'Confirm')]");
     private static final By btnSearchBiller = By.xpath("//button[@type='submit']");
     private static final By lblSuccess = By.xpath("//span[text()='Success']");
@@ -1083,28 +1083,28 @@ public class BillPaymentPage extends BasePage {
                 if (kwBillersMap.get("KW_CEYILON_ELECTRICITY_BOARD").equals(getTextFromElement(lblPayeeName))) {
                     addToReport("Validated the biller name " + getTextFromElement(lblPayeeName) + " in the OTP page", Status.PASS, false);
                 } else {
-                    addToReport("Failed to validate the biller name " + category + " in the OTP page", Status.FAIL);
+                    addToReport("Failed to validate the biller name " + category + " in the OTP page found "+getTextFromElement(lblPayeeName), Status.FAIL);
                 }
             }
             case "KW_LECO" -> {
                 if (kwBillersMap.get("KW_LANKA_ELECTRICITY_COMPANY").equals(getTextFromElement(lblPayeeName))) {
                     addToReport("Validated the biller name " + getTextFromElement(lblPayeeName) + " in the OTP page", Status.PASS, false);
                 } else {
-                    addToReport("Failed to validate the biller name " + category + " in the OTP page", Status.FAIL);
+                    addToReport("Failed to validate the biller name " + category + " in the OTP page found "+getTextFromElement(lblPayeeName), Status.FAIL);
                 }
             }
             case "KW_NWSDB" -> {
                 if (kwBillersMap.get("KW_NATIONAL_WATER_SUPPLY_AND_DRAINAGE_BOARD").equals(getTextFromElement(lblPayeeName))) {
                     addToReport("Validated the biller name " + getTextFromElement(lblPayeeName) + " in the OTP page", Status.PASS, false);
                 } else {
-                    addToReport("Failed to validate the biller name " + category + " in the OTP page", Status.FAIL);
+                    addToReport("Failed to validate the biller name " + category + " in the OTP page found "+getTextFromElement(lblPayeeName), Status.FAIL);
                 }
             }
             default -> {
                 if (billerName.equals(getTextFromElement(lblPayeeName))) {
                     addToReport("Validated the biller name " + getTextFromElement(lblPayeeName) + " in the OTP page", Status.PASS, false);
                 } else {
-                    addToReport("Failed to validate the biller name " + billerName + " in the OTP page", Status.FAIL);
+                    addToReport("Failed to validate the biller name " + billerName + " in the OTP page found "+getTextFromElement(lblPayeeName), Status.FAIL);
                 }
             }
         }
@@ -1716,12 +1716,12 @@ public class BillPaymentPage extends BasePage {
 
         validateOTPPopup(category, billerName, transferMode, amount, mobileNo, "", nicNo, name, policyNumber, admissionNumber, classID, purpose, date, code, referenceOrReservationNo, branch, email, accountNumber, purp, kwBillersMap);
 
-        isElementPresentBy(getElementByTypeAndText(ElementType.span,"'"+ackMsg+"'"),VERY_LONG_WAIT);
+        isElementPresentBy(getElementByTypeAndText(ElementType.span,ackMsg),VERY_LONG_WAIT);
 
         //Click on cancel button
         clickOnElement(btnBack);
 
-        waitForElementToBeInvisible(getElementByTypeAndText(ElementType.span,"'"+ackMsg+"'"),VERY_LONG_WAIT);
+        waitForElementToBeInvisible(getElementByTypeAndText(ElementType.span,ackMsg),VERY_LONG_WAIT);
         waitForElementPresence(lblNewPaymentAccountNumber, VERY_LONG_WAIT);
 
         selectFromDropdown(ddPayFrom,accountNumber,"value");
@@ -1761,7 +1761,7 @@ public class BillPaymentPage extends BasePage {
 
         validateOTPPopup(category, billerName, transferMode, amount, mobileNo, "", nicNo, name, policyNumber, admissionNumber, classID, purpose, date, code, referenceOrReservationNo, branch, email, accountNumber, purp, kwBillersMap);
 
-        isElementPresentBy(getElementByTypeAndText(ElementType.span,"'"+ackMsg+"'"),VERY_LONG_WAIT);
+        isElementPresentBy(getElementByTypeAndText(ElementType.span,ackMsg),VERY_LONG_WAIT);
 
         clickOnElement(chkAckMsg);
 
