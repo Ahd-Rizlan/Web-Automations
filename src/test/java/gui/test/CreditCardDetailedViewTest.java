@@ -16,11 +16,11 @@ public class CreditCardDetailedViewTest extends BaseTest {
     }
 
     @Test(priority = 2, dataProvider = "CreditCardDetailViewData", description = "#", dataProviderClass = DataProviders.CreditCardDetailViewDataProvider.class)
-    public void validateCreditCardDetailsAndSettlement (String payingAccountNumber,String paymentAmount,String successMsg){
+    public void validateCreditCardDetailsAndSettlement (String payingAccountNumber,String paymentAmount,String errorMsg,String successMsg){
         creditCardDetailedViewPage.NavogatetoCreditCardDetailsPage();
         creditCardDetailedViewPage.validateCardDetails();
         creditCardDetailedViewPage.validateTransactionTables();
-        creditCardDetailedViewPage.validateCreditCardSettlement(payingAccountNumber,paymentAmount);
+        creditCardDetailedViewPage.validateCreditCardSettlement(payingAccountNumber,paymentAmount,errorMsg);
         creditCardDetailedViewPage.enterOTPAndContinueSettingsPage(LoginConstants.OTP, successMsg);
 
     }

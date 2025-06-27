@@ -8,7 +8,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import utils.CommonUtils;
 import utils.constants.DashboardConstants;
-import utils.constants.LoginConstants;
 import utils.constants.PawnConstants;
 
 import java.util.List;
@@ -150,7 +149,7 @@ public class PawningTicketPage extends BasePage {
 
 // Validate Advanced Amount
 
-        if (CommonUtils.containsAlphNumAndSpecialCharacters1(amount)) {
+        if (CommonUtils.containsAlphNumAndSpecialCharactersandSpace(amount)) {
             addToReport("Successfully validated advanced amount: '" + amount + "'", Status.PASS, false);
         } else {
             addToReport("Advanced amount is not valid: '" + amount + "'", Status.FAIL);
@@ -480,7 +479,7 @@ public class PawningTicketPage extends BasePage {
     public void validateOutstandingAmountWithRetry(String maxRetriesStr) {
         addToReport("---------- Starting to validate the Pawning outstanding amount ----------", Status.INFO, false);
 
-        int maxRetries = Integer.parseInt(maxRetriesStr); // Convert string to int
+        int maxRetries = Integer.parseInt(maxRetriesStr);
 
         waitForElementToBeInvisible(lblPawningConfirmation, 20);
 
@@ -488,8 +487,16 @@ public class PawningTicketPage extends BasePage {
         double updatedAmount = amount - 100;
         String expectedFormatted = String.format("LKR %,.2f", updatedAmount);
 
-        boolean matched = false;
+        confirmationAmountText = getTextFromElement(lblOutStandingPawningAmount).trim();
 
+        if (confirmationAmountText.equalsIgnoreCase(expectedFormatted)) {
+            addToReport("Capital Outstanding Amount is correct on first check: " + confirmationAmountText, Status.PASS, true);
+            return;
+        }
+
+        addToReport("Initial check failed. Starting retry attempts...", Status.INFO, false);
+
+        // Retry loop
         for (int attempt = 1; attempt <= maxRetries; attempt++) {
             waitForElementToBeInvisible(lblAccountListLoading, LONG_WAIT);
             waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
@@ -504,19 +511,16 @@ public class PawningTicketPage extends BasePage {
 
             if (confirmationAmountText.equalsIgnoreCase(expectedFormatted)) {
                 addToReport("Capital Outstanding Amount is correct on attempt " + attempt + ": " + confirmationAmountText, Status.PASS, true);
-                matched = true;
-                break;
+                return;
             } else {
                 addToReport("Attempt " + attempt + ": Amount not updated yet. Found: " + confirmationAmountText, Status.INFO, false);
             }
         }
 
-        if (!matched) {
-            addToReport("FAILED: Outstanding amount did not update to expected value. Expected: " + expectedFormatted + ", Last Found: " + confirmationAmountText, Status.FAIL);
-        }
-
+        addToReport("FAILED: Outstanding amount did not update. Expected: " + expectedFormatted + ", Last Found: " + confirmationAmountText, Status.FAIL);
         addToReport("---------- Ending the validation of the Pawning outstanding amount ----------", Status.INFO, false);
     }
+
 
 
 }

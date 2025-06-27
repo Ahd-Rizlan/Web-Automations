@@ -74,7 +74,7 @@ public class LoanAccountDetailedViewPage extends BasePage {
     }
 
     private static By tfOTP(int Index) {
-        return By.xpath("(//input[contains(@class, 'otp-box') and @type='number'])[" + Index + "]");
+        return By.xpath("//input[contains(@class,'otp-box')][" + Index + "]");
     }
 
     /**

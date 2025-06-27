@@ -42,7 +42,7 @@ public class SettingsPage extends BasePage {
     private static final By lblUserSettingsRows = By.xpath("//div[contains(@class, 'flex flex-col items-center ')][1]//div[contains(@class,'w-full')]");
 
     private static By tfOTP(int Index) {
-        return By.xpath("(//input[contains(@class, 'otp-box') and @type='number'])[" + Index + "]");
+        return By.xpath("//input[contains(@class,'otp-box')][" + Index + "]");
     }
 
     private static By getSuccessfulMsg(String title) {

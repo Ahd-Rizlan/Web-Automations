@@ -12,6 +12,8 @@ import utils.constants.PawnConstants;
 import java.util.List;
 import java.util.Optional;
 
+import static utils.Drivers.*;
+
 public class CreditCardDetailedViewPage extends BasePage {
 
 
@@ -19,7 +21,7 @@ public class CreditCardDetailedViewPage extends BasePage {
         super(driver);
     }
 
-    String minimumAmount,lastStandingAmount,customAmount,cardNumber, accountNumber, expiryDate, status, balance, cardType,postDate,transactionDate,originalAmount,merchant,tableAmount,transactionDatePendingSection,originalAmountPendingSection,merchantPendingSection;
+    String minimumAmount,lastStandingAmount,customAmount,cardNumber, accountNumber, expiryDate, status, balance, cardType,postDate,transactionDate,originalAmount,greterThanZeroError,merchant,tableAmount,transactionDatePendingSection,originalAmountPendingSection,merchantPendingSection;
 
     public enum ElementType {
         button, label, span, div;
@@ -45,7 +47,7 @@ public class CreditCardDetailedViewPage extends BasePage {
     private static final By lblBalance = By.xpath(".//div[contains(@class,'rounded-xl')]//div[@class='text-2xl']//span");
     private static final By lblAccontNumber = By.xpath(".//div[contains(@class,'rounded-xl')]//div[contains(@class,'text-base')]//span");
     private static final By lblStatus = By.xpath(".//div[contains(@class,'rounded-xl')]//div[contains(@class,'w-[60px]')]");
-    private static final By btnInstallment = By.xpath("(//button[contains(@class, 'cursor-pointer') and contains(@class, 'transition-colors')])[4]");
+    private static final By lblGraterThanZero = By.xpath("//p[contains(@class, '') and contains(@class, 'text-xs') and contains(@class, 'mt-1')]");
     private static final By btnPending = By.xpath("(//button[contains(@class, 'cursor-pointer') and contains(@class, 'transition-colors')])[1]");
     private static final By btnUnbilled = By.xpath("(//button[contains(@class, 'cursor-pointer') and contains(@class, 'transition-colors')])[3]");
 
@@ -246,7 +248,7 @@ public class CreditCardDetailedViewPage extends BasePage {
      * @param paymentAmount- Amount
      */
 
-    public void validateCreditCardSettlement(String payingAccountNumber,String paymentAmount) {
+    public void validateCreditCardSettlement(String payingAccountNumber,String paymentAmount, String errorMsg) {
 
         if (isElementPresentBy(btnSettlement)) {
             addToReport("Settlement button available", Status.PASS, false);
@@ -266,11 +268,15 @@ public class CreditCardDetailedViewPage extends BasePage {
             addToReport("DropDown is not available", Status.FAIL, false);
         }
 
+        addToReport("---------- Start of Minimum Amount Population in custom amount section----------", Status.INFO, false);
+
         if (isElementPresentBy(txtMinimumeAmount)) {
             addToReport("Minimum Amount section is available", Status.PASS, false);
+            clickOnElement(txtMinimumeAmount);
+            addToReport("Clicked on the Minimum Amount  section", Status.PASS, false);
             minimumAmount = getTextFromElement(txtMinimumeAmount).trim();
             addToReport("'" + minimumAmount + "'as the minimum amount.", Status.PASS, false);
-            if (CommonUtils.containsNumericCharactersWithNegativeValues(minimumAmount.replace("LKR", "").replace(",", "").trim())) {
+            if (CommonUtils.containsAlphAndNumCharacters(minimumAmount)) {
                 addToReport("Valid Amount with LKR - " + minimumAmount, Status.PASS, false);
             } else {
                 addToReport("Validation fail Amount - " + minimumAmount, Status.FAIL);
@@ -280,62 +286,95 @@ public class CreditCardDetailedViewPage extends BasePage {
             addToReport("Minimum amount is not available", Status.FAIL, false);
         }
 
-        if (isElementPresentBy(txtLastStandingAmount)) {
-            addToReport("Last Standing Amount section is available", Status.PASS, false);
-            clickOnElement(txtLastStandingAmount);
-            addToReport("Clicked on the Last Standing amount section", Status.PASS, false);
-            lastStandingAmount = getTextFromElement(txtLastStandingAmount).trim();
-            addToReport("'" + lastStandingAmount + "'as the Last Standing amount.", Status.PASS, false);
-            if (CommonUtils.containsAlphAndNumCharacters(lastStandingAmount)) {
-                addToReport("Valid Amount with LKR - " + lastStandingAmount, Status.PASS, true);
-            } else {
-                addToReport("Validation fail Amount - " + lastStandingAmount, Status.FAIL);
-            }
-
-        } else {
-            addToReport("Last Standing amount is not available", Status.FAIL, false);
-        }
-
         if (isElementPresentBy(txtCustomAmount)) {
             addToReport("Custom Amount section is available", Status.PASS, false);
-            customAmount = getAttributeOrText(txtCustomAmount,"value").trim();
+            customAmount = getAttributeOrText(txtCustomAmount, "value").trim();
             addToReport("'" + customAmount + "'as the Custom amount.", Status.PASS, false);
-            if (customAmount.equalsIgnoreCase(lastStandingAmount)) {
-                addToReport("Custom amount'" + customAmount + " Last out standing Amount" + lastStandingAmount + "'", Status.PASS, true);
+            if (customAmount.equalsIgnoreCase(minimumAmount)) {
+                addToReport("Custom amount'" + customAmount + " Minimum Amount" + minimumAmount + "'", Status.PASS, true);
             } else {
-                addToReport("Custom amount'" + customAmount + " Last out standing Amount" + lastStandingAmount + "'", Status.FAIL, false);
+                addToReport("Custom amount'" + customAmount + " Minimum Amount" + minimumAmount + "'", Status.FAIL, false);
             }
 
-        } else {
-            addToReport("Validation fail custom and last standing amounts", Status.FAIL, false);
-        }
+        }else {
+                addToReport("Validation fail custom and Minimum Amount", Status.FAIL, false);
+            }
 
-        sendKeysToElement(txtCustomAmount, Keys.BACK_SPACE, 9);
-        addToReport("clear the custom amount", Status.PASS, false);
-        sendKeysToElement(txtCustomAmount, paymentAmount);
-        addToReport("Added " + paymentAmount + " as the custom amount", Status.PASS);
+        addToReport("---------- End of Minimum Amount Population in custom amount section----------", Status.INFO, false);
 
-        String selectedFundingAccount = getSelectedOptionText(ddFromAccount, "FIRST_SELECTED").get(0).trim().split(" - ")[0].trim();
-        clickOnElement(btnConfirm);
-        addToReport("clicked on the confirm button", Status.PASS);
+            if (isElementPresentBy(txtLastStandingAmount)) {
+                addToReport("Last Standing Amount section is available", Status.PASS, false);
+                clickOnElement(txtLastStandingAmount);
+                addToReport("Clicked on the Last Standing amount section", Status.PASS, false);
+                lastStandingAmount = getTextFromElement(txtLastStandingAmount).trim();
+                addToReport("'" + lastStandingAmount + "'as the Last Standing amount.", Status.PASS, false);
+                if (CommonUtils.containsAlphAndNumCharacters(lastStandingAmount)) {
+                    addToReport("Valid Amount with LKR - " + lastStandingAmount, Status.PASS, true);
+                } else {
+                    addToReport("Validation fail Amount - " + lastStandingAmount, Status.FAIL);
+                }
 
-        if (isElementPresentBy(btnBack)) {
-            addToReport("Navigated to the Payment confirmation page", Status.PASS, true);
-        } else {
-            addToReport("Navigation failed to the Payment confirmation page", Status.PASS, false);
-        }
+            } else {
+                addToReport("Last Standing amount is not available", Status.FAIL, false);
+            }
 
-        String fundingAccount = getAttributeOrText(lblPayFrom,"value").trim();
-        String customAmountConfirmation = getAttributeOrText(lblAmount, "value").trim().split(" ")[1].trim();
+            if (isElementPresentBy(txtCustomAmount)) {
+                addToReport("Custom Amount section is available", Status.PASS, false);
+                customAmount = getAttributeOrText(txtCustomAmount, "value").trim();
+                addToReport("'" + customAmount + "'as the Custom amount.", Status.PASS, false);
+                if (customAmount.equalsIgnoreCase(lastStandingAmount)) {
+                    addToReport("Custom amount'" + customAmount + " Last out standing Amount" + lastStandingAmount + "'", Status.PASS, true);
+                } else {
+                    addToReport("Custom amount'" + customAmount + " Last out standing Amount" + lastStandingAmount + "'", Status.FAIL, false);
+                }
 
-        if (paymentAmount.equalsIgnoreCase(customAmountConfirmation) && selectedFundingAccount.equalsIgnoreCase(fundingAccount)) {
-            addToReport("Custom amount matched: Entered = '" + paymentAmount + "', Confirmation = '" + customAmountConfirmation + "', available Funding Account = '" + fundingAccount + "', Expected Funding Account = '" + selectedFundingAccount + "'", Status.PASS, true);
-        } else {
-            addToReport("Mismatch detected! Entered Custom Amount = '" + paymentAmount + "', Confirmation Amount = '" + customAmountConfirmation + "', available Funding Account = '" + fundingAccount + "', Expected Funding Account = '" + selectedFundingAccount + "'", Status.FAIL, false);
-        }
+            } else {
+                addToReport("Validation fail custom and last standing amounts", Status.FAIL, false);
+            }
+
+            sendKeysToElement(txtCustomAmount, Keys.BACK_SPACE, 15);
+            addToReport("clear the custom amount", Status.PASS, false);
+
+        addToReport("---------- Start of Grater than Zero error message validation ----------", Status.INFO, false);
+
+            waitForElementPresence(lblGraterThanZero,LONG_WAIT);
+              if (isElementPresentBy(lblGraterThanZero)) {
+            addToReport("Greater Than Zero Error Present", Status.PASS);
+             greterThanZeroError = getTextFromElement(lblGraterThanZero);
+             } else {
+            addToReport("Greater Than Zero Error Unavailable", Status.PASS, false);
+            }
+            if (greterThanZeroError.equalsIgnoreCase(errorMsg)) {
+                addToReport("Greater Than 0 Error Message Present", Status.PASS, true);
+            } else {
+                addToReport("Greater Than 0 Error Message Not Present", Status.FAIL);
+            }
+
+        addToReport("---------- End of Grater than Zero error message validation ----------", Status.INFO, false);
+
+            sendKeysToElement(txtCustomAmount, paymentAmount);
+            addToReport("Added " + paymentAmount + " as the custom amount", Status.PASS);
+
+            String selectedFundingAccount = getSelectedOptionText(ddFromAccount, "FIRST_SELECTED").get(0).trim().split(" - ")[0].trim();
+            clickOnElement(btnConfirm);
+            addToReport("clicked on the confirm button", Status.PASS);
+
+            if (isElementPresentBy(btnBack)) {
+                addToReport("Navigated to the Payment confirmation page", Status.PASS, true);
+            } else {
+                addToReport("Navigation failed to the Payment confirmation page", Status.PASS, false);
+            }
+
+            String fundingAccount = getAttributeOrText(lblPayFrom, "value").trim();
+            String customAmountConfirmation = getAttributeOrText(lblAmount, "value").trim().split(" ")[1].trim();
+
+            if (paymentAmount.equalsIgnoreCase(customAmountConfirmation) && selectedFundingAccount.equalsIgnoreCase(fundingAccount)) {
+                addToReport("Custom amount matched: Entered = '" + paymentAmount + "', Confirmation = '" + customAmountConfirmation + "', available Funding Account = '" + fundingAccount + "', Expected Funding Account = '" + selectedFundingAccount + "'", Status.PASS, true);
+            } else {
+                addToReport("Mismatch detected! Entered Custom Amount = '" + paymentAmount + "', Confirmation Amount = '" + customAmountConfirmation + "', available Funding Account = '" + fundingAccount + "', Expected Funding Account = '" + selectedFundingAccount + "'", Status.FAIL, false);
+            }
 
     }
-
         /**
          * This method is entering the OTP to navigates and validates the success message
          *

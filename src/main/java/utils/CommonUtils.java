@@ -256,8 +256,13 @@ public class CommonUtils extends Drivers {
     public static boolean containsAlphNumAndSpecialCharacters(String text) {
         return text.matches("^[a-zA-Z0-9!@#$%^&*()_+{}\\[\\]:;<>,.?/~\\\\-]+$");
     }
-
-    public static boolean containsAlphNumAndSpecialCharacters1(String text) {
+    /**
+     * Function to check if the text contains alphabetic, numeric ,special characters and spaces
+     *
+     * @param text - text content to validate the characters
+     * @return boolean - text content availability
+     */
+    public static boolean containsAlphNumAndSpecialCharactersandSpace(String text) {
         return text.matches("^[a-zA-Z0-9!@#$%^&*()_+{}\\[\\]:;<>,.?/~\\\\\\s-]+$");
     }
 
