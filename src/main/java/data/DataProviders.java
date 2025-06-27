@@ -395,7 +395,7 @@ public class DataProviders {
 
         @DataProvider(name = "LoanDetails")
         public static Iterator<Object[]> getAccountDataSavingFD() {
-            String[] columnNames = {"accountNumber1","minimumAmount", "maximumAmount", "actualAmount", "wrongMonth", "correctMonth", "purpose","accountNumber2"};
+            String[] columnNames = {"accountNumber1","minimumAmount", "maximumAmount", "actualAmount", "wrongMonth", "correctMonth", "purpose","accountNumber2","successMsg"};
             return XlsReader.getDataFromSheet(filePath, "LoanDetails", columnNames).iterator();
         }
 
@@ -541,7 +541,7 @@ public class DataProviders {
 
         @DataProvider(name = "CreditCardDetailViewData")
         public static Iterator<Object[]> getLoanDetailsView() {
-            String[] columnNames = {"payingAccountNumber","paymentAmount", "successMsg"};
+            String[] columnNames = {"payingAccountNumber","paymentAmount","errorMsg","successMsg"};
             return XlsReader.getDataFromSheet(filePath, "CreditCardDetailViewData", columnNames).iterator();
         }
 
