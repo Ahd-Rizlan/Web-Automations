@@ -91,6 +91,11 @@ public class DataProviders {
             String[] columnNames = {"userName", "password" ,"emailSentSuccessMsg"};
             return XlsReader.getDataFromSheet(filePath, "CreditCardDetailLoginData", columnNames).iterator();
         }
+        @DataProvider(name = "LoginDataAlternateEight")
+        public static Iterator<Object[]> getLoginDataAlternateEight() {
+            String[] columnNames = {"userName", "password" ,"emailSentSuccessMsg"};
+            return XlsReader.getDataFromSheet(filePath, "LoginDataAlternateEight", columnNames).iterator();
+        }
 
     }
     public static class DashboardDataProvider {
