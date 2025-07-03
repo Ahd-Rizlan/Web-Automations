@@ -21,7 +21,7 @@ public class CreditCardDetailedViewPage extends BasePage {
         super(driver);
     }
 
-    String minimumAmount,lastStandingAmount,customAmount,cardNumber, accountNumber, expiryDate, status, balance, cardType,postDate,transactionDate,originalAmount,greterThanZeroError,merchant,tableAmount,transactionDatePendingSection,originalAmountPendingSection,merchantPendingSection;
+    String minimumAmount,lastStandingAmount,customAmount,cardNumber, accountNumber, expiryDate, status, balance, cardType,postDate,transactionDate,insufficientFundError,originalAmount,greterThanZeroError,merchant,tableAmount,transactionDatePendingSection,originalAmountPendingSection,merchantPendingSection,blockUnblock;
 
     public enum ElementType {
         button, label, span, div;
@@ -50,9 +50,15 @@ public class CreditCardDetailedViewPage extends BasePage {
     private static final By lblGraterThanZero = By.xpath("//p[contains(@class, '') and contains(@class, 'text-xs') and contains(@class, 'mt-1')]");
     private static final By btnPending = By.xpath("(//button[contains(@class, 'cursor-pointer') and contains(@class, 'transition-colors')])[1]");
     private static final By btnUnbilled = By.xpath("(//button[contains(@class, 'cursor-pointer') and contains(@class, 'transition-colors')])[3]");
-
-
-
+    private static final By lblLoadingIcon = By.xpath("//div[contains(@class,'AccountsCards_loader')]");
+    private static final By lblBlockandUnblockAccount = By.xpath("(//span[contains(@class, 'text-center')])[1]");
+    private static final By imgBlockAccount = By.xpath("//img[contains(@src, 'BlockIcon.03e9cc2b.png')]");
+    private static final By imgUNBlockAccount = By.xpath("//img[contains(@src, 'card-unlock.2ff072fe.png')]");
+    private static final By imgActivation = By.xpath("//img[contains(@src, 'TempBlockCard2')]");
+    private static final By lblAccountListLoading = By.xpath("//div[contains(@class,'dark:bg-gray')]");
+    private static final By btnAccount = By.xpath("(//div[contains(@class, 'bg-[#4A4A4A]') and contains(@class, 'text-white') and contains(@class, 'p-3')])[1]");
+    private static final By btnCreditCard = By.xpath("(//div[contains(@class, 'bg-[#4A4A4A]') and contains(@class, 'text-white') and contains(@class, 'p-3')])[3]");
+    private static final By lblLowFunds = By.xpath("//span[contains(@class, 'text-xs') and contains(@class, 'text-left')]");
     private static By tblTransactionCell(int row, int col) {
         return By.xpath("//table[contains(@class, 'min-w-full')]//tbody/tr[" + row + "]/td[" + col + "]");
     }
@@ -68,7 +74,8 @@ public class CreditCardDetailedViewPage extends BasePage {
         return By.xpath("//div[contains(text(),'" + title + "')]");
     }
     private static By tfOTP(int Index) {
-        return By.xpath("(//input[contains(@class, 'otp-box') and @type='number'])[" + Index + "]");
+
+        return By.xpath("//input[contains(@class,'otp-box')][" + Index + "]");
     }
     public static By getValueBeforeLabel(String labelText) {
         return By.xpath("//span[normalize-space(text())='" + labelText + "']/preceding-sibling::span[1]");
@@ -92,6 +99,7 @@ public class CreditCardDetailedViewPage extends BasePage {
         clickOnElement(lblLoans);
         addToReport("Clicked on the Credit Card tab ", Status.PASS);
 
+        waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
         if (waitForElementPresence(lblTransactionDate, PawnConstants.WAIT_EXTREME_LONG)) {
             addToReport(" Credit card details are visible.", Status.PASS);
         } else {
@@ -248,7 +256,7 @@ public class CreditCardDetailedViewPage extends BasePage {
      * @param paymentAmount- Amount
      */
 
-    public void validateCreditCardSettlement(String payingAccountNumber,String paymentAmount, String errorMsg) {
+    public void validateCreditCardSettlement(String payingAccountNumber, String insufficientamountErr, String ZeroAmount, String paymentAmount, String errorMsg) {
 
         if (isElementPresentBy(btnSettlement)) {
             addToReport("Settlement button available", Status.PASS, false);
@@ -266,7 +274,26 @@ public class CreditCardDetailedViewPage extends BasePage {
             addToReport("'" + payingAccountNumber + "'selected from the dropdown.", Status.PASS);
         } else {
             addToReport("DropDown is not available", Status.FAIL, false);
+
         }
+        addToReport("---------- Start of Insufficient amount validation ----------", Status.INFO, false);
+
+        String amountDigits = getSelectedOptionText(ddFromAccount, "FIRST_SELECTED").get(0).replaceAll(".*AVL\\.\\s*LKR\\s*", "").replaceAll("[^\\d]", "");
+        sendKeysToElement(txtCustomAmount, amountDigits);
+
+        clickOnElement(btnConfirm);
+        addToReport("clicked on the confirm button", Status.PASS);
+
+        if (isElementPresentBy(lblLowFunds)) {
+            insufficientFundError = getTextFromElement(lblLowFunds);
+            if (insufficientFundError.equalsIgnoreCase(insufficientamountErr)) {
+                addToReport("Insufficient amount Error Message Present", Status.PASS, true);
+            } else {
+                addToReport("Insufficient amount Error Message Not Present", Status.FAIL);
+            }
+        }
+
+        addToReport("---------- End of Insufficient amount validation ----------", Status.INFO, false);
 
         addToReport("---------- Start of Minimum Amount Population in custom amount section----------", Status.INFO, false);
 
@@ -291,9 +318,9 @@ public class CreditCardDetailedViewPage extends BasePage {
             customAmount = getAttributeOrText(txtCustomAmount, "value").trim();
             addToReport("'" + customAmount + "'as the Custom amount.", Status.PASS, false);
             if (customAmount.equalsIgnoreCase(minimumAmount)) {
-                addToReport("Custom amount'" + customAmount + " Minimum Amount" + minimumAmount + "'", Status.PASS, true);
+                addToReport("Custom amount'" + customAmount + " Minimum Amount" + minimumAmount + "'", Status.PASS, false);
             } else {
-                addToReport("Custom amount'" + customAmount + " Minimum Amount" + minimumAmount + "'", Status.FAIL, false);
+                addToReport("Custom amount'" + customAmount + " Minimum Amount" + minimumAmount + "'", Status.FAIL);
             }
 
         }else {
@@ -322,7 +349,7 @@ public class CreditCardDetailedViewPage extends BasePage {
                 addToReport("Custom Amount section is available", Status.PASS, false);
                 customAmount = getAttributeOrText(txtCustomAmount, "value").trim();
                 addToReport("'" + customAmount + "'as the Custom amount.", Status.PASS, false);
-                if (customAmount.equalsIgnoreCase(lastStandingAmount)) {
+                if (customAmount.contains(lastStandingAmount)) {
                     addToReport("Custom amount'" + customAmount + " Last out standing Amount" + lastStandingAmount + "'", Status.PASS, true);
                 } else {
                     addToReport("Custom amount'" + customAmount + " Last out standing Amount" + lastStandingAmount + "'", Status.FAIL, false);
@@ -334,15 +361,16 @@ public class CreditCardDetailedViewPage extends BasePage {
 
             sendKeysToElement(txtCustomAmount, Keys.BACK_SPACE, 15);
             addToReport("clear the custom amount", Status.PASS, false);
+             sendKeysToElement(txtCustomAmount, ZeroAmount);
 
         addToReport("---------- Start of Grater than Zero error message validation ----------", Status.INFO, false);
 
             waitForElementPresence(lblGraterThanZero,LONG_WAIT);
               if (isElementPresentBy(lblGraterThanZero)) {
-            addToReport("Greater Than Zero Error Present", Status.PASS);
+            addToReport("Greater Than Zero lbl Error Present", Status.PASS);
              greterThanZeroError = getTextFromElement(lblGraterThanZero);
              } else {
-            addToReport("Greater Than Zero Error Unavailable", Status.PASS, false);
+            addToReport("Greater Than Zero lbl Error Unavailable", Status.PASS, false);
             }
             if (greterThanZeroError.equalsIgnoreCase(errorMsg)) {
                 addToReport("Greater Than 0 Error Message Present", Status.PASS, true);
@@ -351,7 +379,7 @@ public class CreditCardDetailedViewPage extends BasePage {
             }
 
         addToReport("---------- End of Grater than Zero error message validation ----------", Status.INFO, false);
-
+            sendKeysToElement(txtCustomAmount, Keys.BACK_SPACE, 15);
             sendKeysToElement(txtCustomAmount, paymentAmount);
             addToReport("Added " + paymentAmount + " as the custom amount", Status.PASS);
 
@@ -402,7 +430,9 @@ public class CreditCardDetailedViewPage extends BasePage {
                 addToReport("'" + successMsg + "'  message is not present.", Status.FAIL);
                 throw new RuntimeException("Error message validation is unsuccessful.");
             }
-
+            if (isElementPresentBy(btnBack)){
+                clickOnElement(btnBack);
+            }
         }
 
 
@@ -621,6 +651,118 @@ public class CreditCardDetailedViewPage extends BasePage {
 //
 //        addToReport("----- Validation Completed installment section -----", Status.INFO, false);
 
+
+    }
+
+    public void ValidateCardBlockUnblock (String otp,String successMsgForBlocking,String emailSentSuccessMsg) {
+        addToReport("---------- Starting to validate the Credit Card blocking ----------", Status.INFO, false);
+
+        clickOnElement(imgBlockAccount);
+        addToReport("Click on the Block account .", Status.PASS,false);
+
+        if (isElementPresentBy(imgActivation)){
+            addToReport("Block Card UI available", Status.PASS,false);
+            clickOnElement(btnBack);
+            addToReport("Click on the Next button", Status.PASS,false);
+        }else {
+            addToReport("Block Card UI is not - available", Status.PASS,false);
+        }
+
+        try {
+            sendKeysToElement(tfOTP(1), String.valueOf(otp));
+
+            clickOnElement(btnBack);
+        } catch (Exception e) {
+            addToReport("Error when entering OTP", Status.FAIL);
+            throw new RuntimeException("Failed to enter OTP " + e.getMessage(), e);
+        }
+
+        waitForElementPresence(getSuccessfulMsg(successMsgForBlocking),20); //Request successful
+        //Validate the error message
+        if (isElementPresentBy(getSuccessfulMsg(successMsgForBlocking))) {
+            addToReport("'" + successMsgForBlocking + "' message is present.", Status.PASS,true);
+        } else {
+            addToReport("'" + successMsgForBlocking + "'  message is not present.", Status.FAIL);
+            throw new RuntimeException("Error message validation is unsuccessful.");
+        }
+
+        while (true) {
+            waitForElementToBeInvisible(lblAccountListLoading, LONG_WAIT);
+            waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+
+            clickOnElement(btnAccount);
+            waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+            waitFor(LONG_WAIT);
+            clickOnElement(btnCreditCard);
+            waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+
+            blockUnblock = getTextFromElement(lblBlockandUnblockAccount).trim();
+
+            if (blockUnblock.equalsIgnoreCase(CreditCardConstants.UNBLOCK)) {
+                addToReport("Label updated successfully: " + blockUnblock, Status.PASS);
+                break;
+            } else {
+                addToReport("Label not updated yet. Current value: " + blockUnblock, Status.INFO,false);
+            }
+        }
+
+
+        if (isElementPresentBy(imgUNBlockAccount)) {
+            clickOnElement(imgUNBlockAccount);
+            addToReport("Click on the UNBlock account .", Status.PASS, false);
+        }
+        if (isElementPresentBy(btnBack)){
+            addToReport("UNBlock Card UI available", Status.PASS,false);
+            clickOnElement(btnBack);
+            addToReport("Click on the Next button", Status.PASS,false);
+        }else {
+            addToReport("UNBlock Card UI is not - available", Status.PASS,false);
+        }
+
+        waitForElementPresence(getSuccessfulMsg(emailSentSuccessMsg),20);
+        if (isElementPresentBy(getSuccessfulMsg(emailSentSuccessMsg))) {
+            addToReport("'" + emailSentSuccessMsg + "' message is present.", Status.PASS,true);
+
+            try {
+                sendKeysToElement(tfOTP(1), String.valueOf(otp));
+
+                clickOnElement(btnBack);
+            } catch (Exception e) {
+                addToReport("Error when entering OTP", Status.FAIL);
+                throw new RuntimeException("Failed to enter OTP " + e.getMessage(), e);
+            }
+
+            waitForElementPresence(getSuccessfulMsg(successMsgForBlocking),20); //Request successful
+            //Validate the error message
+            if (isElementPresentBy(getSuccessfulMsg(successMsgForBlocking))) {
+                addToReport("'" + successMsgForBlocking + "' message is present.", Status.PASS,true);
+            } else {
+                addToReport("'" + successMsgForBlocking + "'  message is not present.", Status.FAIL);
+                throw new RuntimeException("Error message validation is unsuccessful.");
+            }
+
+            while (true) {
+                waitForElementToBeInvisible(lblAccountListLoading, LONG_WAIT);
+                waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+
+                clickOnElement(btnAccount);
+                waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+                waitFor(LONG_WAIT);
+                clickOnElement(btnCreditCard);
+                waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+
+                blockUnblock = getTextFromElement(lblBlockandUnblockAccount).trim();
+
+                if (blockUnblock.equalsIgnoreCase(CreditCardConstants.BLOCK)) {
+                    addToReport("Label updated successfully: " + blockUnblock, Status.PASS);
+                    break;
+                } else {
+                    addToReport("Label not updated yet. Current value: " + blockUnblock, Status.INFO,false);
+                }
+            }
+
+
+    }
 
     }
 

@@ -9,6 +9,8 @@ import utils.CommonUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static utils.Drivers.*;
 
@@ -38,14 +40,33 @@ public class OpenSavingAccountPage extends BasePage {
     private static final By ddproductAccountFD =  By.xpath("//select[@id='product' and @name='" + SaveAccountConstants.ATTR_ACCOUNT_PRODUCT + "']");
     private static final By dddebitAccountSaving = By.xpath("//select[@id='accountfrom' and @name='" + SaveAccountConstants.ATTR_ACCOUNT_FROM + "']");
     private static final By lblAccountNumberPreview =  By.xpath("//span[@class='font-bold text-[#F5883C]']");
-
+    private static final By lblSavingAccountNumber =  By.xpath("//p[contains(@class, 'text-gray-600') and contains(@class, 'mt-8')]");
+    private static final By btnsubmitConfirmation= By.xpath("//button[@type='submit' and contains(@class, 'bg-green-500') and contains(@class, 'rounded-lg')]");
+    private static final By lblAccountListLoading = By.xpath("//div[contains(@class,'dark:bg-gray')]");
+    private static final By tfSearch = By.xpath("//input[@placeholder='Search']");
+    private static final By btnSearch = By.xpath("//div[contains(@class,'absolute')]/img");
+    private static final By tblRows = By.xpath("//table//tbody/tr");
 
     private static By lblConfirmationFieldDynamic(String label) {
-        return By.xpath("//div[normalize-space(text())='" + label + "']/following-sibling::div[contains(@class,'font-bold')]");
+        return By.xpath("//div[normalize-space(text())='" + label + "']/following::div[contains(@class,'font-bold')][1]");
     }
+
     private static By lblAccountTypeConfirmation() {
         return By.xpath("//div[normalize-space()='Account Type']/following-sibling::div[contains(@class,'font-bold')]");
     }
+    private static By tfOTP(int Index) {
+        return By.xpath("//input[contains(@class,'otp-box')][" + Index + "]");
+    }
+    private static By getSuccessfulMsg(String title) {
+        return By.xpath("//div[contains(text(),'" + title + "')]");
+    }
+    private static By getPartialSuccessMsg(String partialMsg) {
+        return By.xpath("//*[contains(text(),'" + partialMsg + "')]");
+    }
+    private static By tblCellRecord(int col, int row) {
+        return By.xpath("(//table//tr/td[" + col + "])[" + row + "]");
+    }
+
 
 
     /**
@@ -306,7 +327,7 @@ public class OpenSavingAccountPage extends BasePage {
         }
 
         //NickName
-        String actualNickName = getAttributeOrText(lblConfirmationFieldDynamic("Nick Name"), "text").trim();
+        String actualNickName = getTextFromElement(lblConfirmationFieldDynamic("Set Nick Name")).trim();
         if (expectedNickname.equalsIgnoreCase(actualNickName)) {
             addToReport(" Nick Name matched: " + actualNickName, Status.PASS, false);
         } else {
@@ -314,7 +335,7 @@ public class OpenSavingAccountPage extends BasePage {
         }
 
 //  Validate Debitted (Funding) Account
-        String actualDebittedAccount = getAttributeOrText(lblConfirmationFieldDynamic("Debit Account"), "text").trim();
+        String actualDebittedAccount = getTextFromElement(lblConfirmationFieldDynamic("Debit Account")).trim();
         if (expectedDebittedAccount.equals(actualDebittedAccount)) {
             addToReport("Debitted Account matched: " + actualDebittedAccount, Status.PASS, false);
         } else {
@@ -322,7 +343,7 @@ public class OpenSavingAccountPage extends BasePage {
         }
 
 // === Purpose of Account ===
-        String actualPurpose = getAttributeOrText(lblConfirmationFieldDynamic("Purpose of Account"), "text").trim();
+        String actualPurpose = getTextFromElement(lblConfirmationFieldDynamic("Purpose of Account")).trim();
         if (expectedPurpose.equalsIgnoreCase(actualPurpose)) {
             addToReport("Purpose matched: " + actualPurpose, Status.PASS, false);
         } else {
@@ -330,17 +351,121 @@ public class OpenSavingAccountPage extends BasePage {
         }
 
 // === Source of Funds ===
-        String actualSourceOfFunds = getAttributeOrText(lblConfirmationFieldDynamic("Source of Funds"), "text").trim();
+        String actualSourceOfFunds = getTextFromElement(lblConfirmationFieldDynamic("Source of Funds")).trim();
         if (expectedSourceOfFunds.equalsIgnoreCase(actualSourceOfFunds)) {
             addToReport("Source of Funds matched: " + actualSourceOfFunds, Status.PASS, false);
         } else {
             addToReport("Source of Funds mismatch. Expected: " + expectedSourceOfFunds + ", Actual: " + actualSourceOfFunds, Status.FAIL);
         }
 
-
-        clickOnElement(btnsubmit);
-
     }
+
+    /**
+     * This method is entering the OTP, navigates, and validates the dynamic success message.
+     *
+     * @param otp        - OTP
+     * @param successMsg - Static portion of the success message to validate
+     * @param suffixMsg -  Other Static portion of the success message to validate
+     */
+    public void enterOTPAndContinueSettingsPage(String otp, String successMsg, String suffixMsg) {
+
+        try {
+            // Enter OTP and submit
+            sendKeysToElement(tfOTP(1), String.valueOf(otp));
+            clickOnElement(btnsubmitConfirmation);
+
+            // Wait for message to appear
+            waitForElementPresence(getPartialSuccessMsg(successMsg), 20); // E.g., "Your new savings account"
+
+            // Get the full message
+            String fullText = getTextFromElement(getPartialSuccessMsg(successMsg)).trim();
+
+            // Log full message
+            addToReport("Captured success message: " + fullText, Status.INFO);
+
+            // Extract account number using regex
+            Pattern pattern = Pattern.compile(Pattern.quote(successMsg) + "(\\d+)" + Pattern.quote(suffixMsg));
+            Matcher matcher = pattern.matcher(fullText);
+
+        } catch (Exception e) {
+            addToReport("Error during OTP confirmation or message validation: " + e.getMessage(), Status.FAIL);
+            throw new RuntimeException("OTP confirmation failed", e);
+        }
+
+        waitForElementToBeInvisible(lblconfirmAccountOptions, LONG_WAIT);
+    }
+
+    /**
+     *
+     * Validate the savings confirmation
+     *
+     */
+
+    public String validateSaveAccountConfirmation() {
+        try {
+            String fullText = getTextFromElement(lblSavingAccountNumber);
+
+            if (fullText == null || fullText.trim().isEmpty()) {
+                addToReport("Saving Account Number label is empty or not visible", Status.FAIL);
+                return null;
+            }
+            // Extract only numeric account number
+            String accountNumber = fullText.replaceAll("\\D+", "").trim();
+            addToReport("Captured Account Number: " + accountNumber, Status.INFO);
+
+            if (accountNumber.startsWith(SaveAccountConstants.FD_Number[1])) {
+                addToReport("Valid Saving Account Number starts with '1': " + accountNumber, Status.PASS, true);
+            } else {
+                addToReport("Invalid Saving Account Number: " + accountNumber, Status.FAIL, true);
+            }
+
+            addToReport("---------- End of validating the confirmation message on the FD page ----------", Status.INFO, false);
+            return accountNumber;
+        } catch (Exception e) {
+            addToReport("Error while validating Saving account number: " + e.getMessage(), Status.FAIL);
+            throw new RuntimeException("Saving Account number validation failed", e);
+        }
+    }
+
+
+    /**
+     * Search and validate the created account number
+     *
+     * @param accountNo - Account number
+     *
+     */
+    public void searchAndSelectAccountList(String accountNo) {
+        try {
+            // Wait and perform search
+            waitForElementToBeInvisible(lblAccountListLoading, LONG_WAIT);
+            sendKeysToElement(tfSearch, accountNo);
+            clickOnElement(btnSearch);
+            waitForElementToBeInvisible(lblAccountListLoading, LONG_WAIT);
+
+            // Check how many records are returned
+            int recordCount = isElementsPresentBy(tblRows);
+
+            if (recordCount == 1) {
+                String resultAccountNo = getTextFromElement(tblCellRecord(1, 1)).trim();
+
+                if (resultAccountNo.equals(accountNo)) {
+                    addToReport("Account number " + accountNo + " successfully returned on search.", Status.PASS, true);
+                } else {
+                    addToReport("Mismatch in returned account. Expected: " + accountNo + ", Found: " + resultAccountNo, Status.FAIL, true);
+                    throw new RuntimeException("Error - Returned account number mismatch.");
+                }
+
+            } else {
+                addToReport("Search did not return exactly one result for account: " + accountNo, Status.FAIL, true);
+                throw new RuntimeException("Error - Incorrect number of results returned.");
+            }
+
+        } catch (Exception e) {
+            addToReport("Failed to search/select account " + accountNo, Status.FAIL);
+            throw new RuntimeException("Error - Exception during account search: " + e.getMessage(), e);
+        }
+    }
+
 
 }
 

@@ -35,7 +35,7 @@ public class OpenSavingAccountTest extends Drivers {
         savingsPage = new OpenSavingAccountPage(driver);
     }
 
-    @Test(priority = 1, dataProvider = "LoginDataSavingsFD", description = "Pre-Requisite :: Login to the Sampath vishwa application", dataProviderClass = DataProviders.SavingsandFDDataProvider.class)
+    @Test(priority = 1, dataProvider = "LoginDataSavingsFD", description = "Pre-Requisite :: Login to the Sampath vishwa application", dataProviderClass = DataProviders.LoginDataProvider.class)
     public void logIntoDahsboard(String userName, String password, String emailSentSuccessMsg) throws InterruptedException {
         driver.get(url);
         loginPage.validateTheLoginPage(LoginConstants.EXPECTED_TITLE, LoginConstants.LOGIN_TILE_NAME);
@@ -66,8 +66,16 @@ public class OpenSavingAccountTest extends Drivers {
     public void enteringFundDetails(String amount, String nickName) {
         savingsPage.enteringFundDetails(amount,nickName);
     }
-    @Test(priority = 6, description = "Validating the user details this doesn't covers the e2e path  - 225")
-    public void validatingAccountDetails() {
+    @Test(priority = 6, description = "Validating the user details  - 225", dataProvider = "SavingSuccessMsg", dataProviderClass = DataProviders.SavingsandFDDataProvider.class)
+    public void validatingAccountDetails(String successMsg, String suffixMsg) {
         savingsPage.validateSavingConfirmationDetails();
+        savingsPage.enterOTPAndContinueSettingsPage(LoginConstants.OTP,successMsg,suffixMsg);
+        savingsPage.validateSaveAccountConfirmation();
+        // Extract account number after confirmation
+        String accountNumber = savingsPage.validateSaveAccountConfirmation();
+        dashboardPage.navigateBackToDashboard();
+        dashboardPage.navigateToMainMenu(BillerConstants.BUTTON_MY_ACCOUNTS);
+        savingsPage.searchAndSelectAccountList(accountNumber);
+
     }
 }

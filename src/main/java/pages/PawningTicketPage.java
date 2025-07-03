@@ -62,7 +62,7 @@ public class PawningTicketPage extends BasePage {
     }
 
     public By getLoanSummaryValueOnRightSideByLabel(String label) {
-        return By.xpath("//div[contains(@class, 'w-full')]/div//div[contains(@class,'flex') and span[1][normalize-space(text())='" + label + "']]/span[2]");
+        return By.xpath("//span[normalize-space(text())='" + label + "']/following-sibling::span[1]");
     }
     private static By tfOTP(int Index) {
         return By.xpath("//input[contains(@class,'otp-box')][" + Index + "]");
@@ -88,6 +88,7 @@ public class PawningTicketPage extends BasePage {
         clickOnElement(lblFixedDeposits);
         addToReport("Clicked on the Pawning deposits tab ", Status.PASS);
 
+        waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
         if (waitForElementPresence(lblSavingsPrimaryStatus, PawnConstants.WAIT_EXTRA_LONG)) {
             addToReport("Pawning details are visible.", Status.PASS, false);
         } else {
@@ -219,12 +220,13 @@ public class PawningTicketPage extends BasePage {
         waitForElementPresence(tblPawningHistoryList, PawnConstants.WAIT_EXTRA_LONG);
         addToReport("Pawning history list table is Successfully visible ", Status.PASS);
 
-        statusRightSide = getTextFromElement(getLoanSummaryValueOnRightSideByLabel(PawnConstants.STATUS)).trim();
-        advancedAmountRightSide = getTextFromElement(getLoanSummaryValueOnRightSideByLabel(PawnConstants.ADVANCED_AMOUNT)).trim();
-        capitalOutstandingRightSide = getTextFromElement(getLoanSummaryValueOnRightSideByLabel(PawnConstants.CAPITAL_OUTSTANDING_AMOUNT)).trim();
-        accruedInterestRightSide = getTextFromElement(getLoanSummaryValueOnRightSideByLabel(PawnConstants.ACCRUED_INTEREST)).trim();
-        itemsDescriptionRightSide = getTextFromElement(getLoanSummaryValueOnRightSideByLabel(PawnConstants.ITEMS_DESCRIPTION)).trim();
-        String outStandingAmountInCardView = getTextFromElement(lblPawningCardOutStandingAmount);
+        statusRightSide = safeText(getLoanSummaryValueOnRightSideByLabel(PawnConstants.STATUS));
+        advancedAmountRightSide = safeText(getLoanSummaryValueOnRightSideByLabel(PawnConstants.ADVANCED_AMOUNT));
+        capitalOutstandingRightSide = safeText(getLoanSummaryValueOnRightSideByLabel(PawnConstants.CAPITAL_OUTSTANDING_AMOUNT));
+        accruedInterestRightSide = safeText(getLoanSummaryValueOnRightSideByLabel(PawnConstants.ACCRUED_INTEREST));
+        itemsDescriptionRightSide = safeText(getLoanSummaryValueOnRightSideByLabel(PawnConstants.ITEMS_DESCRIPTION));
+        String outStandingAmountInCardView = safeText(lblPawningCardOutStandingAmount);
+
 
         addToReport("Status (Right Side): " + statusRightSide, Status.PASS, false);
         addToReport("Advanced Amount (Right Side): " + advancedAmountRightSide, Status.PASS, false);
@@ -521,6 +523,16 @@ public class PawningTicketPage extends BasePage {
         addToReport("---------- Ending the validation of the Pawning outstanding amount ----------", Status.INFO, false);
     }
 
+    /**
+     * Safely retrieves and trims the text content from the given web element locator.
+     * This method avoids NullPointerException by returning an empty string if the element's text is null.
+     *
+     * @param locator - the locator used to find the web element
+     */
+    private String safeText(By locator) {
+        String text = getTextFromElement(locator);
+        return text != null ? text.trim() : "";
+    }
 
 
 }
