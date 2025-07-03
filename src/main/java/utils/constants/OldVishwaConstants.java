@@ -60,8 +60,8 @@ public class OldVishwaConstants {
 
     // -------------- KEYWORDS - BUTTON LABELS ------------------
     public static final String KEYWORD_OLD_VISHWA = "Old Vishwa";
-    public static final String KEYWORD_OLD_VISHWA_INBOX = "Old Vishwa - Inbox";
-    public static final String KEYWORD_OLD_VISHWA_SENT = "Old Vishwa - Sent";
+    public static final String KEYWORD_OLD_VISHWA_INBOX = "Old Vishwa Inbox";
+    public static final String KEYWORD_OLD_VISHWA_SENT = "Old Vishwa Sent";
     public static final String KEYWORD_FILTER = "Filter";
     public static final String KEYWORD_LOAD_OLD_V_HISTORY = "Load Old Vishwa History";
     public static final String KEYWORD_TRANSACTION_HISTORY = "Transaction History";

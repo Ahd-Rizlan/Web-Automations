@@ -139,7 +139,7 @@ public class MessagingTest extends BaseTest {
         driver.get(retailAdminURL);
         vishwaRetailAdminLoginPage.loginTOAdminModule(headerTile,userName,password);
         vishwaRetailAdminTaskPage.validateFundTransferRequest(subject,message);
-        vishwaRetailAdminTaskPage.replyToMail(message,responseMsg);
+        vishwaRetailAdminTaskPage.replyToMail(message,responseMsg,subject);
         vishwaRetailAdminLoginPage.navigateToTab(0);
         messagesPage.inboxMessagesValidation(subject,message,responseMsg,messageDeletionSuccessMsg,messageRecoverySuccessMsg);
     }

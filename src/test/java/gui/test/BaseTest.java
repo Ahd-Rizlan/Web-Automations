@@ -24,6 +24,8 @@ public class BaseTest extends Drivers {
     protected FDDetailViewPage fdDetailViewPage;
     protected LoanAccountDetailedViewPage loanAccountDetailedViewPage;
     protected  CreditCardDetailedViewPage creditCardDetailedViewPage;
+    protected  OpenFDPage fdPage;
+    protected OpenSavingAccountPage savingsPage;
 
 
     @BeforeClass
@@ -45,7 +47,8 @@ public class BaseTest extends Drivers {
         fdDetailViewPage = new FDDetailViewPage(driver);
         loanAccountDetailedViewPage = new LoanAccountDetailedViewPage(driver);
         creditCardDetailedViewPage = new CreditCardDetailedViewPage(driver);
-
+        fdPage = new OpenFDPage(driver);
+        savingsPage = new OpenSavingAccountPage(driver);
         driver.get(url);
     }
 

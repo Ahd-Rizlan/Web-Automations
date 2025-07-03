@@ -8,6 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import utils.CommonUtils;
+import utils.constants.LoginConstants;
 import java.util.Arrays;
 import java.util.List;
 import static utils.Drivers.*;
@@ -226,7 +227,9 @@ public class LoginPage extends BasePage {
             sendKeysToElement(txtPassword, validPassword);
             clickOnElement(btnLogin);
             waitForElementToBeInvisible(btnLoginDisabled, VERY_SHORT_WAIT);
-            clickOnElement(btnCloseAlertLabel);
+            if(isElementPresentBy(btnCloseAlertLabel)){
+                clickOnElement(btnCloseAlertLabel);
+            }
             clickOnElement(btnBack);
 
 
@@ -236,12 +239,12 @@ public class LoginPage extends BasePage {
             sendKeysToElement(txtPassword, invalidPassword);
             clickOnElement(btnLogin);
             waitForElementToBeInvisible(btnLoginDisabled, VERY_SHORT_WAIT);
-            waitForElementPresence(msgError);
-
+            waitFor(EXTREME_SHORT_WAIT);
+            waitForElementToBeClickable(msgError,SHORT_WAIT);
             //Extract the message from alert
             String[] updatedErrorMsg = CommonUtils.splitText(getTextFromElement(msgError), ":");
             int reAttemptCount = Integer.parseInt(updatedErrorMsg[1].trim());
-            waitForElementPresence(btnBack);
+//            waitForElementToBeClickable(btnBack,SHORT_WAIT);
 
             //Validate reattempt counter
             if (reAttemptCount == 4) {
@@ -250,6 +253,9 @@ public class LoginPage extends BasePage {
                 addToReport("Re-Attempt counter was not updated successfully", Status.FAIL);
                 throw new RuntimeException("Error - Error message was not successfully displayed");
             }
+//            if(isElementPresentBy(btnCloseAlertLabel)){
+//                clickOnElement(btnCloseAlertLabel);
+//            }
 
         } catch (Exception e) {
             addToReport("Unable to verify incorrect Password", Status.FAIL);
@@ -538,8 +544,11 @@ public class LoginPage extends BasePage {
         try {
             //Click reset button
             ClickOnRestOrSignupButton(buttonName);
-            waitForElementPresence(tfVishwaID, SHORT_WAIT);
 
+            waitForElementToBeClickable(getElementByTypeAndText(ElementType.span, LoginConstants.USING_SECURITY_QUESTIONS),SHORT_WAIT);
+            clickOnElement(getElementByTypeAndText(ElementType.span, LoginConstants.USING_SECURITY_QUESTIONS));
+
+            waitForElementPresence(tfVishwaID, SHORT_WAIT);
             //Enter invalid user
             sendKeysToElement(tfVishwaID, userName);
             clickOnElement(btnLogin);
@@ -575,6 +584,10 @@ public class LoginPage extends BasePage {
         try {
             //Click reset button
             ClickOnRestOrSignupButton(buttonName);
+
+            waitForElementToBeClickable(getElementByTypeAndText(ElementType.span, LoginConstants.USING_SECURITY_QUESTIONS),SHORT_WAIT);
+            clickOnElement(getElementByTypeAndText(ElementType.span, LoginConstants.USING_SECURITY_QUESTIONS));
+
             waitForElementPresence(tfVishwaID, SHORT_WAIT);
 
             //Enter invalid user
@@ -612,10 +625,12 @@ public class LoginPage extends BasePage {
      */
     public void ValidateSuccessfulLoginAttemptWithLockedUserID(String buttonName,String userName,String password, String errorMessage,Boolean mouseClick) {
         try {
+            driver.get(url);
             waitForElementToBeClickable(txtPassword,VERY_LONG_WAIT);
             //Enter correct username and pw
             sendKeysToElement(txtUserName, userName);
             sendKeysToElement(txtPassword, password);
+            addToReport("Entered username and password", Status.INFO);
             if (mouseClick) {
                 mouseClick(getElementByTypeAndText(ElementType.button, buttonName));
                 addToReport("Login attempted using mouse click on the '" + buttonName + "' button.", Status.PASS,false);
@@ -633,10 +648,12 @@ public class LoginPage extends BasePage {
             } else {
                 addToReport("Didn't receive invalid message  : '" + errorMessage + "'.", Status.FAIL);
             }
+
         } catch (Exception e) {
             addToReport("Unable to verify invalid message", Status.FAIL);
             throw new RuntimeException("Unable to verify invalid message", e);
         }
+        clickOnElement(btnCloseAlertLabel);
     }
 
     /***
@@ -674,6 +691,10 @@ public class LoginPage extends BasePage {
             addToReport("Unable to verify invalid message", Status.FAIL);
             throw new RuntimeException("Unable to verify invalid message", e);
         }
+        clickOnElement(btnCloseAlertLabel);
+        waitForElementToBeInvisible(btnCloseAlertLabel,MODERATE_WAIT);
+
+        //Revert again so that user does not get locked
     }
 
     /***

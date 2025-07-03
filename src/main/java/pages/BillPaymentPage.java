@@ -5,6 +5,7 @@ package pages;
 
 import com.aventstack.extentreports.Status;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import utils.CommonUtils;
 import utils.constants.BillerConstants;
@@ -1673,6 +1674,7 @@ public class BillPaymentPage extends BasePage {
         }
 
         //Enter amount and other relevant values
+        sendKeysToElement(tfAmount, Keys.BACK_SPACE,5);
         sendKeysToElement(tfAmount, amount);
 
         //Type mobile number is available in data table
@@ -1725,7 +1727,9 @@ public class BillPaymentPage extends BasePage {
         waitForElementPresence(lblNewPaymentAccountNumber, VERY_LONG_WAIT);
 
         selectFromDropdown(ddPayFrom,accountNumber,"value");
+
         //Enter amount and other relevant values
+        sendKeysToElement(tfAmount, Keys.BACK_SPACE,5);
         sendKeysToElement(tfAmount, amount);
 
         if (isElementPresentBy(lblNewPaymentAccountNumber, VERY_SHORT_WAIT)) {

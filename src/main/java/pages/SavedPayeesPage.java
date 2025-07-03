@@ -43,9 +43,9 @@ public class SavedPayeesPage extends BasePage {
     private static final By lblPopupMsgFavPayeeAdded = By.xpath("//div[contains(text(),'Favourite Payee Added Successfully!')]");
     private static final By lblPopupMsgFavPayeeRemoved = By.xpath("//div[contains(text(),'Favourite Payee Removed Successfully!')]");
     private static final By tfFBAmount = By.xpath("//input[@placeholder='Enter Amount']");
-    private static final By tfFBMobilePhoneNumber = By.xpath("//input[contains(@name,'fieldData.0')]");
+    private static final By tfFBMobilePhoneNumber = By.xpath("//input[contains(@name,'.0.fieldValue')]");
     private static final By lblFBBillerName = By.xpath("//input[@placeholder='Biller Name']");
-    private static final By tfFBMobilePhoneNumberReEnter = By.xpath("//input[contains(@name,'fieldData2.0')]");
+    private static final By tfFBMobilePhoneNumberReEnter = By.xpath("//input[contains(@name,'0.reEnterValue')]");
     private static final By loadingBranchName = By.xpath("(//div[contains(@class,'animate-pulse bg-gray')])[4]");
 
 
@@ -53,7 +53,7 @@ public class SavedPayeesPage extends BasePage {
         return By.xpath("//span[text()='Savings Account']/ancestor::div[contains(@class,'flex relative justify-between')]//span[contains(text(),'Available Balance')]");
     }
     private static By lblFBSBAName() {
-        return By.xpath("//span[text()='SBA']/ancestor::div[contains(@class,'flex relative justify-between')]//span[contains(text(),'Available Balance')]");
+        return By.xpath("//span[text()='Savings Account']/ancestor::div[contains(@class,'flex relative justify-between')]//span[contains(text(),'Available Balance')]");
     }
 
     private static By tfQFTAccountName() {
@@ -84,7 +84,7 @@ public class SavedPayeesPage extends BasePage {
     }
 
     private static By tblYFLNickName(String NickName) {
-        return By.xpath("//span[contains(text(),'Your favorite list')]/following::div[contains(@class,'full flex justify-between items-center rounded')]//div[text()='" + NickName + "']");
+        return By.xpath("//span[contains(text(),'Your favourite list')]/following::div[contains(@class,'full flex justify-between items-center rounded')]//div[text()='" + NickName + "']");
     }
 
 
@@ -228,7 +228,7 @@ public class SavedPayeesPage extends BasePage {
             }
 
             //Validate the preloaded biller name
-            String billerName = getTextFromElement(lblFBBillerName);
+            String billerName = getAttributeOrText(lblFBBillerName, "value");
             if (billerName.equalsIgnoreCase(BName)) {
                 addToReport("Successfully validated biller name : " + BName, Status.PASS, false);
             } else {
@@ -236,21 +236,24 @@ public class SavedPayeesPage extends BasePage {
             }
 
             //Validate the preloaded mobile number
-            String MNumber = getAttributetext(driver.findElement(tfFBMobilePhoneNumber), "value");
+//            String MNumber = getAttributetext(driver.findElement(tfFBMobilePhoneNumber), "value");
+            String MNumber = getAttributeOrText(tfFBMobilePhoneNumber, "value");
             if (FieldName.equalsIgnoreCase(MNumber)) {
                 addToReport("Successfully validated Pre-loaded mobile number : " + MNumber, Status.PASS, false);
             } else {
                 addToReport("Pre-loaded mobile number : " + MNumber + " is not successfully validated", Status.FAIL);
             }
             //Validate the preloaded Enter amount
-            String enterAmount = getAttributetext(driver.findElement(tfFBAmount), "value");
+//            String enterAmount = getAttributetext(driver.findElement(tfFBAmount), "value");
+            String enterAmount = getAttributeOrText(tfFBAmount, "value");
             if (!enterAmount.isEmpty()) {
                 addToReport("Successfully validated QFT enter amount is empty ", Status.PASS, false);
             } else {
                 addToReport("QFT enter amount  " + enterAmount + " is not successfully validated", Status.FAIL);
             }
             //Validate the reenter mobile number
-            String ReEnter = getAttributetext(driver.findElement(tfFBMobilePhoneNumberReEnter), "value");
+//            String ReEnter = getAttributetext(driver.findElement(tfFBMobilePhoneNumberReEnter), "value");
+            String ReEnter = getAttributeOrText(tfFBMobilePhoneNumberReEnter, "value");
             if ((ReEnter.isEmpty())) {
                 addToReport("Successfully validated reenter mobile field is empty ", Status.PASS, false);
             } else {

@@ -35,8 +35,9 @@ public class VishwaRetailAdminTaskPage extends BasePage {
     private static final By lblUsersInThread = By.xpath("//div[contains(@class,'flex flex-col items')]/p[1]");
     private static final By lblMessagesInThread = By.xpath("//div[@class='inline']");
     private static final By lblMessagesChatBody = By.xpath("//div[contains(@class,'flex flex-col gap-5')]/div/div");
+    private static final By lblMessagesChatBodyBCR = By.xpath("//div[contains(@class,'flex flex-col gap-5')]/div/div[2]");
     private static final By btnForwardPopup = By.xpath("//div[@role='tablist']//button[text()=\"Forward\"]");
-
+    private static final By imgGreyLoader = By.xpath("//div[contains(@class,'animate-pulse')]");
 
 
 
@@ -120,6 +121,8 @@ public class VishwaRetailAdminTaskPage extends BasePage {
 
         // Re-click the keyword filter button (To close the filter panel)
         clickOnElement(getElementByTypeAndExactText(ElementType.span, AdminTaskConstants.FILTER));
+
+        waitForElementToBeInvisible(imgGreyLoader,LONG_WAIT);
     }
     String mailReference;
     /**
@@ -214,9 +217,11 @@ public class VishwaRetailAdminTaskPage extends BasePage {
         // Wait for the mail list to load
         waitForElementPresence(getElementByTypeAndExactText(ElementType.span, AdminTaskConstants.FILTER), LONG_WAIT);
 
+        waitForElementToBeInvisible(imgGreyLoader,LONG_WAIT);
+
         //Subject and reference have to come from client This is a test    message  with   spacing and alignment.
-        //Commenting below due to a bug (SVR4-1350)
-        selectTaskHeader(AdminTaskConstants.INBOX);
+        //Commented due to bug SVR4-1428
+//        selectTaskHeader(AdminTaskConstants.INBOX);
         selectMail(subject);
 
         //Obtain the record count
@@ -345,7 +350,7 @@ public class VishwaRetailAdminTaskPage extends BasePage {
 
         addToReport("----------Start of validation of forwarded mail thread is available is available in mail thread----------", Status.PASS, false);
 
-        filterMails(AdminTaskConstants.KEYWORD,messages[1],"","");
+        filterMails(AdminTaskConstants.KEYWORD,subject,"","");
 
         //Obtain the record count
         int userCount = isElementsPresentBy(lblUsersInThread);
@@ -410,7 +415,7 @@ public class VishwaRetailAdminTaskPage extends BasePage {
         addToReport("----------Start of validation of fund transfer request are available in admin----------", Status.PASS, false);
         filterMails(AdminTaskConstants.KEYWORD,subject.toLowerCase(),"","");
         // Validate the loaded message
-        if (getTextFromElement(lblMessagesChatBody).contains(message)) {
+        if (getTextFromElement(lblMessagesChatBody).contains(message)||getTextFromElement(lblMessagesChatBodyBCR).contains(message)) {
             addToReport("Message thread is loaded with message:"+message, Status.PASS, false);
         } else {
             addToReport("Message thread is not loaded with message:"+message, Status.FAIL);
@@ -424,14 +429,14 @@ public class VishwaRetailAdminTaskPage extends BasePage {
      * @param messageID The unique identifier for the message
      * @param message   The message contents
      */
-    public void replyToMail(String messageID,String message){
+    public void replyToMail(String messageID,String message,String subject){
 
         waitForElementPresence(getElementByTypeAndExactText(ElementType.button, AdminTaskConstants.ATTEND));
         //Attend the mail
         clickOnElement(getElementByTypeAndExactText(ElementType.button, AdminTaskConstants.ATTEND));
 
         waitFor(VERY_SHORT_WAIT);
-        filterMails(AdminTaskConstants.KEYWORD,messageID,"","");
+        filterMails(AdminTaskConstants.KEYWORD,subject,"","");
 
         //Attend the mail
         clickOnElement(getElementByTypeAndExactText(ElementType.button, AdminTaskConstants.REPLY));
