@@ -1029,7 +1029,7 @@ public abstract class BasePage extends helpers {
      * Waits until the page has fully loaded (document.readyState is 'complete').
      */
     public void waitForPageLoadCompleteJS() {
-        new WebDriverWait(driver, MODERATE_WAIT).until(
+        new WebDriverWait(driver, LONG_WAIT).until(
                 webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
     }
 

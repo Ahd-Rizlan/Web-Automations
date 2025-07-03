@@ -112,7 +112,7 @@ public class MyAccountsConstants {
     public static final String CAN = "CAN";
     public static final String INACTIVE = "Inactive";
     public static final String MASTER_INACTIVE = "Master Regular";
-
+    public static final String VSDC_GOLD = "VSDC Gold";
     public static final String ACCOUNTS_CREDIT_CARDS = "'Accounts / Credit Cards'";
     public static final String CREDIT_CARDS = "Credit Cards";
 
@@ -130,7 +130,7 @@ public class MyAccountsConstants {
     public static final String FACE_VALUE = "Face Value";
     public static final String INTEREST_RATE = "Interest Rate";
 
-    public static final String PERMANENET_OD_LIMIT = "'Permanent OD Limit'";
+    public static final String PERMANENET_OD_LIMIT = "Permanent OD Limit";
     public static final String TEMPORARY_OD_LIMIT = "Temporary OD Limit";
     public static final String OVERDUE_LIABILITY = "Overdue Liability";
     public static final String SYSTEM_RESERVED_AMOUNT = "System Reserved Amount";
@@ -153,6 +153,7 @@ public class MyAccountsConstants {
     public static final String CREDIT = "Credit";
     public static final String DEBIT = "Debit";
     public static final String TRANSFER_TYPE = "Transfer Type";
+    public static final String TRANSACTION_TYPE = "Transaction Type";
 
     //-------------------- Buttons --------------------
     public static final String BUTTON_ADVANCE_SEARCH = "'Advance Search'";

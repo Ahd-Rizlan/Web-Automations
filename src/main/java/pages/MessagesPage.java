@@ -146,7 +146,7 @@ public class MessagesPage extends BasePage {
 
             waitForElementPresence(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
             clickOnElement(getElementByTypeAndText(ElementType.button, MessagingConstants.COMPOSE_NEW_MESSAGE));
-            waitForElementToBeInvisible(imgGreyLoader,LONG_WAIT);
+            waitForElementToBeInvisible(imgGreyLoader,VERY_LONG_WAIT);
 
             selectFromDropdown(ddSubject, subject, MessagingConstants.VISIBLE_TEXT);
             waitForElementToBeInvisible(imgGreyLoader,LONG_WAIT);
@@ -196,6 +196,7 @@ public class MessagesPage extends BasePage {
         waitForElementPresence(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES));
         sendKeysToElement(getElementByPlaceholder(ElementType.input,MessagingConstants.SEARCH_MESSAGES),subject);
         waitFor(EXTREME_SHORT_WAIT);
+        waitForElementToBeInvisible(imgGreyLoader,MODERATE_WAIT);
         WebElement latestMessage = getLatestElementByDate(allMessages, getElementByTypeAndText(ElementType.div,MessagingConstants.LAST_MODIFIED_ON), MessagingConstants.LAST_MODIFIED_ON,lblClickableArea);
 //        clickOnElement(latestMessage);
 

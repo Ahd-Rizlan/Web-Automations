@@ -45,13 +45,14 @@ public class MyAccountsPage extends BasePage {
     private static final By btnEditNickName = By.xpath("//tr[contains(@class, 'bg-orange-300')]//img");
     private static final By tfNickName = By.xpath("//input[@name='nickName']");
     private static final By btnClosePopup = By.xpath("//button[@aria-label='close']");
-    private static final By ddCollectingBranch = By.xpath("//select[@name='branch']");
+    private static final By ddCollectingBranch = By.xpath("//select[@name='collectingBranch']");
     private static final By ddNoOfLeaves = By.xpath("//select[@name='noOfLeaves']");
     private static final By ddNoOfChequeBook = By.xpath("//select[@name='noOfChequeBook']");
     private static final By ddAdvancedSearchMonth = By.xpath("//span[@class='rdrMonthPicker']/select");
     private static final By ddAdvancedSearchYear = By.xpath("//span[@class='rdrYearPicker']/select");
     private static final By ddTransactionType = By.xpath("//select[@id='status']");
     private static final By imgMasterCardLogo = By.xpath("//img[contains(@srcset,'MasterCardLogo')]");
+    private static final By imgVisaCardLogo = By.xpath("//img[contains(@srcset,'VisaLogo')]");
     private static final By lblInactiveCardStatus = By.xpath("//div[@class='flex gap-1']/div[1]");
 
 
@@ -605,7 +606,7 @@ public class MyAccountsPage extends BasePage {
                             waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
                             waitForElementToBeInvisible(lblAccountListLoading, VERY_LONG_WAIT);
                             //Remove this once finacle dates are synchronized
-                            advanceSearchByDate(BillerConstants.NUMBER_TWENTY_TWENTY_FOUR, BillerConstants.JULY, BillerConstants.NUMBER_TWENTY_ONE, BillerConstants.NUMBER_TWENTY_ONE);
+//                            advanceSearchByDate(BillerConstants.NUMBER_TWENTY_TWENTY_FOUR, BillerConstants.JULY, BillerConstants.NUMBER_TWENTY_ONE, BillerConstants.NUMBER_TWENTY_ONE);
 
                             aHAccountNo = getTextFromElement(lblAccountHistoryAccountNo(MyAccountsConstants.TAB_PAWNING_HISTORY));
                             if (aHAccountNo.equals(accountNumber)) {
@@ -929,67 +930,111 @@ public class MyAccountsPage extends BasePage {
 
         //Selecet tab and account
         selectTabAndValidate(tabName, tileHeader);
-        searchAndSelectAccountList(accountNumber);
+
+
+        //Navigate and select the account tile
+        //Obtain pagination value
+        cardCount = CommonUtils.splitText(getAttributeOrText(icnAccounts, "text"), "/");
+        //Obtain the accounts record count
+        recordCount = Integer.parseInt(cardCount[1]);
+        if (recordCount != 0) {
+            for (int incr = 0; incr < recordCount; incr++) {
+
+                String accountNumberRetrived = getAttributeOrText(lblAccountNumber, "text").replace(" ", "");
+
+                if (!accountNumberRetrived.equals(accountNumber)) {
+                    //Navigate to next account
+                    clickOnElement(btnNextArrow);
+                    //WaitForElementPresence(lblLoadingIcon);
+                    waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+                    waitForElementToBeInvisible(lblAccountListLoading, LONG_WAIT);
+
+                } else {
+                    clickOnElement(lblAccountNumber);
+                    //WaitForElementPresence(lblLoadingIcon);
+                    waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+                    waitForElementToBeInvisible(lblAccountListLoading, LONG_WAIT);
+                    break;
+                }
+            }
+        } else {
+            addToReport("No accounts", Status.FAIL, true);
+        }
+
+
+//      searchAndSelectAccountList(accountNumber);
 
         waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
         waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
         waitForElementPresence(lblAccountSummaryDetails(MyAccountsConstants.ACCOUNT_CURRENCY), VERY_LONG_WAIT);
 
         // Permanent OD Limit
-        if (odLimit.equals(getAttributeOrText(lblAccountSummaryDetails(MyAccountsConstants.PERMANENET_OD_LIMIT), "text"))) {
-            addToReport("Successfully validated Permanent OD Limit: '" + odLimit + "'", Status.PASS, false);
+        String actualPermanentOD = getAttributeOrText(lblAccountSummaryDetails(MyAccountsConstants.PERMANENET_OD_LIMIT), "text");
+        if (odLimit.equals(actualPermanentOD)) {
+            addToReport("Successfully validated Permanent OD Limit: Expected '" + odLimit + "', Found '" + actualPermanentOD + "'", Status.PASS, false);
         } else {
-            addToReport("Failed to validate Permanent OD Limit: Expected '" + odLimit + "'", Status.FAIL, true);
+            addToReport("Failed to validate Permanent OD Limit: Expected '" + odLimit + "', Found '" + actualPermanentOD + "'", Status.FAIL, true);
         }
 
-        // Temporary OD Limit
-        if (tempOdLimit.equals(getAttributeOrText(lblAccountSummaryDetails(MyAccountsConstants.TEMPORARY_OD_LIMIT), "text"))) {
-            addToReport("Successfully validated Temporary OD Limit: '" + tempOdLimit + "'", Status.PASS, false);
+// Temporary OD Limit
+        String actualTempOD = getAttributeOrText(lblAccountSummaryDetails(MyAccountsConstants.TEMPORARY_OD_LIMIT), "text");
+        if (tempOdLimit.equals(actualTempOD)) {
+            addToReport("Successfully validated Temporary OD Limit: Expected '" + tempOdLimit + "', Found '" + actualTempOD + "'", Status.PASS, false);
         } else {
-            addToReport("Failed to validate Temporary OD Limit: Expected '" + tempOdLimit + "'", Status.FAIL, true);
+            addToReport("Failed to validate Temporary OD Limit: Expected '" + tempOdLimit + "', Found '" + actualTempOD + "'", Status.FAIL, true);
         }
 
-        // Overdue Liability
-        if (overdueLiability.equals(getAttributeOrText(lblAccountSummaryDetails(MyAccountsConstants.OVERDUE_LIABILITY), "text"))) {
-            addToReport("Successfully validated Overdue Liability: '" + overdueLiability + "'", Status.PASS, false);
+// Overdue Liability
+        String actualOverdue = getAttributeOrText(lblAccountSummaryDetails(MyAccountsConstants.OVERDUE_LIABILITY), "text");
+        if (overdueLiability.equals(actualOverdue)) {
+            addToReport("Successfully validated Overdue Liability: Expected '" + overdueLiability + "', Found '" + actualOverdue + "'", Status.PASS, false);
         } else {
-            addToReport("Failed to validate Overdue Liability: Expected '" + overdueLiability + "'", Status.FAIL, true);
+            addToReport("Failed to validate Overdue Liability: Expected '" + overdueLiability + "', Found '" + actualOverdue + "'", Status.FAIL, true);
         }
 
-        // System Reserved Amount
-        if (reservedAmount.equals(getAttributeOrText(lblAccountSummaryDetails(MyAccountsConstants.SYSTEM_RESERVED_AMOUNT), "text"))) {
-            addToReport("Successfully validated System Reserved Amount: '" + reservedAmount + "'", Status.PASS, false);
+// System Reserved Amount
+        String actualReserved = getAttributeOrText(lblAccountSummaryDetails(MyAccountsConstants.SYSTEM_RESERVED_AMOUNT), "text");
+        if (reservedAmount.equals(actualReserved)) {
+            addToReport("Successfully validated System Reserved Amount: Expected '" + reservedAmount + "', Found '" + actualReserved + "'", Status.PASS, false);
         } else {
-            addToReport("Failed to validate System Reserved Amount: Expected '" + reservedAmount + "'", Status.FAIL, true);
+            addToReport("Failed to validate System Reserved Amount: Expected '" + reservedAmount + "', Found '" + actualReserved + "'", Status.FAIL, true);
         }
 
-        // Account Type
-        if (MyAccountsConstants.CURRENT_ACCOUNT.equals(getAttributeOrText(lblAccountSummaryDetails(MyAccountsConstants.ACCOUNT_TYPE), "text"))) {
-            addToReport("Successfully validated Account Type: '" + MyAccountsConstants.CURRENT_ACCOUNT + "'", Status.PASS, false);
+// Account Type
+        String actualAccountType = getAttributeOrText(lblAccountSummaryDetails(MyAccountsConstants.ACCOUNT_TYPE), "text");
+        if (MyAccountsConstants.CURRENT_ACCOUNT.equals(actualAccountType)) {
+            addToReport("Successfully validated Account Type: Expected '" + MyAccountsConstants.CURRENT_ACCOUNT + "', Found '" + actualAccountType + "'", Status.PASS, false);
         } else {
-            addToReport("Failed to validate Account Type: Expected '" + MyAccountsConstants.CURRENT_ACCOUNT + "'", Status.FAIL, true);
+            addToReport("Failed to validate Account Type: Expected '" + MyAccountsConstants.CURRENT_ACCOUNT + "', Found '" + actualAccountType + "'", Status.FAIL, true);
         }
 
-        // Account Opened On
-        if (openedOn.equals(getAttributeOrText(lblAccountSummaryDetails(MyAccountsConstants.ACCOUNT_OPENED_ON), "text"))) {
-            addToReport("Successfully validated Account Opened On: '" + openedOn + "'", Status.PASS, false);
+// Account Opened On
+        String actualOpenedOn = getAttributeOrText(lblAccountSummaryDetails(MyAccountsConstants.ACCOUNT_OPENED_ON), "text");
+        if (openedOn.equals(actualOpenedOn)) {
+            addToReport("Successfully validated Account Opened On: Expected '" + openedOn + "', Found '" + actualOpenedOn + "'", Status.PASS, false);
         } else {
-            addToReport("Failed to validate Account Opened On: Expected '" + openedOn + "'", Status.FAIL, true);
+            addToReport("Failed to validate Account Opened On: Expected '" + openedOn + "', Found '" + actualOpenedOn + "'", Status.FAIL, true);
         }
 
-        // Account Balance
-        if (accountBalance.equals(getAttributeOrText(lblAccountSummaryDetails(MyAccountsConstants.ACCOUNT_BALANCE), "text"))) {
-            addToReport("Successfully validated Account Balance: '" + accountBalance + "'", Status.PASS, false);
+// Account Balance
+        String actualBalance = getAttributeOrText(lblAccountSummaryDetails(MyAccountsConstants.ACCOUNT_BALANCE), "text");
+        if (accountBalance.equals(actualBalance)) {
+            addToReport("Successfully validated Account Balance: Expected '" + accountBalance + "', Found '" + actualBalance + "'", Status.PASS, false);
         } else {
-            addToReport("Failed to validate Account Balance: Expected '" + accountBalance + "'", Status.FAIL, true);
+            addToReport("Failed to validate Account Balance: Expected '" + accountBalance + "', Found '" + actualBalance + "'", Status.FAIL, true);
         }
 
-        // Currency of the account
-        if (MyAccountsConstants.CURRENCY_VALUES[0].equals(getAttributeOrText(lblAccountSummaryDetails(MyAccountsConstants.ACCOUNT_CURRENCY), "text"))) {
-            addToReport("Successfully validated Currency of the account: '" + MyAccountsConstants.CURRENCY_VALUES[0] + "'", Status.PASS, false);
+// Currency of the account
+        String actualCurrency = getAttributeOrText(lblAccountSummaryDetails(MyAccountsConstants.ACCOUNT_CURRENCY), "text");
+        if (MyAccountsConstants.CURRENCY_VALUES[0].equals(actualCurrency)) {
+            addToReport("Successfully validated Currency of the account: Expected '" + MyAccountsConstants.CURRENCY_VALUES[0] + "', Found '" + actualCurrency + "'", Status.PASS, false);
         } else {
-            addToReport("Failed to validate Currency of the account: Expected '" + MyAccountsConstants.CURRENCY_VALUES[0] + "'", Status.FAIL, true);
+            addToReport("Failed to validate Currency of the account: Expected '" + MyAccountsConstants.CURRENCY_VALUES[0] + "', Found '" + actualCurrency + "'", Status.FAIL, true);
         }
+
+        //Backdate to older finacle snap
+        //Remove this once finacle dates are synchronized
+        advanceSearchByDate(BillerConstants.NUMBER_TWENTY_TWENTY_FOUR, BillerConstants.JULY, BillerConstants.NUMBER_TWENTY_ONE, BillerConstants.NUMBER_TWENTY_ONE);
 
         //Validate the search results
         int recordCount = isElementsPresentBy(tblRows);
@@ -1060,10 +1105,11 @@ public class MyAccountsPage extends BasePage {
                     addToReport(" Date " + fullDate + " has successfully returned on search for row count " + inc, Status.PASS, false);
                 }
             }
+            addToReport(" Date validated ", Status.PASS, true);
         } else {
             addToReport("Failed to validate filter function by date '", Status.FAIL, true);
         }
-
+        addToReport(" End of date validation", Status.PASS, true);
         //validate close filter
         clickOnElement(btnCloseFilterIcon(MyAccountsConstants.FILTER_TRANSACTION_DATE));
         waitForElementToBeInvisible(btnCloseFilterIcon(MyAccountsConstants.FILTER_TRANSACTION_DATE), LONG_WAIT);
@@ -1080,6 +1126,9 @@ public class MyAccountsPage extends BasePage {
         sendKeysToElement(getAdvanceSearchFields(ElementType.span, MyAccountsConstants.FILTER_AMOUNT_FROM), amountFrom);
         sendKeysToElement(getAdvanceSearchFields(ElementType.span, MyAccountsConstants.FILTER_AMOUNT_TO), amountTo);
         clickOnElement(getElementByTypeAndText(ElementType.div, MyAccountsConstants.BUTTON_APPLY_FILTERS));
+
+        //Temp search
+        advanceSearchByDate(BillerConstants.NUMBER_TWENTY_TWENTY_FOUR, BillerConstants.JULY, BillerConstants.NUMBER_TWENTY_ONE, BillerConstants.NUMBER_TWENTY_ONE);
 
         waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
         waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
@@ -1098,6 +1147,7 @@ public class MyAccountsPage extends BasePage {
                     addToReport("Failed to validate filter function by amount '", Status.FAIL, true);
                 }
             }
+            addToReport(" Amount validated ", Status.PASS, true);
         } else {
             addToReport("Failed to validate filter function by amount '", Status.FAIL, true);
         }
@@ -1136,12 +1186,13 @@ public class MyAccountsPage extends BasePage {
                     addToReport("Failed to validate filter function by transfer type '", Status.FAIL, true);
                 }
             }
+            addToReport(" Transfer type credit validated ", Status.PASS, true);
         } else {
             addToReport("Failed to validate filter function by transfer type '", Status.FAIL, true);
         }
         // close filter
-        clickOnElement(btnCloseFilterIcon(MyAccountsConstants.TRANSFER_TYPE));
-        waitForElementToBeInvisible(btnCloseFilterIcon(MyAccountsConstants.TRANSFER_TYPE), LONG_WAIT);
+        clickOnElement(btnCloseFilterIcon(MyAccountsConstants.TRANSACTION_TYPE));
+        waitForElementToBeInvisible(btnCloseFilterIcon(MyAccountsConstants.TRANSACTION_TYPE), LONG_WAIT);
         waitForElementToBeInvisible(lblLoadingIcon, VERY_LONG_WAIT);
         waitForElementToBeInvisible(icnTileLoading, VERY_LONG_WAIT);
 
@@ -1172,6 +1223,7 @@ public class MyAccountsPage extends BasePage {
                     addToReport("Failed to validate filter function by transfer type '", Status.FAIL, true);
                 }
             }
+            addToReport(" Transfer type debit validated ", Status.PASS, true);
         } else {
             addToReport("Failed to validate filter function by transfer type '", Status.FAIL, true);
         }
@@ -1292,6 +1344,8 @@ public class MyAccountsPage extends BasePage {
         } else {
             addToReport("No accounts", Status.FAIL, true);
         }
+        waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
+        waitForElementToBeInvisible(lblAccountListLoading, LONG_WAIT);
 
         // Account Holder Name
         if (accHolderName.equals(getAttributeOrText(lblAccountSummaryDetails(MyAccountsConstants.ACCOUNT_HOLDER), "text"))) {
@@ -1397,7 +1451,7 @@ public class MyAccountsPage extends BasePage {
 
         //Wait for download to initiate - update this with dynamic once stabilized
         waitFor(SHORT_WAIT);
-        clickOnElement(btnClosePopup);
+        clickOnElement(tfSearch);
 
         // Get the latest downloaded file
         File latestFile = getLatestDownloadedFile(downloadDirectory);
@@ -1417,7 +1471,7 @@ public class MyAccountsPage extends BasePage {
         } else {
             addToReport(" Failed to download the payment record", Status.FAIL, false);
         }
-        addToReport("----------End of validation of the customer able to download the filtered transactions----------", Status.PASS, false);
+        addToReport("----------End of validation of the customer able to download the filtered transactions----------", Status.PASS, true);
 
     }
 
@@ -1478,9 +1532,14 @@ public class MyAccountsPage extends BasePage {
         if (isElementPresentBy(imgMasterCardLogo)) {
             addToReport("Successfully obtained card type ", Status.PASS, false);
             cardType = MyAccountsConstants.MASTER_INACTIVE;
-        } else {
+        } else if(isElementPresentBy(imgVisaCardLogo)) {
+            addToReport("Successfully obtained card type ", Status.PASS, false);
+            cardType = MyAccountsConstants.VSDC_GOLD;
+
+        }else {
             addToReport("Failed to validate card type", Status.FAIL, true);
         }
+
 
 
         // Credit Card Number

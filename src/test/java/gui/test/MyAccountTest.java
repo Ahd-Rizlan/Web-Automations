@@ -35,7 +35,7 @@ public class MyAccountTest extends BaseTest {
 
     }
 
-    @Test(priority = 4, dataProvider = "LoginDataAlternateOne", description = "Pre-Requisite :: Login to the Sampath vishwa application as alternate user two", dataProviderClass = DataProviders.LoginDataProvider.class)
+    @Test(priority = 4, dataProvider = "LoginDataAlternateNine", description = "Pre-Requisite :: Login to the Sampath vishwa application as alternate user two", dataProviderClass = DataProviders.LoginDataProvider.class)
     public void logIntoDahsboardAlternateUserTwo(String userName, String password, String emailSentSuccessMsg) throws InterruptedException {
 
         loginPage.validateTheLoginPage(LoginConstants.EXPECTED_TITLE, LoginConstants.LOGIN_TILE_NAME);
@@ -49,6 +49,7 @@ public class MyAccountTest extends BaseTest {
     public void validateMyAccountPawning() throws InterruptedException {
 
         dashboardPage.navigateToMainMenu(BillerConstants.BUTTON_MY_ACCOUNTS);
+//        dashboardPage.hoverOverMenuAndClick(BillerConstants.BUTTON_MY_ACCOUNTS,"Pawning");
         myAccountsPage.navigateToAccountProductTypeAndValidate(MyAccountsConstants.TAB_NAME_PAWNING, MyAccountsConstants.TILE_HEADER_PAWNING);
     }
 
@@ -56,6 +57,7 @@ public class MyAccountTest extends BaseTest {
     public void validateMyAccountCreditCard() throws InterruptedException {
 
         dashboardPage.navigateToMainMenu(BillerConstants.BUTTON_MY_ACCOUNTS);
+//        dashboardPage.hoverOverMenuAndClick(BillerConstants.BUTTON_MY_ACCOUNTS,"Credit Cards");
         myAccountsPage.ValidateCreditCardDetails(MyAccountsConstants.CREDIT_CARDS, MyAccountsConstants.ACCOUNTS_CREDIT_CARDS,"");
     }
 

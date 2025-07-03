@@ -14,6 +14,7 @@ public class LoginConstants {
     public static final String BOTH_EMAIL_AND_SMS_SENT_SUCCESSFULLY_MSG = "Both sms and email sending are success";
     public static final String EMAIL_SENT_SUCCESSFULLY_MSG = "Email sent successfully to the registered email address";
     public static final String LOGOUT_CONFIRMATION_MSG = "Are you sure you want to logout?";
+    public static final String USING_SECURITY_QUESTIONS = "Using Security Questions";
 
 
     //--------------Button content-------------------

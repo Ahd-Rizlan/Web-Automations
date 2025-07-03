@@ -11,7 +11,7 @@ import java.util.Arrays;
 public class CurrentAccountDetailedTest extends BaseTest {
 
 
-    @Test(priority = 1, dataProvider = "LoginDataAlternateFive", description = "Pre-Requisite :: Login to the Sampath vishwa application as alternate user Five", dataProviderClass = DataProviders.LoginDataProvider.class)
+    @Test(priority = 1, dataProvider = "LoginDataAlternateOne", description = "Pre-Requisite :: Login to the Sampath vishwa application as alternate user Five", dataProviderClass = DataProviders.LoginDataProvider.class)
     public void logIntoDahsboardAlternateUserFive(String userName, String password, String emailSentSuccessMsg) throws InterruptedException {
 
         loginPage.validateTheLoginPage(LoginConstants.EXPECTED_TITLE, LoginConstants.LOGIN_TILE_NAME);
