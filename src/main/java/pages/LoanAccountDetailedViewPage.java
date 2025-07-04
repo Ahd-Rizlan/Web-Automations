@@ -92,6 +92,7 @@ public class LoanAccountDetailedViewPage extends BasePage {
         waitForElementPresence(lblLoans);
         clickOnElement(lblLoans);
         addToReport("Clicked on the Loan tab ", Status.PASS);
+        waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
 
         if (waitForElementPresence(lblOverDue, PawnConstants.WAIT_EXTREME_LONG)) {
             addToReport("Loan details are visible.", Status.PASS);

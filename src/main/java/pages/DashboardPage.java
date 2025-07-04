@@ -3065,50 +3065,50 @@ public class DashboardPage extends BasePage {
      * Obtain all available accounts with the first being primary
      * @param primaryStatus               - Primary status
      */
-    public void obtainAllAccountTypes(String primaryStatus)
-    {
+    public void obtainAllAccountTypes(String primaryStatus) {
         waitFor(VERY_SHORT_WAIT);
-        //WaitForElementPresence(lblLoadingIcon);
         waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);
         waitForElementToBeInvisible(lblAccountListLoading, LONG_WAIT);
-        waitForElementToBeClickable(icnAccounts,LONG_WAIT);
-        waitFor(VERY_SHORT_WAIT);
-        //Obtain pagination value
-        String[] cardCount=CommonUtils.splitText(getAttributeOrText(icnAccounts,"text"),"/");
 
-        //Obtain the accounts record count
-        int recordCount = Integer.parseInt(cardCount[1]);
-        if (recordCount != 0) {
+        if (isElementPresentBy(icnAccounts)) {
+            waitForElementToBeClickable(icnAccounts, LONG_WAIT);
+            waitFor(VERY_SHORT_WAIT);
+            // Pagination exists — proceed with multiple account handling
+            String[] cardCount = CommonUtils.splitText(getAttributeOrText(icnAccounts, "text"), "/");
+            int recordCount = Integer.parseInt(cardCount[1].trim());
 
-            //Validate primary status
-            String PrimaryStatus = getTextFromElement(lblSavingsPrimaryStatus);
-            if (PrimaryStatus.equalsIgnoreCase(primaryStatus)) {
-                addToReport("Successfully validated primary status : '" + PrimaryStatus + "'", Status.PASS, false);
+            if (recordCount != 0) {
+                String PrimaryStatus = getTextFromElement(lblSavingsPrimaryStatus);
+                if (PrimaryStatus.equalsIgnoreCase(primaryStatus)) {
+                    addToReport("Successfully validated primary status: '" + PrimaryStatus + "'", Status.PASS, false);
+                } else {
+                    addToReport("Primary status is not validated", Status.FAIL);
+                    throw new RuntimeException("Primary status validation failed");
+                }
+
+                for (int inc = 0; inc < recordCount; inc++) {
+                    waitForElementToBeClickable(lblAccountNumber, LONG_WAIT);
+                    String accNumber = getTextFromElement(lblAccountNumber);
+                    addValue(inc, accNumber);
+                    addToReport("Account number added: '" + accNumber + "'", Status.PASS, true);
+
+                    if (inc < recordCount - 1) {
+                        clickOnElement(btnNextArrow);
+                        waitForElementToBeInvisible(lblLoadingIcon, MODERATE_WAIT);
+                    }
+                }
             } else {
-                addToReport("Primary status is not validated", Status.FAIL);
-                throw new RuntimeException("Error - Primary status validation failed");
+                addToReport("No accounts found via pagination", Status.FAIL);
+                throw new RuntimeException("No accounts found");
             }
 
-            for (int inc = 0; inc < recordCount; inc++) {
-
-
-                waitForElementToBeClickable(lblAccountNumber,LONG_WAIT);
-
-                //Store the account number
-                addValue(inc,getTextFromElement(lblAccountNumber));
-                addToReport("Successfully added account number : '" + getTextFromElement(lblAccountNumber) + "'", Status.PASS, true);
-                           //Navigate to next account
-                clickOnElement(btnNextArrow);
-
-            //WaitForElementPresence(lblLoadingIcon);
-            waitForElementToBeInvisible(lblLoadingIcon, MODERATE_WAIT);
-            }
+        } else {
+            // Pagination not present — handle single account
+            waitForElementToBeClickable(lblAccountNumber, LONG_WAIT);
+            String accNumber = getTextFromElement(lblAccountNumber);
+            addValue(0, accNumber);
+            addToReport("Only one account available. Account number: '" + accNumber + "'", Status.PASS, true);
         }
-        else {
-            addToReport("No accounts found", Status.FAIL);
-            throw new RuntimeException("Error - No accounts found");
-        }
-
     }
 
     /**
@@ -3167,6 +3167,27 @@ public class DashboardPage extends BasePage {
         }
 
         addToReport("Successfully validated sub headers", Status.PASS, true);
+    }
+
+    /**
+     * Hover over menu and validate
+     * @param menuName  Menu name
+     * @param subHeader  Sub headers to click
+     */
+    public void hoverOverMenuAndClick(String menuName,String subHeader) {
+        waitForElementPresence(btnMainMenu(menuName));
+        mouseHover(btnMainMenu(menuName));
+        waitForElementToBeClickable(btnSubMenu(subHeader),MODERATE_WAIT);
+        boolean isPresent = isElementPresentBy(btnSubMenu(subHeader));
+        if (isPresent) {
+            addToReport("Successfully validated sub header: " + subHeader, Status.PASS, true);
+        } else {
+            addToReport("Sub header not found under My Accounts: " + subHeader, Status.FAIL, true);
+        }
+        clickOnElement(btnSubMenu(subHeader));
+        clickOnElement(iconUser);
+
+        addToReport("Successfully clicked sub header "+subHeader, Status.PASS, true);
     }
 
 

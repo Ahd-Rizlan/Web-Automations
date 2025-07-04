@@ -14,6 +14,7 @@ public class CreditCardConstants {
     public static final String STATUS_APPROVED = "Approved";
     public static final String STATUS_PENDING = "Pending";
     public static final String STATUS_DECLINED = "Declined";
-
-
+    public static final String BLOCK = "BLOCK CARD";
+    public static final String UNBLOCK = "UNBLOCK CARD";
+   // Request successful
 }

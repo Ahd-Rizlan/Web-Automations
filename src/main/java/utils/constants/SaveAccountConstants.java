@@ -37,7 +37,7 @@ public class SaveAccountConstants {
             "Fixed Deposits 15 Months"
     };
 
-    public static final String[] FD_Number = {"2"};
+    public static final String[] FD_Number = {"2","1"};
 
     public static final String SELF_ACCOUNT_OPENING_HEADING = "Welcome to Sampath Vishwa Self Account Opening";
 
@@ -65,7 +65,7 @@ public class SaveAccountConstants {
     public static final String NAME_INT_CR_ACCOUNT = "int_cr_account";
     public static final String TEXT_CONFIRM_ACCOUNT_OPTIONS = "Please confirm your Fixed Deposit details listed in below section.";
     public static final String FIXED_DEPOSIT_WITHDRAW = "Fixed Deposit Withdraw Confirmation";
-
+    public static final String ACCOUNT_CREATION_MSG_REGEX = "(\\d+) has been successfully created\\.";
 
 
 }

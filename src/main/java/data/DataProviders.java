@@ -96,6 +96,16 @@ public class DataProviders {
             String[] columnNames = {"userName", "password" ,"emailSentSuccessMsg"};
             return XlsReader.getDataFromSheet(filePath, "LoginDataAlternateEight", columnNames).iterator();
         }
+        @DataProvider(name = "LoginDataSavingsFD")
+        public static Iterator<Object[]> getLoginDataSavingFD() {
+            String[] columnNames = {"userName", "password", "emailSentSuccessMsg"};
+            return XlsReader.getDataFromSheet(filePath, "LoginDataSavingsFD", columnNames).iterator();
+        }
+        @DataProvider(name = "LoginDataAlternateNine")
+        public static Iterator<Object[]> getLoginDataAlternateNine() {
+            String[] columnNames = {"userName", "password" ,"emailSentSuccessMsg"};
+            return XlsReader.getDataFromSheet(filePath, "LoginDataAlternateNine", columnNames).iterator();
+        }
 
     }
     public static class DashboardDataProvider {
@@ -226,11 +236,6 @@ public class DataProviders {
             String projectRoot = System.getProperty("user.dir");
             filePath = projectRoot + "/" + property.getProperty("gui-config", "TESTDATA_PATH")+ DataSheetNameConstants.SAVINGS_AND_FD_DATA +DataSheetNameConstants.SHEET_TYPE_XLSX;
         }
-        @DataProvider(name = "LoginDataSavingsFD")
-        public static Iterator<Object[]> getLoginDataSavingFD() {
-            String[] columnNames = {"userName", "password", "emailSentSuccessMsg"};
-            return XlsReader.getDataFromSheet(filePath, "LoginDataAlternateFour", columnNames).iterator();
-        }
         @DataProvider(name = "SavingsAccountNumber")
         public static Iterator<Object[]> getAccountNumberSavingFD() {
             String[] columnNames = {"accountNumber"};
@@ -241,11 +246,15 @@ public class DataProviders {
             String[] columnNames = {"amount", "nickName"};
             return XlsReader.getDataFromSheet(filePath, "AmountSavingsFD", columnNames).iterator();
         }
-
         @DataProvider(name = "FDCompleteFlowData")
         public static Iterator<Object[]> getCompleteFlowData() {
             String[] columnNames = {"userName","password" ,"emailSentSuccessMsg","product","accountNumber","month","rate","amount","interest","totalAmount","nickName"};
             return XlsReader.getDataFromSheet(filePath, "FDCompleteFlowData", columnNames).iterator();
+        }
+        @DataProvider(name = "SavingSuccessMsg")
+        public static Iterator<Object[]> getsuccessMsgSavingAccount() {
+            String[] columnNames = {"successMsg","suffixMsg"};
+            return XlsReader.getDataFromSheet(filePath, "SavingSuccessMsg", columnNames).iterator();
         }
     }
 
@@ -524,7 +533,7 @@ public class DataProviders {
         }
         @DataProvider(name = "ExpectederrorMsg")
         public static Iterator<Object[]> geterrorMsgData() {
-            String[] columnNames = {"errorMsg"};
+            String[] columnNames = {"ExpectederrorMsg"};
             return XlsReader.getDataFromSheet(filePath, "ExpectederrorMsg", columnNames).iterator();
         }
         @DataProvider(name = "LoanDetailsView")
@@ -546,7 +555,7 @@ public class DataProviders {
 
         @DataProvider(name = "CreditCardDetailViewData")
         public static Iterator<Object[]> getLoanDetailsView() {
-            String[] columnNames = {"payingAccountNumber","paymentAmount","errorMsg","successMsg"};
+            String[] columnNames = {"payingAccountNumber","insufficientamountErr","ZeroAmount","paymentAmount","errorMsg","successMsg","successMsgForBlocking","emailSentSuccessMsg"};
             return XlsReader.getDataFromSheet(filePath, "CreditCardDetailViewData", columnNames).iterator();
         }
 

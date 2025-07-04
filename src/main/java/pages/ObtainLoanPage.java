@@ -456,15 +456,21 @@ public class ObtainLoanPage extends BasePage {
 
         waitForElementPresence(getSuccessfulMsg(successMsg),20); //Request successful
         //Validate the error message
-//        if (isElementPresentBy(getSuccessfulMsg(successMsg))) {
-//            addToReport("'" + successMsg + "' message is present.", Status.PASS,true);
-//        } else {
-//            addToReport("'" + successMsg + "'  message is not present.", Status.FAIL);
-//            throw new RuntimeException("Error message validation is unsuccessful.");
-//        }
+        if (isElementPresentBy(getSuccessfulMsg(successMsg))) {
+            addToReport("'" + successMsg + "' message is present.", Status.PASS,true);
+        } else {
+            addToReport("'" + successMsg + "'  message is not present.", Status.FAIL);
+            throw new RuntimeException("Error message validation is unsuccessful.");
+        }
 
         waitForElementToBeInvisible(rdagreementBtn,LONG_WAIT);
     }
+
+    /**
+     *
+     * THis Method will validate the loan confirmation summary
+     *
+     */
 
     public void ValidateObtainLoanConfirmationSummary(){
 

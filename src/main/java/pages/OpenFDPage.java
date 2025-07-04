@@ -270,7 +270,7 @@ public class OpenFDPage extends BasePage {
         }
 
 // === Amount ===
-        String expectedFormattedAmount = "LKR " + expectedAmount;
+        String expectedFormattedAmount = "LKR. " + expectedAmount;
         String actualAmount = getAttributeOrText(lblConfirmationFieldByLabel("Amount"), "text").trim();
         if (expectedFormattedAmount.equalsIgnoreCase(actualAmount)) {
             addToReport("Amount matched: " + actualAmount, Status.PASS, false);
