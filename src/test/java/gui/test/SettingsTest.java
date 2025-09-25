@@ -1,0 +1,104 @@
+package gui.test;
+
+import pages.SettingsPage;
+import utils.Drivers;
+import data.DataProviders;
+import utils.constants.LoginConstants;
+import org.testng.annotations.*;
+import pages.DashboardPage;
+import pages.LoginPage;
+import pages.OTPPage;
+import com.aventstack.extentreports.ExtentTest;
+import utils.report.TestContext;
+import java.lang.reflect.Method;
+
+public class SettingsTest extends BaseTest {
+
+
+
+    @Test(priority = 1, dataProvider = "LoginDataSettings", description = "Pre-Requisite :: Login to the Sampath vishwa application", dataProviderClass = DataProviders.SettingsPageDataProvider.class)
+    public void logIntoDahsboard(String userName, String password, String emailSentSuccessMsg) throws InterruptedException {
+        driver.get(url);
+        loginPage.validateTheLoginPage(LoginConstants.EXPECTED_TITLE, LoginConstants.LOGIN_TILE_NAME);
+        loginPage.loginToSampathVishwaWeb(userName, password, emailSentSuccessMsg, LoginConstants.OTP_PAGE_HEADER, LoginConstants.FALASE);
+        otpPage.validateTheOTPPage(LoginConstants.EXPECTED_TITLE, LoginConstants.OTP_PAGE_HEADER);
+        otpPage.enterOTPAndContinue(LoginConstants.OTP);
+        dashboardPage.validateTheTitle();
+    }
+
+    @Test(priority = 2,dataProvider = "SuccessMessageSettings",description = "Validate the settings panel navigation 24 25 ", dataProviderClass = DataProviders.SettingsPageDataProvider.class)
+    public void navigateToSettings (String successMsg){
+        settingsPage.navigateToSettings(successMsg);
+        settingsPage.enterOTPAndContinueSettingsPage(LoginConstants.OTP);
+    }
+
+    @Test(priority = 3,dataProvider = "SettingsPanelUserData" , description = "Validate the settings panel data 26", dataProviderClass = DataProviders.SettingsPageDataProvider.class)
+    public void validateUserSettingsData (String settingsUserDetails) {
+    settingsPage.validateUserSettingsData( settingsUserDetails);
+    }
+
+    @Test(priority = 6, description = "Navigate to the OTP Mode Verfication 27 28")
+    public void NavigatetoToOTPVerificationMode (){
+        settingsPage.NavigatetoToOTPVerificationMode();
+        settingsPage.validateTheSettingsOTPPage();
+
+
+    }
+    @Test(priority = 7, description = "Navigate to the Password section 30")
+    public void navigateToPasswordSection (){
+        settingsPage.navigateToPasswordSection();
+        settingsPage.enterOTPAndContinuePasswordChangePage(LoginConstants.OTP);
+
+    }
+    @Test(priority = 8,dataProvider = "PasswordChangeDataSettings", description = "Changing the user's Password 31", dataProviderClass = DataProviders.SettingsPageDataProvider.class)
+    public void passwordChange ( String password, String newPassword){
+        settingsPage.passwordChange(password, newPassword);
+    }
+
+    @Test(priority = 4, description = "Validating the primary account  33 34")
+    public void validatePrimaryAccount (){
+        settingsPage.validatePrimaryAccount();
+    }
+
+    @Test(priority = 5,dataProvider = "AccountSuccessMessageSettings", description = "After changing the primary account entering the OTP", dataProviderClass = DataProviders.SettingsPageDataProvider.class)
+    public void enterOTPToChangeThePrimaryAccount (String primaryAccountSentSuccessMsg ){
+        settingsPage.enterOTPAndContinueSettingsPage(LoginConstants.OTP);
+        settingsPage.enterOTPToChangeThePrimaryAccount(primaryAccountSentSuccessMsg );
+    }
+
+    @Test(priority = 9, dataProvider = "LoginAfteThePasswordChange", description = "Login after the password change", dataProviderClass = DataProviders.SettingsPageDataProvider.class)
+    public void loginAfterChangingThePassword (String userName, String password, String newPassword, String LoginErrorMessage,String successMsg,String passwordForRevertTwo, String passwordForRevertThree) {
+        settingsPage.loginAfterChangingThePassword(userName,password,newPassword,LoginErrorMessage,successMsg);
+        otpPage.validateTheOTPPage(LoginConstants.EXPECTED_TITLE, LoginConstants.OTP_PAGE_HEADER);
+        otpPage.enterOTPAndContinue(LoginConstants.OTP);
+        dashboardPage.validateTheTitle();
+        settingsPage.navigateToSettings(successMsg);
+        settingsPage.enterOTPAndContinueSettingsPage(LoginConstants.OTP);
+        settingsPage.NavigatetoToSecuritysection();
+        settingsPage.navigateToPasswordSection();
+        settingsPage.enterOTPAndContinuePasswordChangePage(LoginConstants.OTP);
+        settingsPage.passwordChange(newPassword,passwordForRevertTwo); //password revert
+        settingsPage.loginAfterChangingThePassword(userName,newPassword,passwordForRevertTwo,LoginErrorMessage,successMsg);
+        otpPage.validateTheOTPPage(LoginConstants.EXPECTED_TITLE, LoginConstants.OTP_PAGE_HEADER);
+        otpPage.enterOTPAndContinue(LoginConstants.OTP);
+        dashboardPage.validateTheTitle();
+        settingsPage.navigateToSettings(successMsg);
+        settingsPage.enterOTPAndContinueSettingsPage(LoginConstants.OTP);
+        settingsPage.NavigatetoToSecuritysection();
+        settingsPage.navigateToPasswordSection();
+        settingsPage.enterOTPAndContinuePasswordChangePage(LoginConstants.OTP);
+        settingsPage.passwordChange(passwordForRevertTwo,passwordForRevertThree); //password revert
+        settingsPage.loginAfterChangingThePassword(userName,passwordForRevertTwo,passwordForRevertThree,LoginErrorMessage,successMsg);
+        otpPage.validateTheOTPPage(LoginConstants.EXPECTED_TITLE, LoginConstants.OTP_PAGE_HEADER);
+        otpPage.enterOTPAndContinue(LoginConstants.OTP);
+        dashboardPage.validateTheTitle();
+        settingsPage.navigateToSettings(successMsg);
+        settingsPage.enterOTPAndContinueSettingsPage(LoginConstants.OTP);
+        settingsPage.NavigatetoToSecuritysection();
+        settingsPage.navigateToPasswordSection();
+        settingsPage.enterOTPAndContinuePasswordChangePage(LoginConstants.OTP);
+        settingsPage.passwordChange(passwordForRevertThree,password); //password revert
+
+    }
+
+}

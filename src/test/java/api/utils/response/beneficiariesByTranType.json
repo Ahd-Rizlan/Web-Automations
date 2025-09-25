@@ -1,0 +1,45 @@
+{
+  "beneficiariesByTranTypeResponse": {
+    "responseHeader": {
+      "statusCode": true,
+      "statusDescription": "SUCCESS"
+    },
+    "pageNo": 1,
+    "pageLimit": 2,
+    "recordCount": 39,
+    "beneficiaryListDetails": [
+      {
+        "beneficiaryID": 571435,
+        "accountNo": "22222222222222222222",
+        "accountName": "Adele Harrington",
+        "payeeNickname": "Test Dialog finance",
+        "bankCode": "7162",
+        "branchCode": "001",
+        "bankName": "NATIONS TRUST BANK",
+        "recipientNIC": "",
+        "recipientName": "",
+        "recipientMobile": "",
+        "accountType": "CC",
+        "createdDate": "2025/02/26 16:58:41",
+        "modifiedDate": "N/A",
+        "isFavourite": false
+      },
+      {
+        "beneficiaryID": 570990,
+        "accountNo": "5341780000025500",
+        "accountName": "Vineth",
+        "payeeNickname": "Himan",
+        "bankCode": "7904",
+        "branchCode": "001",
+        "bankName": "HNB FINANCE PLC",
+        "recipientNIC": null,
+        "recipientName": null,
+        "recipientMobile": null,
+        "accountType": "CC",
+        "createdDate": "2025/01/24 12:20:38",
+        "modifiedDate": "N/A",
+        "isFavourite": false
+      }
+    ]
+  }
+}

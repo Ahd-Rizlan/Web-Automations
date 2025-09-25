@@ -1,0 +1,48 @@
+{
+  "doTransfer": {
+    "transactionAccessToken": "",
+    "transferDetails": {
+      "transferType": "TPS",
+      "transferAmount": "100",
+      "transferMode": "ONLINE",
+      "currency": "LKR"
+    },
+    "fromAccount": "001250012566",
+    "chargeDebitAccout": "001250012566",
+    "toAccount": "100350093111",
+    "senderRemarks": "Sender Remarks",
+    "beneficiaryRemarks": "beneficiary Remarks",
+    "toAccountName": "Card Holders Name",
+    "accountNickName": "100350093111",
+    "toCard": "",
+    "bankCode": "7278",
+    "branchCode": "011",
+    "bankName": "",
+    "purpose": "",
+    "scheduleDetails": {
+      "scheduleStartDate": "",
+      "scheduleFrequency": "",
+      "scheduleOccurrences": "",
+      "schedlEndDate": ""
+    },
+    "addAsBeneficiary": "false",
+    "recipientDetails": {
+      "recipientNIC": "",
+      "recipientName": "",
+      "recipientMobile": ""
+    },
+    "senderDetails": {
+      "senderNIC": "",
+      "senderMobile": ""
+    },
+    "fromAccountName": "v11user5",
+    "ccDetailsForSampathCC": {
+      "chainAuth": "",
+      "chainSerno": 0,
+      "initiatedSerno": 0,
+      "initiatedKey": "",
+      "deviceId": "",
+      "encryptionType": ""
+    }
+  }
+}

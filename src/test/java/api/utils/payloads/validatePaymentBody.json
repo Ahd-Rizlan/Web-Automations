@@ -1,0 +1,1 @@
+{"validatePayment":{"transactionType":"ONLINE","billerID":"0000000002","amount":"100","fieldData":[{"fieldName":"1","fieldSequence":"1","fieldValue":"11"},{"fieldName":"2","fieldSequence":"2","fieldValue":"11"}],"currency":"LKR","account":"100100001068"}}

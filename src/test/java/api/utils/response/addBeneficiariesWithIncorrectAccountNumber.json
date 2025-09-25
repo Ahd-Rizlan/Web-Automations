@@ -1,0 +1,11 @@
+{
+  "addBeneficiariesResponse": {
+    "responseHeader": {
+      "statusCode": false,
+      "statusDescription": "FAIL",
+      "errorCode": "Internal Server Error",
+      "errorDescription": "begin 1, end 4, length 3"
+    },
+    "path": "/sbs/net/addBeneficiaries"
+  }
+}

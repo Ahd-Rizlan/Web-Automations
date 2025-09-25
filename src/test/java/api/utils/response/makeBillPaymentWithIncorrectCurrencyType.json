@@ -1,0 +1,10 @@
+{
+  "makeBillPaymentResponse": {
+    "responseHeader": {
+      "statusCode": false,
+      "statusDescription": "FAIL",
+      "errorCode": "TR_DET_S_024",
+      "errorDescription": "Currency Conversion Failed"
+    }
+  }
+}

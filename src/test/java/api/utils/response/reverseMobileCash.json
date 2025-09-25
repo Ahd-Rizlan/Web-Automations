@@ -1,0 +1,10 @@
+{
+  "reverseMobileCashResponse": {
+    "responseHeader": {
+      "statusCode": "false",
+      "statusDescription": "FAIL",
+      "errorCode": "TR_015",
+      "errorDescription": "REVERSE_MOBILE_CASH_FAILED - Mobile Cash transaction not found"
+    }
+  }
+}

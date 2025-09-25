@@ -1,0 +1,12 @@
+{
+  "validatePaymentResponse": {
+    "responseHeader": {
+      "statusCode": "false",
+      "statusDescription": "FAIL",
+      "errorCode": "500",
+      "errorDescription": "System error occured : No enum constant lk.sampath.oc.payments.enums.TransactionType.OTC"
+    },
+    "customerCommissionAmt": null,
+    "fieldData": []
+  }
+}

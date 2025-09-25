@@ -1,0 +1,9 @@
+{
+  "updatePaymentTemplateResponse": {
+    "responseHeader": {
+      "statusCode": true,
+      "statusDescription": "Data Updated."
+    },
+    "templateID": 132223
+  }
+}

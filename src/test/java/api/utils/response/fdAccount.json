@@ -1,0 +1,20 @@
+{
+  "responseHeader": {
+    "statusCode": true,
+    "statusDescription": "Success",
+    "errorCode": "",
+    "errorDescription": ""
+  },
+  "payload": {
+    "accountNumber": "211558078801",
+    "currency": "LKR",
+    "productName": "FD VISHWA WITH INTR REN",
+    "fdAmount": "5000",
+    "maturityDate": "21-10-2024",
+    "interestRate": "8",
+    "maturityAmount": "5100.82",
+    "nickName": "Himan",
+    "page": 1,
+    "recordCount": 8
+  }
+}

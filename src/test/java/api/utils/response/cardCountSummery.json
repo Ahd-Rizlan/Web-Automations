@@ -1,0 +1,13 @@
+{
+  "CreditCardCount": 0,
+  "DebitCardCount": 0,
+  "WebCardCount": 1,
+  "Code": 0,
+  "SubCode": 0,
+  "Message": null,
+  "MessageCustomer": null,
+  "RequestID": "0050569CE44C.20250120133755.b8bcc4fa68b4485094ef6c34da289687.svr",
+  "ChainSerno": 371955.0,
+  "ChainAuth": "2C1FA5F5A87F11DCE06400144FF8DDBE",
+  "SingleUseChainDataList": []
+}

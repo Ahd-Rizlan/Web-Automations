@@ -1,0 +1,10 @@
+{
+  "doTransferResponse": {
+    "responseHeader": {
+      "statusCode": "true"
+    },
+    "transferReference": 14762,
+    "returnMessage": "DO_FINACLE_TRANSFER_SUCCESS",
+    "authenticationType": ""
+  }
+}

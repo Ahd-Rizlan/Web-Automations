@@ -1,0 +1,132 @@
+{
+  "getCustAccountDetailsResponse": {
+    "responseHeader": {
+      "statusCode": true,
+      "statusDescription": "SUCCESS"
+    },
+    "accountDetails": {
+      "savingsAccDetails": [
+        {
+          "acctNumber": "111552420311",
+          "availableBal": "1586703.75",
+          "effAvailableBal": "1586703.75",
+          "lienAmt": "0.00",
+          "acctCrncyCode": "LKR"
+        },
+        {
+          "acctNumber": "111552874967",
+          "availableBal": "1073.00",
+          "effAvailableBal": "1073.00",
+          "lienAmt": "0.00",
+          "acctCrncyCode": "LKR"
+        },
+        {
+          "acctNumber": "111552874821",
+          "availableBal": "10677.00",
+          "effAvailableBal": "10677.00",
+          "lienAmt": "0.00",
+          "acctCrncyCode": "LKR"
+        },
+        {
+          "acctNumber": "111552875032",
+          "availableBal": "21000.00",
+          "effAvailableBal": "21000.00",
+          "lienAmt": "0.00",
+          "acctCrncyCode": "LKR"
+        }
+      ],
+      "fdAcctDetails": [
+        {
+          "acctNumber": "211558078818",
+          "availableBal": "24000.00",
+          "maturityAmt": "24483.95",
+          "lienAmt": "11111.12",
+          "effAvailableBal": "12888.88",
+          "acctCrncyCode": "LKR"
+        },
+        {
+          "acctNumber": "211558078801",
+          "availableBal": "0.00",
+          "maturityAmt": "5100.82",
+          "lienAmt": "0.00",
+          "effAvailableBal": "0.00",
+          "acctCrncyCode": "LKR"
+        },
+        {
+          "acctNumber": "211558078823",
+          "availableBal": "24000.00",
+          "maturityAmt": "24483.95",
+          "lienAmt": "0.00",
+          "effAvailableBal": "24000.00",
+          "acctCrncyCode": "LKR"
+        },
+        {
+          "acctNumber": "211558078814",
+          "availableBal": "250000.00",
+          "maturityAmt": "260397.26",
+          "lienAmt": "11111.12",
+          "effAvailableBal": "238888.88",
+          "acctCrncyCode": "LKR"
+        },
+        {
+          "acctNumber": "211558078817",
+          "availableBal": "0.00",
+          "maturityAmt": "5100.82",
+          "lienAmt": "0.00",
+          "effAvailableBal": "0.00",
+          "acctCrncyCode": "LKR"
+        },
+        {
+          "acctNumber": "211558078831",
+          "availableBal": "24000.00",
+          "maturityAmt": "24483.95",
+          "lienAmt": "0.00",
+          "effAvailableBal": "24000.00",
+          "acctCrncyCode": "LKR"
+        },
+        {
+          "acctNumber": "211558079000",
+          "availableBal": "24000.00",
+          "maturityAmt": "24483.95",
+          "lienAmt": "0.00",
+          "effAvailableBal": "24000.00",
+          "acctCrncyCode": "LKR"
+        },
+        {
+          "acctNumber": "211558079101",
+          "availableBal": "5000.00",
+          "maturityAmt": "5134.79",
+          "lienAmt": "0.00",
+          "effAvailableBal": "5000.00",
+          "acctCrncyCode": "LKR"
+        }
+      ],
+      "loanAccDetails": [
+        {
+          "acctNumber": "311564000179",
+          "loanOsBal": "-5000.00",
+          "sanctionLimit": "5000.00",
+          "acctCrncyCode": "LKR"
+        },
+        {
+          "acctNumber": "311564000181",
+          "loanOsBal": "-5000.00",
+          "sanctionLimit": "5000.00",
+          "acctCrncyCode": "LKR"
+        },
+        {
+          "acctNumber": "311564000180",
+          "loanOsBal": "0.00",
+          "sanctionLimit": "5000.00",
+          "acctCrncyCode": "LKR"
+        },
+        {
+          "acctNumber": "311564000178",
+          "loanOsBal": "-5000.00",
+          "sanctionLimit": "5000.00",
+          "acctCrncyCode": "LKR"
+        }
+      ]
+    }
+  }
+}

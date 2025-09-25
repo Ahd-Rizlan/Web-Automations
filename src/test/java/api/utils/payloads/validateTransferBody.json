@@ -1,0 +1,35 @@
+{
+  "validateTransfer": {
+    "transferDetails": {
+      "transferType": "OWN",
+      "transferAmount": "1000",
+      "transferMode": "ONLINE",
+      "currency": "LKR"
+    },
+    "fromAccount": "000150124034",
+    "toAccount": "100950005879",
+    "senderRemarks": "Sender Remarks",
+    "beneficiaryRemarks": "beneficiary Remarks",
+    "toAccountName": "Card Holders Name",
+    "toCard": "",
+    "bankCode": "",
+    "branchCode": "",
+    "purpose": "",
+    "scheduleDetails": {
+      "scheduleStartDate": "",
+      "scheduleFrequency": "",
+      "scheduleOccurrences": "",
+      "schedlEndDate": ""
+    },
+    "recipientDetails": {
+      "recipientNIC": "",
+      "recipientName": "",
+      "recipientMobile": ""
+    },
+    "senderDetails": {
+      "senderNIC": "",
+      "senderMobile": ""
+    },
+    "chargeDebitAccout": ""
+  }
+}

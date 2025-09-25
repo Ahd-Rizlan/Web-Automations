@@ -1,0 +1,10 @@
+{
+  "validatePaymentResponse": {
+    "responseHeader": {
+      "statusCode": "true",
+      "statusDescription": "Payment validation success"
+    },
+    "customerCommissionAmt": "0.0",
+    "fieldData": []
+  }
+}

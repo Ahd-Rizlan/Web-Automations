@@ -1,0 +1,33 @@
+package gui.test;
+
+import data.DataProviders;
+import org.testng.annotations.Test;
+import utils.constants.LoginConstants;
+
+public class ObtainLoanTest extends BaseTest {
+
+    @Test(priority = 1, dataProvider = "LoginDataAlternateEight", description = "Pre-Requisite :: Login to the Sampath vishwa application", dataProviderClass = DataProviders.LoginDataProvider.class)
+    public void logIntoDahsboard(String userName, String password, String emailSentSuccessMsg) throws InterruptedException {
+        loginPage.validateTheLoginPage(LoginConstants.EXPECTED_TITLE, LoginConstants.LOGIN_TILE_NAME);
+        loginPage.loginToSampathVishwaWeb(userName, password, emailSentSuccessMsg, LoginConstants.OTP_PAGE_HEADER, LoginConstants.FALASE);
+        otpPage.validateTheOTPPage(LoginConstants.EXPECTED_TITLE, LoginConstants.OTP_PAGE_HEADER);
+        otpPage.enterOTPAndContinue(LoginConstants.OTP);
+        dashboardPage.validateTheTitle();
+    }
+
+    @Test(priority = 2, description = "Validate the obtain loan that in the fixed deposit section - 1")
+    public void validateObtainLoanInFixedDeposits (){
+        obtainLoanPage.ValidateObtainLoaninFixedDepositSection();
+    }
+
+    @Test(priority = 3, dataProvider = "LoanDetails", description = "Obtain loan that in quick action section and validating the loan creation confirmation - 2,3,4,5,6,7,8,9,10", dataProviderClass = DataProviders.ObtainLoanDataProvider.class)
+    public void validateObtainLoanInQauickActions (String accountNumber1,String minimumAmount, String maximumAmount, String actualAmount, String wrongMonth, String correctMonth, String purpose, String accountNumber2,String successMsg){
+        dashboardPage.navigateBackToDashboard();
+        obtainLoanPage.obtainAllAccountTypes();
+        dashboardPage.selectQuickActions("Obtain");
+        obtainLoanPage.ValidateObtainLoanPageContent(accountNumber1,minimumAmount, maximumAmount, actualAmount, wrongMonth, correctMonth, purpose, accountNumber2);
+        obtainLoanPage.ValidateObtainLoanConfirmation();
+        obtainLoanPage.enterOTPAndContinueSettingsPage(LoginConstants.OTP,successMsg);
+        obtainLoanPage.ValidateObtainLoanConfirmationSummary();
+    }
+}

@@ -1,0 +1,53 @@
+package api.test;
+
+import api.methods.baseMethod;
+import api.methods.savePaymentTemplate;
+import api.utils.ConstantApiUtils;
+import org.json.simple.parser.ParseException;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Method;
+
+public class api_SavePaymentTemplateTest extends baseMethod {
+	File schema = new File(System.getProperty("user.dir") + ConstantApiUtils.PATH_TO_SCHEMA_FOLDER + "Category_Schema.json");
+	public savePaymentTemplate savePaymentTemplate;
+
+	@BeforeClass()
+	public void setUp() {
+		savePaymentTemplate = new savePaymentTemplate();
+	}
+	@BeforeMethod()
+	public void resetData (Method m){
+		setTestName(m.getName());
+	}
+	@Test(priority = 1,testName = "Verify that a new payment template cannot be saved with Unauthorized Access")
+	public void checkSavePaymentTemplateWithUnauthorizedAccess()  {
+		savePaymentTemplate.authorisedWithInvalidToken();
+		savePaymentTemplate.invokeSavePaymentTemplateApi();
+		savePaymentTemplate.validateResponseCode(ConstantApiUtils.API_STATS_CODE_401);
+	}
+	@Test(priority = 2,testName = "Verify that a new payment template cannot be saved with Incorrect Biller Id")
+	public void checkSavePaymentTemplateWithIncorrectBillerId() throws IOException, ParseException {
+		savePaymentTemplate.authorisedWithValidToken();
+		savePaymentTemplate.setPayloadWithIncorrectBillerId();
+		savePaymentTemplate.invokeSavePaymentTemplateApi();
+		savePaymentTemplate.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
+		savePaymentTemplate.validatePayloadForIncorrectBillerId();
+		savePaymentTemplate.setPayloadWithValidData(); //revert changes for the next test
+	}
+
+	@Test(priority = 3,testName = "Verify that a new payment template can be saved with Authorized Access")
+	public void checkSavePaymentTemplateWithAuthorizedAccess() throws IOException, ParseException {
+		savePaymentTemplate.authorisedWithValidToken();
+		savePaymentTemplate.setPayloadWithValidData();
+		savePaymentTemplate.invokeSavePaymentTemplateApi();
+		savePaymentTemplate.saveTemplateIdToFile();
+		savePaymentTemplate.validateResponseCode(ConstantApiUtils.API_STATS_CODE_200);
+		savePaymentTemplate.validatePayload(); //'templateID' is excluded in the validation as its value is dynamic
+	}
+
+}

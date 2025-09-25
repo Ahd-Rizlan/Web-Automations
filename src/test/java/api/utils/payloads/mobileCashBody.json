@@ -1,0 +1,12 @@
+{
+  "amountFrom": null,
+  "amountTo": null,
+  "debitAccount": "",
+  "pageLimit": 10,
+  "pageNo": 1,
+  "paymentRequestDateFrom": "",
+  "paymentRequestDateTo": "",
+  "status": "",
+  "txnType": "ONLINE"
+
+}

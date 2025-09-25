@@ -1,0 +1,27 @@
+{
+  "getUnutilizedMobileCashResponse": {
+    "responseHeader": {
+      "statusCode": "true",
+      "statusDescription": "SUCCESS"
+    },
+    "unutilizedMobileCashList": [
+      {
+        "beneId": "200119503277",
+        "beneName": " adbadb",
+        "beneTel": "0767080247",
+        "createdBy": 0,
+        "createdDate": "2025-02-20 15:35:16",
+        "currencyCode": "LKR",
+        "debitAccount": "111552874821",
+        "expiryDate": "2025-03-22",
+        "originalPin": "00344025",
+        "receiveDate": "2025-02-20 15:35:16",
+        "senderId": "897456333",
+        "txnAmount": "1,600.00",
+        "txnCommission": "50.00",
+        "txnStatus": "U",
+        "txnType": "POI"
+      }
+    ]
+  }
+}

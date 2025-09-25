@@ -1,0 +1,58 @@
+{
+  "responseHeader": {
+    "statusCode": true,
+    "statusDescription": "Success",
+    "errorCode": "",
+    "errorDescription": ""
+  },
+  "payload": [
+    {
+      "accountNumber": "111552875032",
+      "nickName": "Himan",
+      "isPrimary": "N",
+      "accountType": "SBA",
+      "currency": "LKR",
+      "schemeCode": "VS500",
+      "availableBalance": 2000.0,
+      "solId": "115",
+      "fundsDebitable": true,
+      "fundsCreditable": true
+    },
+    {
+      "accountNumber": "111552874821",
+      "nickName": "Himan",
+      "isPrimary": "N",
+      "accountType": "SBA",
+      "currency": "LKR",
+      "schemeCode": "VS500",
+      "availableBalance": 28550.0,
+      "solId": "115",
+      "fundsDebitable": true,
+      "fundsCreditable": true
+    },
+    {
+      "accountNumber": "111552874967",
+      "nickName": "Himan",
+      "isPrimary": "N",
+      "accountType": "SBA",
+      "currency": "LKR",
+      "schemeCode": "VS500",
+      "availableBalance": 1000.0,
+      "solId": "115",
+      "fundsDebitable": true,
+      "fundsCreditable": true
+    },
+    {
+      "accountNumber": "111552420311",
+      "nickName": "",
+      "isPrimary": "N",
+      "accountType": "SBA",
+      "currency": "LKR",
+      "schemeCode": "SA500",
+      "availableBalance": 1591753.75,
+      "solId": "115",
+      "fundsDebitable": true,
+      "fundsCreditable": true
+    }
+  ]
+}

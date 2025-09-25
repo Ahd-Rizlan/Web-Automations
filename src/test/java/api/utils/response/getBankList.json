@@ -1,0 +1,322 @@
+{
+  "responseHeader": {
+    "statusCode": true,
+    "statusDescription": "Success",
+    "errorCode": "",
+    "errorDescription": ""
+  },
+  "payload": {
+    "banks": [
+      {
+        "code": 7852,
+        "name": "ALLIANCE FINANCE COMPANY PLC",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7463,
+        "name": "AMANA BANK PLC",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7171,
+        "name": "AMERICAN EXPRESS BANK",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7250,
+        "name": "AMSTERDAM TOTTERDAM BANK",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7029,
+        "name": "B.C.C.I (OS) LTD.",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7010,
+        "name": "BANK OF CEYLON",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7700,
+        "name": "BANK OF CHINA LIMITED",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7959,
+        "name": "BIMPUTH FINANCE",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7481,
+        "name": "CARGILLS BANK LIMITED",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7825,
+        "name": "CENTRAL FINANCE COMPANY PLC",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7047,
+        "name": "CITIBANK",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7746,
+        "name": "CITIZENS DEV BUSINESS FINANCE",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7056,
+        "name": "COMMERCIAL BANK OF CEYLON",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7870,
+        "name": "COMMERCIAL CREDIT & FINANCE PLC",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7807,
+        "name": "COMMERCIAL LEASING & FINANCE PLC",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7205,
+        "name": "DEUTSCHE BANK",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7454,
+        "name": "DFCC BANK PLC",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7995,
+        "name": "DIALOG FINANCE PLC",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7199,
+        "name": "HABIB A.G. SURICH",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7074,
+        "name": "HABIB BANK LAKE VIEW",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7083,
+        "name": "HATTON NATIONAL BANK",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7737,
+        "name": "HDFC BANK",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7904,
+        "name": "HNB FINANCE PLC",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7092,
+        "name": "HONGKONG &SHANGHAI BANK",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7108,
+        "name": "INDIAN BANK",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7117,
+        "name": "INDIAN OVERSEAS BANK",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7834,
+        "name": "KANRICH FINANCE LIMITED",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7320,
+        "name": "KOREA EXCHANGE BANK",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7773,
+        "name": "LB FINANCE PLC",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7658,
+        "name": "LCB FINANCE",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7977,
+        "name": "LOLC DEVELOPMENT FINANCE",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7861,
+        "name": "LOLC FINANCE PLC",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7269,
+        "name": "MCB BANK",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7913,
+        "name": "MERCANTILE INVESTMENT & FINANCE PLC",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7898,
+        "name": "MERCHANT BANK OF SL & FINANCE PLC",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7719,
+        "name": "NATIONAL SAVINGS BANK",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7162,
+        "name": "NATIONS TRUST BANK",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7214,
+        "name": "NDB BANK",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7311,
+        "name": "PAN ASIA BANK LTD",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7922,
+        "name": "PEOPLE'S LEASING & FINANCE PLC",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7135,
+        "name": "PEOPLES BANK",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7612,
+        "name": "POLGAHAWELA CO-OPERATIVE REGIONAL RURAL BANK LTD",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7296,
+        "name": "PUBLIC BANK BERHAD",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7755,
+        "name": "REGIONAL DEVELOPMENT BANK",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7621,
+        "name": "REGIONAL RURAL DEV. BANK",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7630,
+        "name": "REGIONAL RURAL DEV.BANK",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7278,
+        "name": "SAMPATH BANK PLC - COMPANY NO PQ 144",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7728,
+        "name": "SANASA DEVELOPMENT BANK",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7445,
+        "name": "SCOTIA BANK",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7782,
+        "name": "SENKADAGALA FINANCE PLC",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7287,
+        "name": "SEYLAN BANK",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7968,
+        "name": "SIYAPATHA FINANCE PLC",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7039,
+        "name": "SOCIETE GENERAL",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7339,
+        "name": "SOCIETE GENERALE",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7603,
+        "name": "SOFTLOGIC FINANCE PLC",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7038,
+        "name": "STANDARD CHARTED BANK",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7144,
+        "name": "STATE BANK OF INDIA",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7764,
+        "name": "STATE MORTGAGE & INVESTMENT BANK",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7990,
+        "name": "TEST BANK B",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7302,
+        "name": "UNION BANK - COLOMBO",
+        "ceft_enabled": true
+      },
+      {
+        "code": 7153,
+        "name": "UNION BANK LIMITED(PAKISTAN)",
+        "ceft_enabled": false
+      },
+      {
+        "code": 7816,
+        "name": "VALLIBEL FINANCE PLC",
+        "ceft_enabled": false
+      }
+    ]
+  }
+}

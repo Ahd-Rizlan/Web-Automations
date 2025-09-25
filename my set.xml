@@ -1,0 +1,69 @@
+<suite name="Sampath SVR4 GUI Test Suite">
+    <listeners>
+        <listener class-name="utils.report.TestNgListener"/>
+    </listeners>
+    <test verbose="2" preserve-order="true" name="Sampath SVR4 GUI Test R2">
+        <classes>
+<!--            <class name="gui.test.ObtainLoanTest">-->
+<!--                <methods>-->
+<!--                    <include name="logIntoDahsboard"/>-->
+<!--                    <include name="validateObtainLoanInFixedDeposits"/>-->
+<!--                    <include name="validateObtainLoanInQauickActions"/>-->
+<!--                </methods>-->
+<!--            </class>-->
+<!--            <class name="gui.test.FDDetailViewTest">-->
+<!--                <methods>-->
+<!--                    <include name="logIntoDahsboard"/>-->
+<!--                    <include name="validateFDdetailsView"/>-->
+<!--                </methods>-->
+<!--            </class>-->
+            <class name="gui.test.PawningTicketTest">
+                <methods>
+                    <include name="logIntoDahsboard"/>
+                    <include name="validatePawnSettlement"/>
+                </methods>
+            </class>
+            <class name="gui.test.LoanAccountDetailedViewTest">
+                <methods>
+                    <include name="logIntoDahsboard"/>
+                    <include name="validatingAndValidationLoan"/>
+                    <include name="validatingPartialSettlement"/>
+                </methods>
+            </class>
+            <class name="gui.test.CreditCardDetailedViewTest">
+                <methods>
+                    <include name="logIntoDahsboard"/>
+                    <include name="validateCreditCardDetailsAndSettlement"/>
+                </methods>
+            </class>
+            <class name="gui.test.OpenFDTest">
+                <methods>
+                    <include name="runFullFDFlow"/>
+                </methods>
+            </class>
+            <class name="gui.test.OpenSavingAccountTest">
+                <methods>
+                    <include name="logIntoDahsboard"/>
+                    <include name="getLoginDataSavingFD"/>
+                    <include name="validateDataSavingFD"/>
+                    <include name="selectAccountNumberDropdown"/>
+                    <include name="enteringFundDetails"/>
+                    <include name="validatingAccountDetails"/>
+                </methods>
+            </class>
+            <class name="gui.test.SettingsTest">
+                <methods>
+                    <include name="logIntoDahsboard"/>
+                    <include name="navigateToSettings"/>
+                    <include name="validateUserSettingsData"/>
+                    <include name="validatePrimaryAccount"/>
+                    <include name="enterOTPToChangeThePrimaryAccount"/>
+                    <include name="NavigatetoToOTPVerificationMode"/>
+                    <include name="navigateToPasswordSection"/>
+                    <include name="passwordChange"/>
+                    <include name="loginAfterChangingThePassword"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

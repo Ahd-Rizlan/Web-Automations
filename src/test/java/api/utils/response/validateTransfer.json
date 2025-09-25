@@ -1,0 +1,9 @@
+{
+  "validateTransferResponse": {
+    "responseHeader": {
+      "statusCode": "true",
+      "statusDescription": "Validation successful - charge not available"
+    },
+    "transferCharge": 0
+  }
+}

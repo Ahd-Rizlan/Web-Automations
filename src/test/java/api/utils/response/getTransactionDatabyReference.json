@@ -1,0 +1,33 @@
+{
+  "responseHeader": {
+    "statusCode": true,
+    "statusDescription": "Success",
+    "errorCode": "",
+    "errorDescription": ""
+  },
+  "transferData": {
+    "tranId": 15587,
+    "status": "SUCCESS",
+    "transactionCategory": "TPS",
+    "transactionType": "ONLINE",
+    "fromAccountNumber": "001250012566",
+    "toAccountName": null,
+    "toAccountNumber": "100350093111",
+    "transactionAmount": 100.00,
+    "currency": "LKR",
+    "transactionDate": "2025-03-07T08:58:03.708+0530",
+    "commissionFromAccountNumber": "001250012566",
+    "commissionAmount": null,
+    "bankCode": "7278",
+    "bankName": "",
+    "branchCode": "011",
+    "beneficiaryRemark": "beneficiary Remarks",
+    "senderRemarks": "Sender Remarks",
+    "cardName": null,
+    "purpose": "",
+    "mobileCashSenderNIC": null,
+    "mobileCashSenderMobile": null,
+    "mobileRecipientMobile": null,
+    "mobileRecipientName": null,
+    "mobileRecipientNIC": null
+  }}

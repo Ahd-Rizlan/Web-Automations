@@ -1,0 +1,10 @@
+{
+  "savePaymentTemplateResponse": {
+    "responseHeader": {
+      "statusCode": false,
+      "statusDescription": "FAIL",
+      "errorCode": "ns0:Server",
+      "errorDescription": "Unauthorized merchant code or Biller id"
+    }
+  }
+}

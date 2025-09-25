@@ -1,0 +1,146 @@
+{
+  "getCategoryListResponse": {
+    "return": [
+      {
+        "RStatus": "V",
+        "categoryId": "001",
+        "categoryName": "Telephone"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": "002",
+        "categoryName": "Cable - TV"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": "003",
+        "categoryName": "Insurance"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": "004",
+        "categoryName": "Automobile"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": "005",
+        "categoryName": "Donations / Charity"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": "009",
+        "categoryName": "Professional Associations"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": "010",
+        "categoryName": "School Fees"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": "012",
+        "categoryName": "Travels & Tours"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": "013",
+        "categoryName": "Internet Service Providers"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": "014",
+        "categoryName": "Hospitals"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": "024",
+        "categoryName": "Electricity"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": "026",
+        "categoryName": "Opticians"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": "027",
+        "categoryName": "Financial Institutions"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": "029",
+        "categoryName": "Leisure"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": "030",
+        "categoryName": "Online Shopping"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": 100,
+        "categoryName": "Leasing"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": 101,
+        "categoryName": "Water Board"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": 103,
+        "categoryName": "Stock Brokers"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": 104,
+        "categoryName": "Tuition  Fees"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": 105,
+        "categoryName": "Government Payments"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": 106,
+        "categoryName": "Education"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": 107,
+        "categoryName": "Mobile Money"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": 108,
+        "categoryName": "Disaster Relief Donations"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": 109,
+        "categoryName": "Airlines"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": 110,
+        "categoryName": "Real Estate"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": 114,
+        "categoryName": "Clubs & Societies"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": 115,
+        "categoryName": "Logistics"
+      },
+      {
+        "RStatus": "V",
+        "categoryId": 118,
+        "categoryName": "Advisory Services"
+      }
+    ]
+  }
+}

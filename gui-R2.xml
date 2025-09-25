@@ -1,0 +1,68 @@
+<suite name="Sampath SVR4 GUI Test Suite">
+    <listeners>
+        <listener class-name="utils.report.TestNgListener"/>
+    </listeners>
+    <test verbose="2" preserve-order="true" name="Sampath SVR4 GUI Test R2">
+        <classes>
+<!--            <class name="gui.test.ObtainLoanTest">-->
+<!--                <methods>-->
+<!--                    <include name="logIntoDahsboard"/>-->
+<!--                    <include name="validateObtainLoanInFixedDeposits"/>-->
+<!--                    <include name="validateObtainLoanInQauickActions"/>-->
+<!--                </methods>-->
+<!--            </class>-->
+<!--            <class name="gui.test.MyAccountTest">-->
+<!--                This includes T-bill and repo-->
+<!--                <methods>-->
+<!--                    <include name="logIntoDahsboardAlternateUserOne"/>-->
+<!--                    <include name="validateMyAccountProductsSavingsCurrent"/>-->
+<!--                    <include name="validateMyAccountProductsDeposit"/>-->
+<!--                    <include name="validateMyAccountProductsPawning"/>-->
+<!--                    <include name="validateMyAccountProductsTBill"/>-->
+<!--                    <include name="validateMyAccountProductsRepo"/>-->
+<!--                    <include name="logIntoDahsboardAlternateUserTwelve"/>-->
+<!--                    <include name="validateMyAccountProductsLoan"/>-->
+<!--                    <include name="validateMyAccountNickName"/>-->
+<!--                    <include name="logIntoDahsboardAlternateUserTwo"/>-->
+<!--                    <include name="validateMyAccountCreditCard"/>-->
+<!--                </methods>-->
+<!--            </class>-->
+<!--            <class name="gui.test.FDDetailViewTest">-->
+<!--                <methods>-->
+<!--                    <include name="logIntoDahsboard"/>-->
+<!--                    <include name="validateFDdetailsView"/>-->
+<!--                </methods>-->
+<!--            </class>-->
+<!--            <class name="gui.test.PawningTicketTest">-->
+<!--                <methods>-->
+<!--                    <include name="logIntoDahsboard"/>-->
+<!--                    <include name="validatePawnSettlement"/>-->
+<!--                </methods>-->
+<!--            </class>-->
+            <!--Messaging covered in R1-->
+<!--            <class name="gui.test.CurrentAccountDetailedTest">-->
+<!--                <methods>-->
+<!--                    <include name="logIntoDahsboardAlternateUserFive"/>-->
+<!--                    <include name="validateCADetails"/>-->
+<!--                    <include name="validateCAChequeRequestFields"/>-->
+<!--                    <include name="validateCAFilter"/>-->
+<!--                    <include name="validateStopAndRevokeCheque"/>-->
+<!--                    <include name="validateInwardAndTransferCheque"/>-->
+<!--                </methods>-->
+<!--            </class>-->
+<!--            <class name="gui.test.SavingsAccountDetailedTest">-->
+<!--                <methods>-->
+<!--                    <include name="logIntoDahsboardAlternateUserFive"/>-->
+<!--                    <include name="validateSADetails"/>-->
+<!--                </methods>-->
+<!--            </class>-->
+<!--            <class name="gui.test.LoanAccountDetailedViewTest">-->
+<!--                <methods>-->
+<!--                    <include name="logIntoDahsboard"/>-->
+<!--                    <include name="validatingAndValidationLoan"/>-->
+<!--                    <include name="validatingPartialSettlement"/>-->
+<!--                </methods>-->
+<!--            </class>-->
+        </classes>
+    </test>
+</suite>

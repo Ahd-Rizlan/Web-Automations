@@ -1,0 +1,30 @@
+{
+  "paymentDetails": {
+    "paymentId": "11089",
+    "amount": "100.00",
+    "currency": "LKR",
+    "billerID": "0000000274",
+    "billerName": "Lady J",
+    "paymentRequestDate": "2025-02-20 11:21:59.543",
+    "status": "SUCCESSFUL",
+    "paymentDetails": "0763256987",
+    "fromAccountNo": "100950005879",
+    "scheduleId": null,
+    "scheduleTransactionId": null,
+    "maskCreditCardNumber": null,
+    "fieldData": [
+      {
+        "fieldSequence": "1",
+        "fieldValue": "0763256987",
+        "fieldName": "0763256987"
+      }
+    ]
+  },
+  "responseHeader": {
+    "statusCode": "true",
+    "statusDescription": "SUCCESS",
+    "errorCode": null,
+    "errorDescription": null,
+    "merchantError": null
+  }
+}

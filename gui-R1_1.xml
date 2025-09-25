@@ -1,0 +1,123 @@
+<suite name="Sampath SVR4 GUI Test Suite">
+    <listeners>
+        <listener class-name="utils.report.TestNgListener"/>
+    </listeners>
+    <test verbose="2" preserve-order="true" name="Sampath SVR4 GUI Test">
+        <classes>
+            <class name="gui.test.LoginTest">
+                <methods>
+                    <include name="validateTheLoginPage"/>
+                    <include name="validateTheSuccessfulLogin"/>
+                    <include name="validateTheBrowserBackAndForward"/>
+                    <include name="validateTheUnSuccessfulLoginWithIncorrectPassword"/>
+                    <include name="validateTheSuccessfulLogout"/>
+                    <include name="validateTheUnSuccessfulResetWithIncorrectPassword"/>
+                     <!--Update below with revert-->
+                    <!-- <include name="validateIncorrectAnswersForSecurityQuestions"/> -->
+                    <include name="ValidateLoginAttemptWithLockedUserID"/>
+                    <include name="validateTheUnSuccessfulResetWithLockedUser"/>
+                </methods>
+            </class>
+            <class name="gui.test.DashboardTest">
+                <methods>
+                    <include name="logIntoDahsboard"/>
+                    <include name="validateSavingsAccountAtDashboard"/>
+                    <include name="validateFixedDepositAccountAtDashboard"/>
+                    <include name="validateLoanAccountAtDashboard"/>
+                    <include name="validateQuickActionAtDashboard"/>
+                    <include name="validateQuickActionsWidgetsFunctionality"/>
+                    <include name="validateAvailabilityOfRVTTransfer"/>
+                    <include name="validateAvailabilityOfRVTPayments"/>
+                    <include name="validateRVTMobileCashWidgetRecords"/>
+                    <include name="validateRVTTransactionRetrievalOA"/>
+                    <include name="validateRVTTransactionRetrievalOtherAcc"/>
+                    <include name="validateRVTPaymentRetrieval"/>
+                    <include name="validateRVTMobileCashRetrieval"/>
+                    <include name="validateMarkedBillersAsFavouriteIsVisibleInBillerWidget"/>
+                    <include name="validateAvailabilityOfFavouriteBiller"/>
+                    <include name="validateReInitiationOfTransactionsFromFavouriteBiller"/>
+                    <include name="validateAvailabilityOfFavouritePayee"/>
+                    <include name="validateReInitiationOfTransactionsFromFavouritePayee"/>
+                    <include name="validateAddNewPayeeFromFavouritePayee"/>
+                    <include name="validateMsgOrAdvertisements"/>
+                    <include name="validateTopBarIconsInDashboard"/>
+                    <include name="validateKeyPointsInAccounts"/>
+                    <include name="validateTopBarFunctions"/>
+                    <include name="validateKeyPointsInDeposits"/>
+                    <include name="validateMarkedPayeesAsFavouriteIsVisibleInPayeeWidget"/>
+                    <include name="validateKeyPointsInLoans"/>
+                    <include name="validateDownloadedRecord"/>
+                    <include name="logIntoDahsboardAlternateUserOne"/>
+                    <include name="validatePortfolioioFunctions"/>
+                    <include name="validateKeyPointsInCurrentAccount"/>
+                    <include name="validateSettingsOption"/>
+                    <include name="logIntoDahsboardAlternateUserNine"/>
+                    <include name="validateKeyPointsInCredit"/>
+                </methods>
+            </class>
+            <class name="gui.test.PaymentsAndBillerMaintenanceTest">
+                <methods>
+                    <include name="logIntoDahsboard"/>
+                    <include name="validateFavouriteIcons"/>
+                    <include name="validateSavedBillerFilterOptions"/>
+                    <include name="validateBillPaymentSearchCategories"/>
+                    <include name="logIntoDahsboardAlternateUserOne"/>
+                    <include name="validateBillPaymentsThroughAccounts"/>
+                    <include name="logIntoDahsboardAlternateUserThree"/>
+                    <include name="validateNoSavedBillersAreMarkedAsFav"/>
+                </methods>
+            </class>
+            <class name="gui.test.SettingsTest">
+                <methods>
+                    <include name="logIntoDahsboard"/>
+                    <include name="navigateToSettings"/>
+                    <include name="validateUserSettingsData"/>
+                    <include name="validatePrimaryAccount"/>
+                    <include name="enterOTPToChangeThePrimaryAccount"/>
+                     <include name="NavigatetoToOTPVerificationMode"/>
+                    <include name="navigateToPasswordSection"/>
+                    <include name="passwordChange"/>
+                    <include name="loginAfterChangingThePassword"/>
+                </methods>
+            </class>
+            <class name="gui.test.MakeTransactionsTest">
+                <methods>
+                    <include name="logIntoDahsboardAlternateUserOne"/>
+                    <include name="validateOwnAccountTransfers"/>
+                    <include name="validateOtherAccountTransfers"/>
+                    <include name="validateOtherCreditCardTransfers"/>
+                </methods>
+            </class>
+            <class name="gui.test.MessagingTest">
+                <methods>
+                    <include name="logIntoDahsboardAlternateUserOne"/>
+                    <include name="fdInquiryAndSendMail"/>
+                    <include name="validateCardCenterMessages"/>
+                    <include name="validateFundTranferRequest"/>
+                    <include name="validateBalanceConfirmationRequest"/>
+                    <include name="validateFundTransferDispute"/>
+                    <include name="validateOtherMessages"/>
+                    <include name="validateInboxAndRestoreMessages"/>
+                    <include name="validateDraftMessages"/>
+                    <include name="validateBillPaymentDispute"/>
+                    <include name="validateComposeNewMessage"/>
+                </methods>
+            </class>
+            <class name="gui.test.OpenFDTest">
+                <methods>
+                    <include name="runFullFDFlow"/>
+                </methods>
+            </class>
+            <class name="gui.test.OpenSavingAccountTest">
+                <methods>
+                    <include name="logIntoDahsboard"/>
+                    <include name="getLoginDataSavingFD"/>
+                    <include name="validateDataSavingFD"/>
+                    <include name="selectAccountNumberDropdown"/>
+                    <include name="enteringFundDetails"/>
+                    <include name="validatingAccountDetails"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

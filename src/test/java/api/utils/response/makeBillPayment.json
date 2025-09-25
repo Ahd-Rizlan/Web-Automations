@@ -1,0 +1,11 @@
+{
+  "makeBillPaymentResponse": {
+    "responseHeader": {
+      "statusCode": "true",
+      "statusDescription": "Bill payment successful"
+    },
+    "reference": "20250101185450",
+    "authFlag": null,
+    "paymentRefId": "10652"
+  }
+}

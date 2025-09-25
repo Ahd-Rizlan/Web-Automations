@@ -1,0 +1,10 @@
+{
+  "amountFrom": "",
+  "amountTo": "",
+  "pageLimit": 10,
+  "pageNo": 1,
+  "paymentRequestDateFrom": "",
+  "paymentRequestDateTo": "",
+  "paymentRequestId": "",
+  "status": "SUCCESSFUL"
+}

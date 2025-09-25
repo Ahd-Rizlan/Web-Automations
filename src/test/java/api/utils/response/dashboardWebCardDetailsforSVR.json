@@ -1,0 +1,22 @@
+{
+  "LstDashboardWebCards": [
+    {
+      "CardSerno": 2052810.0,
+      "CardNumber": "4505 82XX XXXX 2421",
+      "CardType": "Visa Web",
+      "CAN": "4500000020528102",
+      "AvailableBalance": 0.0,
+      "Status": "Inactive",
+      "Expiry": "2024/5",
+      "Currency": null
+    }
+  ],
+  "Code": 0,
+  "SubCode": 0,
+  "Message": null,
+  "MessageCustomer": null,
+  "RequestID": "0050569CE44C.20250124082552.d2ddf6ad13b144b5b2ba00a3524ced17.svr",
+  "ChainSerno": 376032.0,
+  "ChainAuth": "2C6BCDA253AF2140E06400144FF8DDBE",
+  "SingleUseChainDataList": []
+}
