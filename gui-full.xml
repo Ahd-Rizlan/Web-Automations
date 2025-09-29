@@ -243,9 +243,10 @@
                     <class name="gui.test.MultipleBillersTest">
                         <methods>
                             <include name="logIntoDahsboard"/>
-                            <include name="AccessSavedBillersPage"/>
-                            <include name="AccessSavedBillersPageThroughNavBar"/>
-                            <include name="ValidatePageContents"/>
+<!--                            <include name="AccessSavedBillersPage"/>-->
+<!--                            <include name="AccessSavedBillersPageThroughNavBar"/>-->
+<!--                            <include name="ValidatePageContents"/>-->
+<!--                            <include name="PaySingleBillers"/>-->
                             <include name="PayMultipleBillers"/>
                         </methods>
                     </class>

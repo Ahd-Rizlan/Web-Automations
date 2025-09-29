@@ -16,7 +16,6 @@ public class MultipleBillersPage extends BasePage {
     }
     Set<Integer> usedIndexes = new HashSet<>();
     private List<Map<String, String>> allSelectedPayeeDetails = new ArrayList<>();
-    private Map<String, String> payeeInfo = new HashMap<String, String>();
 
 
     public enum ElementType {
@@ -348,6 +347,9 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
             payeeInfo.put("BillerName", billerName);
             payeeInfo.put("Amount", amount);
             payeeInfo.put("FiledValue", filedValue);
+
+            allSelectedPayeeDetails.add(payeeInfo);
+
             addToReport("Successfully obtained nickname : " + templateName + " - Biller Name : "+billerName
                     +" - Amount : "+amount+" - FiledValue : "+filedValue+
                     ", Record Number - " + selectedRecord, Status.PASS, false);
@@ -453,15 +455,16 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
                     addToReport("Quick Bill Payment Model Page is present",Status.PASS,false);
                     if (isElementPresentBy(validateSpanElements("text-gray-500","Payment Using"))){
                         addToReport("Payment Method is Present",Status.PASS,false);
-                        if (isElementPresentBy(validateRadioBtn(RDO_ACCOUNT))){
-                            addToReport("Account Radio Button is Present",Status.PASS,false);
-                        }else {
-                            addToReport("Account Radio Button is not Present",Status.FAIL,true);
-                        }
                         if (isElementPresentBy(validateRadioBtn(RDO_CREDIT_CARD))) {
                             addToReport("Credit Card Radio Button is Present", Status.PASS, false);
                         }else {
                             addToReport("Credit Card Radio Button is not Present",Status.FAIL,true);
+                        }
+
+                        if (isElementPresentBy(validateRadioBtn(RDO_ACCOUNT))){
+                            addToReport("Account Radio Button is Present",Status.PASS,false);
+                        }else {
+                            addToReport("Account Radio Button is not Present",Status.FAIL,true);
                         }
 
 
@@ -482,7 +485,22 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
                 clickOnElement(btnBack);
             }
         }
-
+//    public void printAllSelectedPayeeDetails() {
+//        if (allSelectedPayeeDetails.isEmpty()) {
+//            addToReport("No payee details available.-------------------------------------------------------------------------------",Status.INFO);
+//            return;
+//        }
+//
+//        int index = 1;
+//        for (Map<String, String> payee : allSelectedPayeeDetails) {
+//            addToReport("Payee " + index + ":",Status.INFO);
+//            for (Map.Entry<String, String> entry : payee.entrySet()) {
+//                addToReport("  " + entry.getKey() + " : " + entry.getValue(),Status.PASS);
+//            }
+//            index++;
+//            addToReport("-----------------------------------",Status.PASS);
+//        }
+//    }
 
     public void clearUsedIndexes() {
 
