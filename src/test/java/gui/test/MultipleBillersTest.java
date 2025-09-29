@@ -41,12 +41,21 @@ public class MultipleBillersTest extends BaseTest {
         multipleBillersPage.navigateToPayeeAndBillers();
         multipleBillersPage.validateSavedBillersPage();
     }
+    @Test(priority = 4,description = "Pay for a single Biller")
+    public void PaySingleBillers(){
+        multipleBillersPage.navigateToPayeeAndBillers();
+        multipleBillersPage.selectOneSavedBillerRecord(PAGINATION_LIMIT);
+        multipleBillersPage.PayBill();
 
+        multipleBillersPage.clearUsedIndexes();
+    }
 
-    @Test(priority = 4,description = "Pay for Multiple Billers")
+    @Test(priority = 5,description = "Pay for Multiple Billers")
     public void PayMultipleBillers(){
         multipleBillersPage.navigateToPayeeAndBillers();
-        multipleBillersPage.SelectMultipleSavedPayees(MAX_SELECTABLE_SAVED_BLLERS);
+        multipleBillersPage.SelectMultipleSavedBillers(MAX_SELECTABLE_SAVED_BLLERS);
+        multipleBillersPage.clearUsedIndexes();
+    
     }
 
 
