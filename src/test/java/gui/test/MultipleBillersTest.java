@@ -45,8 +45,7 @@ public class MultipleBillersTest extends BaseTest {
     public void PaySingleBillers(){
         multipleBillersPage.navigateToPayeeAndBillers();
         multipleBillersPage.selectOneSavedBillerRecord(PAGINATION_LIMIT);
-        multipleBillersPage.PayBill();
-
+        multipleBillersPage.validateAndPayBillForSingleBiller();
         multipleBillersPage.clearUsedIndexes();
     }
 

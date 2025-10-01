@@ -41,6 +41,9 @@ public abstract class BasePage extends helpers {
     }
 
 
+    public enum CurrencyType {
+        LOCAL,OTHER
+    }
     /**
      * Types the specified text into an input field identified by the provided By locator.
      * <p>
@@ -471,6 +474,22 @@ public abstract class BasePage extends helpers {
     }
 
     /**
+     * Retrieves the value of a specified attribute from an element identified by a By locator.
+     *
+     * @param byLocator the By locator used to identify the element
+     * @param attribute the name of the attribute whose value is to be retrieved (e.g., "value", "class")
+     * @return The value of the attribute as a String, or null if an error occurs.
+     */
+    public String getAttributeFromElement(By byLocator, String attribute) {
+        try {
+            WebElement element = driver.findElement(byLocator);
+            return element.getAttribute(attribute);
+        } catch (Exception e) {
+            System.err.println("Error getting attribute '" + attribute + "' from element: " + e.getMessage());
+            return null;
+        }
+    }
+    /**
      * Checks if an element is invisible, identified by the provided By locator.
      * <p>
      * This method waits for the element to become invisible for up to 10 seconds.
@@ -663,7 +682,7 @@ public abstract class BasePage extends helpers {
             WebElement webElement = wait.until(ExpectedConditions.elementToBeClickable(byLocator));
             webElement.clear();
             addToReport("Clear the '" + byLocator + "' input textbox.", Status.PASS);
-            waitFor(EXTREME_SHORT_WAIT);
+            waitFor(SHORT_WAIT);
         } catch (Exception e) {
             addToReport("Unable to clear the '" + byLocator + "'  textbox.", Status.FAIL);
             System.err.println("Error clearing the web element " + e.getMessage());
@@ -1008,6 +1027,100 @@ public abstract class BasePage extends helpers {
             return null;
         }
 
+    }
+
+    /**
+     * Get the highest dropdown value lower than a given threshold for a specific currency type
+     */
+    public String getValueBelowThreshold(By dropdownLocator, CurrencyType currencyType, double thresholdAmount) {
+        // Get all option texts
+        List<String> allOptions = getSelectedOptionText(dropdownLocator, "ALL_OPTIONS");
+        // Get all option values
+        List<String> allValues = getSelectedOptionText(dropdownLocator, "ALL_OPTIONS_VALUE");
+
+        if (allOptions == null || allOptions.isEmpty() || allValues == null || allValues.isEmpty()) {
+            addToReport("Dropdown has no options", Status.FAIL,true);
+            throw new RuntimeException("Dropdown has no options");
+        }
+
+        double maxAmountBelowThreshold = -1;
+        String valueOfMaxBelowThreshold = null;
+
+        for (int i = 0; i < allOptions.size(); i++) {
+            String optionText = allOptions.get(i);
+            String optionValue = allValues.get(i);
+
+            // Filter by currency type
+            if (currencyType.name().equalsIgnoreCase("local") && !optionText.contains("LKR")) continue;
+            if (currencyType.name().equalsIgnoreCase("other") && optionText.contains("LKR")) continue;
+
+            // Extract numeric amount after "AVL."
+            String[] parts = optionText.split("AVL\\.");
+            if (parts.length < 2) continue;
+            String amountPart = parts[1].replaceAll("[^0-9.]", ""); // keep digits and dot
+            double amount = Double.parseDouble(amountPart);
+
+            // Check if amount is below threshold and higher than current max below threshold
+            if (amount < thresholdAmount && amount > maxAmountBelowThreshold) {
+                maxAmountBelowThreshold = amount;
+                valueOfMaxBelowThreshold = optionValue;
+            }
+        }
+
+        if (valueOfMaxBelowThreshold == null) {
+            addToReport("No accounts found below threshold for currency type: " + currencyType, Status.INFO);
+        }
+        addToReport(valueOfMaxBelowThreshold+" is found below threshold for currency type: " + currencyType, Status.INFO);
+
+        return valueOfMaxBelowThreshold;
+    }
+
+
+
+    /**
+     * Get the Max amount of the Dropdown Element
+     */
+    public String getValueOfHighestVisibleAmount(By dropdownLocator, CurrencyType currencyType) {
+        // Get all option texts
+        List<String> allOptions = getSelectedOptionText(dropdownLocator, "ALL_OPTIONS");
+        // Get all option values
+        List<String> allValues = getSelectedOptionText(dropdownLocator, "ALL_OPTIONS_VALUE");
+
+        if (allOptions == null || allOptions.isEmpty() || allValues == null || allValues.isEmpty()) {
+            addToReport("Dropdown has no options", Status.FAIL,true);
+            throw new RuntimeException("Dropdown has no options");
+        }
+
+        double maxAmount = -1;
+        String valueOfMax = null;
+
+        for (int i = 0; i < allOptions.size(); i++) {
+            String optionText = allOptions.get(i);
+            String optionValue = allValues.get(i);
+
+            // Filter by currency type
+            if(currencyType.name().equalsIgnoreCase("local") && !optionText.contains("LKR")) continue;
+            if(currencyType.name().equalsIgnoreCase("other") && optionText.contains("LKR")) continue;
+
+            // Extract numeric amount after "AVL."
+            String[] parts = optionText.split("AVL\\.");
+            if(parts.length < 2) continue;
+            String amountPart = parts[1].replaceAll("[^0-9.]", ""); // keep digits and dot
+            double amount = Double.parseDouble(amountPart);
+
+            // Check if this is the new maximum
+            if(amount > maxAmount) {
+                maxAmount = amount;
+                valueOfMax = optionValue;
+            }
+        }
+
+        if(valueOfMax == null) {
+            addToReport("No accounts found for currency type: " + currencyType, Status.INFO);
+            throw new RuntimeException("No accounts found for currency type: " + currencyType);
+        }
+        addToReport( currencyType.name() + " account with highest available amount: " + maxAmount+"is Selected - "+valueOfMax , Status.INFO);
+        return valueOfMax;
     }
 
     /**
