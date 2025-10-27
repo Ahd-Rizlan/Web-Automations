@@ -3,7 +3,6 @@ package pages;
 import com.aventstack.extentreports.Status;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 import java.util.*;
 
@@ -17,6 +16,7 @@ public class MultipleBillersPage extends BasePage {
     }
     Set<Integer> usedIndexes = new HashSet<>();
     private List<Map<String, String>> allSelectedPayeeDetails = new ArrayList<>();
+    static float totalAmount = 0;
 
 
     public enum ElementType {
@@ -25,6 +25,9 @@ public class MultipleBillersPage extends BasePage {
     public enum PayUsing {
         Card, LKR ,OTHER;
     }
+
+    private static  String selectedFromAccount ="";
+    private static  String selectedBillerName ="";
 
     private static final By imgGreyLoader = By.xpath("//div[contains(@class,'bg-gray')]");
     private static final By btnRightArrow = By.xpath("//img[contains(@src,'FArrowRight')]");
@@ -40,22 +43,69 @@ public class MultipleBillersPage extends BasePage {
     private static final By tblSBSelectedRows = By.xpath("//tbody//tr[contains(@class,'bg-orange-300 ')]");
     private static final By tblSBNotSelectedRows = By.xpath("//tbody//tr[contains(@class,'bg-white')]");
     private static final By lblSelectedPayeeContainer = By.xpath("//div[contains(@class,'flex-wrap') and contains(@class,'justify-end')]");
-    private static final By btnPayNow = By.xpath("//button[contains(normalize-space(text()),'Pay now')]");
-    private static final By SPModelPage = By.xpath("//div[contains(@class,'fixed') and contains(@class,'backdrop-blur')][//div[contains(@class,'font-bold') and normalize-space()='Quick Bill Payments'] ]");
+//    private static final By btnPayNow = By.xpath("//button[contains(normalize-space(text()),'Pay now')]");
+
     private static final By btnBack= By.xpath("//button[@type='button' and normalize-space(text())='Back']");
     private static final By ddFromCCard = By.xpath("//select[@name='cardSerialNumber']");
     private static final By ddFromAccount = By.xpath("//select[@id='accountfrom']");
     private static final By dynamicPayNowBtn = By.xpath("//button[@type='submit' and contains(normalize-space(.), 'Pay now') ]");
     private static final By selectedAccountContainer = By.xpath(".//div[@class='border-[1px] flex relative justify-between border-[#008926] bg-white rounded-lg w-full h-[120px] overflow-hidden']");
+    private static final By btnCloseToast = By.xpath("//button[contains(@class,'close')]");
 
-    private static By validateSelectedCurrencyDetails(int spanNumber){
+    private static final By otpConfirmationPage = By.xpath("//div[contains(@class,'BillPaymentConfirmation_scroll__yF3va')]");
+    private static final By otpPageMainHeading = By.xpath("//div[@class='font-bold' and contains(text(), 'Payment Confirmation')]");
+    private static final By otpPageSubHeading = By.xpath("//div[@class='font-normal' and contains(text(), 'Please review your transaction')]");
+    private static final By otpPageBillerName = By.xpath(".//div[contains(@class,'flex flex-col text-sm')]//span[1]");
+    private static final By otpPageFieldValue = By.xpath(".//div[contains(@class,'flex flex-col text-sm')]//span[2]");
+    private static final By btnConfirmOtp = By.xpath("//button[contains(normalize-space(text()),'Confirm')]");
+    private static final By btnDisabledConfirmOtp = By.xpath("//button[contains(normalize-space(text()),'Confirm') and @disabled]");
+    private static final By lblPaymentProcessing =By.xpath("//div[contains(text(),'Payment Processing Fee')]");
+    private static final By lblSuccess = By.xpath("//span[text()='Success']");
+    private static final By lblRefernceID = By.xpath("//span[text()='Success']//following::span[2]");
+    private static final By btnPrint = By.xpath("//button[normalize-space()='Print']");
+    private static final By btnOTPClosePopup = By.xpath("//button[contains(@class,'absolute top-4')]/img");
+
+    private static final By otpConfirmationPageMultipleBillers = By.xpath("//div[contains(@class,'MultipleBillPaymentConfirmation_scroll__p0Qy2')]");
+    private static final By otpConfirmationPageMultipleBillersHeaderText = By.xpath("//div[@class='font-bold']");
+    private static final By otpConfirmationPageMultipleBillersSubHeaderText = By.xpath("//div[text()='Use wide range of biller network to make your payments with ease.']");
+
+
+    private static final By pgeSuccess = By.xpath("//div[contains(@class,'BillPaymentConfirmation_scroll__yF3va')]");
+    private static final By pgeSuccessPageBillerName = By.xpath(".//div[contains(@class,'flex flex-col text-sm')]//span[1]");
+    private static final By pgeSuccessPageFieldValue = By.xpath(".//div[contains(@class,'flex flex-col text-sm')]//span[2]");
+
+    private static final By NEXT_ARROW = By.xpath("//div[contains(@class,'rounded-r-lg') and .//img[contains(@alt,'Next')]]");
+
+    public static By getPayNowButton() {
+            return By.xpath("//button[contains(normalize-space(text()),'Pay now')]");
+    }
+
+    private static By getPayNowButton(String amount) {
+        return By.xpath("//button[contains(translate(normalize-space(text()), ',',''), 'Pay now LKR " + amount + "')]");
+    }
+
+    private static By getSPModelPage(String headerText) {
+        return By.xpath(
+                "//div[contains(@class,'fixed') and contains(@class,'backdrop-blur')]" +
+                        "[.//div[contains(@class,'font-bold') and normalize-space()='" + headerText + "']]"
+        );
+    }
+    private static By lblAmountConfirmation(String amount) {
+        return By.xpath(
+                "//span[contains(normalize-space(.), 'You are about to pay Total') and contains(normalize-space(.), '" + amount + "')]");
+    }
+
+    private static By tfOTP(int Index) {
+        return By.xpath("//input[contains(@class,'otp-box')][" + Index + "]");
+    }
+    private static By getSelectedCurrencyDetails(int spanNumber){
         return By.xpath(".//div[contains(@class,'bg-[#c6cdc83f]')]//div//div//span["+spanNumber+"]");
     }
-    private static By validateSelectedAccountDetails(int spanNumber){
+    private static By getSelectedAccountDetails(int spanNumber){
         return By.xpath(".//div[@class='flex flex-col justify-center font-semibold ml-6 mr-3 w-1/3']/span["+spanNumber+"]");
     }
     private static By validateErrorMessage(String errorMessage){
-        return By.xpath("//p[@class='text-red-500' and normalize-space(text())='"+errorMessage+"']");
+        return By.xpath("//p[contains(@class,'text-red-500') and contains(text(),'"+errorMessage+"']");
     }
 
     private static By validateToastMessage(String Message){
@@ -82,21 +132,38 @@ public class MultipleBillersPage extends BasePage {
         return By.xpath("//button/span[normalize-space(text())='"+btnName+"']");
     }
 
-    private static By validateSpanElements(String className, String txtContain) {
+    private static By getSpanElements(String className, String txtContain) {
         return By.xpath("//span[contains(@class,'" + className + "') and normalize-space(text())='" + txtContain + "']");
     }
-    private static By validateRequiredSpanElements(String className, String txtContain) {
+    private static By getRequiredSpanElements(String className, String txtContain) {
         return By.xpath("//span[contains(@class,'" + className + "') and normalize-space(text())='" + txtContain + "']//span[contains(@class,'text-red-500') and normalize-space(text())='*']");
     }
-    private static By validateInputElements(ElementType Type, String placeholder) {
-        return By.xpath("//input[@type='"+Type+"' and @placeholder='"+placeholder+"']");
-    }
-    private static By validateInputElements(ElementType Type,ElementType inputMode) {
+
+    private static By getInputElements(ElementType Type, ElementType inputMode) {
         return By.xpath("//input[@type='"+Type+"' and @inputmode='"+inputMode+"']");
     }
-    private static By validateRadioBtn(String txtContain) {
+    private static By getRadioBtn(String txtContain) {
         return By.xpath("//label[normalize-space(text())='"+ txtContain.trim() +"' and input[@type='radio']]");
     }
+    private static By getInputFields(ElementType InputType,String followingSiblingText ) {
+        return By.xpath("//div[contains(@class,'border p-3  rounded block gap-4 flex flex-col')]//input[@type='"+InputType+"' and following-sibling::span[contains(text(),'"+followingSiblingText+"')]]");
+    }
+
+    private static By getInputFieldsMultipleBiller(ElementType InputType,String followingSiblingText ) {
+        return By.xpath("//input[@type='"+InputType+"' and following-sibling::span[contains(text(),'"+followingSiblingText+"')]]");
+    }
+
+    private static By getInputElements(ElementType type, ElementType inputMode, String followingSiblingText, int billerIndex) {
+        // Example fieldName: "amount" or "validations.0.fieldValue"
+        return By.xpath("//div[contains(@class,'border p-3  rounded block gap-4 flex flex-col')]//input[@type='" + type + "' and @inputmode='" + inputMode +
+                "' and @name='billPayList." + billerIndex + "." + followingSiblingText.toLowerCase() + "']");
+    }
+
+
+    public static By getTableValue(String label) {
+        return By.xpath( "//table[@class='w-full border-collapse ']//td[text()='" + label +"']/following-sibling::td");
+    }
+
 
     /**
      * Select header tab
@@ -381,8 +448,10 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
 
             allSelectedPayeeDetails.add(payeeInfo);
 
-            addToReport("Successfully obtained nickname : " + templateName + " - Biller Name : "+billerName
-                    +" - Amount : "+amount+" - FiledValue : "+filedValue+
+            
+
+            addToReport("Successfully obtained nickname : " + payeeInfo.get("TemplateName") + " - Biller Name : "+payeeInfo.get("BillerName")
+                    +" - Amount : "+payeeInfo.get("Amount")+" - FiledValue : "+payeeInfo.get("FiledValue")+
                     ", Record Number - " + selectedRecord, Status.PASS, false);
         }else {
             if (templateName.isEmpty()) {
@@ -435,60 +504,333 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
                 throw new RuntimeException("Error - some records were already selected");
             }
 
-            // Track used indexes to avoid duplicates
-
-            // Loop to select unique random records
+            // Step 1: Select up to the allowed number of billers
             for (int i = 0; i < maxNumberOfBillers; i++) {
-//                String templateName = selectOneSavedBillerRecord(totalRowsSP, usedIndexes);
                 String templateName = selectOneSavedBillerRecord(totalRowsSP);
-                addToReport("Loop iteration " + (i + 1) + " selected: " + templateName,
-                        Status.PASS, false);
+                addToReport("Selected biller (" + (i + 1) + "): " + templateName, Status.PASS, false);
+            }
+
+            // Step 2: Attempt one extra selection beyond the limit
+            addToReport("Attempting to select one extra biller beyond the allowed limit (" + maxNumberOfBillers + ")", Status.INFO, false);
+            int selectedRecord = generateUniqueRandomNumber(totalRowsSP,usedIndexes);
+            clickOnElement(selectSavedBillers(selectedRecord));
+
+            // Step 3: Wait for toast error to appear
+            waitForElementPresence(validateToastMessage(MAX_BILLER_ERROR));
+            if (isElementPresentBy(validateToastMessage(MAX_BILLER_ERROR))) {
+                String toastMsg = getTextFromElement(validateToastMessage(MAX_BILLER_ERROR));
+                addToReport("Toast error displayed correctly: '" + toastMsg + "'", Status.PASS, false);
+                clickOnElement(btnCloseToast);
+            } else {
+                addToReport("No toast error appeared after selecting beyond limit.", Status.FAIL, true);
             }
 
         } catch (Exception e) {
             addToReport("Error when selecting payee", Status.FAIL, true);
-            throw new RuntimeException("Error - Failed to selecting payee " + e.getMessage(), e);
+            throw new RuntimeException("Error - Failed while selecting payee: " + e.getMessage(), e);
         }
     }
 
 
-    public void validateAndPayBillForSingleBiller() {
+    public void clickPayNowButton() {
         try {
             if (isElementPresentBy(lblSelectedPayeeContainer)) {
-                waitForElementPresence(btnPayNow);
-                if (isElementPresentBy(btnPayNow)){
+                waitForElementPresence(getPayNowButton());
+                if (isElementPresentBy(getPayNowButton())){
                     addToReport("PayNow Button is Visible",Status.PASS,false);
-                    clickOnElement(btnPayNow);
-                    ValidatePayBillModelPageForSingleSelectedBiller();
-                    // validate Model Page
+                    clickOnElement(getPayNowButton());
 
 
                 }else {
                     addToReport("PayNow Button is Not-Visible",Status.FAIL,true);
                 }
-
             }else {
                 addToReport("No Biller selected or selected payee Labels are not visible",Status.FAIL,true);
             }
-
             }catch(Exception e) {
             addToReport("Selected Biller Label container is not visible", Status.FAIL, true);
             throw new RuntimeException("Selected Biller container is not visible" + e.getMessage(), e);
             }
         }
+        //-----------------  Select Multiple payee  -----------------
 
-    private void ValidatePayBillModelPageForSingleSelectedBiller(){
+    public void ValidatePayBillModelPageForMultipleSelectedBiller() {
+        try {
+            addToReport("-------------------------- Validating the PayBill model Page --------------------------", Status.INFO, true);
+            if (isElementPresentBy(getSPModelPage(MULTIPLE_BILL_PAYMENTS))) {
+                addToReport("Multiple Bill Payment Model Page is present",Status.PASS,false);
+
+                }else {
+                    addToReport("Payment Method section is not present",Status.FAIL,true);
+                }
+
+                try{
+                    if (isElementPresentBy(ddFromAccount)){
+                        addToReport("Accounts dropdown is Present",Status.PASS,false);
+                    } else {
+                        addToReport("Accounts dropdown is not Present",Status.FAIL,true);
+                    }
+                }catch (Exception e){
+                    throw new RuntimeException("Failed to Retrieve Accounts" + e.getMessage(), e);
+                }
+
+
+            // --- Start of Data Cross-Validation ---
+            if (allSelectedPayeeDetails.isEmpty()) {
+                addToReport("Cannot perform validation. The list of selected payee details is empty.", Status.FAIL, true);
+                throw new IllegalStateException("allSelectedPayeeDetails is empty.");
+            }else {
+
+// Iterate through all selected payee details
+            for (int i = 0; i < allSelectedPayeeDetails.size(); i++) {
+
+                Map<String, String> expectedDetails;
+                expectedDetails = allSelectedPayeeDetails.get(i);
+
+                String expectedTemplateName = expectedDetails.get("TemplateName");
+                String expectedBillerName = expectedDetails.get("BillerName");
+                String expectedAmount = expectedDetails.get("Amount");
+                totalAmount+= Float.parseFloat(expectedAmount.replaceAll("[^\\d.]", ""));
+                addToReport("Validating Biller Record " + (i + 1) + " of " + allSelectedPayeeDetails.size(), Status.INFO, false);
+
+                By inputTemplateName = getInputFields(ElementType.text, TEMPLATE_NAME);
+                By inputBillerName = getInputFields(ElementType.text, BILLER_NAME);
+                By inputAmount = getInputElements(ElementType.text, ElementType.numeric, Amount,i);
+
+                // 1️⃣ Validate Template Name
+                if (isElementPresentBy(inputTemplateName)) {
+                    String actualTemplateName = getAttributeFromElement(inputTemplateName, "value");
+                    if (actualTemplateName.equals(expectedTemplateName)) {
+                        addToReport("Template Name validation PASSED. Expected: '" + expectedTemplateName + "', Actual: '" + actualTemplateName + "'.", Status.PASS, false);
+                    } else {
+                        addToReport("Template Name validation FAILED. Expected: '" + expectedTemplateName + "', Actual: '" + actualTemplateName + "'.", Status.FAIL, true);
+                    }
+                } else {
+                    addToReport("Template Name input field could not be found on the modal.", Status.FAIL, true);
+                }
+
+                // 2️⃣ Validate Biller Name
+                if (isElementPresentBy(inputBillerName)) {
+                    String actualBillerName = getAttributeFromElement(inputBillerName, "value");
+                    if (actualBillerName.equals(expectedBillerName)) {
+                        addToReport("Biller Name validation PASSED. Expected: '" + expectedBillerName + "', Actual: '" + actualBillerName + "'.", Status.PASS, false);
+
+                        if (BILLER_DATA.containsKey(actualBillerName)) {
+                            List<String> selectedBiller = BILLER_DATA.get(actualBillerName);
+                            ValidatePhoneBillers(selectedBiller);
+                            selectedBillerName = BILLER_DATA.get(actualBillerName).get(0);
+                        } else {
+                            addToReport("Other Biller is selected", Status.PASS, false);
+                        }
+                    } else {
+                        addToReport("Biller Name validation FAILED. Expected: '" + expectedBillerName + "', Actual: '" + actualBillerName + "'.", Status.FAIL, true);
+                    }
+                } else {
+                    addToReport("Biller Name input field could not be found on the modal.", Status.FAIL, true);
+                }
+
+                // 3️⃣ Validate Amount Field
+                if (isElementPresentBy(inputAmount)) {
+                    clickOnElement(inputAmount);
+                    clearTheElement(inputAmount);
+
+                    if (getAttributeFromElement(inputAmount, "value").isEmpty()) {
+                        addToReport("Amount field cleared successfully.", Status.PASS, false);
+
+                        if (isElementPresentBy(validateErrorMessage(ERROR_MSG_AMOUNT))) {
+                            addToReport("Amount required error message is displayed as expected after clearing the field.", Status.PASS, false);
+                        } else {
+                            addToReport("Amount required error message is NOT displayed after clearing the field.", Status.FAIL, true);
+                        }
+                    } else {
+                        addToReport("Failed to clear the Amount field.", Status.FAIL, true);
+                    }
+
+                    sendKeysToElement(inputAmount, expectedAmount);
+
+                    String actualAmount = getAttributeFromElement(inputAmount, "value");
+                    String normalizedExpectedAmount = expectedAmount.replaceAll("[^\\d.]", "");
+                    String normalizedActualAmount = actualAmount.replaceAll("[^\\d.]", "");
+
+                    if (normalizedActualAmount.trim().equals(normalizedExpectedAmount.trim())) {
+                        addToReport("Amount validation PASSED. Expected: '" + normalizedExpectedAmount + "', Actual: '" + normalizedActualAmount + "'.", Status.PASS, false);
+                    } else {
+                        addToReport("Amount validation FAILED. Expected: '" + normalizedExpectedAmount + "', Actual: '" + normalizedActualAmount + "'.", Status.FAIL, true);
+                    }
+
+                } else {
+                    addToReport("Amount input field could not be found on the modal.", Status.FAIL, true);
+                }
+
+                // 4️⃣ Move to the next record (if not the last one)
+                if (i < allSelectedPayeeDetails.size() - 1) {
+                    if (isElementPresentBy(NEXT_ARROW)) {
+                        clickOnElement(NEXT_ARROW);
+                        isElementPresentBy(inputBillerName, 5); // wait for next modal to load
+                        addToReport("Moved to next biller record.", Status.INFO, false);
+                    } else {
+                        addToReport("Next arrow not found. Cannot move to the next biller.", Status.FAIL, true);
+                        break;
+                    }
+                }
+            }
+
+            if (isElementPresentBy(btnBack)){
+                addToReport("Back Button is Present",Status.PASS,false);
+            }else {
+                addToReport("Back Button is not Present",Status.FAIL,true);
+            }
+            String formattedTotalAmount = String.format("%.2f", totalAmount);
+
+            if (isElementPresentBy(getPayNowButton(formattedTotalAmount))){
+                addToReport("PayNow Button with Total Amount LKR " + formattedTotalAmount + " is Present", Status.PASS, false);
+                clickOnElement(getPayNowButton(formattedTotalAmount));
+
+            } else {
+                addToReport("PayNow Button with Total Amount LKR " + formattedTotalAmount + " is not Present", Status.FAIL, true);
+                throw new RuntimeException("PayNow Button is not Present");
+            }
+
+
+
+}
+
+        } catch (Exception e) {
+            addToReport("An unexpected error occurred in ValidatePayBillModelPageForSingleSelectedBiller", Status.FAIL, true);
+            throw new RuntimeException("Error during PayNow Model Page validation: " + e.getMessage(), e);
+        }
+
+    }
+
+    public void validateMultipleBillerOTPConfirmationPage(String payFrom){
+        String normalizedPayFrom = "";
+
+        addToReport("----------Start of validation of Multiple Payment Success page----------", Status.PASS, false);
+
+        waitForElementPresence(otpConfirmationPageMultipleBillers);
+        if (isElementPresentBy(otpConfirmationPageMultipleBillers)) {
+            addToReport("Multiple Biller OTP Confirmation Page is Present",Status.PASS,false);
+
+            if (isElementPresentBy(otpConfirmationPageMultipleBillersHeaderText))
+            {
+                String headerText = getTextFromElement(otpConfirmationPageMultipleBillersHeaderText);
+                if (headerText.equals(OTP_CONFIRMATION_PAGE_MULTIPLE_BILLER_HEADER_TEXT)) {
+                    addToReport("OTP Confirmation Header Text is Validated", Status.PASS, false);
+                } else {
+                    addToReport("OTP Confirmation Header Text Mismatches" + " Expected = " + OTP_CONFIRMATION_PAGE_MULTIPLE_BILLER_HEADER_TEXT + ", Actual=" + headerText, Status.FAIL, true);
+                }
+            } else {
+                addToReport("OTP Confirmation Header Text is not available", Status.FAIL, true);
+            }
+            if (isElementPresentBy(otpConfirmationPageMultipleBillersSubHeaderText)){
+                addToReport("Sub Header Text is Present",Status.PASS,false);
+            }else {
+                addToReport("Sub Header Text is not Present",Status.FAIL,true);
+            }
+
+            if (isElementPresentBy(getInputFieldsMultipleBiller(ElementType.text,PAYFROM))){
+                String actualPayFrom = getTextFromElement(getInputFieldsMultipleBiller(ElementType.text,PAYFROM));
+                String normalizedActualPayFrom = actualPayFrom.replaceAll("[^\\d.]", "");
+                normalizedPayFrom = payFrom.replaceAll("[^\\d.]", "");
+                if (normalizedActualPayFrom.trim().equals(normalizedPayFrom.trim())) {
+                    addToReport("PayFrom validation PASSED. Expected: '" + normalizedPayFrom + "', Actual: '" + normalizedActualPayFrom + "'.", Status.PASS, false);
+                } else {
+                    addToReport("PayFrom validation FAILED. Expected: '" + normalizedPayFrom + "', Actual: '" + normalizedActualPayFrom + "'.", Status.FAIL, true);
+                }
+            }else {
+                addToReport("payFrom field is not visible in OTP Page",Status.FAIL,true);
+            }
+
+
+            if (isElementPresentBy(getInputFieldsMultipleBiller(ElementType.text,Total_Amount))){
+                String totalAmountActual = getTextFromElement(getInputFieldsMultipleBiller(ElementType.text,Total_Amount));
+                String normalizedExpectedTotalAmount = Float.toString(totalAmount).replaceAll("[^\\d.]", "");
+                if (totalAmountActual.trim().equals(normalizedExpectedTotalAmount.trim())) {
+                    addToReport("TotalAmount validation PASSED. Expected: '" + normalizedExpectedTotalAmount + "', Actual: '" + totalAmountActual + "'.", Status.PASS, false);
+                } else {
+                    addToReport("TotalAmount validation FAILED. Expected: '" + normalizedExpectedTotalAmount + "', Actual: '" + totalAmountActual + "'.", Status.FAIL, true);
+                }
+            }else {
+                addToReport("TotalAmount field is not visible in OTP Page",Status.FAIL,true);
+            }
+
+//------------------------------------------
+
+            if (allSelectedPayeeDetails.isEmpty()) {
+                addToReport("Cannot perform validation. The list of selected payee details is empty.", Status.FAIL, true);
+                throw new IllegalStateException("allSelectedPayeeDetails is empty.");
+            }else {
+
+                // Iterate through all selected payee details
+
+                for (int i = 0; i < allSelectedPayeeDetails.size(); i++) {
+
+                    Map<String, String> expectedDetails;
+                    expectedDetails = allSelectedPayeeDetails.get(i);
+
+                    String expectedTemplateName = expectedDetails.get("TemplateName");
+                    String expectedFiledValue = expectedDetails.get("FiledValue");
+                    String expectedBillerName = expectedDetails.get("BillerName");
+                    String expectedAmount = expectedDetails.get("Amount");
+                    totalAmount += Float.parseFloat(expectedAmount.replaceAll("[^\\d.]", ""));
+                    addToReport("Validating Biller Record " + (i + 1) + " of " + allSelectedPayeeDetails.size(), Status.INFO, false);
+
+                    By inputTemplateName = getTableValue(TEMPLATE_NAME);
+                    By inputBillerName = getTableValue(Amount);
+                    By inputAmount = getInputElements(ElementType.text, ElementType.numeric, Amount, i);
+
+                    if (isElementPresentBy(otpPageBillerName)){
+                        String actualBillerName = getTextFromElement(otpPageBillerName);
+                        if (actualBillerName.equals(expectedBillerName)){
+                            addToReport("Biller Name validation PASSED. Expected: '" + expectedBillerName + "', Actual: '" + actualBillerName + "'.", Status.PASS, false);
+                        }else {
+                            addToReport("Biller Name validation FAILED. Expected: '" + expectedBillerName + "', Actual: '" + actualBillerName + "'.", Status.FAIL, true);
+                        }
+                    }else {
+                        addToReport("Biller Name is not visible in OTP Page",Status.FAIL,true);
+                    }
+
+                    if (isElementPresentBy(otpPageFieldValue)){
+                        String actualFiledValue = getTextFromElement(otpPageFieldValue);
+                        if (actualFiledValue.trim().equals(expectedFiledValue.trim())){
+                            addToReport("Filed Value validation PASSED. Expected: '" + expectedFiledValue + "', Actual: '" + actualFiledValue + "'.", Status.PASS, false);
+                        }else {
+                            addToReport("Filed Value validation FAILED. Expected: '" + expectedFiledValue + "', Actual: '" + actualFiledValue + "'.", Status.FAIL, true);
+                        }
+                    }else {
+                        addToReport("Filed Value is not visible in OTP Page",Status.FAIL,true);
+                    }
+
+
+
+                }
+            }
+
+
+
+        }else {
+            addToReport("Multiple Biller OTP Confirmation Page is not Present",Status.FAIL,true);
+        }
+
+
+
+
+    }
+
+//-----------------  Select Single payee  -----------------
+
+    public void ValidatePayBillModelPageForSingleSelectedBiller(){
         try {
             addToReport("-------------------------- Validating the PayBill model Page --------------------------",Status.INFO,true);
-            if (isElementPresentBy(SPModelPage)) {
+            if (isElementPresentBy(getSPModelPage(QUICK_BILL_PAYMENTS))) {
                 addToReport("Quick Bill Payment Model Page is present",Status.PASS,false);
 
-                if (isElementPresentBy(validateSpanElements("text-gray-500","Payment Using"))){
+                if (isElementPresentBy(getSpanElements("text-gray-500","Payment Using"))){
                     addToReport("Payment Method section is Present",Status.PASS,false);
 
-                    if (isElementPresentBy(validateRadioBtn(RDO_CREDIT_CARD))) {
+                    if (isElementPresentBy(getRadioBtn(RDO_CREDIT_CARD))) {
                         addToReport("Credit Card Radio Button is Present", Status.PASS, false);
-                        clickOnElement(validateRadioBtn(RDO_CREDIT_CARD));
+                        clickOnElement(getRadioBtn(RDO_CREDIT_CARD));
                         if (isElementPresentBy(ddFromCCard)){
                             addToReport("Credit Cards dropdown is Present",Status.PASS,false);
                         } else {
@@ -498,9 +840,9 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
                         addToReport("Credit Card Radio Button is not Present",Status.FAIL,true);
                     }
 
-                    if (isElementPresentBy(validateRadioBtn(RDO_ACCOUNT))){
+                    if (isElementPresentBy(getRadioBtn(RDO_ACCOUNT))){
                         addToReport("Account Radio Button is Present",Status.PASS,false);
-                        clickOnElement(validateRadioBtn(RDO_ACCOUNT));
+                        clickOnElement(getRadioBtn(RDO_ACCOUNT));
                         try{
                             if (isElementPresentBy(ddFromAccount)){
                                 addToReport("Accounts dropdown is Present",Status.PASS,false);
@@ -533,9 +875,9 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
                 String expectedBillerName = expectedDetails.get("BillerName");
                 String expectedAmount = expectedDetails.get("Amount");
 
-                By inputTemplateName = validateInputElements(ElementType.text, TEMPLATE_NAME);
-                By inputBillerName = validateInputElements(ElementType.text, BILLER_NAME);
-                By inputAmount = validateInputElements(ElementType.text, ElementType.numeric);
+                By inputTemplateName = getInputFields(ElementType.text, TEMPLATE_NAME);
+                By inputBillerName = getInputFields(ElementType.text, BILLER_NAME);
+                By inputAmount = getInputElements(ElementType.text, ElementType.numeric);
 
 
                 // 1. Validate Template Name
@@ -557,8 +899,9 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
                         addToReport("Biller Name validation PASSED. Expected: '" + expectedBillerName + "', Actual: '" + actualBillerName + "'.", Status.PASS, false);
 
                         if (BILLER_DATA.containsKey(actualBillerName)) {
-                            List<String> config = BILLER_DATA.get(actualBillerName);
-                            ValidatePhoneBillers(config);
+                            List<String> selectedBiller = BILLER_DATA.get(actualBillerName);
+                            ValidatePhoneBillers(selectedBiller);
+                            selectedBillerName = BILLER_DATA.get(getAttributeFromElement(inputBillerName, "value")).get(0);
                         } else {
                             addToReport("Other Biller is selected", Status.PASS, false);
                         }
@@ -601,6 +944,8 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
                 // Additional action: Retrieve and log account balance below a threshold
                 validateLowBalanceToastMessage(ddFromAccount,expectedAmount,CurrencyType.LOCAL,ERROR_TST_INSUF_BALANCE);
                 validatePayBill(ddFromAccount,CurrencyType.LOCAL,SUCCESS_OTP_SENT);
+                validateOTPConfirmationPage(allSelectedPayeeDetails, selectedFromAccount);
+
 
             }else {
                 addToReport("Quick Bill Payment Model Page is not Visible",Status.FAIL,true);
@@ -612,8 +957,124 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
         }
     }
 
+    private void validateOTPConfirmationPage(List<Map<String, String>> allSelectedPayeeDetails,String payFrom){
+        String normalizedPayFrom = "";
+
+        try {
+            waitForElementPresence(otpConfirmationPage);
+            if (isElementPresentBy(otpConfirmationPage)){
+                addToReport("OTP Confirmation Page is loaded successfully",Status.PASS,false);
+                if (isElementPresentBy(otpPageMainHeading)){
+                    addToReport("OTP Page Main Heading is visible",Status.PASS,false);
+                }else {
+                    addToReport("OTP Page Main Heading is not visible",Status.FAIL,true);
+                }
+                if (isElementPresentBy(otpPageSubHeading)){
+                    addToReport("OTP Page Sub Heading is visible",Status.PASS,false);
+                }else {
+                    addToReport("OTP Page Sub Heading is not visible",Status.FAIL,true);
+                }
+
+                if (allSelectedPayeeDetails.isEmpty()){
+                    addToReport("Cannot perform validation. error loading the selected payee data.", Status.FAIL, true);
+                    throw new IllegalStateException("Cannot perform validation. error loading the selected payee data..");
+                }else {
+                    Map<String, String> expectedDetails = allSelectedPayeeDetails.get(0);
+
+                    String expectedTemplateName = expectedDetails.get("TemplateName");
+                    String expectedBillerName = expectedDetails.get("BillerName");
+                    String expectedAmount = expectedDetails.get("Amount");
+                    String expectedFiledValue = expectedDetails.get("FiledValue");
+
+//                    -----------------------validate the otp page data -------------
+
+                    if (isElementPresentBy(otpPageBillerName)){
+                        String actualBillerName = getTextFromElement(otpPageBillerName);
+                        if (actualBillerName.equals(expectedBillerName)){
+                            addToReport("Biller Name validation PASSED. Expected: '" + expectedBillerName + "', Actual: '" + actualBillerName + "'.", Status.PASS, false);
+                        }else {
+                            addToReport("Biller Name validation FAILED. Expected: '" + expectedBillerName + "', Actual: '" + actualBillerName + "'.", Status.FAIL, true);
+                        }
+                    }else {
+                        addToReport("Biller Name is not visible in OTP Page",Status.FAIL,true);
+                    }
+
+                    if (isElementPresentBy(otpPageFieldValue)){
+                        String actualFiledValue = getTextFromElement(otpPageFieldValue);
+                        if (actualFiledValue.trim().equals(expectedFiledValue.trim())){
+                            addToReport("Filed Value validation PASSED. Expected: '" + expectedFiledValue + "', Actual: '" + actualFiledValue + "'.", Status.PASS, false);
+                        }else {
+                            addToReport("Filed Value validation FAILED. Expected: '" + expectedFiledValue + "', Actual: '" + actualFiledValue + "'.", Status.FAIL, true);
+                        }
+                    }else {
+                        addToReport("Filed Value is not visible in OTP Page",Status.FAIL,true);
+                    }
+
+                    if (isElementPresentBy(getInputFields(ElementType.text,PAYFROM))){
+                        String actualPayFrom = getTextFromElement(getInputFields(ElementType.text,PAYFROM));
+                        String normalizedActualPayFrom = actualPayFrom.replaceAll("[^\\d.]", "");
+                         normalizedPayFrom = payFrom.replaceAll("[^\\d.]", "");
+                        if (normalizedActualPayFrom.trim().equals(normalizedPayFrom.trim())) {
+                            addToReport("PayFrom validation PASSED. Expected: '" + normalizedPayFrom + "', Actual: '" + normalizedActualPayFrom + "'.", Status.PASS, false);
+                        } else {
+                            addToReport("PayFrom validation FAILED. Expected: '" + normalizedPayFrom + "', Actual: '" + normalizedActualPayFrom + "'.", Status.FAIL, true);
+                        }
+                    }else {
+                        addToReport("payFrom field is not visible in OTP Page",Status.FAIL,true);
+                    }
+
+                    if (isElementPresentBy(getInputFields(ElementType.text, Amount))){
+                        String actualAmount = getTextFromElement(getInputFields(ElementType.text,Amount));
+
+                        if (actualAmount.trim().equals(expectedAmount.trim())) {
+                            addToReport("Amount validation PASSED. Expected: '" +expectedAmount + "', Actual: '" + actualAmount + "'.", Status.PASS, false);
+                        } else {
+                            addToReport("Amount validation FAILED. Expected: '" + expectedAmount + "', Actual: '" + actualAmount + "'.", Status.FAIL, true);
+                        }
+                    }else {
+                        addToReport("Amount field is not visible in OTP Page",Status.FAIL,true);
+                    }
 
 
+                    String siblingText = selectedBillerName;
+
+                    if (isElementPresentBy(getInputFields(ElementType.text, siblingText))){
+                        String actualFieldValue = getTextFromElement(getInputFields(ElementType.text,siblingText));
+
+                        if (actualFieldValue.trim().equals(expectedFiledValue.trim())) {
+                            addToReport("Field validation PASSED. Expected: '" +expectedFiledValue + "', Actual: '" + actualFieldValue + "'.", Status.PASS, false);
+                        } else {
+                            addToReport("Field validation FAILED. Expected: '" + expectedFiledValue + "', Actual: '" + actualFieldValue + "'.", Status.FAIL, true);
+                        }
+                    }else {
+                        addToReport("Field field is not visible in OTP Page",Status.FAIL,true);
+                    }
+
+                    if (isElementPresentBy(lblPaymentProcessing)){
+                        addToReport("Payment Processing label is visible in OTP Page",Status.PASS,false);
+                    }
+                    else {
+                        addToReport("Payment Processing label is not visible in OTP Page",Status.FAIL,true);
+                    }
+
+                    if (isElementPresentBy(lblAmountConfirmation(expectedAmount))){
+                        addToReport("Amount Confirmation label is visible in OTP Page",Status.PASS,false);
+                    }
+                    else {
+                        addToReport("Amount Confirmation label is not visible in OTP Page",Status.FAIL,true);
+                    }
+                }
+
+
+            }else {
+                addToReport("OTP Confirmation Page is not loaded",Status.FAIL,true);
+            }
+        }catch (Exception e){
+            addToReport("Failed to validate OTP Confirmation Page",Status.FAIL,true);
+            throw new RuntimeException("Failed to validate OTP Confirmation Page" + e.getMessage(), e);
+        }
+
+    }
 
     private void ValidatePhoneBillers(List<String> config) {
         // unpack config values
@@ -626,8 +1087,8 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
         Map<String, String> expectedDetails = allSelectedPayeeDetails.get(0);
         String expectedFiledValue = expectedDetails.get("FiledValue");
 
-        By inputFiledValue = validateInputElements(ElementType.number, placeholder);
-        By inputReenterFiledValue = validateInputElements(ElementType.number, reenterPlaceholder);
+        By inputFiledValue = getInputFields(ElementType.number, placeholder);
+        By inputReenterFiledValue = getInputFields(ElementType.number, reenterPlaceholder);
 
         // ------------------- Validate Main Input -------------------
         waitForElementPresence(inputFiledValue);
@@ -727,24 +1188,31 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
         // Validate insufficient balance toast
         if (isElementPresentBy(validateToastMessage(errorMessage))) {
             addToReport("Insufficient balance error message is displayed as expected when an account with low balance is selected.", Status.PASS, false);
+            if(isElementPresentBy(btnCloseToast)){
+                clickOnElement(btnCloseToast);
+                addToReport("Closed the error message popup",Status.INFO,false);
+            }else{
+                addToReport("Close button for error message popup is not visible",Status.FAIL,true);
+            }
         } else {
             addToReport("Insufficient balance error message is NOT displayed when an account with low balance is selected.", Status.FAIL, true);
         }
     }
 
-
     /**
-     * Selects an account with balance below the given threshold and validates insufficient balance error message.
+     * Selects an account with max balance  and validates success otp message.
      *
      * @param ddFromAccount   Dropdown WebElement for 'From Account'
      * @param currencyType    Currency type (e.g., LOCAL)
+     *
      */
-    public void validatePayBill(By ddFromAccount, CurrencyType currencyType ,String OTPMessage) {
+    public String validatePayBill(By ddFromAccount, CurrencyType currencyType ,String OTPMessage) {
         addToReport("------------------------------------- Check for High Balanced Account -------------------------------------", Status.INFO, false);
         String payableAccountNumber = getValueOfHighestVisibleAmount(ddFromAccount, currencyType);
+        selectedFromAccount = payableAccountNumber;
         if (payableAccountNumber == null) {
             addToReport("No account found ", Status.FAIL, false);
-            return;
+            return null;
         }
         // Select the account in the dropdown
         selectFromDropdown(ddFromAccount,payableAccountNumber, "value");
@@ -755,19 +1223,26 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
         clickOnElement(dynamicPayNowBtn);
         if (isElementPresentBy(validateToastMessage(OTPMessage))) {
             addToReport("OTP sent Message is sent.", Status.PASS, true);
+            if (isElementPresentBy(btnCloseToast)){
+                clickOnElement(btnCloseToast);
+                addToReport("Closed the OTP sent message popup",Status.INFO,false);
+            }else {
+                addToReport("Close button for OTP sent message popup is not visible",Status.FAIL,true);
+            }
         } else {
             addToReport("OTP sent Message is not sent ", Status.FAIL, true);
         }
+        return payableAccountNumber;
     }
 
 
     public void validateSelectedAccountCard(CurrencyType currencyType,String selectedAccountNumber){
         try {
             waitForElementPresence(selectedAccountContainer);
-            waitForElementPresence(validateSelectedAccountDetails(1));
-            String AccountType  = getTextFromElement(validateSelectedAccountDetails(1));
-            String AccountNumber  = getTextFromElement(validateSelectedAccountDetails(2));
-            String AccountBalance  = getTextFromElement(validateSelectedCurrencyDetails(1));
+            waitForElementPresence(getSelectedAccountDetails(1));
+            String AccountType  = getTextFromElement(getSelectedAccountDetails(1));
+            String AccountNumber  = getTextFromElement(getSelectedAccountDetails(2));
+            String AccountBalance  = getTextFromElement(getSelectedCurrencyDetails(1));
             //validate the currency and the amount
 
             if (currencyType == CurrencyType.LOCAL && !(AccountType.trim().equals(lbl_SAVING_ACCOUNT))) {
@@ -786,7 +1261,7 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
                 addToReport("Account Number is shown as expected",Status.PASS,false);
             }
 
-            //validate the currency and the amount
+            //validate the currency and the amount ON THR CARD
 
 
         } catch(Exception e) {
@@ -794,6 +1269,175 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
             throw new RuntimeException("Error during validateSelectedAccountCard: " + e.getMessage(), e);
         }}
 
+    /**
+     * Enter otp value
+     *
+     * @param otp - expected title text
+     *
+     */
+    public void enterOTPAndContinue(String otp) {
+
+        try {
+
+            //validate if confirm button is disabled prior to entering otp
+//            boolean isBtnConfirmDisabled = waitForElementPresence(btnDisabledConfirm);
+//
+//            if (isBtnConfirmDisabled) {
+//                addToReport("OTP page button confirm is disabled", Status.PASS,false);
+//            } else {
+//                addToReport("OTP page button confirm is not disabled", Status.FAIL);
+//                throw new RuntimeException("OTP page button confirm is not disabled as expected.");
+//            }
+
+            waitForElementToBeClickable(tfOTP(1),SHORT_WAIT);
+            //Enter OTP values and continue
+            sendKeysToElement(tfOTP(1), String.valueOf(otp));
+        } catch (Exception e) {
+            addToReport("Error when entering OTP", Status.FAIL);
+            throw new RuntimeException("Failed to enter OTP " + e.getMessage(), e);
+        }
+        waitForElementToBeClickable(btnConfirmOtp,LONG_WAIT);
+        clickOnElement(btnConfirmOtp);
+        waitFor(SHORT_WAIT);
+
+    }
+    /**
+     *
+     * Validdate Paymnet Success Page
+     *
+     */
+    public void validatePaymentSuccessPage(){
+
+        addToReport("----------Start of validation of Success page----------", Status.PASS, false);
+
+        if (allSelectedPayeeDetails.isEmpty()){
+            addToReport("Cannot perform validation. error loading the selected payee data.", Status.FAIL, true);
+            throw new IllegalStateException("Cannot perform validation. error loading the selected payee data..");
+        }else {
+            Map<String, String> expectedDetails = allSelectedPayeeDetails.get(0);
+
+            String expectedTemplateName = expectedDetails.get("TemplateName");
+            String expectedBillerName = expectedDetails.get("BillerName");
+            String expectedAmount = expectedDetails.get("Amount");
+            String expectedFiledValue = expectedDetails.get("FiledValue");
+
+//                    -----------------------validate the Success Page -------------
+//                        ----- change this to success page -----
+
+            if (isElementPresentBy(pgeSuccess)) {
+                addToReport("Payment Success Page is loaded successfully", Status.PASS, false);
+
+
+                if (isElementPresentBy(pgeSuccessPageBillerName)) {
+                    String actualBillerName = getTextFromElement(pgeSuccessPageBillerName);
+                    if (actualBillerName.equals(expectedBillerName)) {
+                        addToReport("Biller Name validation PASSED. Expected: '" + expectedBillerName + "', Actual: '" + actualBillerName + "'.", Status.PASS, false);
+                    } else {
+                        addToReport("Biller Name validation FAILED. Expected: '" + expectedBillerName + "', Actual: '" + actualBillerName + "'.", Status.FAIL, true);
+                    }
+                } else {
+                    addToReport("Biller Name is not visible in Payment Success Page Page", Status.FAIL, true);
+                }
+
+                if (isElementPresentBy(pgeSuccessPageFieldValue)) {
+                    String actualFiledValue = getTextFromElement(pgeSuccessPageFieldValue);
+                    if (actualFiledValue.trim().equals(expectedFiledValue.trim())) {
+                        addToReport("Filed Value validation PASSED. Expected: '" + expectedFiledValue + "', Actual: '" + actualFiledValue + "'.", Status.PASS, false);
+                    } else {
+                        addToReport("Filed Value validation FAILED. Expected: '" + expectedFiledValue + "', Actual: '" + actualFiledValue + "'.", Status.FAIL, true);
+                    }
+                } else {
+                    addToReport("Filed Value is not visible in Payment Success Page", Status.FAIL, true);
+                }
+
+                if (isElementPresentBy(getInputFields(ElementType.text, PAYFROM))) {
+                    String actualPayFrom = getTextFromElement(getInputFields(ElementType.text, PAYFROM));
+                    String normalizedActualPayFrom = actualPayFrom.replaceAll("[^\\d.]", "");
+                    selectedFromAccount = selectedFromAccount.replaceAll("[^\\d.]", "");
+
+                    if (normalizedActualPayFrom.trim().equals(selectedFromAccount.trim())) {
+                        addToReport("PayFrom validation PASSED. Expected: '" + selectedFromAccount + "', Actual: '" + normalizedActualPayFrom + "'.", Status.PASS, false);
+                    } else {
+                        addToReport("PayFrom validation FAILED. Expected: '" + selectedFromAccount + "', Actual: '" + normalizedActualPayFrom + "'.", Status.FAIL, true);
+                    }
+                } else {
+                    addToReport("payFrom field is not visible in Payment Success Page", Status.FAIL, true);
+                }
+
+                if (isElementPresentBy(getInputFields(ElementType.text, Amount))) {
+                    String actualAmount = getTextFromElement(getInputFields(ElementType.text, Amount));
+
+                    if (actualAmount.trim().equals(expectedAmount.trim())) {
+                        addToReport("Amount validation PASSED. Expected: '" + expectedAmount + "', Actual: '" + actualAmount + "'.", Status.PASS, false);
+                    } else {
+                        addToReport("Amount validation FAILED. Expected: '" + expectedAmount + "', Actual: '" + actualAmount + "'.", Status.FAIL, true);
+                    }
+                } else {
+                    addToReport("Amount field is not visible in Payment Success Page", Status.FAIL, true);
+                }
+
+
+                String siblingText = selectedBillerName;
+
+                if (isElementPresentBy(getInputFields(ElementType.text, siblingText))) {
+                    String actualFieldValue = getTextFromElement(getInputFields(ElementType.text, siblingText));
+
+                    if (actualFieldValue.trim().equals(expectedFiledValue.trim())) {
+                        addToReport("Field validation PASSED. Expected: '" + expectedFiledValue + "', Actual: '" + actualFieldValue + "'.", Status.PASS, false);
+                    } else {
+                        addToReport("Field validation FAILED. Expected: '" + expectedFiledValue + "', Actual: '" + actualFieldValue + "'.", Status.FAIL, true);
+                    }
+                } else {
+                    addToReport("Field field is not visible in Payment Success Page", Status.FAIL, true);
+                }
+
+                if (isElementPresentBy(lblPaymentProcessing)) {
+                    addToReport("Payment Processing label is visible in Payment Success Page", Status.PASS, false);
+                } else {
+                    addToReport("Payment Processing label is not visible in Payment Success Page", Status.FAIL, true);
+                }
+
+                if (isElementPresentBy(lblAmountConfirmation(expectedAmount))) {
+                    addToReport("Amount Confirmation label is visible in Payment Success Page", Status.PASS, false);
+                } else {
+                    addToReport("Amount Confirmation label is not visible in Payment Success Page", Status.FAIL, true);
+                }
+                //OTP
+                enterOTPAndContinue(OTP);
+
+                // Validate the success label and other information
+                if (isElementPresentBy(lblSuccess)) {
+                    addToReport("Validated the success message in the Payment Success Page", Status.PASS, true);
+                } else {
+                    addToReport("Failed to validate the success message in the Payment Success Page", Status.FAIL, true);
+                }
+
+                // Validate reference number
+                String[] referenceNumber = getTextFromElement(lblRefernceID).split("- ");
+                if (referenceNumber[1] != null) {
+                    addToReport("Obtained the payment reference number " + referenceNumber[1], Status.PASS, false);
+                } else {
+                    addToReport("Failed to get the reference number", Status.FAIL);
+                }
+
+                // Check for download option in the success page
+                if (isElementPresentBy(btnPrint)) {
+                    addToReport("Validated the download option availability in Payment Success Page", Status.PASS, false);
+                } else {
+                    addToReport("Failed to validate the download option availability in Payment Success Page", Status.FAIL);
+                }
+
+                addToReport("----------End of validation of OTP success page----------", Status.PASS, true);
+                //Close the popup
+                scrollPageToTop();
+                waitForElementToBeClickable(btnOTPClosePopup, MODERATE_WAIT);
+                clickOnElement(btnOTPClosePopup);
+
+            }else{
+                addToReport("Payment Success Page is not loaded", Status.FAIL, true);
+            }
+    }
+    }
 
 
 //    public void printAllSelectedPayeeDetails() {
@@ -818,6 +1462,8 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
                 //this method is used to clear the selected indexes
                 usedIndexes.clear();
                 allSelectedPayeeDetails.clear();
+                selectedFromAccount ="";
+                selectedBillerName ="";
             }
 
             /**
@@ -835,3 +1481,7 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
 
 
 }
+
+
+
+

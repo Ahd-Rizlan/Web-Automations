@@ -249,16 +249,36 @@ public abstract class BasePage extends helpers {
      * @param locator the locator used to find the element
      * @return the text content of the element, or null if the element is not found or an error occurs
      */
+//    public String getTextFromElement(By locator) {
+//        try {
+//            WebDriverWait wait = new WebDriverWait(driver, MODERATE_WAIT);
+//            wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+//            return driver.findElement(locator).getText();
+//        } catch (Exception e) {
+//            System.err.println("Error getting text from element: " + e.getMessage());
+//            return null;
+//        }
+//    }
+
+
     public String getTextFromElement(By locator) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, MODERATE_WAIT);
-            wait.until(ExpectedConditions.presenceOfElementLocated(locator));
-            return driver.findElement(locator).getText();
+            WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+
+            String tagName = element.getTagName();
+            if ("input".equalsIgnoreCase(tagName) || "textarea".equalsIgnoreCase(tagName)) {
+                return element.getAttribute("value"); // For input fields
+            } else {
+                return element.getText(); // For normal elements like <span>, <div>
+            }
+
         } catch (Exception e) {
             System.err.println("Error getting text from element: " + e.getMessage());
             return null;
         }
     }
+
 
     /**
      * Pauses the execution for the specified amount of time.
@@ -1524,6 +1544,8 @@ public abstract class BasePage extends helpers {
     }
 
 
+
+
     /**
      * Generates a random integer between 0 and maxNumber (inclusive).
      *
@@ -1538,6 +1560,7 @@ public abstract class BasePage extends helpers {
         // nextInt(origin, bound) → bound is exclusive, so add +1 to include maxNumber
         return ThreadLocalRandom.current().nextInt(0, maxNumber + 1);
     }
+
 
 }
 

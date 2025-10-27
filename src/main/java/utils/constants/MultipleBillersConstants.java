@@ -7,7 +7,7 @@ public class MultipleBillersConstants {
 
     public static final int MAX_SELECTABLE_SAVED_BLLERS = 5;
     public static final int PAGINATION_LIMIT = 10;
-
+    public static final String OTP = "111111";
 
     // -------------- KEY WORDS FOR HEADERS ------------------
     public static final String MAINHEADER = "Saved Billers";
@@ -17,8 +17,19 @@ public class MultipleBillersConstants {
     public static final String TEMPLATE_NAME ="Template Name";
     public static final String BILLER_NAME ="Biller Name";
     public static final String Amount ="Amount";
+    public static final String Total_Amount ="Total Amount";
     public static final String lbl_SAVING_ACCOUNT = "Savings Account";
     public static final String lbl_FC_SAVING_ACCOUNT = "Savings Foreign Account";
+    public static final String OTP_CONFIRMATION_PAGE_MULTIPLE_BILLER_HEADER_TEXT = "Payment Confirmation";
+
+
+
+    public static final String PAYFROM = "Pay From";
+    public static final String MAX_BILLER_ERROR = "Limit reached: You can select up to 5 billers.";
+    public static final String QUICK_BILL_PAYMENTS = "Quick Bill Payments";
+    public static final String MULTIPLE_BILL_PAYMENTS = "Multiple Bill Payments";
+
+
 
 
     public static final String GSM_PHONE ="Your GSM Phone Number";
@@ -57,25 +68,25 @@ public class MultipleBillersConstants {
     public static final Map<String, List<String>> BILLER_DATA = Map.of(
             "Dialog Mobile", List.of(
                     "Your GSM Phone Number",          // 0 → Placeholder input
-                    "Re-enter Your GSM Phone Number", // 1 → Placeholder reenter input
+                    "Re-enter", // 1 → Placeholder reenter input
                     "Your GSM Phone Number is required", // 2 → Error required
                     "Your GSM Phone Number does not match" // 3 → Error mismatch
             ),
             "Mobitel Pvt Ltd", List.of(
                     "Mobitel Phone Number",
-                    "Re-enter Mobitel Phone Number",
+                    "Re-enter",
                     "Mobitel Phone Number is required",
                     "Mobitel Phone Number values do not match"
             ),
             "HUTCH", List.of(
                     "Mobile Number",
-                    "Re-enter Mobile Number",
+                    "Re-enter ",
                     "Mobitel Phone Number is required",
                     "Mobile Number values do not match"
             ),
             "Toyota Lanka (Pvt) Ltd", List.of(
                     "Invoice No",
-                    "Re-enter Invoice No",
+                    "Re-enter",
                     "Invoice No is required",
                     "Invoice No values do not match"
             )
