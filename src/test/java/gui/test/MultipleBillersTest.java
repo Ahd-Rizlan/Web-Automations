@@ -48,7 +48,6 @@ public class MultipleBillersTest extends BaseTest {
         multipleBillersPage.clickPayNowButton();
         multipleBillersPage.ValidatePayBillModelPageForSingleSelectedBiller();
         multipleBillersPage.validatePaymentSuccessPage();
-        multipleBillersPage.enterOTPAndContinue(OTP);
         multipleBillersPage.clearUsedIndexes();
     }
 
@@ -58,6 +57,8 @@ public class MultipleBillersTest extends BaseTest {
         multipleBillersPage.SelectMultipleSavedBillers(MAX_SELECTABLE_SAVED_BLLERS);
         multipleBillersPage.clickPayNowButton();
         multipleBillersPage.ValidatePayBillModelPageForMultipleSelectedBiller();
+        multipleBillersPage.validateMultipleBillerOTPConfirmationPage();
+        multipleBillersPage.enterOTPAndContinue(OTP);
         multipleBillersPage.clearUsedIndexes();
     
     }

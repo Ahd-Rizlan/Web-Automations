@@ -597,7 +597,6 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
                 By inputBillerName = getInputFields(ElementType.text, BILLER_NAME);
                 By inputAmount = getInputElements(ElementType.text, ElementType.numeric, Amount,i);
 
-                // 1️⃣ Validate Template Name
                 if (isElementPresentBy(inputTemplateName)) {
                     String actualTemplateName = getAttributeFromElement(inputTemplateName, "value");
                     if (actualTemplateName.equals(expectedTemplateName)) {
@@ -609,7 +608,6 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
                     addToReport("Template Name input field could not be found on the modal.", Status.FAIL, true);
                 }
 
-                // 2️⃣ Validate Biller Name
                 if (isElementPresentBy(inputBillerName)) {
                     String actualBillerName = getAttributeFromElement(inputBillerName, "value");
                     if (actualBillerName.equals(expectedBillerName)) {
@@ -629,7 +627,6 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
                     addToReport("Biller Name input field could not be found on the modal.", Status.FAIL, true);
                 }
 
-                // 3️⃣ Validate Amount Field
                 if (isElementPresentBy(inputAmount)) {
                     clickOnElement(inputAmount);
                     clearTheElement(inputAmount);
@@ -662,7 +659,6 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
                     addToReport("Amount input field could not be found on the modal.", Status.FAIL, true);
                 }
 
-                // 4️⃣ Move to the next record (if not the last one)
                 if (i < allSelectedPayeeDetails.size() - 1) {
                     if (isElementPresentBy(NEXT_ARROW)) {
                         clickOnElement(NEXT_ARROW);
@@ -690,11 +686,7 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
                 addToReport("PayNow Button with Total Amount LKR " + formattedTotalAmount + " is not Present", Status.FAIL, true);
                 throw new RuntimeException("PayNow Button is not Present");
             }
-
-
-
 }
-
         } catch (Exception e) {
             addToReport("An unexpected error occurred in ValidatePayBillModelPageForSingleSelectedBiller", Status.FAIL, true);
             throw new RuntimeException("Error during PayNow Model Page validation: " + e.getMessage(), e);
@@ -702,7 +694,7 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
 
     }
 
-    public void validateMultipleBillerOTPConfirmationPage(String payFrom){
+    public void validateMultipleBillerOTPConfirmationPage( ){
         String normalizedPayFrom = "";
 
         addToReport("----------Start of validation of Multiple Payment Success page----------", Status.PASS, false);
@@ -731,7 +723,7 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
             if (isElementPresentBy(getInputFieldsMultipleBiller(ElementType.text,PAYFROM))){
                 String actualPayFrom = getTextFromElement(getInputFieldsMultipleBiller(ElementType.text,PAYFROM));
                 String normalizedActualPayFrom = actualPayFrom.replaceAll("[^\\d.]", "");
-                normalizedPayFrom = payFrom.replaceAll("[^\\d.]", "");
+                normalizedPayFrom = selectedFromAccount.replaceAll("[^\\d.]", "");
                 if (normalizedActualPayFrom.trim().equals(normalizedPayFrom.trim())) {
                     addToReport("PayFrom validation PASSED. Expected: '" + normalizedPayFrom + "', Actual: '" + normalizedActualPayFrom + "'.", Status.PASS, false);
                 } else {
@@ -754,8 +746,6 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
                 addToReport("TotalAmount field is not visible in OTP Page",Status.FAIL,true);
             }
 
-//------------------------------------------
-
             if (allSelectedPayeeDetails.isEmpty()) {
                 addToReport("Cannot perform validation. The list of selected payee details is empty.", Status.FAIL, true);
                 throw new IllegalStateException("allSelectedPayeeDetails is empty.");
@@ -776,42 +766,83 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
                     addToReport("Validating Biller Record " + (i + 1) + " of " + allSelectedPayeeDetails.size(), Status.INFO, false);
 
                     By inputTemplateName = getTableValue(TEMPLATE_NAME);
-                    By inputBillerName = getTableValue(Amount);
-                    By inputAmount = getInputElements(ElementType.text, ElementType.numeric, Amount, i);
+                    By inputAmount = getTableValue(Amount);
 
-                    if (isElementPresentBy(otpPageBillerName)){
+                    if (isElementPresentBy(otpPageBillerName)) {
                         String actualBillerName = getTextFromElement(otpPageBillerName);
-                        if (actualBillerName.equals(expectedBillerName)){
+                        if (actualBillerName.equals(expectedBillerName)) {
                             addToReport("Biller Name validation PASSED. Expected: '" + expectedBillerName + "', Actual: '" + actualBillerName + "'.", Status.PASS, false);
-                        }else {
+                        } else {
                             addToReport("Biller Name validation FAILED. Expected: '" + expectedBillerName + "', Actual: '" + actualBillerName + "'.", Status.FAIL, true);
                         }
-                    }else {
-                        addToReport("Biller Name is not visible in OTP Page",Status.FAIL,true);
+                    } else {
+                        addToReport("Biller Name is not visible in OTP Page", Status.FAIL, true);
                     }
 
-                    if (isElementPresentBy(otpPageFieldValue)){
+                    if (isElementPresentBy(otpPageFieldValue)) {
                         String actualFiledValue = getTextFromElement(otpPageFieldValue);
-                        if (actualFiledValue.trim().equals(expectedFiledValue.trim())){
+                        if (actualFiledValue.trim().equals(expectedFiledValue.trim())) {
                             addToReport("Filed Value validation PASSED. Expected: '" + expectedFiledValue + "', Actual: '" + actualFiledValue + "'.", Status.PASS, false);
-                        }else {
+                        } else {
                             addToReport("Filed Value validation FAILED. Expected: '" + expectedFiledValue + "', Actual: '" + actualFiledValue + "'.", Status.FAIL, true);
                         }
-                    }else {
-                        addToReport("Filed Value is not visible in OTP Page",Status.FAIL,true);
+                    } else {
+                        addToReport("Filed Value is not visible in OTP Page", Status.FAIL, true);
                     }
 
+                    //Template Name VALIDATION
+                    if (isElementPresentBy(inputTemplateName)) {
+                        String actualTemplateName = getTextFromElement(inputTemplateName);
+                        String normalizedExpectedTemplateName = expectedTemplateName.replaceAll("[^\\d.]", "");
+                        String normalizedActualTemplateName = actualTemplateName.replaceAll("[^\\d.]", "");
 
+                        if (normalizedActualTemplateName.trim().equals(normalizedExpectedTemplateName.trim())) {
+                            addToReport("Amount validation PASSED. Expected: '" + normalizedExpectedTemplateName + "', Actual: '" + normalizedActualTemplateName + "'.", Status.PASS, false);
+                        } else {
+                            addToReport("Amount validation FAILED. Expected: '" + normalizedExpectedTemplateName + "', Actual: '" + normalizedActualTemplateName + "'.", Status.FAIL, true);
+                        }
 
+                    } else {
+                        addToReport("TemplateName input field could not be found on the modal.", Status.FAIL, true);
+                    }
+
+                    //Amount VALIDATION
+
+                    if (isElementPresentBy(inputAmount)) {
+                        String actualAmount = getTextFromElement(inputAmount);
+                        String normalizedExpectedAmount = expectedAmount.replaceAll("[^\\d.]", "");
+                        String normalizedActualAmount = actualAmount.replaceAll("[^\\d.]", "");
+
+                        if (normalizedActualAmount.trim().equals(normalizedExpectedAmount.trim())) {
+                            addToReport("Amount validation PASSED. Expected: '" + normalizedExpectedAmount + "', Actual: '" + normalizedActualAmount + "'.", Status.PASS, false);
+                        } else {
+                            addToReport("Amount validation FAILED. Expected: '" + normalizedExpectedAmount + "', Actual: '" + normalizedActualAmount + "'.", Status.FAIL, true);
+                        }
+
+                    }else {
+                        addToReport("Amount input field could not be found on the modal.", Status.FAIL, true);
+                    }
+                //validate dynamic fileds
+                    // 4️⃣ Move to the next record (if not the last one)
+                    if (i < allSelectedPayeeDetails.size() - 1) {
+                        if (isElementPresentBy(NEXT_ARROW)) {
+                            clickOnElement(NEXT_ARROW);
+                            isElementPresentBy(otpPageBillerName, 5); // wait for next modal to load
+                            addToReport("Moved to next biller record.", Status.INFO, false);
+                        } else {
+                            addToReport("Next arrow not found. Cannot move to the next biller.", Status.FAIL, true);
+                            break;
+                        }
+                    }
                 }
+
             }
-
-
-
         }else {
             addToReport("Multiple Biller OTP Confirmation Page is not Present",Status.FAIL,true);
         }
+    }
 
+    public void validateMultipleBillerPaymentSuccessPage(){
 
 
 
@@ -1235,7 +1266,6 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
         return payableAccountNumber;
     }
 
-
     public void validateSelectedAccountCard(CurrencyType currencyType,String selectedAccountNumber){
         try {
             waitForElementPresence(selectedAccountContainer);
@@ -1302,9 +1332,7 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
 
     }
     /**
-     *
      * Validdate Paymnet Success Page
-     *
      */
     public void validatePaymentSuccessPage(){
 
