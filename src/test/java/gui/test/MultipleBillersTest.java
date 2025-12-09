@@ -59,6 +59,7 @@ public class MultipleBillersTest extends BaseTest {
         multipleBillersPage.ValidatePayBillModelPageForMultipleSelectedBiller();
         multipleBillersPage.validateMultipleBillerOTPConfirmationPage();
         multipleBillersPage.enterOTPAndContinue(OTP);
+        multipleBillersPage.validateMultipleBillerPaymentSuccessPage();
         multipleBillersPage.clearUsedIndexes();
     
     }

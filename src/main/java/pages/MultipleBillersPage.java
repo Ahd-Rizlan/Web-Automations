@@ -76,6 +76,42 @@ public class MultipleBillersPage extends BasePage {
 
     private static final By NEXT_ARROW = By.xpath("//div[contains(@class,'rounded-r-lg') and .//img[contains(@alt,'Next')]]");
 
+    // --- Locators for Multiple Biller Success Screen ---
+    private static final By pgeMultipleBillerSuccess = By.xpath("//div[contains(@class,'MultipleBillPaymentConfirmation_scroll__p0Qy2')]");
+    private static final By lblSuccessCount = By.xpath("//div[contains(@class,'mx-auto text-center font-semibold')]");
+    private static final By lblSuccessHeader = By.xpath("//span[text()='" + SUCCESS_MESSAGE_HEADER + "' and contains(@class,'text-[#22C060]')]");
+    private static final By lblSuccessMessage = By.xpath("//span[text()='" + SUCCESS_MESSAGE_SUBTEXT + "']");
+    private static final By btnNextBiller = By.xpath("//img[contains(@alt,'Next')]/parent::div");
+    private static final By btnMakeAnotherPayment = By.xpath("//button[text()='Make Another Payment']");
+
+    /**
+     * Gets a locator for the currently visible (not hidden) bill detail table.
+     */
+    private static final By tblVisibleBillerDetails = By.xpath("//table[contains(@class,'w-full border-collapse') and not(contains(@class,'hidden'))]");
+    /**
+     * Gets the value from a <td> in the *currently visible* bill detail table, based on its preceding <td> label.
+     * @param label The text of the <td> label (e.g., "Template Name", "Amount")
+     */
+    private static By getVisibleTableValue(String label) {
+        return By.xpath("//table[contains(@class,'w-full border-collapse') and not(contains(@class,'hidden'))]//td[text()='" + label + "']/following-sibling::td");
+    }
+
+    /**
+     * Gets the Print button from the *currently visible* bill detail table.
+     */
+    private static final By btnPrintReceipt = By.xpath("//table[contains(@class,'w-full border-collapse') and not(contains(@class,'hidden'))]//button[text()='Print']");
+
+    /**
+     * Gets the active pagination dot by its 1-based index.
+     */
+    private static By paginationDotActive(int index) {
+        // Example: (//div[...]/div)[1]
+        return By.xpath(String.format("(//div[contains(@class,'flex gap-1 items-center justify-center')]/div)[%d_and_contains(@class,'bg-orange-500')]", index));
+    }
+
+    // --- End of Success Screen Locators ---
+
+
     public static By getPayNowButton() {
             return By.xpath("//button[contains(normalize-space(text()),'Pay now')]");
     }
@@ -842,10 +878,185 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
         }
     }
 
-    public void validateMultipleBillerPaymentSuccessPage(){
+    /**
+     * Validates the entire "Multiple Biller Payment Success" screen.
+     * It checks:
+     * 1. Overall Pay From and Total Amount.
+     * 2. The main "Success" message and payment count (e.g., "2 out of 2").
+     * 3. Loops through each bill, validates its details (Template, Amount, Status).
+     * 4. Clicks the "Print" button for each bill to verify it opens a new window.
+     */
+    public void validateMultipleBillerPaymentSuccessPage() {
+        addToReport("---------- Validating Multiple Biller Payment Success Page ----------", Status.INFO, false);
+        waitForElementPresence(pgeMultipleBillerSuccess, LONG_WAIT);
+        if (!isElementPresentBy(pgeMultipleBillerSuccess)) {
+            addToReport("Multiple Biller Success page did not load.", Status.FAIL, true);
+            throw new RuntimeException("Multiple Biller Success page did not load.");
+        }
+
+        // --- 1. Validate Overall Details (Pay From & Total Amount) ---
+        try {
+            // Validate Pay From
+            String expectedPayFrom = selectedFromAccount.replaceAll("[^\\d.]", "");
+            String actualPayFrom = getAttributeFromElement(getInputFieldsMultipleBiller(ElementType.text, PAYFROM), "value").replaceAll("[^\\d.]", "");
+            if (actualPayFrom.equals(expectedPayFrom)) {
+                addToReport("Pay From account validation PASSED. Expected: " + expectedPayFrom + ", Actual: " + actualPayFrom, Status.PASS, false);
+            } else {
+                addToReport("Pay From account validation FAILED. Expected: " + expectedPayFrom + ", Actual: " + actualPayFrom, Status.FAIL, true);
+            }
+
+            // Validate Total Amount
+            String expectedTotalAmount = String.format("%.2f", totalAmount);
+            String actualTotalAmount = getAttributeFromElement(getInputFieldsMultipleBiller(ElementType.text, Total_Amount), "value").replaceAll("[^\\d.]", "");
+            if (actualTotalAmount.equals(expectedTotalAmount)) {
+                addToReport("Total Amount validation PASSED. Expected: " + expectedTotalAmount + ", Actual: " + actualTotalAmount, Status.PASS, false);
+            } else {
+                addToReport("Total Amount validation FAILED. Expected: " + expectedTotalAmount + ", Actual: " + actualTotalAmount, Status.FAIL, true);
+            }
+        } catch (Exception e) {
+            addToReport("Error validating Pay From/Total Amount on success screen. " + e.getMessage(), Status.FAIL, true);
+        }
+
+        // --- 2. Validate Success Summary (Bottom) ---
+        int expectedCount = allSelectedPayeeDetails.size();
+        if (expectedCount == 0) {
+            addToReport("Cannot validate bill details, 'allSelectedPayeeDetails' list is empty.", Status.FAIL, true);
+            throw new IllegalStateException("allSelectedPayeeDetails list is empty. Cannot validate success screen.");
+        }
+
+        String expectedCountMsg = "You Have Successfully Completed " + expectedCount + " out of " + expectedCount + " Payments";
+
+        waitForElementPresence(lblSuccessCount);
+        String actualCountMsg = getTextFromElement(lblSuccessCount).trim().replaceAll("\\s+", " "); // Normalize whitespace
+
+        if (actualCountMsg.equals(expectedCountMsg)) {
+            addToReport("Success count message validation PASSED: '" + actualCountMsg + "'", Status.PASS, false);
+        } else {
+            addToReport("Success count message validation FAILED. Expected: '" + expectedCountMsg + "', Actual: '" + actualCountMsg + "'", Status.FAIL, true);
+        }
+
+        if (isElementPresentBy(lblSuccessHeader)) {
+            addToReport("Main 'Success' label is visible.", Status.PASS, false);
+        } else {
+            addToReport("Main 'Success' label is NOT visible.", Status.FAIL, true);
+        }
+
+        if (isElementPresentBy(lblSuccessMessage)) {
+            addToReport("Success sub-message '" + SUCCESS_MESSAGE_SUBTEXT + "' is visible.", Status.PASS, false);
+        } else {
+            addToReport("Success sub-message is NOT visible.", Status.FAIL, true);
+        }
+
+        // --- 3. Loop Through and Validate Each Bill Receipt ---
+        for (int i = 0; i < expectedCount; i++) {
+            Map<String, String> expectedBill = allSelectedPayeeDetails.get(i);
+            String expectedTemplate = expectedBill.get("TemplateName");
+            String expectedBillAmount = expectedBill.get("Amount"); // e.g., "LKR 100.00"
+
+            addToReport("---------- Validating Bill " + (i + 1) + " of " + expectedCount + " ('" + expectedTemplate + "') ----------", Status.INFO, false);
+
+            // Wait for the correct pagination dot to be active
+            waitForElementPresence(paginationDotActive(i + 1), SHORT_WAIT);
+            waitForElementPresence(tblVisibleBillerDetails, SHORT_WAIT);
+
+            // Validate Template Name
+            validateTextOnVisibleTable(TEMPLATE_NAME, expectedTemplate);
+
+            // Validate Amount
+            validateTextOnVisibleTable(Amount, expectedBillAmount);
+
+            // Validate Payment Status
+            validateTextOnVisibleTable(PAYMENT_STATUS_LABEL, PAYMENT_STATUS_SUCCESS_TEXT);
+
+            // Validate Print Button Functionality
+            validatePrintButton();
+
+            // Click Next if it's not the last bill
+            if (i < expectedCount - 1) {
+                if(isElementPresentBy(btnNextBiller)) {
+                    clickOnElement(btnNextBiller);
+                    addToReport("Clicked Next to see bill " + (i + 2), Status.INFO, false);
+                    // Wait for the *next* dot to become active. This is a crucial sync step.
+                    waitForElementPresence(paginationDotActive(i + 2), MODERATE_WAIT);
+                } else {
+                    addToReport("Could not find 'Next' arrow to validate remaining bills.", Status.FAIL, true);
+                    break; // Exit loop
+                }
+            }
+        }
+
+        // --- 4. Final Button Check ---
+        if (isElementPresentBy(btnMakeAnotherPayment)) {
+            addToReport("'Make Another Payment' button is visible.", Status.PASS, false);
+        } else {
+            addToReport("'Make Another Payment' button is NOT visible.", Status.FAIL, true);
+        }
+
+        addToReport("---------- Multiple Biller Success Page Validation Complete ----------", Status.INFO, false);
+    }
 
 
+    /**
+     * Helper method to validate text in the currently visible bill detail table.
+     * @param labelName The label of the row (e.g., "Template Name")
+     * @param expectedText The expected text value for that row
+     */
+    private void validateTextOnVisibleTable(String labelName, String expectedText) {
+        try {
+            String actualText = getTextFromElement(getVisibleTableValue(labelName));
+            if (actualText.trim().equals(expectedText.trim())) {
+                addToReport("'" + labelName + "' validation PASSED: " + actualText, Status.PASS, false);
+            } else {
+                addToReport("'" + labelName + "' validation FAILED. Expected: '" + expectedText + "', Actual: '" + actualText + "'", Status.FAIL, true);
+            }
+        } catch (Exception e) {
+            addToReport("Could not find or read '" + labelName + "' from the visible table. " + e.getMessage(), Status.FAIL, true);
+        }
+    }
 
+
+    /**
+     * Helper method to validate the "Print" button functionality on the visible table.
+     * Clicks the button and verifies that a new window (print dialog) opens.
+     */
+    private void validatePrintButton() {
+        if (!isElementPresentBy(btnPrintReceipt)) {
+            addToReport("Print button is NOT present.", Status.FAIL, true);
+            return;
+        }
+        addToReport("Print button is present.", Status.PASS, false);
+
+        String originalWindow = driver.getWindowHandle();
+        int originalWindowCount = driver.getWindowHandles().size();
+
+        clickOnElement(btnPrintReceipt);
+        addToReport("Clicked 'Print' button to check functionality.", Status.INFO, false);
+
+        try {
+            // Use the method from BasePage
+            waitForNewWindowToOpen(originalWindowCount + 1, MODERATE_WAIT);
+
+            Set<String> allWindows = driver.getWindowHandles();
+            if (allWindows.size() > originalWindowCount) {
+                addToReport("Print button functionality VERIFIED: A new window/tab opened.", Status.PASS, false);
+
+                // Close the new window and switch back
+                for (String windowHandle : allWindows) {
+                    if (!windowHandle.equals(originalWindow)) {
+                        driver.switchTo().window(windowHandle);
+                        driver.close();
+                        break;
+                    }
+                }
+                driver.switchTo().window(originalWindow);
+            } else {
+                addToReport("Print button functionality FAILED: No new window opened after click.", Status.FAIL, true);
+            }
+        } catch (Exception e) {
+            addToReport("Print button functionality FAILED: Timed out waiting for a new window.", Status.FAIL, true);
+            // Ensure we switch back even on failure
+            driver.switchTo().window(originalWindow);
+        }
     }
 
 //-----------------  Select Single payee  -----------------
@@ -1305,7 +1516,10 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
      * @param otp - expected title text
      *
      */
-    public void enterOTPAndContinue(String otp) {
+    public void
+
+
+    enterOTPAndContinue(String otp) {
 
         try {
 

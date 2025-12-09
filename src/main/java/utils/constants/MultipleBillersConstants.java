@@ -52,6 +52,13 @@ public class MultipleBillersConstants {
     public static final String ERROR_TST_INSUF_BALANCE = "Insufficient funds";
     public static final String SUCCESS_OTP_SENT = "sent successfully";
 
+    // -------------- SUCCESS PAGE CONSTANTS ------------------
+    public static final String PAYMENT_STATUS_LABEL = "Payment Status";
+    public static final String PAYMENT_STATUS_SUCCESS_TEXT = "Bill payment successful";
+    public static final String SUCCESS_MESSAGE_HEADER = "Success";
+    public static final String SUCCESS_MESSAGE_SUBTEXT = "Your Payment Has Been Processed Successfully.";
+
+
     public static final String ERROR_MSG_GSM_MISMATCH = "Your GSM Phone Number values do not match";
     public static final String ERROR_MSG_AMOUNT_LIMIT = "Amount exceeds the limit.";
     public static final String ERROR_MSG_AMOUNT_ZERO = "Amount should be greater than zero.";
@@ -94,3 +101,4 @@ public class MultipleBillersConstants {
     );
 
 }
+

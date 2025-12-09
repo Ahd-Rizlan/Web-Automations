@@ -264,15 +264,8 @@ public abstract class BasePage extends helpers {
     public String getTextFromElement(By locator) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, MODERATE_WAIT);
-            WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
-
-            String tagName = element.getTagName();
-            if ("input".equalsIgnoreCase(tagName) || "textarea".equalsIgnoreCase(tagName)) {
-                return element.getAttribute("value"); // For input fields
-            } else {
-                return element.getText(); // For normal elements like <span>, <div>
-            }
-
+            wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+            return driver.findElement(locator).getText();
         } catch (Exception e) {
             System.err.println("Error getting text from element: " + e.getMessage());
             return null;
@@ -308,7 +301,7 @@ public abstract class BasePage extends helpers {
      * @true -If the element is found
      * @false -If the element is not found
      */
-        public boolean waitForElementPresence(By locator) {
+    public boolean waitForElementPresence(By locator) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, MODERATE_WAIT);
             wait.until(ExpectedConditions.presenceOfElementLocated(locator));
@@ -702,7 +695,7 @@ public abstract class BasePage extends helpers {
             WebElement webElement = wait.until(ExpectedConditions.elementToBeClickable(byLocator));
             webElement.clear();
             addToReport("Clear the '" + byLocator + "' input textbox.", Status.PASS);
-            waitFor(SHORT_WAIT);
+            waitFor(EXTREME_SHORT_WAIT);
         } catch (Exception e) {
             addToReport("Unable to clear the '" + byLocator + "'  textbox.", Status.FAIL);
             System.err.println("Error clearing the web element " + e.getMessage());
@@ -922,7 +915,7 @@ public abstract class BasePage extends helpers {
             if (crdownloadFiles == null || crdownloadFiles.length == 0) {
                 return; // Download complete
             }
-                waitFor(EXTREME_SHORT_WAIT);
+            waitFor(EXTREME_SHORT_WAIT);
         }
     }
 
@@ -1476,7 +1469,7 @@ public abstract class BasePage extends helpers {
      * Clicks at a specific screen coordinate using actions
      * @param {number} x - The horizontal coordinate (in pixels) from the top-left of the browser viewport
      * @param {number} y - The vertical coordinate (in pixels) from the top-left of the browser viewport
- */
+     */
     public void clickAtCoordinates(int x, int y) {
         Actions actions = new Actions(driver);
         actions.moveByOffset(x, y).click().perform();
@@ -1545,7 +1538,15 @@ public abstract class BasePage extends helpers {
 
 
 
-
+    public void clearAndSendKeysToElement(By by, String text) {
+        try {
+            WebElement element = driver.findElement(by);
+            element.clear();
+            element.sendKeys(text);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to clear and send keys to element: " + by, e);
+        }
+    }
     /**
      * Generates a random integer between 0 and maxNumber (inclusive).
      *
@@ -1563,5 +1564,3 @@ public abstract class BasePage extends helpers {
 
 
 }
-
-
