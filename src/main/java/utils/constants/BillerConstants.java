@@ -36,6 +36,9 @@ public class BillerConstants {
     public static final String BUTTON_FETCH = "Fetch";
     public static final String BUTTON_LOGISTICS = "Logistics";
 
+    public static final String BUTTON_TEXT_SAVED_PAYEES = "Saved Payees";
+
+
     //-----------------One time data ----------------------
     public static final String OTP = "111111";
 

@@ -36,7 +36,7 @@ public class MultipleBillersTest extends BaseTest {
 
     }
 
-    @Test(priority = 3,description = "Validate saved Payee contents")
+    @Test(priority = 3,description = "Validate saved Billers contents")
     public void ValidatePageContents(){
         multipleBillersPage.navigateToPayeeAndBillers();
         multipleBillersPage.validateSavedBillersPage();

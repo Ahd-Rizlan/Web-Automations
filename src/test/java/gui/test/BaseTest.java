@@ -28,6 +28,7 @@ public class BaseTest extends Drivers {
     protected OpenSavingAccountPage savingsPage;
     protected WebCardDetailedViewPage webCardDetailedViewPage;
     protected MultipleBillersPage multipleBillersPage;
+    protected MultiplePaymentsPage multiplePaymentsPage;
 
     @BeforeClass
     public void setup() {
@@ -38,6 +39,8 @@ public class BaseTest extends Drivers {
         savedPayeesPage = new SavedPayeesPage(driver);
         makeTransactionsPage = new MakeTransactionsPage(driver);
         multipleBillersPage = new MultipleBillersPage(driver);
+        multiplePaymentsPage = new MultiplePaymentsPage(driver);
+
         messagesPage = new MessagesPage(driver);
         vishwaRetailAdminLoginPage = new VishwaRetailAdminLoginPage(driver);
         vishwaRetailAdminTaskPage = new VishwaRetailAdminTaskPage(driver);
@@ -52,6 +55,7 @@ public class BaseTest extends Drivers {
         fdPage = new OpenFDPage(driver);
         savingsPage = new OpenSavingAccountPage(driver);
         webCardDetailedViewPage = new WebCardDetailedViewPage(driver);
+
         driver.get(url);
     }
 
