@@ -617,7 +617,6 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
                 throw new IllegalStateException("allSelectedPayeeDetails is empty.");
             }else {
 
-// Iterate through all selected payee details
             for (int i = 0; i < allSelectedPayeeDetails.size(); i++) {
 
                 Map<String, String> expectedDetails;
@@ -859,7 +858,6 @@ addToReport("---------------------Validation of Saved Payee contents Succesfull-
                         addToReport("Amount input field could not be found on the modal.", Status.FAIL, true);
                     }
                 //validate dynamic fileds
-                    // 4️⃣ Move to the next record (if not the last one)
                     if (i < allSelectedPayeeDetails.size() - 1) {
                         if (isElementPresentBy(NEXT_ARROW)) {
                             clickOnElement(NEXT_ARROW);

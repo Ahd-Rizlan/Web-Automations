@@ -1,9 +1,14 @@
 package gui.test;
 
 import data.DataProviders;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import utils.constants.BillerConstants;
 import utils.constants.LoginConstants;
+
+import static utils.constants.MultipleBillersConstants.MAX_SELECTABLE_SAVED_BLLERS;
+import static utils.constants.MultipleBillersConstants.OTP;
+import static utils.constants.MultiplePaymentsConstants.MAX_SELECTABLE_SAVED_PAYEES;
 
 public class MultiplePaymentsTest extends BaseTest{
 
@@ -33,10 +38,39 @@ public class MultiplePaymentsTest extends BaseTest{
         multiplePaymentsPage.validateDataAvailablity(BillerConstants.BUTTON_TEXT_SAVED_PAYEES);
     }
 
-    @Test(priority = 3,description = "Validate saved Payee contents")
-    public void ValidatePageContents(){
+
+    @Test(priority = 3,description = "Validate saved Payee Pagination")
+    public void ValidatePagination(){
         multiplePaymentsPage.navigateToPayeeAndBillers();
         multiplePaymentsPage.validateSavedPayeePage();
     }
 
+    @Test(priority = 4,description = "Validate saved Payee Tabs and Contents")
+    public void ValidatePageTabsAndRecords(){
+        multiplePaymentsPage.navigateToPayeeAndBillers();
+        multiplePaymentsPage.validateTransferTypeTabsAndContents();
+
+    }
+
+    @Test(priority = 4,description = "Validate saved Payee Tabs and Contents")
+    public void ValidateModelPagePopupUponSelectingMultipleRecords(){
+        multiplePaymentsPage.navigateToPayeeAndBillers();
+
+        multiplePaymentsPage.SelectMultipleSavedBillers(MAX_SELECTABLE_SAVED_BLLERS);
+        multiplePaymentsPage.clickPayNowButton();
+//        multiplePaymentsPage.ValidatePayBillModelPageForMultipleSelectedBiller();
+//        multiplePaymentsPage.validateMultipleBillerOTPConfirmationPage();
+//        multiplePaymentsPage.enterOTPAndContinue(OTP);
+//        multiplePaymentsPage.validateMultipleBillerPaymentSuccessPage();
+//        multiplePaymentsPage.clearUsedIndexes();
+
+
+    }
+
+
+
+    @AfterMethod(description = "Rollback to dashboard")
+    public void NavigateBackToDashboard() {
+        multiplePaymentsPage.navigateBackToDashboard();
+    }
 }

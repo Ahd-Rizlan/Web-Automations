@@ -5,6 +5,9 @@ public class MultiplePaymentsConstants {
 
 
     // -------------- KEY WORDS FOR HEADERS ------------------
+
+    public static final int MAX_SELECTABLE_SAVED_PAYEES = 5;
+
     public static final String MAINHEADER = "Saved Payees";
     public static final String MAINHEADER_SIBLING = "Use filters to fetch different account types.";
     public static final String SUBHEADER = "Saved Payees";
@@ -24,6 +27,11 @@ public class MultiplePaymentsConstants {
     public static final String TAB_SAMPATH_BANK = "Sampath Bank Accounts";
     public static final String TAB_OTHER_BANK = "Other Bank Accounts";
     public static final String TAB_OTHER_CARDS = "Other Bank Cards";
+    public static final String[] TAB_HEADERS_SAMPATH_BANK = {"Add to List.","Account Number","Account Name","Nick Name","Add to Favorites","Actions"};
+    public static final String[] TAB_HEADERS_OTHER_BANK = {"Add to List.","Account Number","Account Name","Nick Name","Bank Name","Add to Favorites","Actions"};
+    public static final String[] TAB_HEADERS_OTHER_CARDS = {"Add to List.","Account Number","Account Name","Nick Name","Bank Name","Add to Favorites","Actions"};
+    public static final String[] TAB_HEADERS_ALL = {"Add to List.","Account Number","Account Name","Nick Name","Bank Name","Transaction Type","Add to Favorites","Actions"};
+    public static final String MAX_PAYEE_ERROR = "Limit reached: You can select up to 5 payees.";
 
 
 
