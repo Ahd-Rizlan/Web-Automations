@@ -58,7 +58,7 @@ public class MultiplePaymentsTest extends BaseTest{
 
         multiplePaymentsPage.SelectMultipleSavedBillers(MAX_SELECTABLE_SAVED_BLLERS);
         multiplePaymentsPage.clickPayNowButton();
-//        multiplePaymentsPage.ValidatePayBillModelPageForMultipleSelectedBiller();
+        multiplePaymentsPage.ValidatePayBillModelPageForMultipleSelectedBiller();
 //        multiplePaymentsPage.validateMultipleBillerOTPConfirmationPage();
 //        multiplePaymentsPage.enterOTPAndContinue(OTP);
 //        multiplePaymentsPage.validateMultipleBillerPaymentSuccessPage();

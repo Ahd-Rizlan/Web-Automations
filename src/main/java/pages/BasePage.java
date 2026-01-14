@@ -272,6 +272,19 @@ public abstract class BasePage extends helpers {
         }
     }
 
+    /**
+     * Helper to safely get text from an element without throwing NullPointerException.
+     * @param locator The element locator
+     * @return The trimmed text, or "" if null/empty.
+     */
+    private String getSafeText(By locator) {
+        String text = getTextFromElement(locator);
+        if (text == null) {
+            return "";
+        }
+        return text.trim();
+    }
+
 
     /**
      * Pauses the execution for the specified amount of time.

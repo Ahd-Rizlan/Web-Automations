@@ -32,7 +32,10 @@ public class MultiplePaymentsConstants {
     public static final String[] TAB_HEADERS_OTHER_CARDS = {"Add to List.","Account Number","Account Name","Nick Name","Bank Name","Add to Favorites","Actions"};
     public static final String[] TAB_HEADERS_ALL = {"Add to List.","Account Number","Account Name","Nick Name","Bank Name","Transaction Type","Add to Favorites","Actions"};
     public static final String MAX_PAYEE_ERROR = "Limit reached: You can select up to 5 payees.";
+    public static final String MULTIPLE_PAYEES = "Multiple Fund Transfer";
 
+    public static final String ACCOUNT_NAME = "Account Name";
+    public static final String ACCOUNT_NUM = "Account Number";
 
 
 }
