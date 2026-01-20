@@ -33,9 +33,25 @@ public class MultiplePaymentsConstants {
     public static final String[] TAB_HEADERS_ALL = {"Add to List.","Account Number","Account Name","Nick Name","Bank Name","Transaction Type","Add to Favorites","Actions"};
     public static final String MAX_PAYEE_ERROR = "Limit reached: You can select up to 5 payees.";
     public static final String MULTIPLE_PAYEES = "Multiple Fund Transfer";
+    public static final String MINIMUM_TRANSFER_ERROR = "Minimum transfer amount must be greater than LKR 0.00";
+    public static final String PURPOSE_ERROR = "Select Purpose";
+    public static final String BENREM_ERROR = "This field is required";
+    public static final double MIN_AMOUNT = 50.00;
+    public static final double MAX_AMOUNT = 500.00;
+
 
     public static final String ACCOUNT_NAME = "Account Name";
     public static final String ACCOUNT_NUM = "Account Number";
+    public static final String NICKNAME ="Nick Name";
+    public static final String BANKNAME ="Bank Name";
+    public static final String BRANCHNAME ="Branch Name";
+    public static final String ENTER_AMOUNT ="Enter Amount";
+    public static final String PLH_ENTER_AMOUNT ="Enter Amount";
+    public static final String PLH_BEN_REMARK ="Enter Beneficiary Remarks";
+    public static final String SELECT_PURPOSE ="Select Purpose";
+    public static final String BEN_REMARK ="Enter Beneficiary Remarks";
+
+
 
 
 }

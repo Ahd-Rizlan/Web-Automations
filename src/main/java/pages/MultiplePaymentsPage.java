@@ -4,6 +4,7 @@ import com.aventstack.extentreports.Status;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 import java.util.*;
 ;
@@ -39,7 +40,7 @@ public class MultiplePaymentsPage extends BasePage {
     private static final By rdoSavedPayee = By.xpath("//input[@type='checkbox' and @id='savePayee-undefined']");
     private static final By iconFavorite = By.xpath(".//td[7]//img[contains(@src,'Star') or contains(@src,'FavStar')]");
 
-    private static final By menuSavedPayee_Billers = By.xpath("//a[contains(@class,'NavBar_navlink__CRz3E')  and normalize-space(text())='Payees & Billers']");
+    private static final By menuSavedPayee_Billers = By.xpath("//a[contains(@class,'NavBar_navlink__CRz3E') and normalize-space()='Payees & Billers']");
     private static final By menuItem_SavedPayees = By.xpath("//div[contains(@class,'SubMenu_item__z9l12')  and normalize-space(text())='Saved Payees']");
     // Add this under your btnRightArrow locator
     private static final By btnLeftArrow = By.xpath("//div[contains(@class,'hover:cursor-pointer') and .//img[contains(@src,'ArrowLeft')]]");
@@ -48,7 +49,7 @@ public class MultiplePaymentsPage extends BasePage {
     private static final By ddPageSize = By.xpath("//select[@id='pageSize']");
     private static final By ddOption = By.xpath("//select[@id='pageSize']/option");
     private static final By tblRows = By.xpath("//tbody[contains(@class,'bg-white')]/tr");
-    private static final By btnBack = By.xpath("//button[.//div[normalize-space(text())='Back']]");
+    private static final By btnBack = By.xpath("//button[@type='button' and normalize-space()='Back' and contains(@class, 'bg-gray-500')]");
     // --- Locators for Transaction Page (Modal) ---
     private static final By lblTransferTitle = By.xpath("//div[text()='Multiple Fund Transfer']");
     private static final By ddFromAccount = By.id("accountfrom");
@@ -71,21 +72,19 @@ public class MultiplePaymentsPage extends BasePage {
 
     private static final By lblSelectedPayeeContainer = By.xpath("//div[contains(@class,'flex-wrap') and contains(@class,'justify-end')]");
 
-    private static final By btnTransfer = By.xpath("//button[contains(text(),'Transfer LKR')]");
+    private static final By selectPurposeDD = By.xpath("//select[contains(@name,'tranList.0.purpose')and following-sibling::span[contains(normalize-space(),'Select Purpose')]]");
 
     private static final By toastError = By.xpath("//div[contains(@class,'Toastify__toast--error')]//div[contains(text(),'Limit reached')]");
     private static final By btnPayNow = By.xpath("//button[normalize-space()='Pay Now']");
     private static final By btnCloseToast = By.xpath("//button[contains(@class,'close')]");
-
+    private static String amountToVerify = "";
+    private static double TransferAmount = 0.00;
     private static  By selectedDDOption(String optionText) {
         return  By.xpath("//select[@id='pageSize']/option[normalize-space()='" + optionText + "']");
     }
 
     private static By tabHeader(String tabName) {
         return By.xpath("//button[span[normalize-space(text())='"+tabName+"']]");
-    }
-    private static By recordCount(int index) {
-        return By.xpath("//tbody[contains(@class,'bg-white')]/tr["+index+"]");
     }
     private static By pageHeader(String headerTxt , int index) {
         return By.xpath("(//span[normalize-space(text())='"+headerTxt+"' and parent::*[@class='flex flex-col']])["+index+"]");
@@ -110,17 +109,32 @@ public class MultiplePaymentsPage extends BasePage {
     private static By lblSelectedPayee(String NickName){
         return By.xpath("//div[contains(@class,'bg-[#F5883C]') and contains(normalize-space(.),'"+NickName+"')]");
     }
-
     private static By getPayNowButton(String amount) {
-        return By.xpath("//button[contains(translate(normalize-space(text()), ',',''), 'Pay now LKR " + amount + "')]");
+        return By.xpath("//button[contains(translate(normalize-space(text()), ',',''), 'Transfer LKR " + amount + "')]");
     }
     public static By getPayNowButton() {
         return By.xpath("//button[contains(normalize-space(text()),'Pay Now')]");
     }
 
-    private static By getInputFields(MultiplePaymentsPage.ElementType InputType, String followingSiblingText ) {
+    private static By getReadOnlyInputFields(MultiplePaymentsPage.ElementType InputType, String followingSiblingText ) {
         return By.xpath("//div[contains(@class,'relative')]//input[@type='"+InputType+"' and @readonly and following-sibling::span[contains(normalize-space(),'" + followingSiblingText + "')]]");
     }
+
+    private static By getInputFields(MultiplePaymentsPage.ElementType InputType, String followingSiblingText ) {
+        return By.xpath("//div[contains(@class,'relative')]//input[@inputmode='"+InputType+"' and following-sibling::span[contains(normalize-space(),'" + followingSiblingText + "')]]");
+    }
+    private static By getRemarkInputFields(MultiplePaymentsPage.ElementType InputType, String followingSiblingText ) {
+        return By.xpath("//div[contains(@class,'relative')]//input[@type='"+InputType+"' and following-sibling::span[contains(normalize-space(),'" + followingSiblingText + "')]]");
+    }
+
+
+    public By getInputFields(MultiplePaymentsPage.ElementType InputType, String placeholder, String labelText) {
+        return By.xpath("//div[contains(@class,'relative')]//input[" +
+                "@inputmode='" + InputType + "' and " +
+                "@placeholder='" + placeholder + "' and " +
+                "following-sibling::span[contains(normalize-space(),'" + labelText + "')]]");
+    }
+
     private static By getInputElements(MultiplePaymentsPage.ElementType type, MultiplePaymentsPage.ElementType inputMode, String followingSiblingText, int billerIndex) {
         // Example fieldName: "amount" or "validations.0.fieldValue"
         return By.xpath("//div[contains(@class,'border p-3  rounded block gap-4 flex flex-col')]//input[@type='" + type + "' and @inputmode='" + inputMode +
@@ -134,7 +148,9 @@ public class MultiplePaymentsPage extends BasePage {
         );
     }
 
-
+    private static By lblErrorMessage(String ErrorMsg) {
+        return By.xpath("//span[contains(@class, 'text-red-500') and contains(normalize-space(), '"+ErrorMsg+"')]");
+    }
     /**
      * Select header tab
      *
@@ -794,6 +810,8 @@ public class MultiplePaymentsPage extends BasePage {
                     addToReport("Accounts dropdown is Present",Status.PASS,false);
                 } else {
                     addToReport("Accounts dropdown is not Present",Status.FAIL,true);
+                    throw new RuntimeException("Failed to Retrieve Accounts" );
+
                 }
             }catch (Exception e){
                 throw new RuntimeException("Failed to Retrieve Accounts" + e.getMessage(), e);
@@ -815,18 +833,30 @@ public class MultiplePaymentsPage extends BasePage {
                     String expectedAccountName = expectedDetails.get("AccountName");
                     String expectedNickName = expectedDetails.get("NickName");
                     String expectedBankName = expectedDetails.get("BankName");
-                    String expectedTransactionType = expectedDetails.get("TransactionType");
 
 //                    totalAmount+= Float.parseFloat(expectedAmount.replaceAll("[^\\d.]", ""));
                     addToReport("Validating Biller Record " + (i + 1) + " of " + allSelectedPayeeDetails.size(), Status.INFO, false);
 
-                    By inputAccountNumber = getInputFields(ElementType.number, ACCOUNT_NUM);
-                    By inputAccountName = getInputFields(ElementType.text, ACCOUNT_NAME);
-                    By inputNickName = getInputFields(ElementType.text, BILLER_NAME);
-                    By inputBankName = getInputFields(ElementType.text, BILLER_NAME);
-                    By inputTransactionType = getInputFields(ElementType.text, BILLER_NAME);
-//                  By inputAmount = getInputElements(ElementType.numeric, ElementType.numeric, Amount,i);
+                    By inputAccountNumber = getReadOnlyInputFields(ElementType.number, ACCOUNT_NUM);
+                    By inputAccountName = getReadOnlyInputFields(ElementType.text, ACCOUNT_NAME);
+                    By inputNickName = getReadOnlyInputFields(ElementType.text, NICKNAME);
+                    By inputBankName = getReadOnlyInputFields(ElementType.text, BANKNAME);
+                    By inputBranchName = getReadOnlyInputFields(ElementType.text, BRANCHNAME);
 
+
+                    //Nick Name Validation
+                    if (isElementPresentBy(inputNickName)) {
+                        String actualNickName = getAttributeFromElement(inputNickName, "value");
+                        if (actualNickName.equals(expectedNickName)) {
+                            addToReport("NickName validation PASSED. Expected: '" + expectedNickName + "', Actual: '" + actualNickName + "'.", Status.PASS, false);
+                        } else {
+                            addToReport("NickName validation FAILED. Expected: '" + expectedNickName + "', Actual: '" + actualNickName + "'.", Status.FAIL, true);
+                        }
+                    } else {
+                        addToReport("NickName input field could not be found on the modal.", Status.FAIL, true);
+                    }
+
+                    //Account Number Validation
                     if (isElementPresentBy(inputAccountNumber)) {
                         String actualAccountNumber = getAttributeFromElement(inputAccountNumber, "value");
 
@@ -838,16 +868,114 @@ public class MultiplePaymentsPage extends BasePage {
                     } else {
                         addToReport("AccountNumber input field could not be found on the modal.", Status.FAIL, true);
                     }
+
+                    //Account Name Validation
                     if (isElementPresentBy(inputAccountName)) {
                         String actualBillerName = getAttributeFromElement(inputAccountName, "value");
                         if (actualBillerName.equals(expectedAccountName)) {
-                            addToReport("Biller Name validation PASSED. Expected: '" + expectedAccountName + "', Actual: '" + actualBillerName + "'.", Status.PASS, false);
+                            addToReport("Account Name validation PASSED. Expected: '" + expectedAccountName + "', Actual: '" + actualBillerName + "'.", Status.PASS, false);
                         } else {
-                            addToReport("Biller Name validation FAILED. Expected: '" + expectedAccountName + "', Actual: '" + actualBillerName + "'.", Status.FAIL, true);
+                            addToReport("Account Name validation FAILED. Expected: '" + expectedAccountName + "', Actual: '" + actualBillerName + "'.", Status.FAIL, true);
                         }
                     } else {
-                        addToReport("Biller Name input field could not be found on the modal.", Status.FAIL, true);
+                        addToReport("Account Name input field could not be found on the modal.", Status.FAIL, true);
                     }
+
+                    //Bank Name Validation
+                    if (isElementPresentBy(inputBankName)) {
+                        String actualBankName = getAttributeFromElement(inputBankName, "value");
+                        if (actualBankName.equals(expectedBankName)) {
+                            addToReport("BankName validation PASSED. Expected: '" + expectedBankName + "', Actual: '" + actualBankName + "'.", Status.PASS, false);
+                        } else {
+                            addToReport("BankName validation FAILED. Expected: '" + expectedBankName + "', Actual: '" + actualBankName + "'.", Status.FAIL, true);
+                        }
+                    } else {
+                        addToReport("BankName input field could not be found on the modal.", Status.FAIL, true);
+                    }
+
+                    //Branch Name Validation
+                    if (isElementPresentBy(inputBranchName)) {
+                        addToReport("BankName input field can be found on the modal.", Status.WARNING, true);
+                    } else {
+                        addToReport("BankName input field could not be found on the modal.", Status.PASS, true);
+                    }
+
+                    amountToVerify= String.valueOf(TransferAmount);
+                    List<String> errorsToCheck= new ArrayList<>(List.of(MINIMUM_TRANSFER_ERROR, PURPOSE_ERROR, BENREM_ERROR));
+                    validateEmptyStateErrors(amountToVerify,errorsToCheck);
+                    errorsToCheck.clear();
+
+                    // Enter Amount Validation
+                    if (isElementPresentBy(getInputFields(ElementType.numeric,PLH_ENTER_AMOUNT,ENTER_AMOUNT))) {
+                        addToReport("Enter Amount input field can be found on the modal.", Status.PASS, true);
+                        clickOnElement(getInputFields(ElementType.numeric,ENTER_AMOUNT));
+                        clearTheElement(getInputFields(ElementType.numeric,ENTER_AMOUNT));
+                        double amount = generateRandomAmount(MIN_AMOUNT,MAX_AMOUNT);
+                        TransferAmount += amount;
+                        sendKeysToElement(getInputFields(ElementType.numeric,ENTER_AMOUNT), String.valueOf(amount));
+
+                        errorsToCheck= new ArrayList<>(List.of(PURPOSE_ERROR, BENREM_ERROR));
+                        validateEmptyStateErrors(String.valueOf(TransferAmount),errorsToCheck);
+                        errorsToCheck.clear();
+
+
+                    } else {
+                        addToReport("Enter Amount input field could not be found on the modal.", Status.FAIL, true);
+                    }
+
+
+                    //Enter Dropdown Purpose Validation
+                    ;
+                    if (isElementPresentBy(selectPurposeDD)) {
+                        addToReport("Purpose Dropdown can be found on the modal.", Status.PASS, true);
+                        clickOnElement(selectPurposeDD);
+                        waitFor(SHORT_WAIT);
+                        List<String> allOptions = getSelectedOptionText(selectPurposeDD, "ALL_OPTIONS");
+                        List<String> allValues = getSelectedOptionText(selectPurposeDD, "ALL_OPTIONS_VALUE");
+
+                        if (allOptions == null || allOptions.isEmpty()) {
+                            addToReport("Dropdown has no options", Status.FAIL,true);
+                            throw new RuntimeException("Dropdown has no options");
+                        }
+
+
+                        // 4. Generate a random number
+                        if (allOptions.size() > 1) {
+                            Random rand = new Random();
+                            int randomIndex = rand.nextInt(allOptions.size() - 1) + 1;
+
+                            String selectedOption = allOptions.get(randomIndex);
+                            String optionValue = allValues.get(randomIndex);
+                            selectFromDropdown(selectPurposeDD,selectedOption, "index");
+
+                            waitFor(SHORT_WAIT);
+                            addToReport("Randomly selected Purpose: '" + optionValue + "'", Status.PASS, false);
+
+
+                            errorsToCheck= new ArrayList<>(List.of( BENREM_ERROR));
+                            validateEmptyStateErrors(String.valueOf(TransferAmount),errorsToCheck);
+                            errorsToCheck.clear();                        }else {
+                            addToReport("Dropdown does not have enough options to pick from.", Status.FAIL, true);
+                        }
+                    } else {
+                        addToReport("Purpose Dropdown  field could not be found on the modal.", Status.FAIL, true);
+                    }
+
+                    //Enter BeneRemark Validation
+                    if (isElementPresentBy(getRemarkInputFields(ElementType.text,BEN_REMARK))) {
+                        addToReport("Enter BeneRemark field can be found on the modal.", Status.PASS, true);
+                        clickOnElement(getRemarkInputFields(ElementType.text,BEN_REMARK));
+                        clearTheElement(getRemarkInputFields(ElementType.text,BEN_REMARK));
+                        String remarktext =generateRemarkText(i + 1);
+                        sendKeysToElement(getRemarkInputFields(ElementType.text,BEN_REMARK),remarktext );
+
+
+
+
+                    } else {
+                        addToReport("Enter BeneRemark input field could not be found on the modal.", Status.FAIL, true);
+                    }
+
 
 
 
@@ -868,16 +996,17 @@ public class MultiplePaymentsPage extends BasePage {
                 }else {
                     addToReport("Back Button is not Present",Status.FAIL,true);
                 }
-//                String formattedTotalAmount = String.format("%.2f", totalAmount);
-//
-//                if (isElementPresentBy(getPayNowButton(formattedTotalAmount))){
-//                    addToReport("PayNow Button with Total Amount LKR " + formattedTotalAmount + " is Present", Status.PASS, false);
-//                    clickOnElement(getPayNowButton(formattedTotalAmount));
-//
-//                } else {
-//                    addToReport("PayNow Button with Total Amount LKR " + formattedTotalAmount + " is not Present", Status.FAIL, true);
-//                    throw new RuntimeException("PayNow Button is not Present");
-//                }
+
+
+                if (isElementPresentBy(getPayNowButton(amountToVerify))){
+                    addToReport("PayButton  is Present",Status.PASS,false);
+                    clickOnElement(getPayNowButton(amountToVerify));
+                    addToReport("PayButton "+amountToVerify+" is Clicked",Status.PASS,false);
+
+                }else {
+                    addToReport("PayButton is not Present",Status.FAIL,true);
+                }
+
             }
         } catch (Exception e) {
             addToReport("An unexpected error occurred in ValidatePayBillModelPageForSingleSelectedBiller", Status.FAIL, true);
@@ -970,7 +1099,25 @@ public class MultiplePaymentsPage extends BasePage {
     }
 
 
+    public void validateEmptyStateErrors(String amountToVerify, List<String> errorMessages) {
+        By transferButton = getPayNowButton(amountToVerify);
 
+        if (isElementPresentBy(transferButton)) {
+            addToReport("Found Transfer Button for amount: " + amountToVerify, Status.INFO, false);
+            clickOnElement(transferButton);
+            addToReport("Clicked Transfer button. Validating error messages...", Status.INFO, false);
+            for (String errorMsg : errorMessages) {
+                if (isElementPresentBy(lblErrorMessage(errorMsg))) {
+                    addToReport("PASSED: Error '" + errorMsg + "' is displayed in RED.", Status.PASS, false);
+                } else {
+                    addToReport("FAILED: Error '" + errorMsg + "' is NOT displayed.", Status.FAIL, true);
+                }
+            }
+
+        } else {
+            addToReport("Transfer button with amount [" + amountToVerify + "] could not be found.", Status.FAIL, true);
+        }
+    }
     /**
      * Returns a random unique row number between 1 and totalRows (inclusive)
      * @param totalRows set the maximum number Payees should be selected

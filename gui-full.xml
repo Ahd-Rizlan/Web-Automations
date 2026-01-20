@@ -4,22 +4,22 @@
     </listeners>
     <test verbose="2" preserve-order="true" name="Sampath SVR4 GUI Test">
         <classes>
-            <!--            <class name="gui.test.LoginTest">-->
-            <!--                <methods>-->
-            <!--                    <include name="validateTheLoginPage"/>-->
-            <!--                    <include name="validateTheSuccessfulLogin"/>-->
-            <!--                    <include name="validateTheBrowserBackAndForward"/>-->
-            <!--                    <include name="validateTheUnSuccessfulLoginWithIncorrectPassword"/>-->
-            <!--                    <include name="validateTheSuccessfulLogout"/>-->
-            <!--                    <include name="validateTheUnSuccessfulLoginWithIncorrectUser"/>-->
-            <!--                    <include name="validateIncorrectAnswersForSecurityQuestions"/>-->
-            <!--                    <include name="ValidateLoginAttemptWithLockedUserID"/>-->
-            <!--                    <include name="validateTheUnSuccessfulResetWithLockedUser"/>-->
-            <!--                    <include name="ValidatetheResetPassword"/>-->
-            <!--                    <include name="ValidatetheResetPasswordSetNewPassword"/>  //depend with the validateTheSignUp-->
-            <!--                    <include name="validateTheSignUp"/>-->
-            <!--                </methods>-->
-            <!--            </class>-->
+<!--                        <class name="gui.test.LoginTest">-->
+<!--                            <methods>-->
+<!--                                <include name="validateTheLoginPage"/>-->
+<!--                                <include name="validateTheSuccessfulLogin"/>-->
+<!--                                <include name="validateTheBrowserBackAndForward"/>-->
+<!--                                <include name="validateTheUnSuccessfulLoginWithIncorrectPassword"/>-->
+<!--                                <include name="validateTheSuccessfulLogout"/>-->
+<!--                                <include name="validateTheUnSuccessfulLoginWithIncorrectUser"/>-->
+<!--                                <include name="validateIncorrectAnswersForSecurityQuestions"/>-->
+<!--                                <include name="ValidateLoginAttemptWithLockedUserID"/>-->
+<!--                                <include name="validateTheUnSuccessfulResetWithLockedUser"/>-->
+<!--                                <include name="ValidatetheResetPassword"/>-->
+<!--                                <include name="ValidatetheResetPasswordSetNewPassword"/>-->
+<!--                                <include name="validateTheSignUp"/>-->
+<!--                            </methods>-->
+<!--                        </class>-->
             <!--            <class name="gui.test.DashboardTest">-->
             <!--                <methods>-->
             <!--                    <include name="logIntoDahsboard"/>-->
@@ -57,41 +57,61 @@
             <!--                    <include name="validateKeyPointsInCredit"/>-->
             <!--                </methods>-->
             <!--            </class>-->
-            <!--            <class name="gui.test.PaymentsAndBillerMaintenanceTest">-->
-            <!--                <methods>-->
-            <!--                    <include name="logIntoDahsboard"/>-->
-            <!--                    <include name="validateFavouriteIcons"/>-->
-            <!--                    <include name="validateSavedBillerFilterOptions"/>-->
-            <!--                    <include name="validateBillPaymentSearchCategories"/>-->
-            <!--                    <include name="logIntoDahsboardAlternateUserThree"/>-->
-            <!--                    <include name="validateNoSavedBillersAreMarkedAsFav"/>-->
-            <!--                </methods>-->
-            <!--            </class>-->
-            <!--            <class name="gui.test.SettingsTest">-->
-            <!--                <methods>-->
-            <!--                    <include name="logIntoDahsboard"/>-->
-            <!--                    <include name="navigateToSettings"/>-->
-            <!--                    <include name="validateUserSettingsData"/>-->
-            <!--                    <include name="validatePrimaryAccount"/>-->
-            <!--                    <include name="enterOTPToChangeThePrimaryAccount"/>-->
-            <!--                    <include name="NavigatetoToOTPVerificationMode"/>-->
-            <!--                    <include name="navigateToPasswordSection"/>-->
-            <!--                    <include name="passwordChange"/>-->
-            <!--                    <include name="loginAfterChangingThePassword"/>-->
-            <!--                </methods>-->
-            <!--            </class>-->
-            <!--            <class name="gui.test.MakeTransactionsTest">-->
-            <!--                <methods>-->
-            <!--                    <include name="logIntoDahsboardAlternateUserOne"/>-->
-            <!--                    <include name="obtainAccountTypes"/>-->
-            <!--                    <include name="validateOwnAccountTransfers"/>-->
-            <!--                    <include name="validateOtherAccountTransfers"/>-->
-            <!--                    <include name="validateOtherCreditCardTransfers"/>-->
-            <!--                    <include name="validateMobileCashTransfers"/>-->
-            <!--                    <include name="validateWithinSameBankTransfers"/>-->
-            <!--                    <include name="validateStaffAccountTransfers"/>-->
-            <!--                </methods>-->
-            <!--            </class>-->
+
+
+<!--                        <class name="gui.test.PaymentsAndBillerMaintenanceTest">-->
+<!--                            <methods>-->
+<!--                                <include name="logIntoDahsboard"/>-->
+<!--                                <include name="validateFavouriteIcons"/>-->
+<!--                                <include name="validateSavedBillerFilterOptions"/>-->
+<!--                                <include name="validateBillPaymentSearchCategories"/>-->
+<!--                                <include name="logIntoDahsboardAlternateUserThree"/>-->
+<!--                                <include name="validateNoSavedBillersAreMarkedAsFav"/>-->
+<!--                            </methods>-->
+<!--                        </class>-->
+
+
+<!--                        <class name="gui.test.SettingsTest">-->
+<!--                            <methods>-->
+<!--                                <include name="logIntoDahsboard"/>-->
+<!--                                <include name="navigateToSettings"/>-->
+<!--                                <include name="validateUserSettingsData"/>-->
+<!--                                <include name="validatePrimaryAccount"/>-->
+<!--                                <include name="enterOTPToChangeThePrimaryAccount"/>-->
+<!--                                <include name="NavigatetoToOTPVerificationMode"/>-->
+<!--                                <include name="navigateToPasswordSection"/>-->
+<!--                                <include name="passwordChange"/>-->
+<!--                                <include name="loginAfterChangingThePassword"/>-->
+<!--                            </methods>-->
+<!--                        </class>-->
+
+<!--                        <class name="gui.test.LyceumTest">-->
+<!--                            <methods>-->
+<!--                                <include name="logIntoDahsboardAlternateUserTwo"/>-->
+<!--                                <include name="validateLyceum"/>-->
+<!--                            </methods>-->
+<!--                        </class>-->
+<!--                        <class name="gui.test.LPOPPTest">-->
+<!--                            <methods>-->
+<!--                                <include name="logIntoDahsboardAlternateUserTwo"/>-->
+<!--                                <include name="validateLPOPP"/>-->
+<!--                            </methods>-->
+<!--                        </class>-->
+
+
+
+<!--                        <class name="gui.test.MakeTransactionsTest">-->
+<!--                            <methods>-->
+<!--                                <include name="logIntoDahsboardAlternateUserOne"/>-->
+<!--                                <include name="obtainAccountTypes"/>-->
+<!--                                <include name="validateOwnAccountTransfers"/>-->
+<!--                                <include name="validateOtherAccountTransfers"/>-->
+<!--                                <include name="validateOtherCreditCardTransfers"/>-->
+<!--                                <include name="validateMobileCashTransfers"/>-->
+<!--                                <include name="validateWithinSameBankTransfers"/>-->
+<!--                                <include name="validateStaffAccountTransfers"/>-->
+<!--                            </methods>-->
+<!--                        </class>-->
             <!--            <class name="gui.test.MessagingTest">-->
             <!--                <methods>-->
             <!--                    <include name="logIntoDahsboardAlternateUserOne"/>-->
@@ -154,12 +174,12 @@
             <!--                    <include name="validateFDdetailsView"/>-->
             <!--                </methods>-->
             <!--            </class>-->
-            <!--            <class name="gui.test.PawningTicketTest">-->
-            <!--                <methods>-->
-            <!--                    <include name="logIntoDahsboard"/>-->
-            <!--                    <include name="validatePawnSettlement"/>-->
-            <!--                </methods>-->
-            <!--            </class>-->
+<!--                        <class name="gui.test.PawningTicketTest">-->
+<!--                            <methods>-->
+<!--                                <include name="logIntoDahsboard"/>-->
+<!--                                <include name="validatePawnSettlement"/>-->
+<!--                            </methods>-->
+<!--                        </class>-->
             <!--            &lt;!&ndash;Messaging covered in R1&ndash;&gt;-->
             <!--            <class name="gui.test.CurrentAccountDetailedTest">-->
             <!--                <methods>-->
@@ -200,18 +220,7 @@
             <!--                    <include name="validateBillPaymentTableAndData"/>-->
             <!--                </methods>-->
             <!--            </class>-->
-            <!--            <class name="gui.test.LyceumTest">-->
-            <!--                <methods>-->
-            <!--                    <include name="logIntoDahsboardAlternateUserTwo"/>-->
-            <!--                    <include name="validateLyceum"/>-->
-            <!--                </methods>-->
-            <!--            </class>-->
-            <!--            <class name="gui.test.LPOPPTest">-->
-            <!--                <methods>-->
-            <!--                    <include name="logIntoDahsboardAlternateUserTwo"/>-->
-            <!--                    <include name="validateLPOPP"/>-->
-            <!--                </methods>-->
-            <!--            </class>-->
+
             <!--            <class name="gui.test.AcknowledgementMsgTest">-->
             <!--                <methods>-->
             <!--                    <include name="logIntoDahsboardAlternateUserEleven"/>-->

@@ -20,6 +20,8 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -1574,6 +1576,37 @@ public abstract class BasePage extends helpers {
         // nextInt(origin, bound) → bound is exclusive, so add +1 to include maxNumber
         return ThreadLocalRandom.current().nextInt(0, maxNumber + 1);
     }
+    public double generateRandomAmount(double min, double max) {
+        if (min >= max) {
+            throw new IllegalArgumentException("Max must be greater than Min");
+        }
 
+        // 1. Generate random value
+        double randomValue = min + (max - min) * new java.util.Random().nextDouble();
+
+        // 2. Format to 2 decimal places (xxx.xx)
+        // We convert to BigDecimal, round it, and convert back to double
+        BigDecimal bd = BigDecimal.valueOf(randomValue);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+
+        return bd.doubleValue();
+    }
+
+    public String generateRemarkText(int index) {
+        // 1. Create a compact timestamp (YearMonthDayHourMinute)
+        // Format: yyMMddHHmm (e.g., 2601191230 for 2026-01-19 12:30) -> 10 characters
+        String timeStamp = new SimpleDateFormat("yyMMddHHmm").format(new Date());
+
+        // 2. Construct the string with the Index
+        // Example Result: "2601191230 Ref:1"
+        String text = timeStamp + " Ref:" + index;
+
+        // 3. Safety Check: Ensure it never exceeds 20 characters
+        if (text.length() > 20) {
+            return text.substring(0, 20);
+        }
+
+        return text;
+    }
 
 }
