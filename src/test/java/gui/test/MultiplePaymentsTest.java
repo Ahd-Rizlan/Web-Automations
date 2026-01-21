@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 import utils.constants.BillerConstants;
 import utils.constants.LoginConstants;
 
-import static utils.constants.MultipleBillersConstants.MAX_SELECTABLE_SAVED_BLLERS;
+import static utils.constants.MultipleBillersConstants.*;
 import static utils.constants.MultipleBillersConstants.OTP;
 import static utils.constants.MultiplePaymentsConstants.MAX_SELECTABLE_SAVED_PAYEES;
 

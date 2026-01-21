@@ -268,8 +268,8 @@
                     <include name="logIntoDahsboard"/>
                     <!--<include name="AccessSavedPayeesPage"/>-->
                     <!--<include name="AccessSavedPayeesPageThroughNavBar"/>-->
-<!--                    <include name="ValidatePagination"/>-->
-<!--                    <include name="ValidatePageTabsAndRecords"/>-->
+                    <!--                    <include name="ValidatePagination"/>-->
+                    <!--                    <include name="ValidatePageTabsAndRecords"/>-->
                     <include name="ValidateModelPagePopupUponSelectingMultipleRecords"/>
                     <!--<include name="PayMultipleBillers"/>-->
                 </methods>

@@ -24,6 +24,8 @@ public class BillerConstants {
 
     //---------------BUTTONS-------------------
     public static final String BUTTON_TEXT_SAVED_BILLERS = "Saved Billers";
+    public static final String BUTTON_TEXT_SAVED_PAYEES = "Saved Payees";
+
     public static final String BUTTON_TEXT_BILL_PAYMENT_HISTORY = "Bill Payment History";
     public static final String BUTTON_MY_ACCOUNTS = "My Accounts";
     public static final String BUTTON_ACCOUNTS = "Accounts";

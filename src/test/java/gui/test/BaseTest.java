@@ -27,6 +27,8 @@ public class BaseTest extends Drivers {
     protected  OpenFDPage fdPage;
     protected OpenSavingAccountPage savingsPage;
     protected WebCardDetailedViewPage webCardDetailedViewPage;
+    protected MultiplePaymentsPage multiplePaymentsPage;
+    protected MultipleBillersPage multipleBillersPage;
 
     @BeforeClass
     public void setup() {
@@ -50,6 +52,8 @@ public class BaseTest extends Drivers {
         fdPage = new OpenFDPage(driver);
         savingsPage = new OpenSavingAccountPage(driver);
         webCardDetailedViewPage = new WebCardDetailedViewPage(driver);
+        multiplePaymentsPage = new MultiplePaymentsPage(driver);
+        multipleBillersPage = new MultipleBillersPage(driver);
         driver.get(url);
     }
 
