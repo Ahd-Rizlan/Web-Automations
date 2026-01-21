@@ -69,10 +69,10 @@ public class LoginTest extends BaseTest {
         loginPage.ValidateForgotPasswordIncorrectSecurityAnswers(userName, successMsg, LoginConstants.OTP, CommonUtils.randomAlphaNumeric(5), invalidMsg);
     }
 
-    @Test(priority = 9, dataProvider = "LockedUser", description = "Validate the unsuccessful login with locked user ID", dataProviderClass = DataProviders.LoginDataProvider.class)
+    @Test(priority = 9, dataProvider = "LockedUserReset", description = "Validate the unsuccessful login with locked user ID", dataProviderClass = DataProviders.LoginDataProvider.class)
     public void ValidateLoginAttemptWithLockedUserID(String userName, String password, String errorMessage) {
         loginPage.ValidateSuccessfulLoginAttemptWithLockedUserID(LoginConstants.LOGIN_BUTTON_TEXT, userName, password, errorMessage, true);
-        loginPage.ValidateSuccessfulLoginAttemptWithLockedUserID(LoginConstants.LOGIN_BUTTON_TEXT, userName, password, errorMessage,    true);
+        loginPage.ValidateSuccessfulLoginAttemptWithLockedUserID(LoginConstants.LOGIN_BUTTON_TEXT, userName, password, errorMessage, false);
     }
 
     @Test(priority = 10, dataProvider = "LockedUserReset", description = "Validate the locked user ID for forget password journey", dataProviderClass = DataProviders.LoginDataProvider.class)

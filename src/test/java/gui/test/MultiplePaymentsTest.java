@@ -55,7 +55,7 @@ public class MultiplePaymentsTest extends BaseTest{
     @Test(priority = 4,description = "Validate saved Payee Tabs and Contents")
     public void ValidateModelPagePopupUponSelectingMultipleRecords(){
         multiplePaymentsPage.navigateToPayeeAndBillers();
-        multiplePaymentsPage.SelectMultipleSavedBillers(MAX_SELECTABLE_SAVED_BLLERS);
+        multiplePaymentsPage.SelectMultipleSavedBillers(MAX_SELECTABLE_SAVED_PAYEES);
         multiplePaymentsPage.clickPayNowButton();
         multiplePaymentsPage.ValidatePayBillModelPageForMultipleSelectedBiller();
 //        multiplePaymentsPage.validateMultipleBillerOTPConfirmationPage();

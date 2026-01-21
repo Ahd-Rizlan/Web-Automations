@@ -62,9 +62,7 @@ public class SaveAccountConstants {
     public static final String TEXT_CLOSE_BUTTON = "Close";
     public static final String TEXT_OPEN_FD_DESCRIPTION = "Person who has been in Sri Lanka";
     public static final String TEXT_NEXT_BUTTON = "Next";
-//    public static final String VALUE_FD_RESIDENT = "Sampath";
-    public static final String VALUE_FD_RESIDENT = "Resident";
-
+    public static final String VALUE_FD_RESIDENT = "Sampath";
 
     public static final String NAME_FD_SOURCE_OF_FUNDS = "funding_sources";
     public static final String NAME_DR_ACCOUNT_NUMBER = "dr_account_number";

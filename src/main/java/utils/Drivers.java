@@ -2,10 +2,10 @@ package utils;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.managers.ChromeDriverManager;
 import io.github.bonigarcia.wdm.managers.EdgeDriverManager;
 import io.github.bonigarcia.wdm.managers.FirefoxDriverManager;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -46,20 +46,23 @@ public class Drivers{
         String className = this.getClass().getSimpleName();
         String timestamp = new SimpleDateFormat("yyyy-MM-dd_HH.mm").format(new Date());
         ExtentSparkReporter sparkReporter = new ExtentSparkReporter(
-                System.getProperty("user.dir") + "/extent-reports/" + className + "Report" + timestamp + ".html"
+                System.getProperty("user.dir") + "/extent-reports/" + className + "_Report_" + timestamp + ".html"
         );
         extent = new ExtentReports();
         extent.attachReporter(sparkReporter);
 
         // Uses chrome driver by default
         if (browser == null) {
-            WebDriverManager.chromedriver().setup();  // auto download + setup
+            ChromeDriverManager.chromedriver().setup();
+            driver = new ChromeDriver();
 
         } else {
 
             switch (browser) {
                 case "Chrome":
-                    WebDriverManager.chromedriver().setup();  // auto download + setup
+//                    ChromeDriverManager.chromedriver().setup();
+                    System.setProperty("webdriver.chrome.driver", chromeDriverPath);
+//                    driver = new ChromeDriver();
                     ChromeOptions chromeOptionss = new ChromeOptions();
                     chromeOptionss.addArguments("--no-sandbox");
                     chromeOptionss.addArguments("--disable-dev-shm-usage");
@@ -68,11 +71,13 @@ public class Drivers{
                     break;
 
                 case "Headless":
-                    ChromeDriverManager.chromedriver().setup();
+//                    ChromeDriverManager.chromedriver().setup();
                     System.setProperty("webdriver.chrome.driver", chromeDriverPath);
                     ChromeOptions chromeOptions = new ChromeOptions();
-                    chromeOptions.addArguments("--headless");
+                    chromeOptions.addArguments("--headless=new");
                     chromeOptions.addArguments("--window-size=1920,1080");
+                    chromeOptions.addArguments("--force-device-scale-factor=1");
+                    chromeOptions.addArguments("--high-dpi-support=1");
                     chromeOptions.addArguments("--disable-gpu");
                     driver = new ChromeDriver(chromeOptions);
                     break;
@@ -95,7 +100,8 @@ public class Drivers{
                     driver = new ChromeDriver();
                     break;
             }
-            driver.manage().window().maximize();
+            driver.manage().window().setSize(new Dimension(1920, 1080));
+//            driver.manage().window().maximize();
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 if (driver != null) {
                     driver.quit();

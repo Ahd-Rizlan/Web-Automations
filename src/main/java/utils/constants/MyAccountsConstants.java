@@ -127,7 +127,7 @@ public class MyAccountsConstants {
     public static final String ACCOUNTS_CREDIT_CARDS = "Accounts / Credit Cards";
     public static final String CREDIT_CARDS = "Credit Cards";
     public static final String CONTACT_NUMBER = "Contact Number";
-    public static final String SUPPLEMENTARY_CARD = "Supplementary Card";
+    public static final String SUPPLEMENTARY_CARDS = "Supplementary Cards";
     public static final String CARD_HOLDER_NAME = "Card Holder Name";
     public static final String NO_DATA_FOUND_LC = "No data found";
     public static final String COLLECTING_BRANCH = "Collecting Branch";

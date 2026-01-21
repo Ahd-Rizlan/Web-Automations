@@ -33,8 +33,7 @@ public class LoanAccountDetailedViewPage extends BasePage {
     private static final By imgmyAccount = By.xpath("(//a[@class='NavBar_navlink__CRz3E NavBar_navlinkHover__eiXyp'])[1]");
     private static final By lblLoanAccountSummary = By.xpath("//span[contains(text(),'Loan Account Summary')]");
     private static final By lblAccountListLoading = By.xpath("//div[contains(@class, 'bg-gray-300')]");
-//    private static final By lblLoans = By.xpath("(//a[@class='SubMenu_subMenuItem___oYCo'])[4]");
-    private static final By lblLoans = By.xpath("//a[contains(@class,'SubMenu_subMenuItem')]//div[normalize-space(text())='Loans']");
+    private static final By lblLoans = By.xpath("(//a[@class='SubMenu_subMenuItem___oYCo'])[4]");
     private static final By icnAccounts = By.xpath("//div[contains(@class,'flex flex-col items-center')]/div[3]/div[1]");
     private static final By lblFDnumberamdAmount = By.xpath("//div[@class='flex']/span[2]");
     private static final By lblLoanCard = By.xpath("//div[contains(@class, 'items-center justify-center flex ')]");

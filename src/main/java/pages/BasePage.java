@@ -1609,4 +1609,22 @@ public abstract class BasePage extends helpers {
         return text;
     }
 
+    public String generateRemarkText(String Text) {
+        // 1. Create a compact timestamp (YearMonthDayHourMinute)
+        // Format: yyMMddHHmm (e.g., 2601191230 for 2026-01-19 12:30) -> 10 characters
+        String timeStamp = new SimpleDateFormat("MMddHHmm").format(new Date());
+
+        // 2. Construct the string with the Index
+        // Example Result: "2601191230 Ref:1"
+        String text = timeStamp + " Ref:" + Text;
+
+        // 3. Safety Check: Ensure it never exceeds 20 characters
+        if (text.length() > 20) {
+            return text.substring(0, 20);
+        }
+
+        return text;
+    }
+
+
 }

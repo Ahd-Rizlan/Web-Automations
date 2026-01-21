@@ -47,7 +47,7 @@ public class MultiplePaymentsConstants {
     public static final String BRANCHNAME ="Branch Name";
     public static final String ENTER_AMOUNT ="Enter Amount";
     public static final String PLH_ENTER_AMOUNT ="Enter Amount";
-    public static final String PLH_BEN_REMARK ="Enter Beneficiary Remarks";
+    public static final String ENTER_PURPOSE ="Enter Purpose";
     public static final String SELECT_PURPOSE ="Select Purpose";
     public static final String BEN_REMARK ="Enter Beneficiary Remarks";
 

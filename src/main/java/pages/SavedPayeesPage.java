@@ -37,8 +37,8 @@ public class SavedPayeesPage extends BasePage {
     private static final By ddQFTPurpose = By.id("bank");
     private static final By tblSavedPayeesRows = By.xpath("//tbody//tr");
     private static final By tblSavedBillerRows = By.xpath("//tbody//tr");
-    private static final By tblSPAddToFavPayeeUnchecked = By.xpath("//tbody//tr/following::img[contains(bg-white)]");
-    private static final By tblFBAddToFavPayeeUnchecked = By.xpath("//tbody//tr[@class,contains()]");
+    private static final By tblSPAddToFavPayeeUnchecked = By.xpath("//tbody//tr/following::img[contains(@srcset,'5a2f492b')]");
+    private static final By tblFBAddToFavPayeeUnchecked = By.xpath("//tbody//tr//img[contains(@srcset,'5a2f492b')]");
     private static final By tblSPAddToFavPayeeChecked = By.xpath("//tbody//tr/following::img[contains(@srcset,'c7bd4030')]");
     private static final By lblPopupMsgFavPayeeAdded = By.xpath("//div[contains(text(),'Favourite Payee Added Successfully!')]");
     private static final By lblPopupMsgFavPayeeRemoved = By.xpath("//div[contains(text(),'Favourite Payee Removed Successfully!')]");

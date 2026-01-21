@@ -28,7 +28,7 @@ public class CreditCardDetailedViewPage extends BasePage {
     }
 
     private static final By imgmyAccount = By.xpath("(//a[@class='NavBar_navlink__CRz3E NavBar_navlinkHover__eiXyp'])[1]");
-    private static final By lblCreditCard = By.xpath("//div[contains(text(), 'Credit Cards') and ancestor::a[@class='SubMenu_subMenuItem___oYCo']]");
+    private static final By lblLoans = By.xpath("(//a[@class='SubMenu_subMenuItem___oYCo'])[2]");
     private static final By btnSettlement = By.xpath("(//button[contains(@class, 'font-semibold')])[2]");
     private static final By txtCustomAmount = By.xpath("//input[contains(@inputmode, 'numeric')]");
     private static final By ddFromAccount = By.xpath("//select[contains(@class, 'font-semibold')]");
@@ -111,7 +111,7 @@ public class CreditCardDetailedViewPage extends BasePage {
     /**
      * This method will navigate to the credit card details section
      */
-    public void NavigatetoCreditCardDetailsPage() {
+    public void NavogatetoCreditCardDetailsPage() {
 
         addToReport("----------Navigating to the Credit card section ----------", Status.INFO, false);
 
@@ -119,8 +119,8 @@ public class CreditCardDetailedViewPage extends BasePage {
         hoverOverElement(imgmyAccount);
         addToReport("Hover on the My accounts tab ", Status.PASS, false);
 
-        waitForElementPresence(lblCreditCard);
-        clickOnElement(lblCreditCard);
+        waitForElementPresence(lblLoans);
+        clickOnElement(lblLoans);
         addToReport("Clicked on the Credit Card tab ", Status.PASS);
 
         waitForElementToBeInvisible(lblLoadingIcon, LONG_WAIT);

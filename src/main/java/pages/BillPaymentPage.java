@@ -154,9 +154,6 @@ public class BillPaymentPage extends BasePage {
     private static By tblActionDownloadOrDelete(int col, int row) {
         return By.xpath("(//table//tr/td[" + col + "]//button[2])[" + row + "]");
     }
-    private static By tblActionReinitiate(int col, int row) {
-        return By.xpath("(//table//tr/td[" + col + "]//button[1])[" + row + "]");
-    }
 
     private static By lblSavedBillerTemplateName(int row) {
         return By.xpath("(//img[contains(@src,'Bin') and @alt='']/ancestor::tr/td[3])[" + row + "]");
@@ -170,22 +167,16 @@ public class BillPaymentPage extends BasePage {
         return By.xpath("(//img[contains(@src,'Bin') and @alt='']/ancestor::tr/td[8]//button[2])[" + row + "]");
     }
 
-    private static By btnSavedBillerReinitiate(int col,int row) {
-//        return By.xpath("(//img[contains(@src,'Frepeat') ]/ancestor::tr/td[7]//button[1])[" + row + "]");
-//        return By.xpath("(//img[contains(@src,'Frepeat') ]/ancestor::tr/td[7]//button[1]/ancestor::tr//button[1])[" + row + "]");
-        return By.xpath("(//table//tr/td[" + col + "]//button[1])[" + row + "]//img[contains(@src,'Frepeat')]");
-
+    private static By btnSavedBillerReinitiate(int row) {
+        return By.xpath("(//img[contains(@src,'Frepeat') ]/ancestor::tr/td[7]//button[1])[" + row + "]");
     }
-    //action button issue
 
     private static By datePickerDay(int day) {
         return By.xpath("//button[not(@tabindex='-1')]//span[text()=" + day + "]");
     }
 
     private static By tabHeader(String tabName) {
-//        return By.xpath("//div[contains(@class,'flex')]/div[text()='" + tabName + "']");
-        return By.xpath("//button[span[normalize-space(text())='"+tabName+"']]");
-
+        return By.xpath("//div[contains(@class,'flex')]/div[text()='" + tabName + "']");
     }
 
     private static By btnPageNumber(String buttonNumber) {
@@ -201,8 +192,7 @@ public class BillPaymentPage extends BasePage {
     }
 
     private static By getElementByTypeAndText(BillPaymentPage.ElementType type, String text) {
-        return By.xpath("(//" + type.name() + "[contains(normalize-space(text()), '" + text + "')])[1]");
-//        (//p[contains(normalize-space(text()), 'Sri Lanka Ports Authority')])[1]
+        return By.xpath("//" + type.name() + "[contains(normalize-space(text()), '" + text + "')]");
     }
 
     private static By btnCategories(String category) {
@@ -1545,10 +1535,9 @@ public class BillPaymentPage extends BasePage {
      * @param kWAmount          The amount to be paid for the transaction (e.g., bill payment amount).
      * @param kWMobileNoWithout The mobile number of the customer, without the leading zero, for verification or identification purposes.
      */
-    public void validateReinitiationOfTransactionFromHistory(String primaryTab,String billerTitle, String otpValue, String kWAmount, String kWMobileNoWithout) {
+    public void validateReinitiationOfTransactionFromHistory(String billerTitle, String otpValue, String kWAmount, String kWMobileNoWithout) {
         try {
             //Select appropriate header
-            selectHeaderTab(primaryTab);
             waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
             int rCount = 0;
 
@@ -1570,11 +1559,8 @@ public class BillPaymentPage extends BasePage {
 
                 addToReport("Obtained record with payment id : " + paymentID + ", biller tittle : " + billerTitle, Status.PASS, true);
 
-                //column number of reinitiate button
+                clickOnElement(btnSavedBillerReinitiate(rCount));
 
-                clickOnElement(btnSavedBillerReinitiate(7,rCount));
-                clickOnElement(btnSavedBillerReinitiate(7,rCount));
-                clickOnElement(tblActionReinitiate(7, rCount));
                 waitForElementToBeInvisible(imgGreyLoader, LONG_WAIT);
 
                 //Validate contents from text fields

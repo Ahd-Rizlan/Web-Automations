@@ -77,9 +77,9 @@ public class DashboardPage extends BasePage {
     private static final By btnQActionsSavingsAccount = By.xpath("//h1[text()='Quick Actions']/ancestor::div[contains(@class,'Container_container')]//span[contains(text(),'Open Saving')]");
     private static final By btnQActionsWebCard = By.xpath("//h1[text()='Quick Actions']/ancestor::div[contains(@class,'Container_container')]//span[contains(text(),'Web Card')]");
     private static final By btnQActionsObtainNewLoan = By.xpath("//h1[text()='Quick Actions']/ancestor::div[contains(@class,'Container_container')]//span[contains(text(),'Obtain')]/parent::div/span[contains(text(),'New Loan')]");
-    private static final By btnTransfer = By.xpath("//button[span[normalize-space(text())='Transfer']]");
-    private static final By btnPayment = By.xpath("//button[span[normalize-space(text())='Payment']]");
-    private static final By btnMobileCash = By.xpath("//button[span[normalize-space(text())='Mobile Cash']]");
+    private static final By btnTransfer = By.xpath("//div[contains(@class,'RecentVishwaTransactions')]//div[contains(text(),'Transfer')]");
+    private static final By btnPayment = By.xpath("//div[contains(@class,'RecentVishwaTransactions')]//div[contains(text(),'Payment')]");
+    private static final By btnMobileCash = By.xpath("//div[contains(@class,'RecentVishwaTransactions')]//div[contains(text(),'Mobile Cash')]");
     private static final By lblRVTTransferRecord = By.xpath("//div[contains(@class,'RecentVishwaTransactions_scrollContainer')]//div[contains(@class,'RecentVishwaTransactions_transactionCard')]");
     private static final By lblRVTPaymentAccountName = By.xpath("//div[contains(@class,'RecentVishwaTransactions_transactionCard')][1]//div[contains(@class,'transactionDetails')]/span[1]");
     private static final By lblSendMoneyHeader = By.xpath("//span[text()='Send Money']/parent::div/span[contains(text(),'Sampath Bank Accounts')]");

@@ -72,7 +72,8 @@ public class MultiplePaymentsPage extends BasePage {
 
     private static final By lblSelectedPayeeContainer = By.xpath("//div[contains(@class,'flex-wrap') and contains(@class,'justify-end')]");
 
-    private static final By selectPurposeDD = By.xpath("//select[contains(@name,'tranList.0.purpose')and following-sibling::span[contains(normalize-space(),'Select Purpose')]]");
+//    private static final By selectPurposeDD = By.xpath("//select[contains(@name,'tranList.0.purpose')and following-sibling::span[contains(normalize-space(),'Select Purpose')]]");
+    private static final By selectPurposeDD = By.xpath("//select[@id='bank']");
 
     private static final By toastError = By.xpath("//div[contains(@class,'Toastify__toast--error')]//div[contains(text(),'Limit reached')]");
     private static final By btnPayNow = By.xpath("//button[normalize-space()='Pay Now']");
@@ -259,7 +260,7 @@ public class MultiplePaymentsPage extends BasePage {
 
             int colCheckbox = headerList.indexOf("Add to List.") + 1;
             int colAccNum   = headerList.indexOf("Account Number") + 1;
-            int colAccName  = headerList.indexOf("Account Name") + 1; // <--- NEW Extraction
+            int colAccName  = headerList.indexOf("Account Name") + 1;
             int colFav      = headerList.indexOf("Add to Favorites") + 1;
             int colActions  = headerList.indexOf("Actions") + 1;
 
@@ -334,12 +335,13 @@ public class MultiplePaymentsPage extends BasePage {
      */
     private void validateRowSpecifics(int rowIndex, int colCheckbox, int colAccNum, int colAccName, int colActions, int colFav, boolean performFullFunctionalTest) {
         try {
+
             // Get Account Name for validation (Trimmed)
             String accName = getTextFromElement(tblObtainCellValue(rowIndex, colAccName));
             if(accName != null) accName = accName.trim();
 
             // --- 1. Validate Checkbox & Chip Sync ---
-            By chkBoxLocator = By.xpath("//tbody//tr[" + rowIndex + "]/td[" + colCheckbox + "]//input[@type='checkbox']");
+            By chkBoxLocator = By.xpath("//tbody//tr[" + rowIndex  + "]/td[" + colCheckbox + "]//input[@type='checkbox']");
 
             if (isElementPresentBy(chkBoxLocator)) {
                 if (performFullFunctionalTest) {
@@ -352,7 +354,7 @@ public class MultiplePaymentsPage extends BasePage {
 
                         // 1. Validate Box is Checked
                         if (!chkBox.isSelected())
-                            addToReport("Row " + rowIndex + ": Checkbox Check Failed.", Status.FAIL, true);
+                            addToReport("Row " + rowIndex+ ": Checkbox Check Failed.", Status.FAIL, true);
 
 //                        // 2. Validate Chip Appeared (Visual Sync)
 //                        if (isElementPresentBy(selectedPayeeChip(accName))) {
@@ -380,7 +382,7 @@ public class MultiplePaymentsPage extends BasePage {
                     }
                 }
             } else {
-                addToReport("Row " + rowIndex + ": Checkbox missing.", Status.FAIL, true);
+                addToReport("Row " + rowIndex+1 + ": Checkbox missing.", Status.FAIL, true);
             }
 
             // --- 2. Validate Favorites (Add/Remove) ---
@@ -668,8 +670,7 @@ public class MultiplePaymentsPage extends BasePage {
     public String selectOneSavedPayeeRecord(int totalRowsSP ) {
 
         // Generate a unique random record index
-        int selectedRecord = generateUniqueRandomNumber(totalRowsSP,usedIndexes);
-
+        int selectedRecord = generateUniqueRandomNumber(totalRowsSP,usedIndexes) ;
         // Column Mapping
         List<String> headerList = Arrays.asList(TAB_HEADERS_ALL);
         int colAccNum = headerList.indexOf("Account Number") + 1;
@@ -913,9 +914,8 @@ public class MultiplePaymentsPage extends BasePage {
                         double amount = generateRandomAmount(MIN_AMOUNT,MAX_AMOUNT);
                         TransferAmount += amount;
                         sendKeysToElement(getInputFields(ElementType.numeric,ENTER_AMOUNT), String.valueOf(amount));
-
                         errorsToCheck= new ArrayList<>(List.of(PURPOSE_ERROR, BENREM_ERROR));
-                        validateEmptyStateErrors(String.valueOf(TransferAmount),errorsToCheck);
+                        validateEmptyStateErrors(String.valueOf(amountToVerify),errorsToCheck);
                         errorsToCheck.clear();
 
 
@@ -946,15 +946,27 @@ public class MultiplePaymentsPage extends BasePage {
 
                             String selectedOption = allOptions.get(randomIndex);
                             String optionValue = allValues.get(randomIndex);
-                            selectFromDropdown(selectPurposeDD,selectedOption, "index");
-
+                            selectFromDropdown(selectPurposeDD,selectedOption, "value");
                             waitFor(SHORT_WAIT);
                             addToReport("Randomly selected Purpose: '" + optionValue + "'", Status.PASS, false);
 
+                            if (optionValue.equals("Others")  ) {
+                                if (isElementPresentBy(getRemarkInputFields(ElementType.text,ENTER_PURPOSE))) {
+                                    addToReport("Purpose Others input field can be found on the modal.", Status.PASS, true);
+                                    clickOnElement(getRemarkInputFields(ElementType.text,ENTER_PURPOSE));
+                                    clearTheElement(getRemarkInputFields(ElementType.text,ENTER_PURPOSE));
+                                    String otherstext =generateRemarkText(" - Purpose");
+                                    sendKeysToElement(getRemarkInputFields(ElementType.text,ENTER_PURPOSE),otherstext );
+                                } else {
+                                    addToReport("Purpose Others input field could not be found on the modal.", Status.FAIL, true);
+                                }
+                            }
+
 
                             errorsToCheck= new ArrayList<>(List.of( BENREM_ERROR));
-                            validateEmptyStateErrors(String.valueOf(TransferAmount),errorsToCheck);
-                            errorsToCheck.clear();                        }else {
+                            validateEmptyStateErrors(String.valueOf(amountToVerify),errorsToCheck);
+                            errorsToCheck.clear();
+                        }else {
                             addToReport("Dropdown does not have enough options to pick from.", Status.FAIL, true);
                         }
                     } else {
@@ -999,12 +1011,13 @@ public class MultiplePaymentsPage extends BasePage {
 
 
                 if (isElementPresentBy(getPayNowButton(amountToVerify))){
+                    System.out.println(amountToVerify + "===================");
                     addToReport("PayButton  is Present",Status.PASS,false);
                     clickOnElement(getPayNowButton(amountToVerify));
                     addToReport("PayButton "+amountToVerify+" is Clicked",Status.PASS,false);
 
                 }else {
-                    addToReport("PayButton is not Present",Status.FAIL,true);
+                    addToReport("PayButton"+amountToVerify+" is not Present",Status.FAIL,true);
                 }
 
             }

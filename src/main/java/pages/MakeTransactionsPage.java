@@ -92,8 +92,7 @@ public class MakeTransactionsPage extends BasePage {
     }
 
     private static By tabHeader(String tabName) {
-        return By.xpath("//div[contains(@class,'flex')]/button[normalize-space()='" + tabName + "']");
-// changed here
+        return By.xpath("//div[contains(@class,'flex')]/div[text()='" + tabName + "']");
     }
 
     private static By tfDisabledName(String name) {

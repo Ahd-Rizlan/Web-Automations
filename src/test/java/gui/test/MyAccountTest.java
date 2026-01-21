@@ -97,6 +97,7 @@ public class MyAccountTest extends BaseTest {
 
     @Test(priority = 12, description = "Validate 'My Accounts' items credit card | 18,19,20")
     public void validateMyAccountCreditCard() throws InterruptedException {
+
         dashboardPage.navigateToMainMenu(BillerConstants.BUTTON_MY_ACCOUNTS);
         myAccountsPage.ValidateCreditCardDetails(MyAccountsConstants.CREDIT_CARDS, MyAccountsConstants.ACCOUNTS_CREDIT_CARDS, "");
     }

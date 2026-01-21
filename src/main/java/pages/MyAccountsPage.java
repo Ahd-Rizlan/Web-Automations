@@ -2053,10 +2053,10 @@ public class MyAccountsPage extends BasePage {
         }
 
         //Validate supplementary card
-        if (isElementPresentBy(getElementByTypeAndText(ElementType.div, MyAccountsConstants.SUPPLEMENTARY_CARD))) {
-            addToReport("Successfully validated header " + MyAccountsConstants.SUPPLEMENTARY_CARD, Status.PASS, false);
+        if (isElementPresentBy(getElementByTypeAndText(ElementType.h2, MyAccountsConstants.SUPPLEMENTARY_CARDS))) {
+            addToReport("Successfully validated header " + MyAccountsConstants.SUPPLEMENTARY_CARDS, Status.PASS, false);
         } else {
-            addToReport("Failed to validate header " + MyAccountsConstants.SUPPLEMENTARY_CARD, Status.FAIL, true);
+            addToReport("Failed to validate header " + MyAccountsConstants.SUPPLEMENTARY_CARDS, Status.FAIL, true);
         }
 
         recordCount = isElementsPresentBy(tblTransactionRows);

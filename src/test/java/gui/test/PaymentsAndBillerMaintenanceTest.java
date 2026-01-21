@@ -33,8 +33,7 @@ public class PaymentsAndBillerMaintenanceTest extends BaseTest {
     public void validateSavedBillerFilterOptions() {
         dashboardPage.selectQuickActions(BillerConstants.BUTTON_BILL_PAYMENT);
         billPaymentPage.validateBillPaymentHistoryFilterOptions(BillerConstants.BUTTON_TEXT_BILL_PAYMENT_HISTORY, dowloadLocation);
-        billPaymentPage.validateReinitiationOfTransactionFromHistory(BillerConstants.BUTTON_TEXT_BILL_PAYMENT_HISTORY,BillerConstants.CONSTANTS_MAP.get("KW_DIALOG_TV"), BillerConstants.OTP, BillerConstants.CONSTANTS_MAP.get("KW_AMOUNT"), BillerConstants.CONSTANTS_MAP.get("KW_ACCOUNT_NO"));
-        //added an action button to the parameter
+        billPaymentPage.validateReinitiationOfTransactionFromHistory(BillerConstants.CONSTANTS_MAP.get("KW_DIALOG_TV"), BillerConstants.OTP, BillerConstants.CONSTANTS_MAP.get("KW_AMOUNT"), BillerConstants.CONSTANTS_MAP.get("KW_ACCOUNT_NO"));
     }
 
     @Test(priority = 4, description = "Validate search option is available to categories | 2")
@@ -121,3 +120,4 @@ public class PaymentsAndBillerMaintenanceTest extends BaseTest {
     }
 
 }
+

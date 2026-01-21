@@ -47,7 +47,7 @@ public class LoginPage extends BasePage {
     private static final By btnBack = By.xpath("//button[text()='Back']");
     private static final By tfVishwaID = By.xpath("//input[@id='username']");
     private static final By tfSecurityAnsOne = By.xpath("//input[@id='answer']");
-    private static final By popUpIncorrectUserId = By.xpath("//div[@role='alert' and @class='Toastify__toast-body']/div[2]");
+    private static final By popUpIncorrectUserId = By.xpath("//div[@role='alert']/div[2]");
     private static final By popUpMsg = By.xpath("//div[@role='alert']");
     private static final By icnCustomLoader = By.xpath("//div[contains(@class,'LoginComponent_customloader')]");
     //    private static final By lnkPasswordReset = By.xpath("(//span[contains(@class,'LoginComponent_spanLink__FjuDJ')])[1]");
@@ -55,7 +55,7 @@ public class LoginPage extends BasePage {
 
     private static final By btnNext = By.xpath("//button[contains(normalize-space(text()),'Next')]");
     private static final By txtSecurityQuestionOne = By.xpath("//input[contains(@id,'answer')]");
-    private static final By txtSecurityQuestionTwo = By.xpath("//input[contains(@class,'forgot_vishwaInput__KLpti')]");
+    private static final By txtSecurityQuestion = By.xpath("//input[contains(@class,'forgot_vishwaInput__KLpti')]");
     private static final By btnSubmit = By.xpath("//button[contains(normalize-space(text()),'Submit')]");
     private static final By btnpolicy = By.xpath("//div[contains(@class,'rounded-r-lg') and normalize-space(text())='!']");
     private static final By lblpasswordPolicy = By.xpath("(//span[contains(@class,'text-red-500 text-sm block')])[1]");
@@ -677,14 +677,11 @@ public class LoginPage extends BasePage {
 
             //Validate error message
             waitForElementPresence(popUpIncorrectUserId, SHORT_WAIT);
-
             String actualMessage = getTextFromElement(popUpIncorrectUserId);
-            actualMessage = actualMessage.trim();
-            System.out.println(actualMessage);
-            if (actualMessage.equals(errorMessage.trim())) {
-                addToReport("Received correct message  : " + actualMessage + "." + "Expected Message = "+ errorMessage, Status.PASS);
+            if (actualMessage.equals(errorMessage)) {
+                addToReport("Received correct message  : '" + errorMessage + "'.", Status.PASS);
             } else {
-                addToReport("Didn't receive invalid message  : " + actualMessage + "." + "Expected Message = "+ errorMessage, Status.FAIL);
+                addToReport("Didn't receive invalid message  : '" + errorMessage + "'.", Status.FAIL);
             }
 
         } catch (Exception e) {
@@ -743,7 +740,7 @@ public class LoginPage extends BasePage {
                 throw new RuntimeException("Failed to enter OTP " + e.getMessage(), e);
             }
             //Enter invalid answers
-            waitForElementPresence(tfSecurityAnsOne, MODERATE_WAIT);
+            waitForElementPresence(tfSecurityAnsOne, SHORT_WAIT);
             sendKeysToElement(tfSecurityAnsOne, randomText);
             clickOnElement(btnLogin);
 
@@ -773,7 +770,7 @@ public class LoginPage extends BasePage {
                     ", Actual: " + (actualSecurityQuestion != null ? actualSecurityQuestion.trim() : "null"), Status.FAIL);
         }
 
-        sendKeysToElement(txtSecurityQuestionTwo, LoginConstants.QUESTION_ANSWER);
+        sendKeysToElement(txtSecurityQuestionOne, LoginConstants.QUESTION_ANSWER);
         addToReport("Entered answer for Security Question 2: " + LoginConstants.QUESTION_ANSWER, Status.PASS, false);
         clickOnElement(btnNext);
 

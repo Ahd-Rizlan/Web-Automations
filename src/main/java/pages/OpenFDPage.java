@@ -143,7 +143,6 @@ public class OpenFDPage extends BasePage {
 
         }
         clickOnElement(rdoFDResident);
-
         clickOnElement(btnFDContinue);
 
         waitForElementPresence(ddfdsourceOfFunds,EXTREME_LONG_WAIT);

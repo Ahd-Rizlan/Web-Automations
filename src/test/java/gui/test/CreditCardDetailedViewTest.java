@@ -18,7 +18,7 @@ public class CreditCardDetailedViewTest extends BaseTest {
 
     @Test(priority = 2, dataProvider = "CreditCardDetailViewData", description = "1,2,3,4,5,6,7,8,10,11,12Acknowledgement message TC 445,446,447, uplift - 1,2,3,4,5,6,13,14,15,16,17,19,20", dataProviderClass = DataProviders.CreditCardDetailViewDataProvider.class)
     public void validateCreditCardDetailsAndSettlement (String payingAccountNumberUSD,String payingAccountNumber,String InsufficientamountErrUSD,String InsufficientamountErr,String ZeroAmountUSD,String ZeroAmount,String errorMsgUSD,String errorMsg,String paymentAmountUSD,String paymentAmount,String acknowlagmentmessage,String successMsg,String successMsgForBlocking,String emailSentSuccessMsg){
-        creditCardDetailedViewPage.NavigatetoCreditCardDetailsPage();
+        creditCardDetailedViewPage.NavogatetoCreditCardDetailsPage();
         creditCardDetailedViewPage.validateCardDetails();
         creditCardDetailedViewPage.validateTransactionTables();
         creditCardDetailedViewPage.validateCreditCardSettlement(payingAccountNumberUSD, InsufficientamountErrUSD,ZeroAmountUSD,errorMsgUSD,paymentAmountUSD);
