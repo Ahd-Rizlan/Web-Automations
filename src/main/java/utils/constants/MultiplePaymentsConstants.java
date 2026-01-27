@@ -42,7 +42,7 @@ public class MultiplePaymentsConstants {
 
     public static final String ACCOUNT_NAME = "Account Name";
     public static final String ACCOUNT_NUM = "Account Number";
-    public static final String NICKNAME ="Nick Name";
+    public static final String NICKNAME ="Nickname";
     public static final String BANKNAME ="Bank Name";
     public static final String BRANCHNAME ="Branch Name";
     public static final String ENTER_AMOUNT ="Enter Amount";

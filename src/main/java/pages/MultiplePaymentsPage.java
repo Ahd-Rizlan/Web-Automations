@@ -23,7 +23,7 @@ public class MultiplePaymentsPage extends BasePage {
 
 
     public enum ElementType {
-        button, label, span, div, p,text,numeric,number;
+        button, label, span, div, p,text,numeric,number,decimal;
     }
     public enum PayUsing {
         Card, LKR ,OTHER;
@@ -73,8 +73,9 @@ public class MultiplePaymentsPage extends BasePage {
     private static final By lblSelectedPayeeContainer = By.xpath("//div[contains(@class,'flex-wrap') and contains(@class,'justify-end')]");
 
 //    private static final By selectPurposeDD = By.xpath("//select[contains(@name,'tranList.0.purpose')and following-sibling::span[contains(normalize-space(),'Select Purpose')]]");
-    private static final By selectPurposeDD = By.xpath("//select[@id='bank']");
-
+    public By getPurposeDropdown(int index) {
+        return By.xpath("//select[@id='bank' and @name='tranList." + index + ".purpose']");
+    }
     private static final By toastError = By.xpath("//div[contains(@class,'Toastify__toast--error')]//div[contains(text(),'Limit reached')]");
     private static final By btnPayNow = By.xpath("//button[normalize-space()='Pay Now']");
     private static final By btnCloseToast = By.xpath("//button[contains(@class,'close')]");
@@ -128,12 +129,20 @@ public class MultiplePaymentsPage extends BasePage {
         return By.xpath("//div[contains(@class,'relative')]//input[@type='"+InputType+"' and following-sibling::span[contains(normalize-space(),'" + followingSiblingText + "')]]");
     }
 
-
-    public By getInputFields(MultiplePaymentsPage.ElementType InputType, String placeholder, String labelText) {
+    private static By getRemarkInputFields(MultiplePaymentsPage.ElementType InputType, String followingSiblingText,int Index) {
         return By.xpath("//div[contains(@class,'relative')]//input[" +
-                "@inputmode='" + InputType + "' and " +
+                "@type='" + InputType + "' and " +
+                "@name='tranList." + Index + ".beneficiaryRemarks' and " +
+                "following-sibling::span[contains(normalize-space(),'" + followingSiblingText + "')]]");
+    }
+
+    public By getInputFields(MultiplePaymentsPage.ElementType inputType, String placeholder, String labelText, int index) {
+        return By.xpath("//div[contains(@class,'relative') and not(contains(@class,'hidden'))]//input[" +
+                "@inputmode='" + inputType + "' and " +
                 "@placeholder='" + placeholder + "' and " +
-                "following-sibling::span[contains(normalize-space(),'" + labelText + "')]]");
+                "@name='tranList." + index + ".amount' and " +
+                "following-sibling::span[contains(normalize-space(),'" + labelText + "')]" +
+                "]");
     }
 
     private static By getInputElements(MultiplePaymentsPage.ElementType type, MultiplePaymentsPage.ElementType inputMode, String followingSiblingText, int billerIndex) {
@@ -907,15 +916,20 @@ public class MultiplePaymentsPage extends BasePage {
                     errorsToCheck.clear();
 
                     // Enter Amount Validation
-                    if (isElementPresentBy(getInputFields(ElementType.numeric,PLH_ENTER_AMOUNT,ENTER_AMOUNT))) {
+
+                    if (isElementPresentBy(getInputFields(ElementType.decimal,PLH_ENTER_AMOUNT,ENTER_AMOUNT,i))) {
                         addToReport("Enter Amount input field can be found on the modal.", Status.PASS, true);
-                        clickOnElement(getInputFields(ElementType.numeric,ENTER_AMOUNT));
-                        clearTheElement(getInputFields(ElementType.numeric,ENTER_AMOUNT));
+                        clickOnElement(getInputFields(ElementType.decimal,PLH_ENTER_AMOUNT,ENTER_AMOUNT,i));
+                        clearTheElement(getInputFields(ElementType.decimal,PLH_ENTER_AMOUNT,ENTER_AMOUNT,i));
                         double amount = generateRandomAmount(MIN_AMOUNT,MAX_AMOUNT);
                         TransferAmount += amount;
-                        sendKeysToElement(getInputFields(ElementType.numeric,ENTER_AMOUNT), String.valueOf(amount));
+                        addToReport("-----------------------------------------------------------"+amount+"--------------------------------------------------------",Status.INFO,false);
+                        waitFor(SHORT_WAIT);
+                        sendKeysToElement(getInputFields(ElementType.decimal,PLH_ENTER_AMOUNT,ENTER_AMOUNT,i), String.valueOf(amount));
                         errorsToCheck= new ArrayList<>(List.of(PURPOSE_ERROR, BENREM_ERROR));
-                        validateEmptyStateErrors(String.valueOf(amountToVerify),errorsToCheck);
+                        addToReport("-----------------------------------------------------------"+"amountToVerify - "+TransferAmount+"--------------------------------------------------------",Status.INFO,false);
+
+                        validateEmptyStateErrors(String.valueOf(TransferAmount),errorsToCheck);
                         errorsToCheck.clear();
 
 
@@ -926,12 +940,12 @@ public class MultiplePaymentsPage extends BasePage {
 
                     //Enter Dropdown Purpose Validation
                     ;
-                    if (isElementPresentBy(selectPurposeDD)) {
+                    if (isElementPresentBy(getPurposeDropdown(i))) {
                         addToReport("Purpose Dropdown can be found on the modal.", Status.PASS, true);
-                        clickOnElement(selectPurposeDD);
+                        clickOnElement(getPurposeDropdown(i));
                         waitFor(SHORT_WAIT);
-                        List<String> allOptions = getSelectedOptionText(selectPurposeDD, "ALL_OPTIONS");
-                        List<String> allValues = getSelectedOptionText(selectPurposeDD, "ALL_OPTIONS_VALUE");
+                        List<String> allOptions = getSelectedOptionText(getPurposeDropdown(i), "ALL_OPTIONS");
+                        List<String> allValues = getSelectedOptionText(getPurposeDropdown(i), "ALL_OPTIONS_VALUE");
 
                         if (allOptions == null || allOptions.isEmpty()) {
                             addToReport("Dropdown has no options", Status.FAIL,true);
@@ -946,7 +960,7 @@ public class MultiplePaymentsPage extends BasePage {
 
                             String selectedOption = allOptions.get(randomIndex);
                             String optionValue = allValues.get(randomIndex);
-                            selectFromDropdown(selectPurposeDD,selectedOption, "value");
+                            selectFromDropdown(getPurposeDropdown(i),selectedOption, "value");
                             waitFor(SHORT_WAIT);
                             addToReport("Randomly selected Purpose: '" + optionValue + "'", Status.PASS, false);
 
@@ -964,7 +978,7 @@ public class MultiplePaymentsPage extends BasePage {
 
 
                             errorsToCheck= new ArrayList<>(List.of( BENREM_ERROR));
-                            validateEmptyStateErrors(String.valueOf(amountToVerify),errorsToCheck);
+                            validateEmptyStateErrors(String.valueOf(TransferAmount),errorsToCheck);
                             errorsToCheck.clear();
                         }else {
                             addToReport("Dropdown does not have enough options to pick from.", Status.FAIL, true);
@@ -974,15 +988,12 @@ public class MultiplePaymentsPage extends BasePage {
                     }
 
                     //Enter BeneRemark Validation
-                    if (isElementPresentBy(getRemarkInputFields(ElementType.text,BEN_REMARK))) {
+                    if (isElementPresentBy(getRemarkInputFields(ElementType.text,BEN_REMARK,i))) {
                         addToReport("Enter BeneRemark field can be found on the modal.", Status.PASS, true);
-                        clickOnElement(getRemarkInputFields(ElementType.text,BEN_REMARK));
-                        clearTheElement(getRemarkInputFields(ElementType.text,BEN_REMARK));
+                        clickOnElement(getRemarkInputFields(ElementType.text,BEN_REMARK,i));
+                        clearTheElement(getRemarkInputFields(ElementType.text,BEN_REMARK,i));
                         String remarktext =generateRemarkText(i + 1);
-                        sendKeysToElement(getRemarkInputFields(ElementType.text,BEN_REMARK),remarktext );
-
-
-
+                        sendKeysToElement(getRemarkInputFields(ElementType.text,BEN_REMARK,i),remarktext );
 
                     } else {
                         addToReport("Enter BeneRemark input field could not be found on the modal.", Status.FAIL, true);
@@ -1010,14 +1021,14 @@ public class MultiplePaymentsPage extends BasePage {
                 }
 
 
-                if (isElementPresentBy(getPayNowButton(amountToVerify))){
-                    System.out.println(amountToVerify + "===================");
+                if (isElementPresentBy(getPayNowButton(String.valueOf(TransferAmount)))){
+                    System.out.println(TransferAmount + "===================");
                     addToReport("PayButton  is Present",Status.PASS,false);
-                    clickOnElement(getPayNowButton(amountToVerify));
-                    addToReport("PayButton "+amountToVerify+" is Clicked",Status.PASS,false);
+                    clickOnElement(getPayNowButton(String.valueOf(TransferAmount)));
+                    addToReport("PayButton "+TransferAmount+" is Clicked",Status.PASS,false);
 
                 }else {
-                    addToReport("PayButton"+amountToVerify+" is not Present",Status.FAIL,true);
+                    addToReport("PayButton"+TransferAmount+" is not Present",Status.FAIL,true);
                 }
 
             }
@@ -1029,87 +1040,42 @@ public class MultiplePaymentsPage extends BasePage {
     }
 
 
+    /**
+     * Selects an account with max balance  and validates success otp message.
+     *
+     * @param ddFromAccount   Dropdown WebElement for 'From Account'
+     * @param currencyType    Currency type (e.g., LOCAL)
+     *
+     */
+//    public String validatePayBill(By ddFromAccount, CurrencyType currencyType ,String OTPMessage) {
+//        addToReport("------------------------------------- Check for High Balanced Account -------------------------------------", Status.INFO, false);
+//        String payableAccountNumber = getValueOfHighestVisibleAmount(ddFromAccount, currencyType);
+//        selectedFromAccount = payableAccountNumber;
+//        if (payableAccountNumber == null) {
+//            addToReport("No account found ", Status.FAIL, false);
+//            return null;
+//        }
+//        // Select the account in the dropdown
+//        selectFromDropdown(ddFromAccount,payableAccountNumber, "value");
+//        addToReport("Selected account " + payableAccountNumber + " from the dropdown", Status.INFO, true);
+//        validateSelectedAccountCard(CurrencyType.LOCAL,payableAccountNumber);
+//        // Validate OTP Messaege
+//        //Click Pay Now
+//        clickOnElement(dynamicPayNowBtn);
+//        if (isElementPresentBy(validateToastMessage(OTPMessage))) {
+//            addToReport("OTP sent Message is sent.", Status.PASS, true);
+//            if (isElementPresentBy(btnCloseToast)){
+//                clickOnElement(btnCloseToast);
+//                addToReport("Closed the OTP sent message popup",Status.INFO,false);
+//            }else {
+//                addToReport("Close button for OTP sent message popup is not visible",Status.FAIL,true);
+//            }
+//        } else {
+//            addToReport("OTP sent Message is not sent ", Status.FAIL, true);
+//        }
+//        return payableAccountNumber;
+//    }
 
-
-    public void checkTransferTypeTabsAndContents(String tabName) {
-        try {
-            addToReport("---------------------Validating Tab " + tabName + "---------------", Status.INFO);
-
-            By selectedTab = miniTabHeader(tabName);
-            if (isElementPresentBy(selectedTab)) {
-                if (isElementClickable(selectedTab)) {
-                    clickOnElement(selectedTab);
-                    addToReport(tabName + " is clickable.", Status.PASS);
-
-                    // Validate the contents under each tab
-                    if (isElementPresentBy(lblPageSize) && isElementPresentBy(ddPageSize)) {
-
-                        // 1. Get all option texts first to avoid StaleElementReferenceException
-                        clickOnElement(ddPageSize);
-                        waitFor(SHORT_WAIT);
-                        List<WebElement> optionElements = driver.findElements(ddOption);
-
-                        if (optionElements.isEmpty()) {
-                            addToReport("No Page Size options found", Status.FAIL, true);
-                            return;
-                        }
-
-                        List<String> optionValues = new ArrayList<>();
-                        for (WebElement ele : optionElements) {
-                            optionValues.add(ele.getText().trim());
-                        }
-
-                        // 2. Iterate through the stored text values
-                        for (String optionText : optionValues) {
-                            // Re-open dropdown for selection
-                            clickOnElement(ddPageSize);
-                            waitFor(SHORT_WAIT);
-
-                            clickOnElement(selectedDDOption(optionText));
-                            waitForPageLoadCompleteJS(); // Wait for table to reload
-                            addToReport("Selected Page Size option: " + optionText + " under " + tabName + " tab", Status.PASS, false);
-
-                            // --- START: Row Count Validation ---
-                            try {
-                                int expectedCount = Integer.parseInt(optionText); // Convert "10" to 10
-
-                                // Locator based on the HTML snippet provided
-                                By tableRowsLocator = By.xpath("//tbody[contains(@class,'bg-white') and contains(@class,'text-black')]/tr");
-
-                                List<WebElement> actualRows = driver.findElements(tableRowsLocator);
-                                int actualCount = actualRows.size();
-
-                                if (actualCount == expectedCount) {
-                                    addToReport("Row count matched. Expected: " + expectedCount + ", Actual: " + actualCount, Status.PASS);
-                                } else {
-                                    // Note: If total records < page size, this might strictly fail.
-                                    // If that is acceptable behavior, keep as Status.FAIL.
-                                    // Otherwise, use: if (actualCount <= expectedCount)
-                                    addToReport("Row count mismatch. Expected: " + expectedCount + ", Actual: " + actualCount, Status.FAIL, true);
-                                }
-                            } catch (NumberFormatException nfe) {
-                                addToReport("Could not parse page size option to integer: " + optionText, Status.WARNING);
-                            }
-                            // --- END: Row Count Validation ---
-                        }
-
-                    } else {
-                        addToReport("Page size label or dropdown is not available under " + tabName + " tab", Status.FAIL, true);
-                    }
-
-                } else {
-                    addToReport(tabName + " is not clickable.", Status.FAIL);
-                }
-
-            } else {
-                addToReport(tabName + " is not Available.", Status.FAIL, true);
-            }
-
-        } catch (Exception e) {
-            addToReport("Failed to loop and select Page Size options", Status.FAIL, true);
-            throw new RuntimeException("Error in Page Size selection loop", e);
-        }
-    }
 
 
     public void validateEmptyStateErrors(String amountToVerify, List<String> errorMessages) {

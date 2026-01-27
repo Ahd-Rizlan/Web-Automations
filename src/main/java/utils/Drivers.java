@@ -60,9 +60,10 @@ public class Drivers{
 
             switch (browser) {
                 case "Chrome":
-//                    ChromeDriverManager.chromedriver().setup();
-                    System.setProperty("webdriver.chrome.driver", chromeDriverPath);
+                    ChromeDriverManager.chromedriver().setup();
 //                    driver = new ChromeDriver();
+
+//                    System.setProperty("webdriver.chrome.driver", chromeDriverPath);
                     ChromeOptions chromeOptionss = new ChromeOptions();
                     chromeOptionss.addArguments("--no-sandbox");
                     chromeOptionss.addArguments("--disable-dev-shm-usage");
